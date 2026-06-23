@@ -29,8 +29,9 @@ COPY --from=prerelease /usr/src/app/dist ./dist
 COPY --from=prerelease /usr/src/app/src ./src
 COPY --from=prerelease /usr/src/app/package.json .
 
-RUN chown -R bun:root /usr/src/app/node_modules /usr/src/app/dist /usr/src/app/src /usr/src/app
-RUN chmod -R g+w /usr/src/app/node_modules /usr/src/app/dist /usr/src/app/src /usr/src/app
+RUN chown -R bun:root /usr/src/app
+RUN chmod -R g+w /usr/src/app
 USER bun
 EXPOSE 3000/tcp
+ENV HOME=/usr/src/app
 CMD ["sh", "-c", "bun run preview -- --port 3000 --host"]
