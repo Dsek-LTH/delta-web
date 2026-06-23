@@ -22,16 +22,10 @@ COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 RUN bun run build
 
-# copy production dependencies and source code into final image
-FROM base AS release
-COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/dist ./dist
-COPY --from=prerelease /usr/src/app/src ./src
-COPY --from=prerelease /usr/src/app/package.json .
+FROM quay.io/sclorg/httpd-24-micro-c9s
 
-RUN chown -R bun:root /usr/src/app
-RUN chmod -R g+w /usr/src/app
-USER bun
-EXPOSE 3000/tcp
-ENV HOME=/usr/src/app
-CMD ["sh", "-c", "bun run preview -- --port 3000 --host"]
+# Add application sources
+COPY --from=prerelease /usr/src/app/dist/ /var/www/html/
+
+# The run script uses standard ways to run the application
+CMD run-httpd
