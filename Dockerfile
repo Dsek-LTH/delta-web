@@ -22,10 +22,9 @@ COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 RUN bun run build
 
-FROM quay.io/sclorg/httpd-24-micro-c9s
+FROM base AS release
+COPY --from=prerelease /usr/src/app/dist ./dist
 
-# Add application sources
-COPY --from=prerelease /usr/src/app/dist/ /var/www/html/
-
-# The run script uses standard ways to run the application
-CMD run-httpd
+USER bun
+EXPOSE 8080/tcp
+CMD ["sh", "-c", "bun run dist/server/entry.mjs"]
