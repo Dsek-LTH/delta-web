@@ -25,6 +25,9 @@ RUN bun run build
 FROM base AS release
 COPY --from=prerelease /usr/src/app/dist ./dist
 
+
+RUN chown -R bun:root /usr/src/app
+RUN chmod -R g+w /usr/src/app
 USER bun
 EXPOSE 8080/tcp
 CMD ["sh", "-c", "bun run dist/server/entry.mjs"]
