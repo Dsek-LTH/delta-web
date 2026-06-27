@@ -23,6 +23,9 @@ COPY . .
 RUN bun run build
 
 FROM base AS release
+COPY --from=prerelease /usr/src/app/package.json ./package.json
+COPY --from=prerelease /usr/src/app/bun.lock ./bun.lock
+COPY --from=install /temp/prod/node_modules ./node_modules
 COPY --from=prerelease /usr/src/app/dist ./dist
 
 
@@ -30,4 +33,4 @@ RUN chown -R bun:root /usr/src/app
 RUN chmod -R g+w /usr/src/app
 USER bun
 EXPOSE 8080/tcp
-CMD ["sh", "-c", "bun run dist/server/entry.mjs"]
+CMD ["bun", "dist/server/entry.mjs"]
