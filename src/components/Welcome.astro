@@ -1,5 +1,5 @@
 ---
-import cover from "../assets/cover.webp";
+import cover from "../assets/tekfok26_0003.webp";
 import helpdesk from "../assets/helpdesk.webp";
 import arm from "../assets/arm.webp";
 import explaining from "../assets/explaining.webp";
@@ -24,13 +24,19 @@ import { Image } from "astro:assets";
 </style>
 <div class="h-full w-full bg-black">
   <div class="relative">
+    <div class="absolute inset-0 items-center justify-center flex flex-col backdrop-opacity-10">
     <h1
-      class="absolute inset-0 flex items-center justify-center text-9xl font-bold m-20 text-white"
+      class="text-9xl font-bold text-white"
     >
       <span class="text-pink-500 whitespace-pre">> </span>DELT<span class="text-pink-500"
         >Δ</span
       ><span class="terminal-cursor">_</span>
     </h1>
+
+    <h2
+      class="text-4xl font-bold text-white"
+    > 9 February 8:00</h2>
+    </div>
     <!-- Background -->
     <Image
       src={cover}
@@ -114,3 +120,14 @@ import { Image } from "astro:assets";
     </p>
   </div>
 </div>
+
+<footer class="bg-gray-800 p-4">
+  <h2 class="text-pink-500">Contact</h2>
+    <ul>
+      <li><a href="mailto:delta@dsek.se">Mail</a></li>
+      <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
+    </ul>
+    <!-- addr -->
+    <br>
+    <p class="text-white">&copy; 2026 DELTA. All rights reserved.</p>
+  </footer>
