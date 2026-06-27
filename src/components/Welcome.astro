@@ -1,5 +1,8 @@
 ---
 import cover from "../assets/cover.webp";
+import helpdesk from "../assets/helpdesk.webp";
+import arm from "../assets/arm.webp";
+import explaining from "../assets/explaining.webp";
 import { Image } from "astro:assets";
 ---
 
@@ -36,6 +39,18 @@ import { Image } from "astro:assets";
     />
     <div class="absolute inset-0 -z-10 h-full w-full"></div>
     <!-- Background -->
+  </div>
+
+  <div class="grid grid-flow-col justify-center justify-items-center h-fit w-full p-5">
+    <div class="p-3 mx-5 rounded-2xl bg-pink-500">
+      <Image class="h-64 object-contain w-fit" src={helpdesk} alt="Helpdesk"/>
+    </div>
+    <div class="p-3 mx-5 rounded-2xl  bg-pink-500">
+      <Image class="h-64 object-contain w-fit" src={arm} alt="Arm"/>
+    </div>
+    <div class="p-3 mx-5 rounded-2xl  bg-pink-500">
+      <Image class="h-64 object-contain w-fit" src={explaining} alt="Explaining"/>
+    </div>
   </div>
 
   <div id="test" class="text-4xl flex flex-col mb-20 h-full">
