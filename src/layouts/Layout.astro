@@ -1,3 +1,7 @@
+---
+import Footer from "@/components/Footer.astro";
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,18 +11,16 @@
     <meta name="generator" content={Astro.generator} />
     <title>DELTA | D-sektionen inom TLTH</title>
   </head>
-  <body>
-    <slot />
+
+  <body class="bg-slate-950">
+    <header>
+      <p class="text-pink-500"></p>
+    </header>
+
+    <main class="flex justify-center w-screen">
+      <slot />
+    </main>
+
+    <Footer />
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    font-family: "Noto Sans", sans-serif;
-    margin: 0;
-    width: vw;
-    height: vh;
-    background-color: black;
-  }
-</style>
