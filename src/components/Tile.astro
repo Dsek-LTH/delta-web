@@ -1,0 +1,15 @@
+---
+const { class: className, ...rest } = Astro.props;
+const { title } = Astro.props;
+---
+
+<div
+  class={"p-10 m-5 rounded-2xl bg-gray-800 w-fit backdrop-blur-md opacity-90 aspect-square " +
+    (className ? className : "")}
+  {...rest}
+>
+  <h2 class="text-pink-500 font-bold text-5xl pb-5">
+    <span class="text-pink-500">></span> {title}
+  </h2>
+  <slot />
+</div>
