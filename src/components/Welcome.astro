@@ -21,19 +21,21 @@ import Conuntdown from "./Conuntdown.astro";
   <div
     class="flex gap-0 h-fit w-full p-5 xl:flex-row flex-col justify-center items-center"
   >
-    <Tile class="flex-1 w-full flex flex-col max-h-150" title="where?">
-      <p class="text-gray-200 text-lg mb-5">
-        E-Huset Ole Römers väg 3, 223 63 Lund, Lunds Tekniska Högskola
-      </p>
-      <iframe
+    <Tile class="flex-1 w-full max-h-150" title="where?">
+      <div class="flex flex-col h-full" >
+        <p class="text-gray-200 text-lg mb-5">
+          E-Huset Ole Römers väg 3, 223 63 Lund, Lunds Tekniska Högskola
+        </p>
+        <iframe
         class="overflow-hidden flex-1 rounded-xl bg-white shadow-md w-full h-full"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
         allowfullscreen=""
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
-      >
+        >
         E-huset LTH Ole Römers väg 3.
       </iframe>
+    </div>
     </Tile>
     <Tile class="flex-1 w-full max-h-170 xl:max-w-150" title="when?">
       <ul

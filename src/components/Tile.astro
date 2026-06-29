@@ -9,7 +9,10 @@ const { title } = Astro.props;
   {...rest}
 >
   <h2 class="text-pink-500 font-bold text-5xl">
-    <span class="text-pink-500">></span> {title}
+    <span class="text-pink-500">></span>
+    {title}
   </h2>
-  <slot class="my-5"/>
+  <div class="py-5 h-full w-full">
+    <slot />
+  </div>
 </div>
