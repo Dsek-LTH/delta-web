@@ -6,17 +6,21 @@ import Logo from "@/components/Logo.astro";
 import Conuntdown from "./Conuntdown.astro";
 ---
 
-<div
-  class="h-fit xl:h-dvh min-h-fit py-20 px-20 w-full bg-cover flex flex-col justify-center items-center backdrop-blur-md"
-  style={`background-image: url('${cover.src}'); background-attachment: fixed;`}
->
-  <div class=" flex flex-col justify-center items-center">
+<div class="relative h-fit xl:h-dvh min-h-fit py-20 px-20 w-full overflow-hidden flex flex-col justify-center items-center gap-20">
+  <div
+    class="absolute inset-0 bg-cover bg-center"
+    style={`background-image: url('${cover.src}'); background-attachment: fixed;`}
+  ></div>
+
+  <div class="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+
+  <div class="relative z-10 flex flex-col justify-center items-center">
     <Logo class="text-9xl" animate/>
     <Conuntdown />
   </div>
 
   <div
-    class="flex gap-0 grow h-fit w-full p-5 xl:flex-row flex-col justify-center items-center"
+    class="relative z-10 flex gap-0 grow h-fit w-full p-5 xl:flex-row flex-col justify-center items-center"
   >
     <Tile class="flex-1 w-full flex flex-col max-h-150" title="where?">
       <p class="text-gray-200 text-lg mb-5">
@@ -64,9 +68,8 @@ import Conuntdown from "./Conuntdown.astro";
       </p>
     </Tile>
   </div>
-  <button
-    class="bg-gray-800 hover:bg-pink-600 inset-shadow-sm/20 inset-shadow-white-500 text-white font-bold backdrop-blur-md opacity-90 py-4 px-8 rounded-full"
-  >
+
+  <button class="relative z-10 bg-gray-800 hover:bg-pink-600 inset-shadow-sm/20 inset-shadow-white-500 text-white font-bold backdrop-blur-md opacity-90 py-4 px-8 rounded-full">
     <a class="text-5xl flex flex-nowrap" href="mailto:delta@dsek.se" target="_blank">
       <div>Attend&nbsp;</div> <Logo />
     </a>
