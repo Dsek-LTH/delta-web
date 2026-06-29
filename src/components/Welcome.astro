@@ -1,34 +1,13 @@
 ---
 import cover from "@/assets/tekfok26_0003.webp";
 import { Image } from "astro:assets";
+import Logo from "@/components/Logo.astro";
 ---
 
-<style>
-  .terminal-cursor {
-    /* step-end ensures it snaps sharply between visible and invisible */
-    animation: blink 1.5s step-end infinite;
-  }
-
-  @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-  }
-</style>
 <div class="h-full w-full bg-black">
   <div class="relative">
-    <div
-      class="absolute inset-0 items-center justify-center flex flex-col backdrop-opacity-10"
-    >
-      <h1 class="text-9xl font-bold text-white">
-        <span class="text-pink-500 whitespace-pre">> </span>DELT<span
-          class="text-pink-500">Δ</span
-        ><span class="terminal-cursor">_</span>
-      </h1>
+    <div class="absolute inset-0 items-center justify-center flex flex-col">
+      <Logo class="text-9xl" animate />
 
       <h2 class="text-4xl font-bold text-white">9 February 8:00</h2>
     </div>
@@ -36,7 +15,7 @@ import { Image } from "astro:assets";
     <Image
       src={cover}
       alt="Background image of the fair"
-      class="h-100 w-screen object-cover opacity-100"
+      class="h-100 w-screen object-cover"
     />
     <div class="absolute inset-0 -z-10 h-full w-full"></div>
     <!-- Background -->
