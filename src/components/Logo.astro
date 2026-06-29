@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  animate?: boolean;
+}
+
+const { animate = false, class: className, ...rest } = Astro.props;
+---
+
+<div class:list={["font-bold text-pink-500", className]} {...rest}>
+  &gt;&nbsp;<span class="text-white">DELT</span>Δ<span
+    class={animate ? "animate-caret-blink" : ""}>_</span
+  >
+</div>
