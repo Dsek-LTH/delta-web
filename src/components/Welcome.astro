@@ -1,10 +1,10 @@
 ---
 import cover from "@/assets/tekfok26_0003.webp";
 import Tile from "./Tile.astro";
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 import { CalendarDays, Clock, Users } from "@lucide/astro";
 import Logo from "@/components/Logo.astro";
-import Conuntdown from "./Conuntdown.astro";
+import Countdown from "./Countdown.astro";
 ---
 
 <div
@@ -18,9 +18,9 @@ import Conuntdown from "./Conuntdown.astro";
     />
   </div>
 
-  <div class=" flex flex-col justify-center items-center">
-    <Logo class="text-9xl" animate/>
-    <Conuntdown />
+  <div class="flex flex-col justify-center items-center">
+    <Logo class="text-9xl" animate />
+    <Countdown />
   </div>
 
   <div
@@ -75,8 +75,13 @@ import Conuntdown from "./Conuntdown.astro";
   <button
     class="bg-gray-800 hover:bg-pink-600 inset-shadow-sm/20 inset-shadow-white-500 text-white font-bold backdrop-blur-md opacity-90 py-4 px-8 rounded-full"
   >
-    <a class="text-5xl flex flex-nowrap" href="mailto:delta@dsek.se" target="_blank">
-      <div>Attend&nbsp;</div> <Logo />
+    <a
+      class="text-5xl flex flex-nowrap"
+      href="mailto:delta@dsek.se"
+      target="_blank"
+    >
+      <div>Attend&nbsp;</div>
+      <Logo />
     </a>
   </button>
 </div>
