@@ -7,4 +7,11 @@
     --font-noto-sans: 'Noto Sans', sans-serif;
     --font-roboto: "Roboto", sans-serif;
     --font-inter: "Inter", sans-serif;
+    
+    @keyframes caret-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    --animate-caret-blink: caret-blink 1s step-end infinite;
 }
