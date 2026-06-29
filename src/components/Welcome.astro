@@ -21,10 +21,10 @@ import Tile from "./Tile.astro";
   }
 </style>
 <div
-  class="h-fit md:h-screen w-full bg-cover flex flex-col justify-center items-center"
+  class="h-fit lg:h-screen py-80 w-full bg-cover flex flex-col justify-center items-center"
   style={`background-image: url(${cover.src})`}
 >
-  <div class="m-20 mt-40 flex flex-col justify-center items-center">
+  <div class="m-20 flex flex-col justify-center items-center">
     <h1 class="text-9xl font-bold text-white">
       <span class="text-pink-500 whitespace-pre">> </span>DELT<span
         class="text-pink-500">Δ</span
@@ -34,13 +34,13 @@ import Tile from "./Tile.astro";
   </div>
   
   
-  <div class="flex gap-0 flex-1 h-fit w-screen p-5 md:flex-row flex-col justify-center items-center">
-    <Tile class="flex-1 w-full flex flex-col" title="where?">
+  <div class="flex gap-0 flex-1 h-fit w-screen p-5 lg:flex-row flex-col justify-center items-center">
+    <Tile class="flex-1 w-full flex flex-col max-h-150" title="where?">
       <p class="text-gray-200 text-lg mb-5">
         E-Huset Ole Römers väg 3, 223 63 Lund, Lunds Tekniska Högskola
       </p>
       <iframe
-        class="overflow-hidden flex-1 rounded-xl bg-white shadow-md w-full h-fit"
+        class="overflow-hidden flex-1 rounded-xl bg-white shadow-md w-full h-full"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
         allowfullscreen=""
         loading="lazy"
@@ -51,14 +51,14 @@ import Tile from "./Tile.astro";
     </Tile>
     <Tile class="flex-1 w-full" title="when?">
       <ul
-      class="list-none list-inside text-gray-200 text-5xl flex flex-col gap-15 text-nowrap justify-center h-full"
+      class="list-none list-inside text-gray-200 text-3xl flex flex-col gap-15 text-nowrap justify-center h-full"
       >
       <li>> February 9th 2027</li>
       <li>> 8:00 - 17:00</li>
       <li>> networking event after</li>
     </ul>
   </Tile>
-  <Tile class="flex-1 w-full" title="what?"
+  <Tile class="flex-1 w-full max-h-150 overflow-y-auto" title="what?"
     >
     <p class="text-gray-200 text-balance text-lg">
       <span class="text-pink-500">Delta</span> is a career fair for Computer Science
@@ -78,7 +78,7 @@ import Tile from "./Tile.astro";
     </p>
   </Tile>
   </div>
-  <button class="bg-gray-800 hover:bg-pink-600 text-white font-bold backdrop-blur-md opacity-90  m-20 py-4 px-8 rounded-full">
+  <button class="bg-gray-800 hover:bg-pink-600 text-white font-bold backdrop-blur-md opacity-90  m-20 py-4 px-8  rounded-full">
     <a class="text-5xl" href="mailto:delta@dsek.se" target="_blank"> Delta på <span class="text-pink-500 whitespace-pre"></span>DELT<span
         class="text-pink-500">Δ</span
       ></a>
