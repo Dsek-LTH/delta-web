@@ -8,8 +8,8 @@ const { title } = Astro.props;
     (className ? className : "")}
   {...rest}
 >
-  <h2 class="text-pink-500 font-bold text-5xl pb-5">
+  <h2 class="text-pink-500 font-bold text-5xl">
     <span class="text-pink-500">></span> {title}
   </h2>
-  <slot />
+  <slot class="my-5"/>
 </div>

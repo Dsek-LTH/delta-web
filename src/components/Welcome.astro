@@ -7,8 +7,8 @@ import Conuntdown from "./Conuntdown.astro";
 ---
 
 <div
-  class="h-fit lg:h-dvh min-h-fit py-20 px-20 w-full bg-cover flex flex-col justify-center items-center"
-  style={`background-image: url(${cover.src})`}
+  class="h-fit xl:h-dvh min-h-fit py-20 px-20 w-full bg-cover flex flex-col justify-center items-center backdrop-blur-md"
+  style={`background-image: url('${cover.src}'); background-attachment: fixed;`}
 >
   <div class=" flex flex-col justify-center items-center">
     <Logo class="text-9xl" animate/>
@@ -16,7 +16,7 @@ import Conuntdown from "./Conuntdown.astro";
   </div>
 
   <div
-    class="flex gap-0 grow h-fit w-full p-5 lg:flex-row flex-col justify-center items-center"
+    class="flex gap-0 grow h-fit w-full p-5 xl:flex-row flex-col justify-center items-center"
   >
     <Tile class="flex-1 w-full flex flex-col max-h-150" title="where?">
       <p class="text-gray-200 text-lg mb-5">
