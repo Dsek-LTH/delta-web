@@ -1,7 +1,7 @@
 ---
 import cover from "@/assets/tekfok26_0003.webp";
-import { Image } from "astro:assets";
 import Tile from "./Tile.astro";
+import { CalendarDays, Clock , Users} from "@lucide/astro";
 ---
 
 <style>
@@ -53,15 +53,16 @@ import Tile from "./Tile.astro";
       <ul
       class="list-none list-inside text-gray-200 text-3xl flex flex-col gap-15 text-nowrap justify-center h-full"
       >
-      <li>> February 9th 2027</li>
-      <li>> 8:00 - 17:00</li>
-      <li>> networking event after</li>
+      <li><CalendarDays class="inline-block w-6 h-6 mr-2" /> February 9th 2027</li>
+      <li><Clock class="inline-block w-6 h-6 mr-2" /> 8:00 - 17:00</li>
+      <li> <Users class="inline-block w-6 h-6 mr-2" /> Networking event after</li>
+   
     </ul>
   </Tile>
   <Tile class="flex-1 w-full max-h-150 overflow-y-auto" title="what?"
     >
     <p class="text-gray-200 text-balance text-lg">
-      <span class="text-pink-500">Delta</span> is a career fair for Computer Science
+      <span class="text-pink-500">Delta</span> is a career fair for Computer Science1
       students, hosted by <a href="https://dsek.se" class="text-pink-500"
         >the D-guild at TLTH</a
       >. We connect students with companies and provide opportunities for
