@@ -2,7 +2,7 @@
 import { defineConfig } from "astro/config";
 import bun from "@wyattjoh/astro-bun-adapter";
 import tailwindcss from "@tailwindcss/vite";
- import icon from "astro-icon";
+import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
