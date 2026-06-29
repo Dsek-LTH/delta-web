@@ -14,8 +14,9 @@
 </div>
 
 <script>
-  const date = "feb 9, 2027 8:00:00";
-  const countDownDate = new Date(date).getTime();
+  import { fairDate } from "@/constants.ts";
+
+  const countDownDate = fairDate.getTime();
 
   const daysEl = document.getElementById("countdown-days");
   const hoursEl = document.getElementById("countdown-hours");
