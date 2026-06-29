@@ -9,6 +9,9 @@ export default defineConfig({
   i18n: {
     locales: ["en", "sv"],
     defaultLocale: "sv",
+    fallback: {
+      sv: "en",
+    },
   },
   vite: {
     plugins: [tailwindcss()],
