@@ -23,7 +23,7 @@ jobs:
 
       - name: Check formatting
         run: bun format:check
-      
+
       - name: Check linting
         run: bun lint
 

@@ -4,7 +4,10 @@ const { title } = Astro.props;
 ---
 
 <div
-  class:list={["sm:p-10 p-5 m-5 rounded-2xl bg-slate-800/60 w-fit backdrop-blur-md inset-shadow-sm/20 inset-shadow-gray-300 flex flex-col",className]}
+  class:list={[
+    "sm:p-10 p-5 m-5 rounded-2xl bg-slate-800/60 w-fit backdrop-blur-md inset-shadow-sm/20 inset-shadow-gray-300 flex flex-col",
+    className,
+  ]}
   {...rest}
 >
   <h2 class="text-pink-500 font-bold md:text-5xl text-2xl">
