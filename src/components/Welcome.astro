@@ -1,6 +1,7 @@
 ---
 import cover from "@/assets/tekfok26_0003.webp";
 import Tile from "./Tile.astro";
+import { Image } from 'astro:assets';
 import { CalendarDays, Clock, Users } from "@lucide/astro";
 import Logo from "@/components/Logo.astro";
 import Conuntdown from "./Conuntdown.astro";
@@ -9,10 +10,6 @@ import Conuntdown from "./Conuntdown.astro";
 <div
   class="relative min-h-screen w-full overflow-x-hidden p-20 flex flex-col justify-center items-center gap-20"
 >
-  <div
-    class="fixed inset-0 -z-20 bg-cover bg-center"
-    style={`background-image: url('${cover.src}'); background-attachment: fixed;`}
-  ></div>
 
   <div class="fixed inset-0 -z-10 bg-black/30 backdrop-blur-md pointer-events-none"></div>
 
