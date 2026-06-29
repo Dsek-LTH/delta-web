@@ -1,92 +1,74 @@
 ---
 import cover from "@/assets/tekfok26_0003.webp";
-import { Image } from "astro:assets";
+import Tile from "./Tile.astro";
+import { CalendarDays, Clock, Users } from "@lucide/astro";
 import Logo from "@/components/Logo.astro";
+import Conuntdown from "./Conuntdown.astro";
 ---
 
-<div class="h-full w-full bg-black">
-  <div class="relative">
-    <div class="absolute inset-0 items-center justify-center flex flex-col">
-      <Logo class="text-9xl" animate />
-
-      <h2 class="text-4xl font-bold text-white">9 February 8:00</h2>
-    </div>
-    <!-- Background -->
-    <Image
-      src={cover}
-      alt="Background image of the fair"
-      class="h-100 w-screen object-cover"
-    />
-    <div class="absolute inset-0 -z-10 h-full w-full"></div>
-    <!-- Background -->
+<div
+  class="h-fit lg:h-dvh min-h-fit py-20 px-20 w-full bg-cover flex flex-col justify-center items-center"
+  style={`background-image: url(${cover.src})`}
+>
+  <div class=" flex flex-col justify-center items-center">
+    <Logo class="text-9xl" animate/>
+    <Conuntdown />
   </div>
 
-  <div id="test" class="text-4xl flex flex-col mb-20 h-full">
-    <h2 class="text-pink-500 font-bold ml-20 mt-10 mr-20 text-2xl">
-      <span class="text-pink-500">></span> what? <span class="terminal-cursor"
-        >_</span
+  <div
+    class="flex gap-0 grow h-fit w-full p-5 lg:flex-row flex-col justify-center items-center"
+  >
+    <Tile class="flex-1 w-full flex flex-col max-h-150" title="where?">
+      <p class="text-gray-200 text-lg mb-5">
+        E-Huset Ole Römers väg 3, 223 63 Lund, Lunds Tekniska Högskola
+      </p>
+      <iframe
+        class="overflow-hidden flex-1 rounded-xl bg-white shadow-md w-full h-full"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
       >
-    </h2>
-    <p class="text-gray-200 ml-20 mt-10 mr-20 text-2xl">
-      <span class="text-pink-500">Delta</span> is a career fair for Computer Science
-      students, hosted by <a href="https://dsek.se" class="text-pink-500"
-        >the D-guild at TLTH</a
-      >. We connect students with companies and provide opportunities for
-      networking, internships, and job placements. Join us to explore exciting
-      career opportunities and meet top employers from various industries. When
-      the fair has concluded for the day, there will be a cozy network event
-      where students and company representatives can meet in a relaxed setting.
-      The fair will be an excellent opportunity for companies and students to
-      meet eachother.
-      <br />
-      <br />
-      We are currently reworking our offererings in terms of the fair and its related
-      events and more information will come as soon as it's ready.
-    </p>
-
-    <h2 class="text-pink-500 font-bold ml-20 mt-10 mr-20 text-2xl">
-      <span class="text-pink-500">></span> when? <span class="terminal-cursor"
-        >_</span
+        E-huset LTH Ole Römers väg 3.
+      </iframe>
+    </Tile>
+    <Tile class="flex-1 w-full" title="when?">
+      <ul
+        class="list-none list-inside text-gray-200 text-3xl flex flex-col gap-15 justify-center h-full"
       >
-    </h2>
-    <p class="text-gray-200 ml-20 mt-10 mr-20 text-2xl">
-      February 9th 2027 between 8:00 and 17:00, with a relaxed networking event
-      starting at 17:00
-    </p>
-
-    <h2 class="text-pink-500 font-bold ml-20 mt-10 mr-20 text-2xl">
-      <span class="text-pink-500">></span> where? <span class="terminal-cursor"
-        >_</span
-      >
-    </h2>
-    <p class="text-gray-200 ml-20 mt-10 mr-20 text-2xl">
-      E-Huset Ole Römers väg 3, 223 63 Lund, Lunds Tekniska Högskola
-    </p>
-    <iframe
-      class="ml-20 mt-5 max-w-md overflow-hidden rounded-xl bg-white shadow-md md:max-w-2xl"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
-      width="100%"
-      height="450"
-      style="border:0;"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-    >
-      E-huset LTH Ole Römers väg 3.
-    </iframe>
-
-    <h2 class="text-pink-500 font-bold ml-20 mt-10 mr-20 text-2xl">
-      <span class="text-pink-500">></span> contact <span class="terminal-cursor"
-        >_</span
-      >
-    </h2>
-    <p class="text-gray-200 ml-20 mt-10 mr-20 text-2xl">
-      If you have any questions, want to get in touch with us or want to be
-      notified when we release more information regarding the fair, feel free to
-      reach out to us at <a href="mailto:delta@dsek.se" class="text-pink-500"
-        >delta@dsek.se</a
-      >. We are always happy to hear from you and answer any inquiries you may
-      have about our events, partnerships, or anything else related to DELTA.
-    </p>
+        <li>
+          <CalendarDays class="inline-block w-6 h-6 mr-2" /> February 9th 2027
+        </li>
+        <li><Clock class="inline-block w-6 h-6 mr-2" /> 8:00 - 17:00</li>
+        <li>
+          <Users class="inline-block w-6 h-6 mr-2" /> Networking event after
+        </li>
+      </ul>
+    </Tile>
+    <Tile class="flex-1 w-full max-h-150 overflow-y-auto" title="what?">
+      <p class="text-gray-200 text-balance text-lg">
+        <span class="text-pink-500">Delta</span> is a career fair for Computer Science1
+        students, hosted by <a href="https://dsek.se" class="text-pink-500"
+          >the D-guild at TLTH</a
+        >. We connect students with companies and provide opportunities for
+        networking, internships, and job placements. Join us to explore exciting
+        career opportunities and meet top employers from various industries.
+        When the fair has concluded for the day, there will be a cozy network
+        event where students and company representatives can meet in a relaxed
+        setting. The fair will be an excellent opportunity for companies and
+        students to meet eachother.
+        <br />
+        <br />
+        We are currently reworking our offererings in terms of the fair and its related
+        events and more information will come as soon as it's ready.
+      </p>
+    </Tile>
   </div>
+  <button
+    class="bg-gray-800 hover:bg-pink-600 inset-shadow-sm/20 inset-shadow-white-500 text-white font-bold backdrop-blur-md opacity-90 py-4 px-8 rounded-full"
+  >
+    <a class="text-5xl flex flex-nowrap" href="mailto:delta@dsek.se" target="_blank">
+      <div>Attend&nbsp;</div> <Logo />
+    </a>
+  </button>
 </div>
