@@ -16,14 +16,17 @@ import { Image } from "astro:assets";
   </head>
 
   <body class="relative isolate bg-slate-950 font-inter text-white">
-  <div class="absolute inset-0 -z-10">
-    <Image
-      src={cover}
-      alt="Background Cover"
-      class="w-full h-full object-cover blur-lg fixed"
-    />
-  </div>
-    <div class="fixed inset-0 -z-10 bg-black/30 backdrop-blur-md pointer-events-none"></div>
+    <div class="absolute inset-0 -z-10">
+      <Image
+        src={cover}
+        alt="Background Cover"
+        class="w-full h-full object-cover blur-lg fixed"
+      />
+    </div>
+    <div
+      class="fixed inset-0 -z-10 bg-black/30 backdrop-blur-md pointer-events-none"
+    >
+    </div>
 
     <header class="bg-gray-800">
       <p class="text-pink-500"></p>
