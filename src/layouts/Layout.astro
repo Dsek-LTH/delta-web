@@ -1,4 +1,5 @@
 ---
+import Footer from "@/components/Footer.astro";
 import "@/styles/global.css";
 ---
 
@@ -12,7 +13,7 @@ import "@/styles/global.css";
     <title>DELTA | D-sektionen inom TLTH</title>
   </head>
 
-  <body class="bg-slate-950">
+  <body class="bg-slate-950 font-(family-name:--font-inter) text-white">
     <header class="bg-gray-800">
       <p class="text-pink-500"></p>
     </header>
@@ -21,15 +22,6 @@ import "@/styles/global.css";
       <slot />
     </main>
 
-    <footer class="bg-gray-800 p-4">
-      <h2 class="text-pink-500">Contact</h2>
-      <ul>
-        <li><a href="mailto:delta@dsek.se">Mail</a></li>
-        <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
-      </ul>
-      <!-- addr -->
-      <br />
-      <p class="text-white">&copy; 2026 DELTA. All rights reserved.</p>
-    </footer>
+    <Footer />
   </body>
 </html>
