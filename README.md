@@ -1,12 +1,12 @@
 # delta-web
 
-This is the source code for the official web page for **> DELTΔ_**, the annual career fair hosted by the [D-guild at TLTH](https://www.dsek.se/). 
+This is the source code for the official web page for **> DELTΔ\_**, the annual career fair hosted by the [D-guild at TLTH](https://www.dsek.se/).
 
-#### > DELTΔ --force_ IT managers
+#### > DELTΔ --force\_ IT managers
+
 - [Hannes Bolmehag](https://github.com/sennahhh)
 - [Christoffer Gärtner](https://github.com/christofergartner)
 - [Rufus Kogg Röjder](https://github.com/RufusKoggRojder)
-
 
 ## Astro
 
@@ -48,14 +48,11 @@ All commands are run from the root of the project, from a terminal:
 | `bun format:check`    | Check if all files are formatted correctly       |
 | `bun format:fix`      | Fix all incorrectly formatted files              |
 
-
-
 The two important ones are `install` and `dev`. Run `install` whenever some dependency has changed, it is good practice to run this often, especially after doing anything related to git. `dev` starts the dev server allowing you to see any changes you make in real time. It will also make sure intellisense works correctly, so it is good practice to have this running constantly in a dedicated terminal.
 
 ### Want to learn more?
 
 Feel free to check [the Astro documentation](https://docs.astro.build) or jump into their [Discord server](https://astro.build/chat).
-
 
 ## Deployment
 
