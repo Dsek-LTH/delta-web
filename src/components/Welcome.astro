@@ -6,21 +6,23 @@ import Logo from "@/components/Logo.astro";
 import Conuntdown from "./Conuntdown.astro";
 ---
 
-<div class="relative h-fit xl:h-dvh min-h-fit py-20 px-20 w-full overflow-hidden flex flex-col justify-center items-center gap-20">
+<div
+  class="relative min-h-screen w-full overflow-x-hidden p-20 flex flex-col justify-center items-center gap-20"
+>
   <div
-    class="absolute inset-0 bg-cover bg-center"
+    class="fixed inset-0 -z-20 bg-cover bg-center"
     style={`background-image: url('${cover.src}'); background-attachment: fixed;`}
   ></div>
 
-  <div class="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+  <div class="fixed inset-0 -z-10 bg-black/30 backdrop-blur-md pointer-events-none"></div>
 
-  <div class="relative z-10 flex flex-col justify-center items-center">
-    <Logo class="text-9xl" animate/>
+  <div class="flex flex-col justify-center items-center">
+    <Logo class="text-9xl" animate />
     <Conuntdown />
   </div>
 
   <div
-    class="relative z-10 flex gap-0 grow h-fit w-full p-5 xl:flex-row flex-col justify-center items-center"
+    class="flex gap-0 h-fit w-full p-5 xl:flex-row flex-col justify-center items-center"
   >
     <Tile class="flex-1 w-full flex flex-col max-h-150" title="where?">
       <p class="text-gray-200 text-lg mb-5">
@@ -36,9 +38,9 @@ import Conuntdown from "./Conuntdown.astro";
         E-huset LTH Ole Römers väg 3.
       </iframe>
     </Tile>
-    <Tile class="flex-1 w-full" title="when?">
+    <Tile class="flex-1 w-full max-h-170 xl:max-w-150" title="when?">
       <ul
-        class="list-none list-inside text-gray-200 text-3xl flex flex-col gap-15 justify-center h-full"
+        class="list-none list-inside text-gray-200 text-3xl flex flex-col justify-evenly h-full"
       >
         <li>
           <CalendarDays class="inline-block w-6 h-6 mr-2" /> February 9th 2027
@@ -69,9 +71,16 @@ import Conuntdown from "./Conuntdown.astro";
     </Tile>
   </div>
 
-  <button class="relative z-10 bg-gray-800 hover:bg-pink-600 inset-shadow-sm/20 inset-shadow-white-500 text-white font-bold backdrop-blur-md opacity-90 py-4 px-8 rounded-full">
-    <a class="text-5xl flex flex-nowrap" href="mailto:delta@dsek.se" target="_blank">
-      <div>Attend&nbsp;</div> <Logo />
+  <button
+    class="bg-gray-800 hover:bg-pink-600 inset-shadow-sm/20 inset-shadow-white-500 text-white font-bold backdrop-blur-md opacity-90 py-4 px-8 rounded-full"
+  >
+    <a
+      class="text-5xl flex flex-nowrap"
+      href="mailto:delta@dsek.se"
+      target="_blank"
+    >
+      <div>Attend&nbsp;</div>
+      <Logo />
     </a>
   </button>
 </div>

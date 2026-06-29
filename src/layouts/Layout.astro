@@ -1,6 +1,7 @@
 ---
 import Footer from "@/components/Footer.astro";
 import "@/styles/global.css";
+import cover from "@/assets/tekfok26_0003.webp";
 ---
 
 <!doctype html>
@@ -13,7 +14,13 @@ import "@/styles/global.css";
     <title>DELTA | D-sektionen inom TLTH</title>
   </head>
 
-  <body class="bg-slate-950 font-(family-name:--font-inter) text-white">
+  <body class="relative isolate bg-slate-950 font-(family-name:--font-inter) text-white">
+    <div
+      class="fixed inset-0 -z-20 bg-cover bg-center"
+      style={`background-image: url('${cover.src}'); background-attachment: fixed;`}
+    ></div>
+    <div class="fixed inset-0 -z-10 bg-black/30 backdrop-blur-md pointer-events-none"></div>
+
     <header class="bg-gray-800">
       <p class="text-pink-500"></p>
     </header>
