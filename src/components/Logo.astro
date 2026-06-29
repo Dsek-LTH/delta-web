@@ -8,7 +8,10 @@ interface Props extends HTMLAttributes<"div"> {
 const { animate = false, class: className, ...rest } = Astro.props;
 ---
 
-<div class:list={["font-bold text-pink-500", className]} {...rest}>
+<div
+  class:list={["font-bold font-noto-sans text-pink-500", className]}
+  {...rest}
+>
   &gt;&nbsp;<span class="text-white">DELT</span>Δ<span
     class={animate ? "animate-caret-blink" : ""}>_</span
   >

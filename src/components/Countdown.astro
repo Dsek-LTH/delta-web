@@ -1,0 +1,56 @@
+<div class="md:text-4xl text-xl font-bold text-white font-noto-sans-mono">
+  <span id="countdown-days">{"---"}</span><span class="text-pink-500">
+    d&nbsp;</span
+  >
+  <span id="countdown-hours">{"--"}</span><span class="text-pink-500">
+    h&nbsp;</span
+  >
+  <span id="countdown-minutes">{"--"}</span><span class="text-pink-500">
+    m&nbsp;</span
+  >
+  <span id="countdown-seconds">{"--"}</span><span class="text-pink-500">
+    s&nbsp;</span
+  >
+</div>
+
+<script>
+  const date = "feb 9, 2027 8:00:00";
+  const countDownDate = new Date(date).getTime();
+
+  const daysEl = document.getElementById("countdown-days");
+  const hoursEl = document.getElementById("countdown-hours");
+  const minutesEl = document.getElementById("countdown-minutes");
+  const secondsEl = document.getElementById("countdown-seconds");
+
+  const intervalId = setInterval(() => {
+    const now = Date.now();
+    const distance = countDownDate - now;
+
+    const invalid = !daysEl || !hoursEl || !minutesEl || !secondsEl;
+    if (invalid) {
+      return;
+    }
+
+    if (distance < 0) {
+      clearInterval(intervalId);
+      daysEl.textContent = "---";
+      hoursEl.textContent = "--";
+      minutesEl.textContent = "--";
+      secondsEl.textContent = "--";
+
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+    );
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    daysEl.textContent = String(days).padStart(3, "0");
+    hoursEl.textContent = String(hours).padStart(2, "0");
+    minutesEl.textContent = String(minutes).padStart(2, "0");
+    secondsEl.textContent = String(seconds).padStart(2, "0");
+  }, 1000);
+</script>
