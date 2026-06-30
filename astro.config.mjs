@@ -7,10 +7,14 @@ import icon from "astro-icon";
 // https://astro.build/config
 export default defineConfig({
   i18n: {
-    locales: ["en", "sv"],
     defaultLocale: "sv",
+    locales: ["en", "sv"],
     fallback: {
-      sv: "en",
+      en: "sv",
+    },
+    routing: {
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: true,
     },
   },
   vite: {
