@@ -2,16 +2,18 @@
 import { languages } from "../i18n/ui";
 import { getLangFromUrl } from "../i18n/utils";
 
+const { class: className, ...rest } = Astro.props;
+
 const lang = getLangFromUrl(Astro.url);
 const otherLangs = Object.keys(languages).filter((l) => l !== lang);
 ---
 
-<ul>
+<div class:list={[className]} {...rest}>
   {
     otherLangs.map((l) => (
-      <a class="text-pink-500" href={`/${l}/`}>
+      <a class="text-c hover:text-c/80" href={`/${l}/`}>
         {languages[l as keyof typeof languages]}
       </a>
     ))
   }
-</ul>
+</div>

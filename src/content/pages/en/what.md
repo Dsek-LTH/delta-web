@@ -1,3 +1,0 @@
-<span class="text-pink-500">Delta</span> is a career fair for Computer Science1 students, hosted by [the D-guild at TLTH](https://dsek.se). We connect students with companies and provide opportunities for networking, internships, and job placements. Join us to explore exciting career opportunities and meet top employers from various industries. When the fair has concluded for the day, there will be a cozy network event where students and company representatives can meet in a relaxed setting. The fair will be an excellent opportunity for companies and students to meet eachother.
-
-We are currently reworking our offererings in terms of the fair and its related events and more information will come as soon as it's ready.
