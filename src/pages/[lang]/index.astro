@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Tile from "@/components/Tile.astro";
-import { CalendarDays, Clock, Users } from "@lucide/astro";
+import Card from "@/components/Card.astro";
+import { CalendarDays, Clock, MapPin, Users } from "@lucide/astro";
 import Logo from "@/components/Logo.astro";
 import Countdown from "@/components/Countdown.astro";
 import { languages } from "@/i18n/ui.ts";
@@ -16,50 +16,59 @@ export function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const what = await getEntry("pages", `${lang}/what`);
-const whatRendered = what?.rendered ?? null;
+const description = await getEntry("pages", `${lang}/description`);
+const renderedDescription = description?.rendered ?? null;
 ---
 
-<Layout>
-  <div
-    class="relative min-h-lvh w-full overflow-x-hidden md:p-20 py-10 px-5 flex flex-col justify-center items-center"
-  >
-    <div class="flex flex-col justify-center items-center">
-      <Logo class="md:text-9xl text-6xl" animate />
-      <Countdown class="md:text-5xl text-xl" />
-    </div>
+<Layout
+  class="flex flex-col items-center gap-12 px-6 py-12 mx-auto w-full max-w-7xl lg:px-16"
+>
+  <div class="text-center text-shadow-md/25">
+    <h1 aria-label="DELTA" role="img" class="contents">
+      <Logo class="lg:text-9xl text-7xl" animate />
+    </h1>
+    <Countdown class="lg:text-4xl text-2xl" />
+  </div>
 
-    <div
-      class="flex w-full flex-1 h-fit py-20 xl:flex-row flex-col justify-center items-center"
-    >
-      <Tile
-        class="order-2 xl:order-1 flex-1 w-full h-fit xl:h-4/5"
-        title={t("tile.where")}
+  <div
+    class="grid lg:grid-cols-3 grid-cols-1 gap-12 w-full lg:max-h-110 lg:max-w-full max-w-110"
+  >
+    <Card class="p-8 lg:order-1 order-2 flex flex-col gap-6">
+      <h2
+        class="text-5xl font-bold uppercase tracking-tight text-center text-d"
       >
-        <div class="flex flex-col h-full">
-          <p class="text-gray-200 md:text-lg text-base mb-5">
-            E-Huset Ole Römers väg 3, 223 63 Lund, Lunds Tekniska Högskola
+        {t("card.where")}
+      </h2>
+      <div class="flex flex-col gap-4">
+        <div class="flex items-start gap-2 shrink-0">
+          <MapPin class="size-4 text-slate-400 shrink-0 mt-1" />
+          <p class="leading-relaxed">
+            E-Huset, LTH
+            <br />
+            Ole Römers väg 3, 223 63 Lund, Sweden
           </p>
-          <iframe
-            class="overflow-hidden flex-1 rounded-xl aspect-video xl:aspect-none bg-white shadow-md w-full h-full"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          >
-            E-huset LTH Ole Römers väg 3.
-          </iframe>
         </div>
-      </Tile>
-      <Tile
-        class="order-1 xl:order-2 flex-1 w-full xl:h-full xl:max-w-150"
-        title={t("tile.when")}
-      >
-        <ul
-          class="list-none list-inside text-gray-200 md:text-3xl text-xl flex flex-col justify-evenly h-full"
+        <iframe
+          class="w-full flex-1 min-h-50 rounded-xl"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
         >
-          <li>
-            <CalendarDays class="inline-block w-6 h-6 mr-2" />
+          E-huset LTH Ole Römers väg 3.
+        </iframe>
+      </div>
+    </Card>
+
+    <Card class="p-8 lg:order-2 order-1 flex flex-col gap-6">
+      <h2
+        class="text-5xl font-bold uppercase tracking-tight text-center text-d"
+      >
+        {t("card.when")}
+      </h2>
+      <ul class="flex flex-col h-full justify-center gap-6 mx-auto text-2xl">
+        <li class="flex items-start gap-3">
+          <CalendarDays class="size-6 text-slate-400 shrink-0 mt-1" />
+          <span>
             {
               fairDate.toLocaleDateString(lang, {
                 weekday: "long",
@@ -68,35 +77,39 @@ const whatRendered = what?.rendered ?? null;
                 day: "numeric",
               })
             }
-          </li>
-          <li><Clock class="inline-block w-6 h-6 mr-2" /> 8:00 - 17:00</li>
-          <li>
-            <Users class="inline-block w-6 h-6 mr-2" />
-            {t("tile.when.networking")}
-          </li>
-        </ul>
-      </Tile>
-      <Tile
-        class="order-3 xl:order-3 flex-1 w-full aspect-none h-fit xl:h-4/5"
-        title={t("tile.what")}
-      >
-        <div class="h-fit w-full prose prose-pink max-w-none prose-invert">
-          {whatRendered && <div set:html={whatRendered.html} />}
-        </div>
-      </Tile>
-    </div>
+          </span>
+        </li>
+        <li class="flex items-start gap-3">
+          <Clock class="size-6 text-slate-400 shrink-0 mt-1" />
+          <span>08:00 - 17:00</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <Users class="size-6 text-slate-400 shrink-0 mt-1" />
+          <span>{t("card.when.networking")}</span>
+        </li>
+      </ul>
+    </Card>
 
-    <button
-      class="bg-slate-800/60 hover:bg-slate-600/60 hover:shadow-2xl inset-shadow-sm/20 inset-shadow-gray-300 text-white font-bold backdrop-blur-md py-4 px-8 rounded-full"
-    >
-      <a
-        class="md:text-5xl text-2xl flex flex-nowrap"
-        href="mailto:delta@dsek.se"
-        target="_blank"
+    <Card class="p-8 order-3 flex flex-col gap-6">
+      <h2
+        class="text-5xl font-bold uppercase tracking-tight text-center text-d"
       >
-        <div>{t("button.attend")}&nbsp;</div>
-        <Logo />
-      </a>
-    </button>
+        {t("card.what")}
+      </h2>
+      <div
+        class="text-base flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose prose-pink prose-invert"
+      >
+        {renderedDescription && <div set:html={renderedDescription.html} />}
+      </div>
+    </Card>
   </div>
+
+  <a
+    href="mailto:delta@dsek.se"
+    target="_blank"
+    class="bg-slate-900/60 hover:bg-slate-950/60 hover:shadow-lg text-white font-bold backdrop-blur-md py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline transition"
+  >
+    <span>{t("button.attend")}</span>
+    <Logo />
+  </a>
 </Layout>
