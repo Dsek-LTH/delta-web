@@ -5,15 +5,10 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-d: #f280a1;
-  --color-c: #9966cc;
-
   --font-noto-sans: "Noto Sans", sans-serif;
   --font-noto-sans-mono: "Noto Sans Mono", sans-serif;
   --font-roboto: "Roboto", sans-serif;
   --font-inter: "Inter", sans-serif;
-
-  --animate-caret-blink: caret-blink 1s step-end infinite;
 
   @keyframes caret-blink {
     0%,
@@ -24,12 +19,6 @@
       opacity: 0;
     }
   }
-}
 
-*,
-*::before,
-*::after {
-  cursor:
-    url("/cursor.png") 0 0,
-    auto !important;
+  --animate-caret-blink: caret-blink 1s step-end infinite;
 }

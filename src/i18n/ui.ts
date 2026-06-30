@@ -7,25 +7,23 @@ export const defaultLang = "sv";
 
 export const ui = {
   en: {
-    "card.when": "When",
-    "card.where": "Where",
-    "card.what": "What",
-    "card.when.networking": "Networking event after",
+    "tile.when": "When",
+    "tile.where": "Where",
+    "tile.what": "What",
+    "tile.when.networking": "Networking event after",
     "button.attend": "Attend",
     "footer.contact": "Contact us",
     "footer.development":
-      "NOTICE: This page is still in development, the source code is available on ",
-    "footer.language.select": "Switch language: ",
+      "This page is still in development, the source code is available on",
   },
   sv: {
-    "card.when": "När",
-    "card.where": "Var",
-    "card.what": "Vad",
-    "card.when.networking": "Nätverkningsevent efter",
+    "tile.when": "När",
+    "tile.where": "Var",
+    "tile.what": "Vad",
+    "tile.when.networking": "Nätverkningsevent efter",
     "button.attend": "Delta på",
     "footer.contact": "Kontakta oss",
     "footer.development":
-      "OBS: Denna sida är fortfarande under utveckling, källkoden finns tillgänglig på ",
-    "footer.language.select": "Byt språk: ",
+      "Denna sida är fortfarande under utveckling, källkoden finns tillgänglig på",
   },
 } as const;
