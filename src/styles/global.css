@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-d: #f280a1;
+  --color-c: #9966cc;
+
+  --font-noto-sans: "Noto Sans", sans-serif;
+  --font-noto-sans-mono: "Noto Sans Mono", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-inter: "Inter", sans-serif;
+
+  --animate-caret-blink: caret-blink 1s step-end infinite;
+
+  @keyframes caret-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+*,
+*::before,
+*::after {
+  cursor:
+    url("/cursor.png") 0 0,
+    auto !important;
+}

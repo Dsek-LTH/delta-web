@@ -1,0 +1,38 @@
+---
+import LanguagePicker from "@/components/LanguagePicker.astro";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<footer class="bg-gray-900 p-4">
+  <h2>{t("footer.contact")}</h2>
+  <ul>
+    <li>
+      Email: <a class="text-c hover:text-c/80" href="mailto:delta@dsek.se"
+        >delta@dsek.se</a
+      >
+    </li>
+    <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
+  </ul>
+  <!-- addr -->
+  <br />
+  {t("footer.language.select")}<LanguagePicker class="inline" />
+  <br />
+  <br />
+  <ul>
+    <li>
+      <p class="text-white">&copy; 2026 DELTA. All rights reserved.</p>
+    </li>
+  </ul>
+  <h2 class="text-xl text-center font-semibold text-red-500">
+    {t("footer.development")}
+    <a
+      class="text-red-600 hover:text-red-600/80"
+      href="https://github.com/Dsek-LTH/delta-web"
+    >
+      GitHub
+    </a>. &lt;@:)
+  </h2>
+</footer>
