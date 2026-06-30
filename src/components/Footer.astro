@@ -6,11 +6,11 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<footer class="bg-gray-800 p-4">
-  <h2 class="text-pink-500">{t("footer.contact")}</h2>
+<footer class="bg-gray-900 p-4">
+  <h2>{t("footer.contact")}</h2>
   <ul>
-    <li class="text-gray-200">
-      Email: <a class="text-pink-500" href="mailto:delta@dsek.se"
+    <li>
+      Email: <a class="text-c hover:text-c/80" href="mailto:delta@dsek.se"
         >delta@dsek.se</a
       >
     </li>
@@ -18,18 +18,21 @@ const t = useTranslations(lang);
   </ul>
   <!-- addr -->
   <br />
-  <h2 class="text-gray-200">
-    {t("footer.development")}
-    <a class="text-pink-500" href="https://github.com/Dsek-LTH/delta-web"
-      >&nbsp;GitHub</a
-    >.
-  </h2>
+  {t("footer.language.select")}<LanguagePicker class="inline" />
   <br />
-  <LanguagePicker />
   <br />
   <ul>
-    <li class="text-gray-200">
+    <li>
       <p class="text-white">&copy; 2026 DELTA. All rights reserved.</p>
     </li>
   </ul>
+  <h2 class="text-xl text-center font-semibold text-red-500">
+    {t("footer.development")}
+    <a
+      class="text-red-600 hover:text-red-600/80"
+      href="https://github.com/Dsek-LTH/delta-web"
+    >
+      GitHub
+    </a>. &lt;@:)
+  </h2>
 </footer>
