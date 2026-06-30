@@ -10,29 +10,6 @@ This is the source code for the official web page for **> DELTΔ\_**, the annual
 
 ## Astro
 
-### Project Structure
-
-Inside the project you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-├── package.json
-└── Dockerfile
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
 ### Commands
 
 All commands are run from the root of the project, from a terminal:
