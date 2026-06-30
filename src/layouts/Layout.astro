@@ -3,36 +3,44 @@ import Footer from "@/components/Footer.astro";
 import "@/styles/global.css";
 import cover from "@/assets/tekfok26_0003.webp";
 import { Image } from "astro:assets";
+
+const { class: className, ...rest } = Astro.props;
+
+import { getLangFromUrl } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/delta-delta.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>DELTA | D-sektionen inom TLTH</title>
+    <title>&gt;&nbsp;DELT&Delta;&#95; | D-sektionen inom TLTH</title>
   </head>
 
-  <body class="relative isolate bg-slate-950 font-inter text-white">
-    <div class="absolute inset-0 -z-10">
+  <body
+    class="relative isolate bg-slate-900 font-inter text-amber-50 min-h-screen flex flex-col overflow-x-hidden"
+  >
+    <div class="absolute inset-0 -z-1337 pointer-events-none select-none">
       <Image
         src={cover}
         alt="Background Cover"
-        class="w-full h-full object-cover blur-lg fixed"
+        class="w-full h-full object-cover blur-sm fixed"
       />
     </div>
-    <div
-      class="fixed inset-0 -z-10 bg-black/30 backdrop-blur-md pointer-events-none"
+
+    <header class="bg-slate-900 w-full shrink-0"></header>
+
+    <main
+      class:list={[
+        "flex flex-col items-center justify-center w-full min-h-dvh shrink-0",
+        className,
+      ]}
+      {...rest}
     >
-    </div>
-
-    <header class="bg-gray-800">
-      <p class="text-pink-500"></p>
-    </header>
-
-    <main class="flex justify-center w-screen">
       <slot />
     </main>
 
