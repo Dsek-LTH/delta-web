@@ -21,7 +21,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   adapter: bun(),
-  output: "static",
+  output: "server",
   server: {
     host: "0.0.0.0",
     port: 8080,
