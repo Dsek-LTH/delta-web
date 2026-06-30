@@ -1,8 +1,3 @@
-<span class="text-pink-500">Delta</span> är en karriärmässa för studenter som pluggar datateknik som annordnas av <a href="https://dsek.se" class="text-pink-500">D-sektionen på TLTH</a>.
-
-Vi kopplar samman studenter med företag och erbjuder möjligheter för nätverk, praktikplatser och jobbplaceringar. Gå med oss för att utforska spännande karriärmöjligheter och möta topparbetsgivare från olika branscher. När mässan avslutas för dagen kommer det att finnas ett mysigt nätverksevent där studenter och företagsrepresentanter kan mötas i en avslappnad miljö. Mässan kommer att vara en utmärkt möjlighet för företag och studenter att mötas.
-
-<br/>
-<br/>
+<span class="text-pink-500">Delta</span> är en karriärmässa för studenter som pluggar datateknik som annordnas av [D-sektionen på TLTH](https://dsek.se). Vi kopplar samman studenter med företag och erbjuder möjligheter för nätverk, praktikplatser och jobbplaceringar. Gå med oss för att utforska spännande karriärmöjligheter och möta topparbetsgivare från olika branscher. När mässan avslutas för dagen kommer det att finnas ett mysigt nätverksevent där studenter och företagsrepresentanter kan mötas i en avslappnad miljö. Mässan kommer att vara en utmärkt möjlighet för företag och studenter att mötas.
 
 Vi arbetar för närvarande med att omarbeta våra erbjudanden gällande mässan och dess relaterade evenemang, och mer information kommer så snart det är klart.

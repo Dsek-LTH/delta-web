@@ -80,7 +80,7 @@ const whatRendered = what?.rendered ?? null;
         class="order-3 xl:order-3 flex-1 w-full aspect-none h-fit xl:h-4/5"
         title={t("tile.what")}
       >
-        <div class="h-fit w-full prose prose-invert max-w-none">
+        <div class="h-fit w-full prose prose-pink max-w-none prose-invert">
           {whatRendered && <div set:html={whatRendered.html} />}
         </div>
       </Tile>
