@@ -1,0 +1,45 @@
+---
+const {
+  class: className,
+  title,
+  groupMail,
+  contacts,
+  ...rest
+}: {
+  class: string;
+  title: string;
+  groupMail: string;
+  contacts: { name: string; email: string; linkedin: string }[];
+} = Astro.props;
+---
+
+<div
+  class:list={["flex flex-col justify-start h-full text-center", className]}
+  {...rest}
+>
+  <div class="mb-4">
+    <h2 class="text-lg font-bold">{title}</h2>
+    <a
+      href={`mailto:${groupMail}`}
+      class="text-sm text-italic text-white/70 hover:text-c/80">{groupMail}</a
+    >
+  </div>
+  <div class="flex flex-col justify-evenly h-full gap-2">
+    {
+      contacts.map((contact) => (
+        <p class="text-sm">
+          <a class=" hover:text-c/80" href={contact.linkedin}>
+            {contact.name}
+          </a>
+          <br />
+          <a
+            class="text-italic text-white/70 hover:text-c/80"
+            href={`mailto:${contact.email}`}
+          >
+            {contact.email}
+          </a>
+        </p>
+      ))
+    }
+  </div>
+</div>
