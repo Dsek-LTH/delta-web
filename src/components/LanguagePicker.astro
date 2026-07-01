@@ -1,19 +1,64 @@
 ---
 import { languages } from "../i18n/ui";
 import { getLangFromUrl } from "../i18n/utils";
+import { Image } from "astro:assets";
+import { Languages, ChevronDown } from "@lucide/astro";
+import swedishFlag from "@/assets/sweden.svg";
+import ukFlag from "@/assets/uk.svg";
 
 const { class: className, ...rest } = Astro.props;
+const currentLanguage = getLangFromUrl(Astro.url);
 
-const lang = getLangFromUrl(Astro.url);
-const otherLangs = Object.keys(languages).filter((l) => l !== lang);
+const entries = [
+  {
+    slug: "sv",
+    lang: "Svenska",
+    flag: swedishFlag,
+    alt: "Page in Swedish",
+  },
+  {
+    slug: "en",
+    lang: "English",
+    flag: ukFlag,
+    alt: "Page in English",
+  },
+].filter(({ slug }) => slug !== currentLanguage);
 ---
 
-<div class:list={[className]} {...rest}>
-  {
-    otherLangs.map((l) => (
-      <a class="text-c hover:text-c/80" href={`/${l}/`}>
-        {languages[l as keyof typeof languages]}
-      </a>
-    ))
-  }
+<div class="relative origin-top-right group text-pink-500">
+  <button
+    type="button"
+    class="frosted-glass flex gap-2 rounded-2xl px-4 py-2"
+    aria-haspopup="true"
+  >
+    <Languages />
+    <ChevronDown
+      class="transition-transform duration-200 group-hover:rotate-180"
+    />
+  </button>
+
+  <div
+    class="frosted-glass p-2 rounded-2xl absolute right-0 mt-1 w-max whitespace-nowrap
+           invisible opacity-0 translate-y-1 transition-all duration-200 ease-out
+           group-hover:visible group-hover:opacity-100 group-hover:translate-y-0"
+    role="menu"
+  >
+    {
+      entries.map(({ slug, lang, flag, alt }) => (
+        <a
+          href={`/${slug}`}
+          role="menuitem"
+          class="flex items-center gap-2 px-2 py-1 rounded-xl hover:bg-white/10 transition-colors"
+        >
+          {" "}
+          <Image
+            src={flag}
+            alt={alt}
+            class="size-6 aspect-square object-cover object-center rounded-xl"
+          />
+          <span>{lang}</span>
+        </a>
+      ))
+    }
+  </div>
 </div>
