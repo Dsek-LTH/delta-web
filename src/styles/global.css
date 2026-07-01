@@ -26,6 +26,12 @@
   }
 }
 
+@layer components {
+  .frosted-glass {
+    @apply bg-slate-900/60 backdrop-blur-xl inset-shadow-sm/20 inset-shadow-slate-300 shadow-2xl shadow-black/50;
+  }
+}
+
 *,
 *::before,
 *::after {
