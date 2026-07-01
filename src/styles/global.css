@@ -39,3 +39,22 @@
     url("/cursor.png") 0 0,
     auto !important;
 }
+
+/* Fixes a nicer scrollbar on webkit (chrome, safari, etc) instead of being ugly on chrome and nice in firefox */
+::-webkit-scrollbar {
+  width: 6px;
+  scrollbar-color: theme("colors.slate.700") transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: theme("colors.slate.700");
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: theme("colors.slate.600");
+}
