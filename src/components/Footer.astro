@@ -1,31 +1,76 @@
 ---
 import LanguagePicker from "@/components/LanguagePicker.astro";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import ContactList from "./ContactList.astro";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const itManagers: { name: string; email: string; linkedin: string }[] = [
+  {
+    name: "Hannes Bolmehag",
+    email: "hannes@delta.dsek.se",
+    linkedin: "https://www.linkedin.com/in/hannesbolmehag/",
+  },
+  {
+    name: "Christofer Gartner",
+    email: "christofer@delta.dsek.se",
+    linkedin: "https://www.linkedin.com/in/christofer-gartner/",
+  },
+  {
+    name: "Rufus Kogg Röjder",
+    email: "rufus@delta.dsek.se",
+    linkedin: "https://www.linkedin.com/in/rufus-kogg-rojder/",
+  },
+];
+
+const generals: { name: string; email: string; linkedin: string }[] = [
+  {
+    name: "Tim Johansson",
+    email: "tim@delta.dsek.se",
+    linkedin: "https://www.youtube.com/watch?v=XfELJU1mRMg",
+  },
+  {
+    name: "Melker Widén",
+    email: "melker@delta.dsek.se",
+    linkedin: "https://www.linkedin.com/in/memagu/",
+  },
+];
 ---
 
-<footer class="bg-gray-900 p-4">
-  <h2>{t("footer.contact")}</h2>
-  <ul>
-    <li>
-      Email: <a class="text-c hover:text-c/80" href="mailto:delta@dsek.se"
+<footer
+  class="bg-gray-900 p-4 leading-relaxed flex flex-col items-center gap-4"
+>
+  <div class="text-center">
+    <h1 class="text-xl font-semibold">
+      {t("footer.contact")}
+      : <a class="text-c hover:text-c/80" href="mailto:delta@dsek.se"
         >delta@dsek.se</a
       >
-    </li>
+    </h1>
+  </div>
+  <div class="flex justify-center gap-10">
+    <div class="grid grid-cols-2 gap-5 border-t border-b border-gray-700 py-3">
+      <ContactList
+        title={t("footer.generals")}
+        groupMail="general@delta.dsek.se"
+        contacts={generals}
+      />
+      <ContactList
+        title={t("footer.it-managers")}
+        groupMail="it@delta.dsek.se"
+        contacts={itManagers}
+      />
+    </div>
+  </div>
+  <div class="flex flex-col justify-end">
     <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
-  </ul>
-  <!-- addr -->
-  <br />
-  {t("footer.language.select")}<LanguagePicker class="inline" />
-  <br />
-  <br />
-  <ul>
-    <li>
-      <p class="text-white">&copy; 2026 DELTA. All rights reserved.</p>
-    </li>
-  </ul>
+
+    <!-- addr -->
+
+    <p class="text-white">&copy; 2026 DELTA. All rights reserved.</p>
+  </div>
+
   <h2 class="text-xl text-center font-semibold text-red-500">
     {t("footer.development")}
     <a
