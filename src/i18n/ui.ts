@@ -16,6 +16,8 @@ export const ui = {
     "footer.development":
       "NOTICE: This page is still in development, the source code is available on ",
     "footer.language.select": "Switch language: ",
+    "footer.it-managers": "IT Managers",
+    "footer.generals": "Delta Generals",
   },
   sv: {
     "card.when": "När",
@@ -27,5 +29,7 @@ export const ui = {
     "footer.development":
       "OBS: Denna sida är fortfarande under utveckling, källkoden finns tillgänglig på ",
     "footer.language.select": "Byt språk: ",
+    "footer.it-managers": "IT-ansvariga",
+    "footer.generals": "Deltageneraler",
   },
 } as const;
