@@ -4,11 +4,7 @@ const { class: className, ...rest } = Astro.props;
 
 <div
   class:list={[
-    "rounded-2xl bg-slate-900/60 backdrop-blur-xl",
-    "inset-shadow-sm/20 inset-shadow-slate-300",
-    "shadow-2xl shadow-black/50",
-    "flex flex-col min-h-0 min-w-0 w-full h-full",
-    "hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out",
+    "frosted-glass flex flex-col min-h-0 min-w-0 w-full h-full rounded-2xl hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out",
     className,
   ]}
   {...rest}
