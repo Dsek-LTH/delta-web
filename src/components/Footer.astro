@@ -1,41 +1,44 @@
 ---
-import LanguagePicker from "@/components/LanguagePicker.astro";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import ContactList from "./ContactList.astro";
+
+import { deltaForceTable } from "@/db/schema";
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { eq } from "drizzle-orm";
+import { createSelectSchema } from "drizzle-orm/zod";
+import { db } from "@/db/connect";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const itManagers: { name: string; email: string; linkedin: string }[] = [
-  {
-    name: "Hannes Bolmehag",
-    email: "hannes@delta.dsek.se",
-    linkedin: "https://www.linkedin.com/in/hannesbolmehag/",
-  },
-  {
-    name: "Christofer Gartner",
-    email: "christofer@delta.dsek.se",
-    linkedin: "https://www.linkedin.com/in/christofer-gartner/",
-  },
-  {
-    name: "Rufus Kogg Röjder",
-    email: "rufus@delta.dsek.se",
-    linkedin: "https://www.linkedin.com/in/rufus-kogg-rojder/",
-  },
-];
+const contacts = sqliteTable("contacts", {
+  firstName: text().notNull(),
+  lastName: text().notNull(),
+  email: text().notNull(),
+  linkedin: text().notNull(),
+});
 
-const generals: { name: string; email: string; linkedin: string }[] = [
-  {
-    name: "Tim Johansson",
-    email: "tim@delta.dsek.se",
-    linkedin: "https://www.youtube.com/watch?v=XfELJU1mRMg",
-  },
-  {
-    name: "Melker Widén",
-    email: "melker@delta.dsek.se",
-    linkedin: "https://www.linkedin.com/in/memagu/",
-  },
-];
+const contactSelectSchema = createSelectSchema(contacts);
+
+const itManagers = await db
+  .select()
+  .from(deltaForceTable)
+  .where(eq(deltaForceTable.role, "it"))
+  .all();
+
+const itManagersValidated = itManagers.map((manager) =>
+  contactSelectSchema.parse(manager),
+);
+
+const generals = await db
+  .select()
+  .from(deltaForceTable)
+  .where(eq(deltaForceTable.role, "general"))
+  .all();
+
+const generalsValidated = generals.map((general) =>
+  contactSelectSchema.parse(general),
+);
 ---
 
 <footer
@@ -54,12 +57,12 @@ const generals: { name: string; email: string; linkedin: string }[] = [
       <ContactList
         title={t("footer.generals")}
         groupMail="general@delta.dsek.se"
-        contacts={generals}
+        contacts={generalsValidated}
       />
       <ContactList
         title={t("footer.it-managers")}
         groupMail="it@delta.dsek.se"
-        contacts={itManagers}
+        contacts={itManagersValidated}
       />
     </div>
   </div>
