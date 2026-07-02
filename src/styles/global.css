@@ -5,8 +5,13 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-d: #f280a1;
-  --color-c: #9966cc;
+  /* Daisy UI theme */
+  /* Råsa, oklch(73.56% 0.143 2.79) */
+  --color-primary: #f280a1;
+  --color-secondary: var(--color-white);
+  --color-accent: #9966cc;
+  --color-base: var(--color-slate-900);
+  --color-base-content: var(--color-amber-50);
 
   --font-noto-sans: "Noto Sans", sans-serif;
   --font-noto-sans-mono: "Noto Sans Mono", sans-serif;
