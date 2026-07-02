@@ -1,19 +1,74 @@
 ---
-import { languages } from "../i18n/ui";
-import { getLangFromUrl } from "../i18n/utils";
-
+import { getLangFromUrl } from "@/i18n/utils";
+import { Image } from "astro:assets";
+import { Languages, ChevronDown } from "@lucide/astro";
+import swedishFlag from "@/assets/sweden.svg";
+import ukFlag from "@/assets/uk.svg";
 const { class: className, ...rest } = Astro.props;
-
-const lang = getLangFromUrl(Astro.url);
-const otherLangs = Object.keys(languages).filter((l) => l !== lang);
+const currentLanguage = getLangFromUrl(Astro.url);
+const entries = [
+  { slug: "sv", lang: "Svenska", flag: swedishFlag, desc: "Byt till svenska" },
+  { slug: "en", lang: "English", flag: ukFlag, desc: "Switch to English" },
+].filter(({ slug }) => slug !== currentLanguage);
+const activeLang = { sv: "Svenska", en: "English" }[currentLanguage];
+// Unique per render so multiple instances of this component on one page
+// don't collide on the same id -- computed server-side, not client JS.
+const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
-<div class:list={[className]} {...rest}>
-  {
-    otherLangs.map((l) => (
-      <a class="text-c hover:text-c/80" href={`/${l}/`}>
-        {languages[l as keyof typeof languages]}
-      </a>
-    ))
-  }
+<div
+  class:list={[
+    "group flex flex-col rounded-2xl frosted-glass p-2 select-none",
+    className,
+  ]}
+  {...rest}
+>
+  <input
+    type="checkbox"
+    id={toggleId}
+    class="sr-only"
+    aria-label="Show language options"
+  />
+
+  <label
+    for={toggleId}
+    class="flex items-center gap-2 p-2 cursor-pointer [@media(hover:hover)_and_(pointer:fine)]:pointer-events-none"
+  >
+    <Languages class="shrink-0 size-5" />
+
+    <div
+      class="grid grid-cols-[0fr] group-hover:grid-cols-[1fr] group-has-checked:grid-cols-[1fr] opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
+    >
+      <span class="overflow-hidden whitespace-nowrap font-medium bg-green">
+        {activeLang}
+      </span>
+    </div>
+
+    <ChevronDown
+      class="transition-transform duration-300 group-hover:rotate-180 group-has-checked:rotate-180 size-4"
+    />
+  </label>
+
+  <div
+    class="grid grid-rows-[0fr] grid-cols-[0fr] group-hover:grid-rows-[1fr] group-hover:grid-cols-[1fr] group-has-checked:grid-rows-[1fr] group-has-checked:grid-cols-[1fr] transition-[grid-template-rows,grid-template-columns] duration-300 ease-out"
+  >
+    <div class="overflow-hidden flex flex-col gap-1 pt-1">
+      {
+        entries.map(({ slug, lang, flag, desc: alt }) => (
+          <a
+            href={`/${slug}`}
+            role="menuitem"
+            class="flex items-center gap-3 px-3 py-2 hover:bg-slate-50/10 rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
+          >
+            <Image
+              src={flag}
+              alt={alt}
+              class="size-6 object-cover object-center rounded-full shrink-0"
+            />
+            <span class="whitespace-nowrap font-medium">{lang}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
 </div>
