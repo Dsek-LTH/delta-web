@@ -1,5 +1,6 @@
 ---
 import Footer from "@/components/Footer.astro";
+import LanguagePicker from "@/components/LanguagePicker.astro";
 import "@/styles/global.css";
 import cover from "@/assets/tekfok26_0003.webp";
 import { Image } from "astro:assets";
@@ -32,7 +33,10 @@ const lang = getLangFromUrl(Astro.url);
       />
     </div>
 
-    <header class="bg-slate-900 w-full shrink-0"></header>
+    <header class="fixed flex justify-end w-full z-1337 p-2">
+      <!-- ☀️🌙 -->
+      <LanguagePicker />
+    </header>
 
     <main
       class:list={[
