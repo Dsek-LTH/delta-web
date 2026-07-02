@@ -4,10 +4,65 @@ const { class: className, ...rest } = Astro.props;
 
 <div
   class:list={[
-    "frosted-glass flex flex-col min-h-0 min-w-0 w-full h-full rounded-2xl hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out",
+    "tilt-card relative overflow-hidden frosted-glass flex flex-col min-h-0 min-w-0 w-full h-full rounded-2xl transition-[transform] duration-300 ease-out transform-3d",
     className,
   ]}
   {...rest}
 >
+  <div
+    class="shimmer-layer -z-10 pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-out bg-[radial-gradient(circle_at_var(--x,50%)_var(--y,50%),rgba(255,255,255,0.1),transparent_60%)]"
+  >
+  </div>
+
   <slot />
 </div>
+
+<script>
+  const cards = document.querySelectorAll(".tilt-card");
+
+  cards.forEach((card) => {
+    const htmlCard = card as HTMLElement;
+    const shimmer = htmlCard.querySelector(".shimmer-layer") as HTMLElement;
+
+    // Tracking variables
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    // Smoothing factor (0.01 to 0.1). Lower = more lag.
+    const lerpFactor = 0.03;
+
+    const animate = () => {
+      // Linear interpolation formula
+      currentX += (mouseX - currentX) * lerpFactor;
+      currentY += (mouseY - currentY) * lerpFactor;
+
+      shimmer.style.setProperty("--x", `${currentX}px`);
+      shimmer.style.setProperty("--y", `${currentY}px`);
+      requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
+
+    htmlCard.addEventListener("mousemove", (e) => {
+      const { left, top } = htmlCard.getBoundingClientRect();
+      const x = (e.clientX - left) / htmlCard.offsetWidth - 0.5;
+      const y = (e.clientY - top) / htmlCard.offsetHeight - 0.5;
+
+      // Card Tilt
+      htmlCard.style.transform = `perspective(1000px) rotateX(${y * -10}deg) rotateY(${x * 10}deg) scale(1.01)`;
+
+      // Update targets for lerp
+      mouseX = e.clientX - left;
+      mouseY = e.clientY - top;
+      shimmer.style.opacity = "1";
+    });
+
+    htmlCard.addEventListener("mouseleave", () => {
+      htmlCard.style.transform =
+        "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
+      shimmer.style.opacity = "0";
+    });
+  });
+</script>
