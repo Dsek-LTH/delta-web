@@ -7,7 +7,7 @@ pre-commit:
   parallel: true
   commands:
     format-fix:
-      glob: "src/**/*.{ts,tsx,css,scss,md,json,astro,html,js,jsx}"
+      glob: "src/**/*.{ts,tsx,css,scss,md,json,astro,html,js,jsx,md}"
       stage_fixed: true
       run: bun format:fix
 
@@ -15,7 +15,7 @@ pre-push:
   parallel: true
   commands:
     format-check:
-      glob: "src/**/*.{ts,tsx,css,scss,md,json,astro,html,js,jsx}"
+      glob: "src/**/*.{ts,tsx,css,scss,md,json,astro,html,js,jsx,md}"
       run: bun format:check
 
     lint:
