@@ -28,11 +28,23 @@
   --color-card-content: var(--color-backdrop-content);
   --color-card-content-muted: var(--color-backdrop-content-muted);
   --color-card-content-highlight: var(--color-backdrop-content-highlight);
-  --color-card-highlight: color-mix(in srgb, var(--color-amber-100) 40%, transparent);
-  --color-card-shimmer: color-mix(in srgb, var(--color-amber-100) 20%, transparent);
+  --color-card-highlight: color-mix(
+    in srgb,
+    var(--color-amber-100) 40%,
+    transparent
+  );
+  --color-card-shimmer: color-mix(
+    in srgb,
+    var(--color-amber-100) 20%,
+    transparent
+  );
 
   /* Structural */
-  --color-border: color-mix(in srgb, var(--color-backdrop-content) 40%, transparent);
+  --color-border: color-mix(
+    in srgb,
+    var(--color-backdrop-content) 40%,
+    transparent
+  );
 
   /* Feedback */
   /* TODO: Implement feedback colors when needed */
@@ -66,10 +78,22 @@ html[data-theme="dark"] {
 
   --color-card: color-mix(in srgb, var(--color-slate-900) 60%, transparent);
   --color-card-content-muted: var(--color-slate-500);
-  --color-card-highlight: color-mix(in srgb, var(--color-slate-300) 20%, transparent);
-  --color-card-shimmer: color-mix(in srgb, var(--color-slate-300) 10%, transparent);
+  --color-card-highlight: color-mix(
+    in srgb,
+    var(--color-slate-300) 20%,
+    transparent
+  );
+  --color-card-shimmer: color-mix(
+    in srgb,
+    var(--color-slate-300) 10%,
+    transparent
+  );
 
-  --color-border: color-mix(in srgb, var(--color-backdrop-content) 10%, transparent);
+  --color-border: color-mix(
+    in srgb,
+    var(--color-backdrop-content) 10%,
+    transparent
+  );
 }
 
 .prose {
