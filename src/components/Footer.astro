@@ -42,18 +42,19 @@ const generalsValidated = generals.map((general) =>
 ---
 
 <footer
-  class="bg-gray-900 p-4 leading-relaxed flex flex-col items-center gap-4"
+  class="bg-backdrop p-4 leading-relaxed flex flex-col items-center gap-4"
 >
   <div class="text-center">
     <h1 class="text-xl font-semibold">
       {t("footer.contact")}
-      : <a class="text-c hover:text-c/80" href="mailto:delta@dsek.se"
-        >delta@dsek.se</a
+      : <a
+        class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
+        href="mailto:delta@dsek.se">delta@dsek.se</a
       >
     </h1>
   </div>
   <div class="flex justify-center gap-10">
-    <div class="grid grid-cols-2 gap-5 border-t border-b border-gray-700 py-3">
+    <div class="grid grid-cols-2 gap-5 border-y border-border py-3">
       <ContactList
         title={t("footer.generals")}
         groupMail="general@delta.dsek.se"
@@ -71,13 +72,13 @@ const generalsValidated = generals.map((general) =>
 
     <!-- addr -->
 
-    <p class="text-white">&copy; 2026 DELTA. All rights reserved.</p>
+    <p>&copy; 2026 DELTA. All rights reserved.</p>
   </div>
 
-  <h2 class="text-xl text-center font-semibold text-red-500">
+  <h2 class="text-xl text-center font-semibold text-destructive">
     {t("footer.development")}
     <a
-      class="text-red-600 hover:text-red-600/80"
+      class="text-destructive/80 hover:text-destructive/60"
       href="https://github.com/Dsek-LTH/delta-web"
     >
       GitHub

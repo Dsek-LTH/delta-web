@@ -3,19 +3,20 @@ const { class: className, ...rest } = Astro.props;
 ---
 
 <div
-  class:list={["font-bold text-white font-noto-sans-mono", className]}
+  class:list={["font-bold text-brand-secondary font-noto-sans-mono", className]}
   {...rest}
 >
-  <span id="countdown-days">&Delta;&Delta;&Delta;</span><span class="text-d"
-    >d&nbsp;</span
+  <span id="countdown-days">&Delta;&Delta;&Delta;</span><span
+    class="text-brand-primary">d&nbsp;</span
   >
-  <span id="countdown-hours">&Delta;&Delta;</span><span class="text-d"
-    >h&nbsp;</span
+  <span id="countdown-hours">&Delta;&Delta;</span><span
+    class="text-brand-primary">h&nbsp;</span
   >
-  <span id="countdown-minutes">&Delta;&Delta;</span><span class="text-d"
-    >m&nbsp;</span
+  <span id="countdown-minutes">&Delta;&Delta;</span><span
+    class="text-brand-primary">m&nbsp;</span
   >
-  <span id="countdown-seconds">&Delta;&Delta;</span><span class="text-d">s</span
+  <span id="countdown-seconds">&Delta;&Delta;</span><span
+    class="text-brand-primary">s</span
   >
 </div>
 
