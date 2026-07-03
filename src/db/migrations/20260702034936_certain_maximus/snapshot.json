@@ -1,0 +1,97 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "id": "467a919e-8d62-488a-85d2-3dac89cba29f",
+  "prevIds": ["00000000-0000-0000-0000-000000000000"],
+  "ddl": [
+    {
+      "name": "delta_force_table",
+      "entityType": "tables"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "delta_force_table"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "studentId",
+      "entityType": "columns",
+      "table": "delta_force_table"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "firstName",
+      "entityType": "columns",
+      "table": "delta_force_table"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "lastName",
+      "entityType": "columns",
+      "table": "delta_force_table"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "role",
+      "entityType": "columns",
+      "table": "delta_force_table"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "email",
+      "entityType": "columns",
+      "table": "delta_force_table"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "linkedin",
+      "entityType": "columns",
+      "table": "delta_force_table"
+    },
+    {
+      "columns": ["id"],
+      "nameExplicit": false,
+      "name": "delta_force_table_pk",
+      "table": "delta_force_table",
+      "entityType": "pks"
+    },
+    {
+      "columns": ["email"],
+      "nameExplicit": false,
+      "name": "delta_force_table_email_unique",
+      "entityType": "uniques",
+      "table": "delta_force_table"
+    }
+  ],
+  "renames": []
+}
