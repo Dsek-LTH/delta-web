@@ -27,6 +27,7 @@
     "@wyattjoh/astro-bun-adapter": "^2.1.0",
     "astro": "^7.0.0",
     "astro-icon": "^1.1.5",
+    "better-auth": "^1.6.23",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^1.0.0-rc.4",
     "prettier": "^3.8.4",
