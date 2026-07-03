@@ -13,9 +13,11 @@
     "format:fix": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint src/**/*{.ts,.js,.astro} --no-error-on-unmatched-pattern",
-    "migrate": "bunx drizzle-kit migrate",
+    "generate": "bunx drizzle-kit generate",
+    "migrate": "mkdir -p data && bunx drizzle-kit migrate",
     "seed": "bun run src/index.ts",
-    "seed:reset": "bun run src/seed-reset.ts"
+    "seed:reset": "bun run src/seed-reset.ts",
+    "preinstall": "cp --update=none .env.example .env 2>/dev/null || true"
   },
   "dependencies": {
     "@libsql/client": "^0.17.4",

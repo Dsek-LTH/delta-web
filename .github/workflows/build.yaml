@@ -38,7 +38,6 @@ jobs:
 
       - name: Smoke test compose stack
         run: |
-          mv env.example .env
           set -e
           podman-compose -f docker-compose.yaml up -d
           trap 'podman-compose -f docker-compose.yaml down -v' EXIT
