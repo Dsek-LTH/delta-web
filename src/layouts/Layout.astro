@@ -1,15 +1,18 @@
 ---
+import { Image } from "astro:assets";
+
 import Footer from "@/components/Footer.astro";
 import LanguagePicker from "@/components/LanguagePicker.astro";
 import ThemePicker from "@/components/ThemePicker.astro";
 import "@/styles/global.css";
-import cover from "@/assets/tekfok26_0003.webp";
-import { Image } from "astro:assets";
-
-const { class: className, ...rest } = Astro.props;
-
 import { getLangFromUrl } from "@/i18n/utils";
 
+interface Props {
+  backgroundImage?: ImageMetadata;
+  class?: String;
+}
+
+const { backgroundImage, class: className, ...rest } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 ---
 
@@ -38,15 +41,17 @@ const lang = getLangFromUrl(Astro.url);
   <body
     class="relative isolate flex flex-col bg-backdrop text-backdrop-content font-inter min-h-screen overflow-x-hidden"
   >
-    <div
-      class="absolute inset-0 -z-1337 pointer-events-none select-none overflow-hidden"
-    >
-      <Image
-        src={cover}
-        alt="Background Cover"
-        class="w-full h-full object-cover blur-sm fixed scale-105"
-      />
-    </div>
+    {
+      backgroundImage && (
+        <div class="absolute inset-0 -z-1337 pointer-events-none select-none overflow-hidden">
+          <Image
+            src={backgroundImage}
+            alt="Background Cover"
+            class="w-full h-full object-cover blur-sm fixed scale-105"
+          />
+        </div>
+      )
+    }
 
     <header
       class="lg:fixed sticky top-0 flex items-start justify-end gap-4 w-full z-1337 p-2"

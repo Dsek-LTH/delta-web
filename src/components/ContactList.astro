@@ -5,12 +5,17 @@ const {
   groupMail,
   contacts,
   ...rest
-}: {
+} = Astro.props as {
   class: string;
   title: string;
   groupMail: string;
-  contacts: { name: string; email: string; linkedin: string }[];
-} = Astro.props;
+  contacts: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    linkedin: string;
+  }[];
+};
 ---
 
 <div
@@ -33,7 +38,7 @@ const {
             class="hover:text-backdrop-content-highlight"
             href={contact.linkedin}
           >
-            {contact.name}
+            {contact.firstName} {contact.lastName}
           </a>
           <br />
           <a
