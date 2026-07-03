@@ -10,7 +10,7 @@ const { class: className, ...rest } = Astro.props;
   {...rest}
 >
   <div
-    class="shimmer-layer -z-10 pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-out bg-[radial-gradient(circle_at_var(--x,50%)_var(--y,50%),rgba(255,255,255,0.1),transparent_60%)]"
+    class="shimmer-layer -z-10 pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-out bg-[radial-gradient(circle_at_var(--x,50%)_var(--y,50%),var(--color-card-shimmer),transparent_60%)]"
   >
   </div>
 
