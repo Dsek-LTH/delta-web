@@ -4,14 +4,41 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @theme {
-  /* Daisy UI theme */
-  /* Råsa, oklch(73.56% 0.143 2.79) */
-  --color-primary: #f280a1;
-  --color-secondary: var(--color-white);
-  --color-accent: #9966cc;
-  --color-base: var(--color-slate-900);
-  --color-base-content: var(--color-amber-50);
+  /* Brand identity */
+  --brand-pink: #f280a1;
+  --brand-white: var(--color-white);
+  --brand-blue: #002147;
+
+  --brand-purple: #9966cc;
+
+  /* Semantic tokens */
+  --color-brand-primary: var(--brand-pink);
+  --color-brand-secondary: var(--color-white);
+  --color-brand-accent: var(--brand-blue);
+
+  --color-backdrop: var(--color-amber-100);
+  --color-backdrop-content: var(--color-slate-950);
+  --color-backdrop-content-muted: var(--color-slate-700);
+  --color-backdrop-content-highlight: var(--color-indigo-800);
+
+  --color-card: color-mix(in srgb, var(--color-backdrop) 40%, transparent);
+  --color-card-content: var(--color-backdrop-content);
+  --color-card-content-muted: var(--color-backdrop-content-muted);
+  --color-card-content-highlight: var(--color-backdrop-content-highlight);
+  --color-card-highlight: color-mix(in srgb, var(--color-amber-100) 40%, transparent);
+  --color-card-shimmer: color-mix(in srgb, var(--color-amber-100) 20%, transparent);
+
+  /* Structural */
+  --color-border: color-mix(in srgb, var(--color-backdrop-content) 40%, transparent);
+
+  /* Feedback */
+  /* TODO: Implement feedback colors when needed */
+
+  /* Misc */
+  --color-destructive: var(--color-red-500);
 
   --font-noto-sans: "Noto Sans", sans-serif;
   --font-noto-sans-mono: "Noto Sans Mono", sans-serif;
@@ -31,9 +58,42 @@
   }
 }
 
+html[data-theme="dark"] {
+  --color-backdrop: var(--color-slate-900);
+  --color-backdrop-content: var(--color-amber-50);
+  --color-backdrop-content-muted: var(--color-slate-400);
+  --color-backdrop-content-highlight: var(--brand-purple);
+
+  --color-card: color-mix(in srgb, var(--color-slate-900) 60%, transparent);
+  --color-card-content-muted: var(--color-slate-500);
+  --color-card-highlight: color-mix(in srgb, var(--color-slate-300) 20%, transparent);
+  --color-card-shimmer: color-mix(in srgb, var(--color-slate-300) 10%, transparent);
+
+  --color-border: color-mix(in srgb, var(--color-backdrop-content) 10%, transparent);
+}
+
+.prose {
+  --tw-prose-body: var(--color-backdrop-content);
+  --tw-prose-headings: var(--color-backdrop-content);
+  --tw-prose-lead: var(--color-backdrop-content);
+  --tw-prose-links: var(--color-backdrop-content-highlight);
+  --tw-prose-bold: var(--color-backdrop-content);
+  --tw-prose-counters: var(--color-backdrop-content-muted);
+  --tw-prose-bullets: var(--color-brand-primary);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-quotes: var(--color-backdrop-content);
+  --tw-prose-quote-borders: var(--color-brand-primary);
+  --tw-prose-captions: var(--color-brand-primary);
+  --tw-prose-code: var(--color-brand-primary);
+  --tw-prose-pre-code: var(--color-backdrop-content);
+  --tw-prose-pre-bg: rgb(15 23 42 / 5%);
+  --tw-prose-th-borders: var(--color-border);
+  --tw-prose-td-borders: var(--color-border);
+}
+
 @layer components {
   .frosted-glass {
-    @apply bg-slate-900/60 backdrop-blur-xl inset-shadow-sm/20 inset-shadow-slate-300 shadow-2xl shadow-black/50;
+    @apply bg-card text-card-content backdrop-blur-xl inset-shadow-sm inset-shadow-card-highlight shadow-2xl shadow-black/50;
   }
 }
 
@@ -45,10 +105,10 @@
     auto !important;
 }
 
-/* Fixes a nicer scrollbar on webkit (chrome, safari, etc) instead of being ugly on chrome and nice in firefox */
+/* Nicer scrollbar on webkit (chrome, safari, etc) to match Firefox's default */
 ::-webkit-scrollbar {
   width: 6px;
-  scrollbar-color: theme("colors.slate.700") transparent;
+  scrollbar-color: var(--color-card-highlight) transparent;
 }
 
 ::-webkit-scrollbar-track {
@@ -56,10 +116,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: theme("colors.slate.700");
+  background-color: var(--color-card-highlight);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: theme("colors.slate.600");
+  background-color: var(--color-backdrop);
 }

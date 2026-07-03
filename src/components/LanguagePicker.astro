@@ -39,7 +39,7 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
     <div
       class="grid grid-cols-[0fr] group-hover:grid-cols-[1fr] group-has-checked:grid-cols-[1fr] opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
     >
-      <span class="overflow-hidden whitespace-nowrap font-medium bg-green">
+      <span class="overflow-hidden whitespace-nowrap font-medium">
         {activeLang}
       </span>
     </div>
@@ -58,7 +58,7 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
           <a
             href={`/${slug}`}
             role="menuitem"
-            class="flex items-center gap-3 px-3 py-2 hover:bg-slate-50/10 rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
+            class="flex items-center gap-3 px-3 py-2 hover:bg-card-highlight rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
           >
             <Image
               src={flag}
