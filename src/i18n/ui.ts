@@ -18,6 +18,10 @@ export const ui = {
     "footer.language.select": "Switch language: ",
     "footer.it-managers": "IT Managers",
     "footer.generals": "Delta Generals",
+    "theme.aria": "Show theme options",
+    "theme.system": "System",
+    "theme.light": "Light",
+    "theme.dark": "Dark",
   },
   sv: {
     "card.when": "När",
@@ -31,5 +35,9 @@ export const ui = {
     "footer.language.select": "Byt språk: ",
     "footer.it-managers": "IT-ansvariga",
     "footer.generals": "Deltageneraler",
+    "theme.aria": "Visa temaalternativ",
+    "theme.system": "System",
+    "theme.light": "Ljus",
+    "theme.dark": "Mörk",
   },
 } as const;

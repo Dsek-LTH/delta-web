@@ -1,0 +1,136 @@
+---
+// NOTE: Fully vibed
+
+import { ChevronDown, SunMoon, Sun, Moon, Palette } from "@lucide/astro";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const { class: className, ...rest } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const entries = [
+  { slug: "system", label: t("theme.system"), Icon: SunMoon },
+  { slug: "light", label: t("theme.light"), Icon: Sun },
+  { slug: "dark", label: t("theme.dark"), Icon: Moon },
+];
+// Unique per render so multiple instances of this component on one page
+// don't collide on the same id -- computed server-side, not client JS.
+const toggleId = `theme-switcher-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div
+  class:list={[
+    "group theme-picker flex flex-col rounded-2xl frosted-glass p-2 select-none self-start",
+    className,
+  ]}
+  {...rest}
+>
+  <input
+    type="checkbox"
+    id={toggleId}
+    class="sr-only"
+    aria-label={t("theme.aria")}
+  />
+
+  <label
+    for={toggleId}
+    class="flex items-center gap-2 p-2 cursor-pointer [@media(hover:hover)_and_(pointer:fine)]:pointer-events-none"
+  >
+    <Palette class="shrink-0 size-5" />
+
+    <div
+      class="grid grid-cols-[0fr] group-hover:grid-cols-[1fr] group-has-checked:grid-cols-[1fr] opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
+    >
+      <span
+        data-theme-label
+        class="overflow-hidden whitespace-nowrap font-medium"
+      >
+        {entries[0].label}
+      </span>
+    </div>
+
+    <ChevronDown
+      class="transition-transform duration-300 group-hover:rotate-180 group-has-checked:rotate-180 size-4"
+    />
+  </label>
+
+  <div
+    class="grid grid-rows-[0fr] grid-cols-[0fr] group-hover:grid-rows-[1fr] group-hover:grid-cols-[1fr] group-has-checked:grid-rows-[1fr] group-has-checked:grid-cols-[1fr] transition-[grid-template-rows,grid-template-columns] duration-300 ease-out"
+  >
+    <div class="overflow-hidden flex flex-col gap-1 pt-1">
+      {
+        entries.map(({ slug, label, Icon }) => (
+          <button
+            type="button"
+            data-theme-option={slug}
+            data-theme-label-text={label}
+            class="flex items-center gap-3 px-3 py-2 hover:bg-card-highlight rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out text-left w-full"
+          >
+            <Icon class="size-5 shrink-0" />
+            <span class="whitespace-nowrap font-medium">{label}</span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  // Same rule as the early <head> script that sets the initial theme --
+  // restated here so a click can re-decide light vs. dark.
+  function resolveIsDark(theme: string) {
+    return (
+      theme === "dark" ||
+      (theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
+    );
+  }
+
+  function initThemePicker(picker: Element) {
+    const label = picker.querySelector<HTMLElement>("[data-theme-label]");
+    const checkbox = picker.querySelector<HTMLInputElement>(
+      'input[type="checkbox"]',
+    );
+
+    // Show every option except the currently active one -- same pattern
+    // as LanguagePicker filtering out the current language.
+    function sync() {
+      const active = localStorage.getItem("theme") || "system";
+      picker
+        .querySelectorAll<HTMLButtonElement>("[data-theme-option]")
+        .forEach((btn) => {
+          const isActive = btn.dataset.themeOption === active;
+          btn.hidden = isActive;
+          if (isActive && label)
+            label.textContent = btn.dataset.themeLabelText ?? "";
+        });
+    }
+
+    picker.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(
+        "[data-theme-option]",
+      );
+      if (!btn) return;
+
+      const theme = btn.dataset.themeOption!;
+      if (theme === "system") localStorage.removeItem("theme");
+      else localStorage.setItem("theme", theme);
+
+      document.documentElement.setAttribute(
+        "data-theme",
+        resolveIsDark(theme) ? "dark" : "light",
+      );
+      sync();
+      if (checkbox) checkbox.checked = false;
+    });
+
+    sync();
+  }
+
+  function initAll() {
+    document.querySelectorAll(".theme-picker").forEach(initThemePicker);
+  }
+
+  initAll();
+  document.addEventListener("astro:after-swap", initAll);
+</script>
