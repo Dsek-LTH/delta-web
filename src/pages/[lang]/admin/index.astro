@@ -1,0 +1,11 @@
+---
+import LoginPrompt from "@/components/LoginPrompt.astro";
+import AdminPanel from "@/components/AdminPanel.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const loggedIn = Astro.locals.session;
+---
+
+<Layout>
+  {loggedIn ? <AdminPanel /> : <LoginPrompt />}
+</Layout>

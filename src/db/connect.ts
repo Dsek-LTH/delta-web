@@ -1,7 +1,8 @@
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
+import { env } from "@/envvars";
 
-const dbFileName = import.meta.env.DB_FILE_NAME ?? process.env.DB_FILE_NAME;
+const dbFileName = env.DB_FILE_NAME;
 
 if (!dbFileName) {
   throw new Error("DB_FILE_NAME is required");
