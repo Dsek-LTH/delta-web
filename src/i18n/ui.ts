@@ -18,18 +18,36 @@ async function getTranslations(): Promise<
     try {
       const mod = await importer();
       const content = (mod && (mod.default ?? mod)) as
-        | Record<string, Record<string, string>>
+        | Record<string, Record<string, string> | string>
         | undefined;
       if (!content || typeof content !== "object") {
         console.warn(`Skipping ${path}: not an object`);
         continue;
       }
-      for (const [lang, strings] of Object.entries(content)) {
-        if (!translations[lang]) translations[lang] = {};
-        translations[lang] = {
-          ...translations[lang],
-          ...(strings as Record<string, string>),
-        };
+      const { prefix, ...contentWithoutPrefix } = content;
+      if (prefix && typeof prefix === "string") {
+        for (const [lang, strings] of Object.entries(contentWithoutPrefix)) {
+          if (!translations[lang]) translations[lang] = {};
+          const newTranslations = Object.entries(strings).reduce(
+            (acc, [key, value]) => {
+              if (typeof value === "string") {
+                acc[`${prefix}.${key}`] = value;
+              } else {
+                console.warn(
+                  `Skipping ${path}: invalid translation for key ${key} in language ${lang}`,
+                );
+              }
+              return acc;
+            },
+            {} as Record<string, string>,
+          );
+          translations[lang] = {
+            ...translations[lang],
+            ...newTranslations,
+          };
+        }
+      } else {
+        console.warn(`Skipping ${path}: missing or invalid prefix`);
       }
     } catch (err) {
       console.error(`Failed to load translations from ${path}:`, err);

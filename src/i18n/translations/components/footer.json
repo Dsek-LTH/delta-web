@@ -1,16 +1,17 @@
 {
+  "prefix": "footer",
   "en": {
-    "footer.contact": "Contact us",
-    "footer.development": "NOTICE: This page is still in development, the source code is available on ",
-    "footer.language.select": "Switch language: ",
-    "footer.it-managers": "IT Managers",
-    "footer.generals": "Delta Generals"
+    "contact": "Contact us",
+    "development": "NOTICE: This page is still in development, the source code is available on ",
+    "language.select": "Switch language: ",
+    "it-managers": "IT Managers",
+    "generals": "Delta Generals"
   },
   "sv": {
-    "footer.contact": "Kontakta oss",
-    "footer.development": "OBS: Denna sida är fortfarande under utveckling, källkoden finns tillgänglig på ",
-    "footer.language.select": "Byt språk: ",
-    "footer.it-managers": "IT-ansvariga",
-    "footer.generals": "Deltageneraler"
+    "contact": "Kontakta oss",
+    "development": "OBS: Denna sida är fortfarande under utveckling, källkoden finns tillgänglig på ",
+    "language.select": "Byt språk: ",
+    "it-managers": "IT-ansvariga",
+    "generals": "Deltageneraler"
   }
 }

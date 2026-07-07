@@ -1,14 +1,15 @@
 {
+  "prefix": "theme",
   "en": {
-    "theme.aria": "Show theme options",
-    "theme.system": "System",
-    "theme.light": "Light",
-    "theme.dark": "Dark"
+    "aria": "Show theme options",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
   },
   "sv": {
-    "theme.aria": "Visa temaalternativ",
-    "theme.system": "System",
-    "theme.light": "Ljus",
-    "theme.dark": "Mörk"
+    "aria": "Visa temaalternativ",
+    "system": "System",
+    "light": "Ljus",
+    "dark": "Mörk"
   }
 }
