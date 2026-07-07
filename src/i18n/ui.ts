@@ -5,13 +5,14 @@ export const languages = {
 
 export const defaultLang = "sv";
 
-async function getTranslations(): Promise<
+const getTranslations = async (): Promise<
   Record<string, Record<string, string>>
-> {
+> => {
   const translations: Record<string, Record<string, string>> = {};
 
   const modules = import.meta.glob("/src/i18n/translations/**/*.json"); // lazy import so we can catch parse errors
   const paths = Object.keys(modules);
+  const knownPrefixes = new Set<string>();
 
   for (const path of paths) {
     const importer = modules[path] as () => Promise<any>;
@@ -25,6 +26,11 @@ async function getTranslations(): Promise<
         continue;
       }
       const { prefix, ...contentWithoutPrefix } = content;
+      if (knownPrefixes.has(prefix as string)) {
+        console.warn(`Skipping ${path}: duplicate prefix ${prefix}`);
+        continue;
+      }
+      knownPrefixes.add(prefix as string);
       if (prefix && typeof prefix === "string") {
         for (const [lang, strings] of Object.entries(contentWithoutPrefix)) {
           if (!translations[lang]) translations[lang] = {};
@@ -55,10 +61,6 @@ async function getTranslations(): Promise<
   }
 
   return translations;
-}
+};
 
-const translations: Record<
-  string,
-  Record<string, string>
-> = await getTranslations();
-export const ui = translations;
+export const ui = await getTranslations();
