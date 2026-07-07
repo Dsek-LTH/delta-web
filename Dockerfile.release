@@ -34,7 +34,7 @@ COPY --from=prerelease /usr/src/app/dist ./dist
 # Setup database volume and permissions
 RUN mkdir -p /data \
 && chown -R bun:root /usr/src/app /data \
-&& chmod -R 777 /usr/src/app /data
+&& chmod -R g+rw /usr/src/app /data
 VOLUME ["/data"]
 ENV DB_FILE_NAME=file:/data/local.db
 
