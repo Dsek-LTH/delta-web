@@ -11,6 +11,7 @@ COPY package.json bun.lock /temp/dev/
 RUN cd /temp/dev && bun install --frozen-lockfile
 
 
+
 # Tools stage for migrations and seeding 
 FROM base AS tools
 COPY --from=install /temp/dev/node_modules ./node_modules
@@ -19,12 +20,13 @@ COPY ./bun.lock ./bun.lock
 COPY ./drizzle.config.ts ./drizzle.config.ts
 COPY ./src ./src
 
+# Setup database volume and permissions
 RUN mkdir -p /data \
-  && chown -R bun:root /data \
-  && chmod 777 /data
-
+&& chown -R bun:root /data \
+&& chmod -R g+rw /data
 VOLUME ["/data"]
 ENV DB_FILE_NAME=file:/data/local.db
 
 RUN chown -R bun:root /usr/src/app
 USER bun
+CMD ["sh", "-c", "bunx drizzle-kit migrate && bun run seed"]
