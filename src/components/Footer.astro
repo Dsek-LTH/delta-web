@@ -1,5 +1,5 @@
 ---
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { i18n } from "@/i18n/utils";
 import ContactList from "./ContactList.astro";
 
 import { deltaForceTable } from "@/db/schema";
@@ -8,8 +8,7 @@ import { eq } from "drizzle-orm";
 import { createSelectSchema } from "drizzle-orm/zod";
 import { db } from "@/db/connect";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { lang, t } = i18n(Astro.url);
 
 const contacts = sqliteTable("contacts", {
   firstName: text().notNull(),
