@@ -5,39 +5,42 @@ export const languages = {
 
 export const defaultLang = "sv";
 
-export const ui = {
-  en: {
-    "card.when": "When",
-    "card.where": "Where",
-    "card.what": "What",
-    "card.when.networking": "Networking event after",
-    "button.attend": "Attend",
-    "footer.contact": "Contact us",
-    "footer.development":
-      "NOTICE: This page is still in development, the source code is available on ",
-    "footer.language.select": "Switch language: ",
-    "footer.it-managers": "IT Managers",
-    "footer.generals": "Delta Generals",
-    "theme.aria": "Show theme options",
-    "theme.system": "System",
-    "theme.light": "Light",
-    "theme.dark": "Dark",
-  },
-  sv: {
-    "card.when": "När",
-    "card.where": "Var",
-    "card.what": "Vad",
-    "card.when.networking": "Nätverkningsevent efter",
-    "button.attend": "Delta på",
-    "footer.contact": "Kontakta oss",
-    "footer.development":
-      "OBS: Denna sida är fortfarande under utveckling, källkoden finns tillgänglig på ",
-    "footer.language.select": "Byt språk: ",
-    "footer.it-managers": "IT-ansvariga",
-    "footer.generals": "Deltageneraler",
-    "theme.aria": "Visa temaalternativ",
-    "theme.system": "System",
-    "theme.light": "Ljus",
-    "theme.dark": "Mörk",
-  },
-} as const;
+async function getTranslations(): Promise<
+  Record<string, Record<string, string>>
+> {
+  const translations: Record<string, Record<string, string>> = {};
+
+  const modules = import.meta.glob("/src/i18n/translations/**/*.json"); // lazy import so we can catch parse errors
+  const paths = Object.keys(modules);
+
+  for (const path of paths) {
+    const importer = modules[path] as () => Promise<any>;
+    try {
+      const mod = await importer();
+      const content = (mod && (mod.default ?? mod)) as
+        | Record<string, Record<string, string>>
+        | undefined;
+      if (!content || typeof content !== "object") {
+        console.warn(`Skipping ${path}: not an object`);
+        continue;
+      }
+      for (const [lang, strings] of Object.entries(content)) {
+        if (!translations[lang]) translations[lang] = {};
+        translations[lang] = {
+          ...translations[lang],
+          ...(strings as Record<string, string>),
+        };
+      }
+    } catch (err) {
+      console.error(`Failed to load translations from ${path}:`, err);
+    }
+  }
+
+  return translations;
+}
+
+const translations: Record<
+  string,
+  Record<string, string>
+> = await getTranslations();
+export const ui = translations;
