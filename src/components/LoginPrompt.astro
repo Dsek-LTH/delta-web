@@ -1,20 +1,14 @@
-<div class="flex flex-col gap-4">
-  <h1 class="text-3xl font-bold">Admin Panel</h1>
-  <p>You are not logged in. Please log in to access the admin panel.</p>
-  <button id="login-btn" class="btn btn-primary"> Login </button>
-</div>
+---
+import LoginButton from "@/components/LoginButton.astro";
 
-<script>
-  import { authClient } from "@/auth/auth-client";
-  document.getElementById("login-btn")?.addEventListener("click", async () => {
-    try {
-      console.log("Logging in with Authentik...");
-      const response = await authClient.signIn.social({
-        provider: "authentik",
-      });
-      console.log("Response from signIn.social:", response);
-    } catch (err) {
-      console.error("Error starting social sign-in:", err);
-    }
-  });
-</script>
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div class="flex flex-col gap-4">
+  <h1 class="text-3xl font-bold">{t("admin.title")}</h1>
+  <p>{t("admin.login-prompt")}</p>
+  <LoginButton />
+</div>

@@ -1,0 +1,33 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { class: className, ...rest } = Astro.props as {
+  class: string;
+};
+---
+
+<button
+  id="login-btn"
+  class:list={["btn btn-primary frosted-glass rounded-2xl", className]}
+>
+  {t("authButton.login")}
+</button>
+<script>
+  import { authClient } from "@/auth/auth-client";
+
+  document.getElementById("login-btn")?.addEventListener("click", async () => {
+    try {
+      console.log("Logging in with Authentik...");
+      const response = await authClient.signIn.oauth2({
+        providerId: "authentik",
+        callbackURL: window.location.href,
+      });
+      console.log("Response from signIn.oauth2:", response.data);
+    } catch (err) {
+      console.error("Error starting oauth2 sign-in:", err);
+    }
+  });
+</script>

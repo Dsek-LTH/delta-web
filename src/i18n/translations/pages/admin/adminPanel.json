@@ -1,0 +1,13 @@
+{
+  "prefix": "admin",
+  "en": {
+    "title": "Admin Panel",
+    "welcome": "Welcome to the admin panel!",
+    "login-prompt": "You need to be logged in to access the admin panel."
+  },
+  "sv": {
+    "title": "Adminpanel",
+    "welcome": "Välkommen till adminpanelen!",
+    "login-prompt": "Du måste vara inloggad för att komma åt adminpanelen."
+  }
+}
