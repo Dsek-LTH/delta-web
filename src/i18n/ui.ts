@@ -12,9 +12,9 @@ export const ui = {
     "card.what": "What",
     "card.when.networking": "Networking event after",
     "button.attend": "Attend",
-    "footer.contact": "Contact us",
+    "footer.contact": "Contact",
     "footer.development":
-      "NOTICE: This page is still in development, the source code is available on ",
+      "This page is under active development. The source code is available on ",
     "footer.language.select": "Switch language: ",
     "footer.it-managers": "IT Managers",
     "footer.generals": "Delta Generals",
@@ -29,9 +29,9 @@ export const ui = {
     "card.what": "Vad",
     "card.when.networking": "Nätverkningsevent efter",
     "button.attend": "Delta på",
-    "footer.contact": "Kontakta oss",
+    "footer.contact": "Kontakt",
     "footer.development":
-      "OBS: Denna sida är fortfarande under utveckling, källkoden finns tillgänglig på ",
+      "Sidan är under pågående utveckling. Följ utvecklingen på ",
     "footer.language.select": "Byt språk: ",
     "footer.it-managers": "IT-ansvariga",
     "footer.generals": "Deltageneraler",
