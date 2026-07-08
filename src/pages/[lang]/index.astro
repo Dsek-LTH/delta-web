@@ -18,7 +18,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const siteDescription = await getEntry(lang, "meta-description");
-const desc = siteDescription?.body ?? "";
+const desc = siteDescription?.body ?? "Unavailable.";
 
 const whatIs = await getEntry(lang, "landing-what-is");
 const renderedWhatIs = whatIs?.rendered ?? null;
