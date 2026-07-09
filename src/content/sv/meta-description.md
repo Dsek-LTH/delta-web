@@ -1,0 +1,1 @@
+DELTA är en karriärmässa för studenter och företag inom datateknik och information- och kommunikationsteknik anordnad av D-sektionen inom TLTH. Vi kopplar samman studenter med företag och skapar möjligheter för nätverkande, praktikplatser och framtida anställningar.
