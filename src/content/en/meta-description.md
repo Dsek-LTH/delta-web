@@ -1,0 +1,1 @@
+DELTA is a career fair for students within Computer, Informatics, and Communications Engineering, hosted by the D-guild at TLTH. We connect students with companies and provide opportunities for networking, internships, and job placements.
