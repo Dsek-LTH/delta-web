@@ -7,14 +7,20 @@ const t = useTranslations(lang);
 const { class: className, ...rest } = Astro.props as {
   class: string;
 };
+
+const loggedIn = Astro.locals.session;
 ---
 
 <button
-  id="login-btn"
-  class:list={["btn btn-primary frosted-glass rounded-2xl", className]}
+  id={loggedIn ? "logout-btn" : "login-btn"}
+  class:list={[
+    "btn btn-primary frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50",
+    className,
+  ]}
 >
-  {t("authButton.login")}
+  {t(loggedIn ? "authButton.logout" : "authButton.login")}
 </button>
+
 <script>
   import { authClient } from "@/auth/auth-client";
 
@@ -29,5 +35,16 @@ const { class: className, ...rest } = Astro.props as {
     } catch (err) {
       console.error("Error starting oauth2 sign-in:", err);
     }
+  });
+
+  document.getElementById("logout-btn")?.addEventListener("click", async () => {
+    try {
+      console.log("Logging out...");
+      const response = await authClient.signOut();
+      console.log("Response from signOut.oauth2:", response.data);
+    } catch (err) {
+      console.error("Error starting oauth2 sign-out:", err);
+    }
+    window.location.reload();
   });
 </script>

@@ -1,11 +1,25 @@
 ---
-import LoginPrompt from "@/components/LoginPrompt.astro";
-import AdminPanel from "@/components/AdminPanel.astro";
+import AuthButton from "@/components/AuthButton.astro";
 import Layout from "@/layouts/Layout.astro";
 
 const loggedIn = Astro.locals.session;
+
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<Layout>
-  {loggedIn ? <AdminPanel /> : <LoginPrompt />}
+<Layout description={t("admin.title")}>
+  <div class="flex flex-col justify-start flex-1 w-full gap-8 p-30">
+    <h1 class="text-3xl font-bold">{t("admin.title")}</h1>
+    {
+      loggedIn ? (
+        <p>{t("admin.welcome")}</p>
+      ) : (
+        <p>{t("admin.login-prompt")}</p>
+      )
+    }
+    <AuthButton />
+  </div>
 </Layout>
