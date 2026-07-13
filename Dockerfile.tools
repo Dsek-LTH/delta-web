@@ -18,6 +18,7 @@ COPY --from=install /temp/dev/node_modules ./node_modules
 COPY ./package.json ./package.json
 COPY ./bun.lock ./bun.lock
 COPY ./drizzle.config.ts ./drizzle.config.ts
+COPY ./tsconfig.json ./tsconfig.json
 COPY ./src ./src
 
 # Setup database volume and permissions

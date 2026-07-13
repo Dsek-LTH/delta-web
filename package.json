@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
     "astro": "astro",
     "format:fix": "prettier --write .",
     "format:check": "prettier --check .",
@@ -17,7 +16,8 @@
     "migrate": "mkdir -p data && bunx drizzle-kit migrate",
     "seed": "bun run src/index.ts",
     "seed:reset": "bun run src/seed-reset.ts",
-    "preinstall": "cp --update=none .env.example .env 2>/dev/null || true"
+    "preinstall": "cp --update=none .env.example .env 2>/dev/null || true",
+    "preview": "bun astro build && bun dist/server/entry.mjs"
   },
   "dependencies": {
     "@libsql/client": "^0.17.4",

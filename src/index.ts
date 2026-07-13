@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
-import { deltaForceTable } from "./db/schema";
+import { deltaForceTable } from "@/db/schema";
 import { env } from "@/envvars";
 
 const client = createClient({ url: env.DB_FILE_NAME! });
