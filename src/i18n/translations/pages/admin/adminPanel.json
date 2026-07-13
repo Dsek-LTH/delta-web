@@ -1,13 +1,13 @@
 {
-  "prefix": "admin",
-  "en": {
-    "title": "Admin Panel",
-    "welcome": "Welcome to the admin panel!",
-    "login-prompt": "You need to be logged in to access the admin panel."
-  },
-  "sv": {
-    "title": "Administratörspanel",
-    "welcome": "Välkommen till adminpanelen!",
-    "login-prompt": "Du måste vara inloggad för att komma åt adminpanelen."
-  }
+    "prefix": "admin",
+    "en": {
+        "title": "Admin Panel",
+        "welcome": "Welcome to the admin panel!\n This panel currently has no functionality and is only for testing authentication and permissions.",
+        "login-prompt": "You need to be logged in to access the admin panel."
+    },
+    "sv": {
+        "title": "Administratörspanel",
+        "welcome": "Välkommen till adminpanelen!\n Denna panel har änu inga funktioner utan finns i dagsläget endast för att testa autentisering och behörigheter.",
+        "login-prompt": "Du måste vara inloggad för att komma åt adminpanelen."
+    }
 }
