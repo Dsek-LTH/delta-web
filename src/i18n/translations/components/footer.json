@@ -1,0 +1,17 @@
+{
+  "prefix": "footer",
+  "en": {
+    "contact": "Contact us",
+    "development": "NOTICE: This page is still in development, the source code is available on ",
+    "language.select": "Switch language: ",
+    "it-managers": "IT Managers",
+    "generals": "Delta Generals"
+  },
+  "sv": {
+    "contact": "Kontakta oss",
+    "development": "OBS: Denna sida är fortfarande under utveckling, källkoden finns tillgänglig på ",
+    "language.select": "Byt språk: ",
+    "it-managers": "IT-ansvariga",
+    "generals": "Deltageneraler"
+  }
+}
