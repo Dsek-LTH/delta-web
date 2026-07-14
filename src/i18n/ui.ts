@@ -6,61 +6,67 @@ export const languages = {
 export const defaultLang = "sv";
 
 const getTranslations = async (): Promise<
-  Record<string, Record<string, string>>
+  Record<keyof typeof languages, Record<string, string>>
 > => {
   const translations: Record<string, Record<string, string>> = {};
-
-  const modules = import.meta.glob("/src/i18n/translations/**/*.json"); // lazy import so we can catch parse errors
-  const paths = Object.keys(modules);
   const knownPrefixes = new Set<string>();
 
-  for (const path of paths) {
-    const importer = modules[path] as () => Promise<any>;
+  const modules = import.meta.glob("/src/i18n/translations/**/*.json");
+
+  for (const path of Object.keys(modules)) {
+    let mod;
     try {
-      const mod = await importer();
-      const content = (mod && (mod.default ?? mod)) as
-        | Record<string, Record<string, string> | string>
-        | undefined;
-      if (!content || typeof content !== "object") {
-        console.warn(`Skipping ${path}: not an object`);
-        continue;
-      }
-      const { prefix, ...contentWithoutPrefix } = content;
-      if (knownPrefixes.has(prefix as string)) {
-        console.warn(`Skipping ${path}: duplicate prefix ${prefix}`);
-        continue;
-      }
-      knownPrefixes.add(prefix as string);
-      if (prefix && typeof prefix === "string") {
-        for (const [lang, strings] of Object.entries(contentWithoutPrefix)) {
-          if (!translations[lang]) translations[lang] = {};
-          const newTranslations = Object.entries(strings).reduce(
-            (acc, [key, value]) => {
-              if (typeof value === "string") {
-                acc[`${prefix}.${key}`] = value;
-              } else {
-                console.warn(
-                  `Skipping ${path}: invalid translation for key ${key} in language ${lang}`,
-                );
-              }
-              return acc;
-            },
-            {} as Record<string, string>,
-          );
-          translations[lang] = {
-            ...translations[lang],
-            ...newTranslations,
-          };
-        }
-      } else {
-        console.warn(`Skipping ${path}: missing or invalid prefix`);
-      }
+      mod = await (modules[path] as () => Promise<any>)();
     } catch (err) {
       console.error(`Failed to load translations from ${path}:`, err);
+      continue;
+    }
+
+    const content = mod?.default ?? mod;
+
+    if (!content || typeof content !== "object") {
+      console.warn(`Skipping ${path}: not an object`);
+      continue;
+    }
+
+    const { prefix, ...langContent } = content as Record<string, any>;
+
+    if (typeof prefix !== "string" || !prefix) {
+      console.warn(`Skipping ${path}: missing or invalid prefix`);
+      continue;
+    }
+
+    if (knownPrefixes.has(prefix)) {
+      console.warn(`Skipping ${path}: duplicate prefix ${prefix}`);
+      continue;
+    }
+
+    knownPrefixes.add(prefix);
+
+    for (const [lang, strings] of Object.entries(langContent)) {
+      if (!strings || typeof strings !== "object") {
+        console.warn(`Skipping ${lang} at ${path}: invalid content ${strings}`);
+        continue;
+      }
+
+      if (!translations[lang]) translations[lang] = {};
+
+      for (const [key, value] of Object.entries(
+        strings as Record<string, any>,
+      )) {
+        if (typeof value === "string") {
+          translations[lang][`${prefix}.${key}`] = value;
+        } else {
+          console.warn(`Skipping ${path}: invalid value for ${lang}.${key}`);
+        }
+      }
     }
   }
 
   return translations;
 };
 
-export const ui = await getTranslations();
+export const ui: Record<
+  keyof typeof languages,
+  Record<string, string>
+> = await getTranslations();
