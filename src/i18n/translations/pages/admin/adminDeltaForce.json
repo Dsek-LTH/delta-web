@@ -1,0 +1,26 @@
+{
+  "prefix": "admin.delta-force",
+  "en": {
+    "title": "Manage DELTA --Force_ members",
+    "no-members": "No members found.",
+    "member.first-name": "First Name",
+    "member.last-name": "Last Name",
+    "member.email": "Email",
+    "member.role": "Role",
+    "member.student-id": "Student ID",
+    "member.linkedin": "LinkedIn",
+    "submit": "Edit",
+    "save": "Save"
+  },
+  "sv": {
+    "title": "Hantera DELTA --Force_ medlemmar",
+    "no-members": "Inga medlemmar hittades.",
+    "member.first-name": "Förnamn",
+    "member.last-name": "Efternamn",
+    "member.email": "E-post",
+    "member.role": "Roll",
+    "member.student-id": "Student-ID",
+    "member.linkedin": "LinkedIn",
+    "save": "Spara"
+  }
+}

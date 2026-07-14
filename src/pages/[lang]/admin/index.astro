@@ -2,13 +2,11 @@
 import AuthButton from "@/components/AuthButton.astro";
 import Layout from "@/layouts/Layout.astro";
 import propaganda from "@/assets/propaganda.mp4";
+import { i18n } from "@/i18n/utils";
 
 const loggedIn = Astro.locals.session;
 
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { lang, translate: t } = await i18n(Astro.url);
 ---
 
 <Layout description={t("admin.title")}>
@@ -16,8 +14,14 @@ const t = useTranslations(lang);
     <h1 class="text-3xl font-bold">{t("admin.title")}</h1>
     {
       loggedIn ? (
-        <div>
+        <div class="flex flex-col gap-4">
           <p class="text-balance">{t("admin.welcome")}</p>
+          <a
+            class="btn btn-primary frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50"
+            href={`/${lang}/admin/delta-force`}
+          >
+            {t("admin.panel.delta-force")}
+          </a>
           <video class="w-full max-w-3xl rounded-lg" controls autoplay loop>
             <source src={propaganda} type="video/mp4" />
           </video>

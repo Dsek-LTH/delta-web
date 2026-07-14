@@ -1,0 +1,16 @@
+---
+const {
+  name,
+  label,
+  class: className,
+  ...rest
+} = Astro.props as {
+  name: string;
+  label: string;
+  class: string;
+};
+---
+
+<label class:list={["flex flex-col gap-2", className]} {...rest} for={name}
+  >{label}</label
+>
