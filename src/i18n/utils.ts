@@ -11,3 +11,12 @@ export function useTranslations(lang: keyof typeof ui) {
     return ui[lang][key] || ui[defaultLang][key];
   };
 }
+
+export function i18n(url: URL): {
+  lang: keyof typeof ui;
+  translate: ReturnType<typeof useTranslations>;
+} {
+  const lang = getLangFromUrl(url);
+  const translate = useTranslations(lang);
+  return { lang, translate };
+}

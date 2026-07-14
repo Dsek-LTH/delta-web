@@ -2,12 +2,11 @@
 // NOTE: Fully vibed
 
 import { ChevronDown, SunMoon, Sun, Moon, Palette } from "@lucide/astro";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { i18n } from "@/i18n/utils";
 
 const { class: className, ...rest } = Astro.props;
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { lang, translate: t } = i18n(Astro.url);
 
 const entries = [
   { slug: "system", label: t("theme.system"), Icon: SunMoon },
