@@ -7,6 +7,14 @@ services:
     environment:
       - NODE_ENV=production
       - DB_FILE_NAME=file:/data/local.db
+      - BETTER_AUTH_URL=https://delta.dsek.se
+      - BETTER_AUTH_AUTHENTIK_DISCOVERY_ENDPOINT="https://auth.dsek.se/application/o/delta-web/.well-known/openid-configuration"
+      - BETTER_AUTH_AUTHENTIK_ISSUER="https://auth.dsek.se/application/o/dev/"
+      - BETTER_AUTH_AUTHENTIK_AUTHORIZE_ENDPOINT="https://auth.dsek.se/application/o/authorize/"
+      - BETTER_AUTH_AUTHENTIK_TOKEN_ENDPOINT="https://auth.dsek.se/application/o/token/"
+      - BETTER_AUTH_SECRET=""
+      - BETTER_AUTH_AUTHENTIK_ID=""
+      - BETTER_AUTH_AUTHENTIK_SECRET=""
     volumes:
       - delta-web-data:/data
     depends_on:
