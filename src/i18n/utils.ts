@@ -14,9 +14,9 @@ export function useTranslations(lang: keyof typeof ui) {
 
 export function i18n(url: URL): {
   lang: keyof typeof ui;
-  t: ReturnType<typeof useTranslations>;
+  translate: ReturnType<typeof useTranslations>;
 } {
   const lang = getLangFromUrl(url);
-  const t = useTranslations(lang);
-  return { lang, t };
+  const translate = useTranslations(lang);
+  return { lang, translate };
 }
