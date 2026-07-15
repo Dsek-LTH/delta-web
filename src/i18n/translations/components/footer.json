@@ -1,15 +1,15 @@
 {
   "prefix": "footer",
   "en": {
-    "contact": "Contact us",
-    "development": "NOTICE: This page is still in development, the source code is available on ",
+    "contact": "Contact",
+    "development": "This page is under active development. The source code is available on ",
     "language.select": "Switch language: ",
     "it-managers": "IT Managers",
     "generals": "Delta Generals"
   },
   "sv": {
-    "contact": "Kontakta oss",
-    "development": "OBS: Denna sida är fortfarande under utveckling, källkoden finns tillgänglig på ",
+    "contact": "Kontakt",
+    "development": "Sidan är under pågående utveckling. Följ utvecklingen på ",
     "language.select": "Byt språk: ",
     "it-managers": "IT-ansvariga",
     "generals": "Deltageneraler"
