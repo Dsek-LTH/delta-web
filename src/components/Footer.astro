@@ -44,13 +44,13 @@ const generalsValidated = generals.map((general) =>
   class="bg-backdrop p-4 leading-relaxed flex flex-col items-center gap-4"
 >
   <div class="text-center">
-    <h1 class="text-xl font-semibold">
+    <p class="text-xl font-semibold">
       {t("footer.contact")}
       : <a
         class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
         href="mailto:delta@dsek.se">delta@dsek.se</a
       >
-    </h1>
+    </p>
   </div>
   <div class="flex justify-center gap-10">
     <div class="grid grid-cols-2 gap-5 border-y border-border py-3">
@@ -66,21 +66,19 @@ const generalsValidated = generals.map((general) =>
       />
     </div>
   </div>
-  <div class="flex flex-col justify-end">
-    <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
+  <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
 
-    <!-- addr -->
+  <!-- addr -->
 
-    <p>&copy; 2026 DELTA. All rights reserved.</p>
-  </div>
+  <p>&copy; 2026 DELTA. All rights reserved.</p>
 
-  <h2 class="text-xl text-center font-semibold text-destructive">
+  <p class="text-xl text-center font-semibold italic text-brand-secondary">
     {t("footer.development")}
     <a
-      class="text-destructive/80 hover:text-destructive/60"
+      class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
       href="https://github.com/Dsek-LTH/delta-web"
     >
       GitHub
-    </a>. &lt;@:)
-  </h2>
+    </a>.
+  </p>
 </footer>
