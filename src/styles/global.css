@@ -127,65 +127,6 @@ html[data-theme="dark"] {
     auto !important;
 }
 
-.scroll-bottom-text {
-  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-
-  /* Required for WebKit browsers */
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-}
-
-fade-bottom-text {
-  /* Standard standard mask (for Firefox, Safari) */
-  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-  /* Webkit prefix (for Chrome, Edge, Safari) */
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-}
-
-@property --mask-bottom-stop {
-  syntax: "<length-percentage>";
-  inherits: false;
-  initial-value: 100%;
-}
-
-@keyframes adjust-fade {
-  /* At the start of the scroll container, keep the fade active (fading out the bottom 40px) */
-  from {
-    --mask-bottom-stop: calc(100% - 40px);
-  }
-  /* When fully scrolled to the bottom, push the fade outside the viewport (removing the effect) */
-  to {
-    --mask-bottom-stop: 100%;
-  }
-}
-
-.fade-bottom-text {
-  overflow-y: auto;
-
-  /* Apply the mask utilizing our animated custom CSS property */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black var(--mask-bottom-stop),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black var(--mask-bottom-stop),
-    transparent 100%
-  );
-
-  /* Bind the mask-property change directly to the element's scrolling */
-  animation: adjust-fade linear both;
-  animation-timeline: scroll(self);
-}
-
-/* Nicer scrollbar on webkit (chrome, safari, etc) to match Firefox's default */
-::-webkit-scrollbar {
-  width: 6px;
-  scrollbar-color: var(--color-card-highlight) transparent;
-}
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
