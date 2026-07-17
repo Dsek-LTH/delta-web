@@ -127,6 +127,12 @@ html[data-theme="dark"] {
     auto !important;
 }
 
+/* Nicer scrollbar on webkit (chrome, safari, etc) to match Firefox's default */
+::-webkit-scrollbar {
+  width: 6px;
+  scrollbar-color: var(--color-card-highlight) transparent;
+}
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
