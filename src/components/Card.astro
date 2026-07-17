@@ -46,8 +46,7 @@ const { class: className, enableScrollFade = false, ...rest } = Astro.props;
   }
 </style>
 
-<style is:global>
-  /* 1. Base Structure for your specific custom class */
+<style>
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
   }
@@ -55,26 +54,22 @@ const { class: className, enableScrollFade = false, ...rest } = Astro.props;
     background: transparent;
   }
 
-  /* 2. Hidden by default */
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: transparent;
     border-radius: 9999px;
   }
 
-  /* 3. Show thumb when scrolling OR when hovering the card/container */
   .custom-scrollbar[data-scrolling="true"]::-webkit-scrollbar-thumb,
   .tilt-card:hover .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: var(--color-card-highlight);
   }
 
-  /* 4. Shift color if they hover directly over the scrollbar thumb itself */
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-backdrop) !important;
   }
 </style>
 
 <script>
-  // Runs on the client side automatically in Astro
   const scrollContainers = document.querySelectorAll(".scroll-fade-target");
 
   scrollContainers.forEach((container) => {
