@@ -1,5 +1,5 @@
 ---
-const { class: className, ...rest } = Astro.props;
+const { class: className, enableScrollFade = false, ...rest } = Astro.props;
 ---
 
 <div
@@ -14,8 +14,59 @@ const { class: className, ...rest } = Astro.props;
   >
   </div>
 
-  <slot />
+  <div
+    class:list={[
+      {
+        "h-full w-full overflow-y-auto pr-4 pb-4 custom-scrollbar scroll-fade-target":
+          enableScrollFade,
+      },
+    ]}
+  >
+    <slot />
+  </div>
 </div>
+<!-- Fade at the bottom of the text when it overflows the card -->
+<style>
+  .scroll-fade-target {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black calc(100% - 3rem),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      black calc(100% - 3rem),
+      transparent 100%
+    );
+  }
+
+  .scroll-fade-target.is-at-bottom {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+</style>
+
+<!-- Removes the text fade when user has scrolled to the bottom of text -->
+<script>
+  const scrollBoxes = document.querySelectorAll(".scroll-fade-target");
+
+  scrollBoxes.forEach((scrollBox) => {
+    const checkScroll = () => {
+      const isBottom =
+        scrollBox.scrollHeight - scrollBox.scrollTop - scrollBox.clientHeight <=
+        2;
+
+      if (isBottom) {
+        scrollBox.classList.add("is-at-bottom");
+      } else {
+        scrollBox.classList.remove("is-at-bottom");
+      }
+    };
+
+    scrollBox.addEventListener("scroll", checkScroll);
+    checkScroll();
+  });
+</script>
 
 <script>
   const cards = document.querySelectorAll(".tilt-card");
