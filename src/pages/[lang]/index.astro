@@ -102,7 +102,7 @@ const renderedWhatIs = whatIs?.rendered ?? null;
         {t("landing.card.what")}
       </h2>
       <div
-        class="flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose fade-bottom-text"
+        class="flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose"
       >
         {renderedWhatIs && <div set:html={renderedWhatIs.html} />}
       </div>
