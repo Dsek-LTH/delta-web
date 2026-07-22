@@ -1,0 +1,32 @@
+# use the official Bun image
+# see all versions at https://hub.docker.com/r/oven/bun/tags
+FROM docker.io/oven/bun:1 AS base
+WORKDIR /usr/src/app
+
+# install dependencies into temp directory
+# this will cache them and speed up future builds
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lock /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
+
+
+
+# Tools stage for migrations and seeding 
+FROM base AS tools
+COPY --from=install /temp/dev/node_modules ./node_modules
+COPY ./package.json ./package.json
+COPY ./bun.lock ./bun.lock
+COPY ./drizzle.config.ts ./drizzle.config.ts
+COPY ./src ./src
+
+# Setup database volume and permissions
+RUN mkdir -p /data \
+&& chown -R bun:root /data \
+&& chmod -R g+rw /data
+VOLUME ["/data"]
+ENV DB_FILE_NAME=file:/data/local.db
+
+RUN chown -R bun:root /usr/src/app
+USER bun
+CMD ["sh", "-c", "bunx drizzle-kit migrate && bun run seed"]

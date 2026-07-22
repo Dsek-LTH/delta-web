@@ -8,7 +8,7 @@ on:
 
 jobs:
   ci-check:
-    name: web-build # This name is used in github rules
+    name: web-build
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -22,11 +22,33 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Install podman
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y podman podman-compose
+
       - name: Check formatting
         run: bun format:check
 
       - name: Check linting
         run: bun lint
 
-      - name: Build
-        run: podman build -t delta-web .
+      - name: Build compose images
+        run: podman-compose -f docker-compose.yaml build
+
+      - name: Smoke test compose stack
+        run: |
+          set -e
+          podman-compose -f docker-compose.yaml up -d
+          trap 'podman-compose -f docker-compose.yaml down -v' EXIT
+
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8080/ >/dev/null; then
+              echo "Homepage responded"
+              exit 0
+            fi
+            sleep 2
+          done
+
+          echo "Homepage did not become ready"
+          exit 1

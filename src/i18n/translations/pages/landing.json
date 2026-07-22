@@ -1,0 +1,17 @@
+{
+  "prefix": "landing",
+  "en": {
+    "card.when": "When",
+    "card.where": "Where",
+    "card.what": "What",
+    "card.when.networking": "Networking event after",
+    "button.attend": "Attend"
+  },
+  "sv": {
+    "card.when": "När",
+    "card.where": "Var",
+    "card.what": "Vad",
+    "card.when.networking": "Nätverkningsevent efter",
+    "button.attend": "Delta på"
+  }
+}

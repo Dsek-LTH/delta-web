@@ -1,82 +1,84 @@
 ---
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { i18n } from "@/i18n/utils";
 import ContactList from "./ContactList.astro";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+import { deltaForceTable } from "@/db/schema";
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { eq } from "drizzle-orm";
+import { createSelectSchema } from "drizzle-orm/zod";
+import { db } from "@/db/connect";
 
-const itManagers: { name: string; email: string; linkedin: string }[] = [
-  {
-    name: "Hannes Bolmehag",
-    email: "hannes@delta.dsek.se",
-    linkedin: "https://www.linkedin.com/in/hannesbolmehag/",
-  },
-  {
-    name: "Christofer Gartner",
-    email: "christofer@delta.dsek.se",
-    linkedin: "https://www.linkedin.com/in/christofer-gartner/",
-  },
-  {
-    name: "Rufus Kogg Röjder",
-    email: "rufus@delta.dsek.se",
-    linkedin: "https://www.linkedin.com/in/rufus-kogg-rojder/",
-  },
-];
+const { lang, translate: t } = i18n(Astro.url);
 
-const generals: { name: string; email: string; linkedin: string }[] = [
-  {
-    name: "Tim Johansson",
-    email: "tim@delta.dsek.se",
-    linkedin: "https://www.youtube.com/watch?v=XfELJU1mRMg",
-  },
-  {
-    name: "Melker Widén",
-    email: "melker@delta.dsek.se",
-    linkedin: "https://www.linkedin.com/in/memagu/",
-  },
-];
+const contacts = sqliteTable("contacts", {
+  firstName: text().notNull(),
+  lastName: text().notNull(),
+  email: text().notNull(),
+  linkedin: text().notNull(),
+});
+
+const contactSelectSchema = createSelectSchema(contacts);
+
+const itManagers = await db
+  .select()
+  .from(deltaForceTable)
+  .where(eq(deltaForceTable.role, "it"))
+  .all();
+
+const itManagersValidated = itManagers.map((manager) =>
+  contactSelectSchema.parse(manager),
+);
+
+const generals = await db
+  .select()
+  .from(deltaForceTable)
+  .where(eq(deltaForceTable.role, "general"))
+  .all();
+
+const generalsValidated = generals.map((general) =>
+  contactSelectSchema.parse(general),
+);
 ---
 
 <footer
-  class="bg-gray-900 p-4 leading-relaxed flex flex-col items-center gap-4"
+  class="bg-backdrop p-4 leading-relaxed flex flex-col items-center gap-4"
 >
   <div class="text-center">
-    <h1 class="text-xl font-semibold">
+    <p class="text-xl font-semibold">
       {t("footer.contact")}
-      : <a class="text-c hover:text-c/80" href="mailto:delta@dsek.se"
-        >delta@dsek.se</a
+      : <a
+        class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
+        href="mailto:delta@dsek.se">delta@dsek.se</a
       >
-    </h1>
+    </p>
   </div>
   <div class="flex justify-center gap-10">
-    <div class="grid grid-cols-2 gap-5 border-t border-b border-gray-700 py-3">
+    <div class="grid grid-cols-2 gap-5 border-y border-border py-3">
       <ContactList
         title={t("footer.generals")}
         groupMail="general@delta.dsek.se"
-        contacts={generals}
+        contacts={generalsValidated}
       />
       <ContactList
         title={t("footer.it-managers")}
         groupMail="it@delta.dsek.se"
-        contacts={itManagers}
+        contacts={itManagersValidated}
       />
     </div>
   </div>
-  <div class="flex flex-col justify-end">
-    <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
+  <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
 
-    <!-- addr -->
+  <!-- addr -->
 
-    <p class="text-white">&copy; 2026 DELTA. All rights reserved.</p>
-  </div>
+  <p>&copy; 2026 DELTA. All rights reserved.</p>
 
-  <h2 class="text-xl text-center font-semibold text-red-500">
+  <p class="text-xl text-center font-semibold italic text-brand-secondary">
     {t("footer.development")}
     <a
-      class="text-red-600 hover:text-red-600/80"
+      class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
       href="https://github.com/Dsek-LTH/delta-web"
     >
       GitHub
-    </a>. &lt;@:)
-  </h2>
+    </a>.
+  </p>
 </footer>
