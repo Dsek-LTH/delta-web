@@ -1,4 +1,4 @@
-DELTA är en arbetsmässa för studenter och företag inom datatekniska områden anordnad av [D-sektionen på LTH](https://dsek.se). Vi kopplar samman studenter med företag och skapar
+DELTA är en arbetsmarknadsmässa för studenter och företag inom datatekniska områden anordnad av [D-sektionen på LTH](https://dsek.se). Vi kopplar samman studenter med företag och skapar
 möjligheter för nätverkande, praktikplatser och framtida anställningar. Delta
 för att utforska spännande karriärvägar och träffa ledande arbetsgivare från en
 mängd olika branscher. När mässan har avslutats för dagen anordnas en trevlig
