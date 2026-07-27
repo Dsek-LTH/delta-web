@@ -26,12 +26,10 @@ const loggedIn = Astro.locals.session;
 
   document.getElementById("login-btn")?.addEventListener("click", async () => {
     try {
-      console.log("Logging in with Authentik...");
       const response = await authClient.signIn.oauth2({
         providerId: "authentik",
         callbackURL: window.location.href,
       });
-      console.log("Response from signIn.oauth2:", response.data);
     } catch (err) {
       console.error("Error starting oauth2 sign-in:", err);
     }
@@ -39,9 +37,7 @@ const loggedIn = Astro.locals.session;
 
   document.getElementById("logout-btn")?.addEventListener("click", async () => {
     try {
-      console.log("Logging out...");
       const response = await authClient.signOut();
-      console.log("Response from signOut.oauth2:", response.data);
     } catch (err) {
       console.error("Error starting oauth2 sign-out:", err);
     }
