@@ -1,0 +1,11 @@
+{
+  "prefix": "authButton",
+  "en": {
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "sv": {
+    "login": "Logga in",
+    "logout": "Logga ut"
+  }
+}

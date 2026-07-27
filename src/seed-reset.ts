@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { db, seedDeltaForce } from "./index";
-import { deltaForceTable } from "./db/schema";
+import { db, seedDeltaForce } from "@/index";
+import { deltaForceTable } from "@/db/schema";
 
 async function main() {
   await db.delete(deltaForceTable);
