@@ -1,0 +1,36 @@
+---
+import "@/styles/global.css";
+import { i18n } from "@/i18n/utils";
+
+interface Props {
+  class?: String;
+}
+
+const { lang, translate: t } = i18n(Astro.url);
+---
+
+<nav>
+  <ul
+    class="frosted-glass rounded-3xl flex text-2xl font-bold items-center relative overflow-hidden"
+  >
+    <li
+      class="hover:text-brand-secondary/80 hover:bg-card-highlight flex-1 p-2 pr-8 min-w-0"
+    >
+      <a href={`/${lang}/student`}>Student</a>
+    </li>
+    <li
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full"
+    >
+      <a
+        href={`/${lang}`}
+        class="flex justify-center items-center text-3xl text-brand-primary hover:text-brand-primary/80 hover:bg-card-highlight rounded-full aspect-square h-full frosted-glass"
+        >&Delta;</a
+      >
+    </li>
+    <li
+      class="hover:text-brand-secondary/80 hover:bg-card-highlight text-right flex-1 p-2 pl-8 min-w-0"
+    >
+      <a href={`/${lang}/company`}>{t("navbar.company")}</a>
+    </li>
+  </ul>
+</nav>
