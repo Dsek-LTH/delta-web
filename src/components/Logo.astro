@@ -6,6 +6,7 @@ interface Props extends HTMLAttributes<"div"> {
 }
 
 const { animate = false, class: className, ...rest } = Astro.props;
+const animation = animate ? "animate-caret-blink" : "";
 ---
 
 <div
@@ -13,6 +14,6 @@ const { animate = false, class: className, ...rest } = Astro.props;
   {...rest}
 >
   &gt;&nbsp;<span class="text-brand-secondary">DELT</span>&Delta;<span
-    class={animate ? "animate-caret-blink" : ""}>&#95;</span
+    class={animation}>&#95;</span
   >
 </div>
