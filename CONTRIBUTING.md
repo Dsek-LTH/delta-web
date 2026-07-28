@@ -43,7 +43,7 @@ Thanks for your interest in contributing! This guide covers everything you need 
 1. Create a branch from `main`:
 
    ```bash
-   git checkout -b feat/my-feature
+   git switch -c feat/my-feature
    ```
 
 2. Make your changes.
