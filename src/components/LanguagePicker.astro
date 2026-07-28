@@ -14,6 +14,13 @@ const activeLang = { sv: "Svenska", en: "English" }[currentLanguage];
 // Unique per render so multiple instances of this component on one page
 // don't collide on the same id -- computed server-side, not client JS.
 const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
+const getLocalizedPath = (newLang: string) => {
+  const path = Astro.url.pathname;
+  if (path.startsWith(`/${currentLanguage}`)) {
+    return path.replace(`/${currentLanguage}`, `/${newLang}`);
+  }
+  return `/${newLang}${path}`;
+};
 ---
 
 <div
@@ -56,7 +63,7 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
       {
         entries.map(({ slug, lang, flag, desc: alt }) => (
           <a
-            href={`/${slug}`}
+            href={getLocalizedPath(slug)}
             role="menuitem"
             class="flex items-center gap-3 px-3 py-2 hover:bg-card-highlight rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
           >
