@@ -5,9 +5,9 @@ Thanks for your interest in contributing! This guide covers everything you need 
 ## Prerequisites
 
 - [Bun](https://bun.sh/) — package manager and runtime
-- Node.js >= 22.12.0
-- [Podman](https://podman.io/) or Docker (optional, for local container testing)
-- Git LFS (the repo tracks a large video file)
+- [Node.js](https://nodejs.org/) >= 22.12.0
+- [Podman](https://podman.io/) or [Docker](https://www.docker.com/) (optional, for local container testing)
+- [Git LFS](https://git-lfs.com/) (the repo tracks a large video file)
 
 ## Setup
 
@@ -19,7 +19,7 @@ Thanks for your interest in contributing! This guide covers everything you need 
    bun install
    ```
 
-   This automatically copies `.env.example` to `.env` and installs git hooks via Lefthook.
+   This automatically copies `.env.example` to `.env` and installs git hooks via [Lefthook](https://github.com/evilmartians/lefthook).
 
 3. Configure environment variables in `.env`. Contact the IT managers for Authentik OIDC credentials if you need authentication to work locally.
 
@@ -63,7 +63,7 @@ Thanks for your interest in contributing! This guide covers everything you need 
 
 ## Code style
 
-Formatting is enforced by Prettier and linting by ESLint. The key rules:
+Formatting is enforced by [Prettier](https://prettier.io/) and linting by [ESLint](https://eslint.org/). The key rules:
 
 | Convention        | Style                                                                 |
 | ----------------- | --------------------------------------------------------------------- |
@@ -79,7 +79,7 @@ Formatting is enforced by Prettier and linting by ESLint. The key rules:
 
 ### Component conventions
 
-All components are pure Astro — no React, Vue, or Svelte. Client-side interactivity uses vanilla JS `<script>` blocks.
+All components are pure [Astro](https://astro.build/) — no React, Vue, or Svelte. Client-side interactivity uses vanilla JS `<script>` blocks.
 
 Props are destructured with `class: className` aliasing:
 
@@ -97,7 +97,7 @@ Translations live in `src/i18n/translations/` as JSON files with a `prefix` fiel
 
 ## Database
 
-The database is SQLite via Drizzle ORM with `@libsql/client`. Schema is defined in `src/db/schema.ts`.
+The database is SQLite via [Drizzle ORM](https://orm.drizzle.team/) with [@libsql/client](https://github.com/tursodatabase/libsql-client-ts). Schema is defined in `src/db/schema.ts`.
 
 ### Making schema changes
 
@@ -127,7 +127,21 @@ type(scope): lowercase description
 
 ### Types
 
-`feat`, `fix`, `docs`, `build`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`, `revert`
+| Type       | When to use                                     |
+| ---------- | ----------------------------------------------- |
+| `feat`     | A new feature or user-facing capability         |
+| `fix`      | A bug fix                                       |
+| `docs`     | Documentation only changes                      |
+| `build`    | Build system or dependency changes              |
+| `style`    | Formatting, whitespace — no code meaning change |
+| `refactor` | Code restructuring without behavior change      |
+| `perf`     | Performance improvement                         |
+| `test`     | Adding or updating tests                        |
+| `ci`       | CI/CD configuration changes                     |
+| `chore`    | Maintenance tasks that don't fit other types    |
+| `revert`   | Reverts a previous commit                       |
+
+See the [Conventional Commits spec](https://www.conventionalcommits.org/en/v1.0.0/) for the full specification.
 
 ### Scopes
 
@@ -162,7 +176,7 @@ Every PR runs:
 
 ## Deployment
 
-The production site runs on the D-guild's own OKD servers. Docker images are built from `Dockerfile.release` (app) and `Dockerfile.tools` (migrations/seed). The compose stack is orchestrated via `docker-compose.yaml`.
+The production site runs on the D-guild's own [OKD](https://www.okd.io/) servers. Docker images are built from `Dockerfile.release` (app) and `Dockerfile.tools` (migrations/seed). The compose stack is orchestrated via `docker-compose.yaml`.
 
 To test locally:
 

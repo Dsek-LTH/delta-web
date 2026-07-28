@@ -77,15 +77,9 @@ The two important ones are `install` and `dev`. Run `install` whenever some depe
 
 When doing stuff with the database you will need to use `generate`, `migrate` and `seed`. Migrate is used to generate the database from scratch and apply all migrations in order for the database to match the schema. When you have edited the schema you can generate a new migration using `generate` followed by a `migrate` to apply the changes. `seed` will populate the database with base data unless it is already populated. If you want to reset the database you can do it with `seed:reset`.
 
-## Commit messages
+## Contributing
 
-This project uses [Conventional Commits](https://www.conventionalcommits.org/). PR titles are validated by CI. Format:
-
-```
-type(scope): lowercase description
-```
-
-Types: `feat`, `fix`, `docs`, `build`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`, `revert`.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, workflow, and commit conventions.
 
 ## Docs
 
