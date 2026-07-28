@@ -18,18 +18,18 @@ The dev server runs on port **8080** (not the Astro default).
 
 ## Key Commands
 
-| Command | Purpose |
-|---------|---------|
-| `bun dev` | Start dev server |
-| `bun build` | Production build |
-| `bun preview` | Build and run production locally |
-| `bun lint` | ESLint check |
-| `bun format:check` | Prettier check |
-| `bun format:fix` | Prettier auto-fix |
-| `bun generate` | Generate Drizzle migration from schema |
-| `bun migrate` | Apply database migrations |
-| `bun seed` | Seed database (idempotent) |
-| `bun seed:reset` | Clear and re-seed database |
+| Command            | Purpose                                |
+| ------------------ | -------------------------------------- |
+| `bun dev`          | Start dev server                       |
+| `bun build`        | Production build                       |
+| `bun preview`      | Build and run production locally       |
+| `bun lint`         | ESLint check                           |
+| `bun format:check` | Prettier check                         |
+| `bun format:fix`   | Prettier auto-fix                      |
+| `bun generate`     | Generate Drizzle migration from schema |
+| `bun migrate`      | Apply database migrations              |
+| `bun seed`         | Seed database (idempotent)             |
+| `bun seed:reset`   | Clear and re-seed database             |
 
 ## Code Conventions
 

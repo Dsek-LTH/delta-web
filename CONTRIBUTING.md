@@ -65,17 +65,17 @@ Thanks for your interest in contributing! This guide covers everything you need 
 
 Formatting is enforced by Prettier and linting by ESLint. The key rules:
 
-| Convention | Style |
-|------------|-------|
-| Indentation | 2 spaces |
-| Quotes | Double quotes |
-| Semicolons | Yes |
-| Trailing commas | Yes |
-| Imports | Absolute via `@/` alias (maps to `src/`). Prefer over relative paths. |
-| Type imports | `import type` for type-only imports |
-| Component files | PascalCase `.astro` |
-| Utility files | camelCase `.ts` |
-| Translation files | camelCase `.json` in `src/i18n/translations/` |
+| Convention        | Style                                                                 |
+| ----------------- | --------------------------------------------------------------------- |
+| Indentation       | 2 spaces                                                              |
+| Quotes            | Double quotes                                                         |
+| Semicolons        | Yes                                                                   |
+| Trailing commas   | Yes                                                                   |
+| Imports           | Absolute via `@/` alias (maps to `src/`). Prefer over relative paths. |
+| Type imports      | `import type` for type-only imports                                   |
+| Component files   | PascalCase `.astro`                                                   |
+| Utility files     | camelCase `.ts`                                                       |
+| Translation files | camelCase `.json` in `src/i18n/translations/`                         |
 
 ### Component conventions
 
@@ -87,7 +87,8 @@ Props are destructured with `class: className` aliasing:
 ---
 const { class: className, ...rest } = Astro.props;
 ---
-<div class:list={["base", className]} {...rest}>
+
+<div class:list={["base", className]} {...rest}></div>
 ```
 
 ### Translations
@@ -107,12 +108,12 @@ The database is SQLite via Drizzle ORM with `@libsql/client`. Schema is defined 
 
 ### Useful commands
 
-| Command | Purpose |
-|---------|---------|
-| `bun generate` | Generate migration from schema changes |
-| `bun migrate` | Apply pending migrations |
-| `bun seed` | Seed base data (skips if already populated) |
-| `bun seed:reset` | Drop and re-seed the database |
+| Command          | Purpose                                     |
+| ---------------- | ------------------------------------------- |
+| `bun generate`   | Generate migration from schema changes      |
+| `bun migrate`    | Apply pending migrations                    |
+| `bun seed`       | Seed base data (skips if already populated) |
+| `bun seed:reset` | Drop and re-seed the database               |
 
 ## Commit messages
 
