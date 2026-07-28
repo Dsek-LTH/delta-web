@@ -1,6 +1,11 @@
-# delta-web
-
-This is the source code for the official web page for **> DELTΔ_**, the annual career fair hosted by the [D-guild at TLTH](https://www.dsek.se/).
+<div align="center">
+  <img src="public/delta.svg" alt="DELTA logo" width="512">
+  <p>
+    Annual career fair hosted by D-sektionen at TLTH
+    <br />
+    <a href="https://delta.dsek.se/"><strong>delta.dsek.se</strong></a>
+  </p>
+</div>
 
 ## > DELTΔ --force\_ IT managers
 
