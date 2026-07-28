@@ -75,7 +75,7 @@ All commands are run from the root of the project, from a terminal:
 
 The two important ones are `install` and `dev`. Run `install` whenever some dependency has changed — it is good practice to run this often, especially after doing anything related to git. `dev` starts the dev server allowing you to see any changes you make in real time. It will also make sure intellisense works correctly, so it is good practice to have this running constantly in a dedicated terminal.
 
-When doing stuff with the database you will need to use `generate`, `migrate` and `seed`. Migrate is used to generate the database from scratch and apply all migrations in order for the database to match the schema. When you have edited the schema you can generate a new migration using `generate` followed by a `migrate` to apply the changes. `seed` will populate the database with base data unless it is already populated. If you want to reset the database you can do it with `seed:reset`.
+When interacting with the database you will need to use `generate`, `migrate` and `seed`. Migrate is used to generate the database from scratch and apply all migrations in order for the database to match the schema. When you have edited the schema you can generate a new migration using `generate` followed by a `migrate` to apply the changes. `seed` will populate the database with base data unless it is already populated. If you want to reset the database you can do it with `seed:reset`.
 
 ## Contributing
 
