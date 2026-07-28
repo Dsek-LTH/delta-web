@@ -89,7 +89,7 @@ Then fix each issue. When editing markdown:
 
 - Run the project formatter after changes (e.g. `bun format:fix`, `npm run format`)
 - Verify formatting passes (`bun format:check`)
-- Commit each logical group of fixes separately with conventional commit messages
+- Commit each logical group of fixes separately with [conventional commit](https://www.conventionalcommits.org/) messages
 
 ### 7. Verify
 
@@ -103,6 +103,6 @@ After all changes:
 
 - Read actual source files, don't guess from file names
 - Check `git log` for recent changes that may have stale docs
-- Use `grep` to find every mention of a tool/variable across the codebase
+- Use `rg` (ripgrep), or `grep` as a fallback, to find every mention of a tool/variable across the codebase
 - Compare README commands table against actual `package.json` scripts
 - Check that CLAUDE.md / AGENTS.md stay in sync if one is a symlink
