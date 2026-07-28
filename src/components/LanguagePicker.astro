@@ -1,9 +1,10 @@
 ---
-import { getLangFromUrl } from "@/i18n/utils";
+import { getLangFromUrl, getLocalizedPath } from "@/i18n/utils";
 import { Image } from "astro:assets";
 import { Languages, ChevronDown } from "@lucide/astro";
 import swedishFlag from "@/assets/sweden.svg";
 import ukFlag from "@/assets/uk.svg";
+
 const { class: className, ...rest } = Astro.props;
 const currentLanguage = getLangFromUrl(Astro.url);
 const entries = [
@@ -14,13 +15,6 @@ const activeLang = { sv: "Svenska", en: "English" }[currentLanguage];
 // Unique per render so multiple instances of this component on one page
 // don't collide on the same id -- computed server-side, not client JS.
 const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
-const getLocalizedPath = (newLang: string) => {
-  const path = Astro.url.pathname;
-  if (path.startsWith(`/${currentLanguage}`)) {
-    return path.replace(`/${currentLanguage}`, `/${newLang}`);
-  }
-  return `/${newLang}${path}`;
-};
 ---
 
 <div
@@ -63,7 +57,7 @@ const getLocalizedPath = (newLang: string) => {
       {
         entries.map(({ slug, lang, flag, desc: alt }) => (
           <a
-            href={getLocalizedPath(slug)}
+            href={getLocalizedPath(Astro.url.pathname, slug)}
             role="menuitem"
             class="flex items-center gap-3 px-3 py-2 hover:bg-card-highlight rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
           >
