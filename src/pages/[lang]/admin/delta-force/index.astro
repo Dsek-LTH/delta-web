@@ -1,8 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { i18n } from "@/i18n/utils";
-import { db } from "@/db/connect";
-import { deltaForceTable } from "@/db/schema";
+import MemberList from "./MemberList.astro";
 
 const { lang, translate: t } = await i18n(Astro.url);
 
@@ -11,33 +10,8 @@ const loggedIn = Astro.locals.session;
 if (!loggedIn) {
   return Astro.redirect(`/${lang}/admin`);
 }
-
-const deltaForceMembers = await db.select().from(deltaForceTable).all();
 ---
 
 <Layout description={t("admin.delta-force.title")}>
-  {
-    deltaForceMembers.length > 0 ? (
-      <div class="flex flex-col gap-4 p-4">
-        <h1 class="text-3xl font-bold">{t("admin.delta-force.title")}</h1>
-        <ul class="flex flex-col gap-2">
-          {deltaForceMembers.map((member) => (
-            <li class="frosted-glass items-center p-2 rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300 ease-out">
-              <a
-                class="w-full flex justify-between gap-4"
-                href={`/${lang}/admin/delta-force/${member.studentId}`}
-              >
-                <span>
-                  {member.firstName} {member.lastName}
-                </span>
-                <span>{member.role}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    ) : (
-      <p>{t("admin.delta-force.no-members")}</p>
-    )
-  }
+  <MemberList />
 </Layout>

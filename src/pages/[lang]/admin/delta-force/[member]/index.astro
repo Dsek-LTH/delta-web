@@ -5,8 +5,8 @@ import Layout from "@/layouts/Layout.astro";
 import { i18n } from "@/i18n/utils";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
-import TextInput from "@/components/TextInput.astro";
-import Label from "@/components/Label.astro";
+import MemberEditor from "./MemberEditor.astro";
+import MemberList from "../MemberList.astro";
 
 const { lang, translate: t } = await i18n(Astro.url);
 const result = Astro.getActionResult(
@@ -51,83 +51,11 @@ if (!member) {
   description={t("admin.delta-force.title") +
     (member ? `: ${member.firstName} ${member.lastName}` : "")}
 >
-  <div class="flex flex-col gap-4 p-4">
+  <div class="flex flex-col justify-start flex-1 w-full gap-8 p-30 px-60">
     <h1 class="text-3xl font-bold">{t("admin.delta-force.title")}</h1>
-    <div
-      class="frosted-glass p-4 rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300 ease-out"
-    >
-      <form
-        class="flex flex-col gap-4"
-        action={actions.deltaForceMember.updateDeltaForceMember}
-        method="POST"
-      >
-        <input type="hidden" name="oldStudentId" value={member.studentId} />
-        <input type="hidden" name="lang" value={lang} />
-        {
-          (actionError || inputErrors) && (
-            <div class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
-              <p class="font-semibold">Could not save member</p>
-              {actionError && (
-                <p class="mt-1">
-                  {actionError.message ?? "An unknown error occurred."}
-                </p>
-              )}
-              {inputErrors && (
-                <ul class="mt-2 list-disc pl-5">
-                  {inputErrorEntries.map(([field, messages]) => (
-                    <li>
-                      <span class="font-medium">{field}:</span>{" "}
-                      {messages.join(", ")}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )
-        }
-        <div class="flex flex-col gap-1">
-          <Label
-            name="firstName"
-            label={t("admin.delta-force.member.first-name")}
-          />
-          <TextInput name="firstName" value={member.firstName} />
-        </div>
-        <div class="flex flex-col gap-1">
-          <Label
-            name="lastName"
-            label={t("admin.delta-force.member.last-name")}
-          />
-          <TextInput name="lastName" value={member.lastName} />
-        </div>
-        <div class="flex flex-col gap-1">
-          <Label
-            name="studentId"
-            label={t("admin.delta-force.member.student-id")}
-          />
-          <TextInput name="studentId" value={member.studentId} />
-        </div>
-        <div class="flex flex-col gap-1">
-          <Label name="role" label={t("admin.delta-force.member.role")} />
-          <TextInput name="role" value={member.role} />
-        </div>
-        <div class="flex flex-col gap-1">
-          <Label name="email" label={t("admin.delta-force.member.email")} />
-          <TextInput name="email" value={member.email} />
-        </div>
-        <div class="flex flex-col gap-1">
-          <Label
-            name="linkedin"
-            label={t("admin.delta-force.member.linkedin")}
-          />
-          <TextInput name="linkedin" value={member.linkedin} />
-        </div>
-        <button
-          type="submit"
-          class="btn bg-pink/50 frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2"
-        >
-          {t("admin.delta-force.save")}
-        </button>
-      </form>
+    <div class="flex gap-8 w-full">
+      <MemberList />
+      <MemberEditor class="flex-1 h-fit" member={member} />
     </div>
   </div>
 </Layout>

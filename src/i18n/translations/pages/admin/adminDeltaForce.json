@@ -10,7 +10,8 @@
     "member.student-id": "Student ID",
     "member.linkedin": "LinkedIn",
     "submit": "Edit",
-    "save": "Save"
+    "save": "Save",
+    "back": "Back"
   },
   "sv": {
     "title": "Hantera DELTA --Force_ medlemmar",
@@ -21,6 +22,7 @@
     "member.role": "Roll",
     "member.student-id": "Student-ID",
     "member.linkedin": "LinkedIn",
-    "save": "Spara"
+    "save": "Spara",
+    "back": "Tillbaka"
   }
 }

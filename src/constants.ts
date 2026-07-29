@@ -10,3 +10,7 @@ export const deltaForceRoles = [
   "relations",
   "staff",
 ] as const;
+
+export function deltaFordeRoleToTranslationKey(role: (typeof deltaForceRoles)[number], plural: boolean): string {
+  return `delta-force.${role}${plural ? 's' : ''}`;
+}
