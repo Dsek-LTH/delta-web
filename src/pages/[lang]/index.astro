@@ -16,15 +16,12 @@ export function getStaticPaths() {
 
 const { lang, translate: t } = i18n(Astro.url);
 
-const siteDescription = await getEntry(lang, "meta-description");
-const desc = siteDescription?.body ?? "Unavailable.";
-
 const whatIs = await getEntry(lang, "landing-what-is");
 const renderedWhatIs = whatIs?.rendered ?? null;
 ---
 
 <Layout
-  description={desc}
+  description={t("landing.head.description")}
   backgroundImage={cover}
   class="flex flex-col items-center gap-12 px-6 py-12 mx-auto w-full max-w-7xl lg:px-16"
 >
