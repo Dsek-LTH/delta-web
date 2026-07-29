@@ -20,3 +20,9 @@ export function i18n(url: URL): {
   const translate = useTranslations(lang);
   return { lang, translate };
 }
+
+export function getLocalizedPath(pathname: string, newLang: string): string {
+  const segments = pathname.split("/");
+  segments[1] = newLang;
+  return segments.join("/");
+}
