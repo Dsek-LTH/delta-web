@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="499.97021"
-   height="550.65527"
-   viewBox="0 0 499.97021 550.65527"
+   width="499.96799"
+   height="550.65601"
+   viewBox="0 0 499.96798 550.656"
    version="1.1"
    id="svg1"
    xmlns="http://www.w3.org/2000/svg"
@@ -13,17 +13,12 @@
      id="defs1" />
   <g
      id="layer1"
-     transform="translate(-231.42284,-234.46503)"
+     transform="translate(-231.42414,-234.4643)"
      style="display:inline">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:768px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;display:inline;fill:#342f3a;stroke:#9966cc;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
-       x="223.74414"
-       y="785.1203"
-       id="text38"><tspan
-         id="tspan38"
-         x="223.74414"
-         y="785.1203"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:768px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#f280a1;fill-opacity:1">Δ</tspan></text>
+    <path
+       style="font-weight:bold;font-size:768px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#f280a1;stroke:#9966cc;stroke-width:0;stroke-linecap:round;stroke-linejoin:round"
+       d="m 231.42414,785.1203 v -62.976 l 178.176,-487.68 h 142.08 l 179.712,489.984 v 60.672 z m 133.632,-97.536 h 231.936 l -82.176,-258.048 q -3.84,-13.056 -10.752,-33.024 -6.144,-19.968 -13.056,-40.704 -6.144,-20.736 -9.984,-36.096 -3.84,15.36 -10.752,38.4 -6.912,22.272 -13.056,43.008 -6.144,19.968 -9.216,28.416 z"
+       id="text38"
+       aria-label="Δ" />
   </g>
 </svg>
