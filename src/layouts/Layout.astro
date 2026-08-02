@@ -40,9 +40,7 @@ const lang = getLangFromUrl(Astro.url);
     </script>
   </head>
 
-  <body
-    class="relative isolate flex flex-col bg-radial-[at_65%_25%] from-backdrop-content-muted to-backdrop-content-highlight text-backdrop-content font-inter min-h-screen overflow-x-hidden"
-  >
+  <body>
     {
       backgroundImage && (
         <div class="absolute inset-0 -z-1337 pointer-events-none select-none overflow-hidden">
@@ -58,7 +56,6 @@ const lang = getLangFromUrl(Astro.url);
     <header
       class="lg:fixed sticky top-0 flex items-start justify-end gap-4 w-full z-1337 p-2"
     >
-      <!-- ☀️🌙 -->
       <ThemePicker />
       <LanguagePicker />
     </header>
