@@ -9,11 +9,11 @@ const { animate = false, class: className, ...rest } = Astro.props;
 const animation = animate ? "animate-caret-blink" : "";
 ---
 
-<div
+<span
   class:list={["font-bold font-noto-sans text-brand-primary", className]}
   {...rest}
 >
   &gt;&nbsp;<span class="text-brand-secondary">DELT</span>&Delta;<span
     class={animation}>&#95;</span
   >
-</div>
+</span>
