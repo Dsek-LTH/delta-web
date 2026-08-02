@@ -1,6 +1,8 @@
 {
   "prefix": "landing",
   "en": {
+    "head.title": "Home | DELTA",
+    "head.description": "DELTA is a career fair for students and companies within computer engineering fields hosted by the D-guild at TLTH. We connect students with companies and provide opportunities for networking, internships, and job placements.",
     "card.when": "When",
     "card.where": "Where",
     "card.what": "What",
@@ -8,6 +10,8 @@
     "button.attend": "Attend"
   },
   "sv": {
+    "head.title": "Hem | DELTA",
+    "head.description": "DELTA är en karriärmässa för studenter och företag inom datatekniska områden anordnad av D-sektionen inom TLTH. Vi kopplar samman studenter med företag och skapar möjligheter för nätverkande, praktikplatser och framtida anställningar.",
     "card.when": "När",
     "card.where": "Var",
     "card.what": "Vad",
