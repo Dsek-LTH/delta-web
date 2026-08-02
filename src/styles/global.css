@@ -113,6 +113,42 @@ html[data-theme="dark"] {
   --tw-prose-td-borders: var(--color-border);
 }
 
+@layer base {
+  body {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    font-family: "Inter", sans-serif;
+
+    color: var(--color-backdrop-content);
+    background-image: radial-gradient(
+      circle at 65% 25%,
+      var(--color-backdrop-content-muted) 0%,
+      var(--color-backdrop-content-highlight) 100%
+    );
+  }
+
+  p {
+    text-color: var(--color-brand-secondary);
+  }
+
+  a {
+    text-color: var(--color-backdrop-content-highlight);
+  }
+
+  a:hover {
+    text-color: color-mix(
+      in srgb,
+      var(--color-backdrop-content-highlight) 20%,
+      transparent
+    );
+  }
+}
+
 @layer components {
   .frosted-glass {
     @apply bg-card text-card-content backdrop-blur-xl inset-shadow-sm inset-shadow-card-highlight shadow-2xl shadow-black/50;
