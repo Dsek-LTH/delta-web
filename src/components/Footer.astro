@@ -41,7 +41,7 @@ const generalsValidated = generals.map((general) =>
 ---
 
 <footer
-  class="bg-backdrop p-4 leading-relaxed flex flex-col items-center gap-4 text-center"
+  class="bg-backdrop p-4 pb-20 lg:pb-4 leading-relaxed flex flex-col items-center gap-4 text-center"
 >
   <address class="not-italic">
     <p class="text-xl font-semibold pb-2">
@@ -64,9 +64,8 @@ const generalsValidated = generals.map((general) =>
       />
     </div>
   </address>
-  <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
 
-  <!-- addr -->
+  <!-- LinkedIn, GitHub, Instagram, ...? -->
 
   <p>&copy; 2026 DELTA. All rights reserved.</p>
 
@@ -81,7 +80,7 @@ const generalsValidated = generals.map((general) =>
   </p>
 
   <a
-    class="absolute bottom-4 right-4 text-sm text-backdrop hover:text-backdrop-content-highlight/80"
+    class="text-sm text-backdrop hover:text-backdrop-content-highlight/80"
     href={`/admin`}>{t("footer.admin-panel")}</a
   >
 </footer>
