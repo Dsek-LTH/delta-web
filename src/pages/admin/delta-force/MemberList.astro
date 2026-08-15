@@ -5,7 +5,7 @@ import { deltaForceTable } from "@/db/schema";
 import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
 import { Plus } from "@lucide/astro";
 
-const { lang, translate: t } = await i18n(Astro.url);
+const { lang, translate: t } = await i18n(Astro.cookies);
 
 const deltaForceMembers = await db.select().from(deltaForceTable).all();
 ---
@@ -29,7 +29,7 @@ const deltaForceMembers = await db.select().from(deltaForceTable).all();
                 </h2>
                 <a
                   class="btn btn-primary frosted-glass text-brand-secondary rounded-lg aspect-square hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit p-1 bg-card/50"
-                  href={`/${lang}/admin/delta-force/new?role=${role}`}
+                  href={`/admin/delta-force/new?role=${role}`}
                 >
                   <Plus class="w-4 h-4 " />
                 </a>
@@ -41,7 +41,7 @@ const deltaForceMembers = await db.select().from(deltaForceTable).all();
                     <li class="frosted-glass items-center p-2 rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300 ease-out">
                       <a
                         class="w-full flex justify-between gap-4 text-sm"
-                        href={`/${lang}/admin/delta-force/${member.studentId}`}
+                        href={`/admin/delta-force/${member.studentId}`}
                       >
                         <span class="font-bold">
                           {member.firstName} {member.lastName}

@@ -12,7 +12,7 @@ const { class: classname, member } = Astro.props as {
   member: typeof deltaForceTable.$inferSelect;
 };
 
-const { lang, translate: t } = await i18n(Astro.url);
+const { lang, translate: t } = await i18n(Astro.cookies);
 const result = Astro.getActionResult(
   actions.deltaForceMember.updateDeltaForceMember,
 );
@@ -28,7 +28,7 @@ const inputErrorEntries = inputErrors
 const loggedIn = Astro.locals.session;
 
 if (!loggedIn) {
-  return Astro.redirect(`/${lang}/admin`);
+  return Astro.redirect(`/admin`);
 }
 ---
 
@@ -118,9 +118,9 @@ if (!loggedIn) {
 
 <script>
   import { actions } from "astro:actions";
-  import { getLangFromUrl } from "@/i18n/utils";
+  import { getLang } from "@/i18n/utils";
   import { navigate } from "astro:transitions/client";
-  const lang = getLangFromUrl(new URL(window.location.href));
+  const lang = getLang(Astro.cookies);
 
   const deleteButton: HTMLButtonElement | null = document.querySelector(
     "button[name='delete']",
@@ -145,7 +145,7 @@ if (!loggedIn) {
             }`,
           );
         } else {
-          navigate(`/${lang}/admin/delta-force`);
+          navigate(`/admin/delta-force`);
         }
       }
     });

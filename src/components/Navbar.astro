@@ -6,7 +6,7 @@ interface Props {
   class?: String;
 }
 
-const { lang, translate: t } = i18n(Astro.url);
+const { lang, translate: t } = i18n(Astro.cookies);
 ---
 
 <nav>
@@ -16,11 +16,11 @@ const { lang, translate: t } = i18n(Astro.url);
     <li
       class="hover:text-brand-secondary/80 hover:bg-card-highlight p-2 rounded-3xl"
     >
-      <a href={`/${lang}/student`}>Student</a>
+      <a href={`/student`}>Student</a>
     </li>
     <li>
       <a
-        href={`/${lang}`}
+        href={`/`}
         class="flex justify-center items-center text-brand-primary hover:text-brand-primary/80 hover:bg-card-highlight rounded-full aspect-square frosted-glass"
         >&Delta;</a
       >
@@ -28,7 +28,7 @@ const { lang, translate: t } = i18n(Astro.url);
     <li
       class="hover:text-brand-secondary/80 hover:bg-card-highlight p-2 rounded-3xl"
     >
-      <a href={`/${lang}/company`}>{t("navbar.company")}</a>
+      <a href={`/company`}>{t("navbar.company")}</a>
     </li>
   </ul>
 </nav>

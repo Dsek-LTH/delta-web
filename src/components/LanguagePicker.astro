@@ -1,12 +1,13 @@
 ---
-import { getLangFromUrl, getLocalizedPath } from "@/i18n/utils";
+import { getLang } from "@/i18n/utils";
 import { Image } from "astro:assets";
 import { Languages, ChevronDown } from "@lucide/astro";
 import swedishFlag from "@/assets/sweden.svg";
 import ukFlag from "@/assets/uk.svg";
 
 const { class: className, ...rest } = Astro.props;
-const currentLanguage = getLangFromUrl(Astro.url);
+const currentLanguage = getLang(Astro.cookies);
+
 const entries = [
   { slug: "sv", lang: "Svenska", flag: swedishFlag, desc: "Byt till svenska" },
   { slug: "en", lang: "English", flag: ukFlag, desc: "Switch to English" },
@@ -56,8 +57,9 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
     <div class="overflow-hidden flex flex-col gap-1 pt-1">
       {
         entries.map(({ slug, lang, flag, desc: alt }) => (
-          <a
-            href={getLocalizedPath(Astro.url.pathname, slug)}
+          <button
+            type="button"
+            value={slug}
             role="menuitem"
             class="flex items-center gap-3 px-3 py-2 hover:bg-card-highlight rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
           >
@@ -67,9 +69,27 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
               class="size-6 object-cover object-center rounded-full shrink-0"
             />
             <span class="whitespace-nowrap font-medium">{lang}</span>
-          </a>
+          </button>
         ))
       }
     </div>
   </div>
 </div>
+
+<script>
+  import { actions } from "astro:actions";
+  import { languages } from "@/i18n/ui";
+
+  const langButtons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
+    ".group button[type='button'][value]",
+  );
+
+  langButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      await actions.language.setLanguage({
+        lang: button.value as keyof typeof languages,
+      });
+      window.location.reload(); // Optional, only if needed for theme/UI sync
+    });
+  });
+</script>

@@ -6,14 +6,14 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
 
-const { lang } = await i18n(Astro.url);
+const { lang } = await i18n(Astro.cookies);
 const memberId = Astro.params.member;
 const result = Astro.getActionResult(
   actions.deltaForceMember.updateDeltaForceMember,
 );
 
 if (result?.data?.studentId) {
-  return Astro.redirect(`/${lang}/admin/delta-force/${result.data.studentId}`);
+  return Astro.redirect(`/admin/delta-force/${result.data.studentId}`);
 }
 
 let member = null;
@@ -25,7 +25,7 @@ if (memberId) {
     .get();
 }
 if (!member) {
-  return Astro.redirect(`/${lang}/admin/delta-force`);
+  return Astro.redirect(`/admin/delta-force`);
 }
 ---
 

@@ -1,6 +1,6 @@
 ---
 import { i18n } from "@/i18n/utils";
-const { lang, translate: t } = await i18n(Astro.url);
+const { lang, translate: t } = await i18n(Astro.cookies);
 
 const { class: className, ...rest } = Astro.props as {
   class: string;

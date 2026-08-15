@@ -11,12 +11,12 @@ const { member } = Astro.props as {
   class: string;
   member: typeof deltaForceTable.$inferSelect;
 };
-const { lang, translate: t } = await i18n(Astro.url);
+const { lang, translate: t } = await i18n(Astro.cookies);
 
 const loggedIn = Astro.locals.session;
 
 if (!loggedIn) {
-  return Astro.redirect(`/${lang}/admin`);
+  return Astro.redirect(`/admin`);
 }
 ---
 
@@ -29,7 +29,7 @@ if (!loggedIn) {
   <div class="flex w-3/4 min-w-fit items-top gap-8 p-30">
     <a
       class="btn btn-primary frosted-glass flex items-center text-brand-secondary rounded-xl aspect-square hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit h-fit p-1 bg-card/50"
-      href={`/${lang}/admin`}
+      href={`/admin`}
     >
       <ArrowLeft class="w-6 h-6" />
     </a>
