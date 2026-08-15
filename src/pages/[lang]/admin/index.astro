@@ -9,7 +9,7 @@ const loggedIn = Astro.locals.session;
 const { lang, translate: t } = await i18n(Astro.url);
 ---
 
-<Layout description={t("admin.title")}>
+<Layout title={t("admin.title")} description={t("admin.description")}>
   <div class="flex flex-col justify-start flex-1 w-full gap-8 p-30 px-60">
     <h1 class="text-3xl font-bold">{t("admin.title")}</h1>
     {

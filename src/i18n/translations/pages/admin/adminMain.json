@@ -2,6 +2,7 @@
   "prefix": "admin",
   "en": {
     "title": "Admin Panel",
+    "description": "Manage content on the website",
     "welcome": "Welcome to the admin panel! This panel currently has no functionality and is only for testing authentication and permissions. While you're here, you can check out some propaganda instead.",
     "login-prompt": "You need to be logged in to access the admin panel.",
     "back": "Back to main page",
@@ -9,6 +10,7 @@
   },
   "sv": {
     "title": "Administratörspanel",
+    "description": "Hantera innehåll på webbplatsen",
     "welcome": "Välkommen till adminpanelen! Denna panel har änu inga funktioner utan finns i dagsläget endast för att testa autentisering och behörigheter. Medans du är här kan du få kolla på lite propaganda istället.",
     "login-prompt": "Du måste vara inloggad för att komma åt adminpanelen.",
     "back": "Tillbaka till huvudsidan",
