@@ -1,0 +1,44 @@
+---
+import { actions } from "astro:actions";
+import Layout from "@/layouts/Layout.astro";
+import { i18n } from "@/i18n/utils";
+import { deltaForceTable } from "@/db/schema";
+import MemberEditor from "./MemberEditor.astro";
+import MemberList from "./MemberList.astro";
+import { ArrowLeft } from "@lucide/astro";
+
+const { member } = Astro.props as {
+  class: string;
+  member: typeof deltaForceTable.$inferSelect;
+};
+const { lang, translate: t } = await i18n(Astro.url);
+
+const loggedIn = Astro.locals.session;
+
+if (!loggedIn) {
+  return Astro.redirect(`/${lang}/admin`);
+}
+---
+
+<Layout
+  title={(member ? `${member.firstName} ${member.lastName}: ` : "") +
+    t("admin.delta-force.title")}
+  description={(member ? `${member.firstName} ${member.lastName}: ` : "") +
+    t("admin.delta-force.description")}
+>
+  <div class="flex w-3/4 min-w-fit items-top gap-8 p-30">
+    <a
+      class="btn btn-primary frosted-glass flex items-center text-brand-secondary rounded-xl aspect-square hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit h-fit p-1 bg-card/50"
+      href={`/${lang}/admin`}
+    >
+      <ArrowLeft class="w-6 h-6" />
+    </a>
+    <div class="flex flex-col justify-startflex-1 w-full gap-8">
+      <h1 class="text-3xl font-bold">{t("admin.delta-force.title")}</h1>
+      <div class="flex gap-8 w-full">
+        <MemberList />
+        {member && <MemberEditor class="flex-1 h-fit" member={member} />}
+      </div>
+    </div>
+  </div>
+</Layout>

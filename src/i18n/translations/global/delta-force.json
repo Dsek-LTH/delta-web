@@ -1,0 +1,39 @@
+{
+  "prefix": "delta-force",
+  "en": {
+    "general": "General",
+    "generals": "Generals",
+    "it": "IT manager",
+    "its": "IT managers",
+    "event": "Event manager",
+    "events": "Event managers",
+    "finance": "Finance manager",
+    "finances": "Finance managers",
+    "logistics": "Logistics manager",
+    "logisticss": "Logistics managers",
+    "marketing": "Marketing manager",
+    "marketings": "Marketing managers",
+    "relations": "Relations manager",
+    "relationss": "Relations managers",
+    "staff": "Staff manager",
+    "staffss": "Staff managers"
+  },
+  "sv": {
+    "general": "General",
+    "generals": "Generaler",
+    "it": "IT-ansvarig",
+    "its": "IT-ansvariga",
+    "event": "Eventansvarig",
+    "events": "Eventansvariga",
+    "finance": "Finansansvarig",
+    "finances": "Finansansvariga",
+    "logistics": "Logistikansvarig",
+    "logisticss": "Logistikansvariga",
+    "marketing": "Marknadsföringsansvarig",
+    "marketings": "Marknadsföringsansvariga",
+    "relations": "Företagsansvarig",
+    "relationss": "Företagsansvariga",
+    "staff": "Funkisansvarig",
+    "staffss": "Funkisansvariga"
+  }
+}
