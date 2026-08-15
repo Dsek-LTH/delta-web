@@ -1,17 +1,5 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { i18n } from "@/i18n/utils";
-import MemberList from "./MemberList.astro";
-
-const { lang, translate: t } = await i18n(Astro.url);
-
-const loggedIn = Astro.locals.session;
-
-if (!loggedIn) {
-  return Astro.redirect(`/${lang}/admin`);
-}
+import Page from "./Page.astro";
 ---
 
-<Layout title={t("admin.delta-force.title")} description={t("admin.delta-force.description")}>
-  <MemberList />
-</Layout>
+<Page />

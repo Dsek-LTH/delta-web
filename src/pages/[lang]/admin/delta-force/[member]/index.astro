@@ -1,36 +1,8 @@
 ---
-import { actions, isInputError } from "astro:actions";
+import Page from "../Page.astro";
 import { eq } from "drizzle-orm";
-import Layout from "@/layouts/Layout.astro";
-import { i18n } from "@/i18n/utils";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
-import MemberEditor from "./MemberEditor.astro";
-import MemberList from "../MemberList.astro";
-
-const { lang, translate: t } = await i18n(Astro.url);
-const result = Astro.getActionResult(
-  actions.deltaForceMember.updateDeltaForceMember,
-);
-const inputErrors = isInputError(result?.error) ? result.error.fields : null;
-const actionError =
-  result?.error && !isInputError(result.error) ? result.error : null;
-const inputErrorEntries = inputErrors
-  ? (Object.entries(inputErrors as Record<string, string[]>) as Array<
-      [string, string[]]
-    >)
-  : [];
-console.log(result);
-
-if (result?.data?.studentId) {
-  return Astro.redirect(`/${lang}/admin/delta-force/${result.data.studentId}`);
-}
-
-const loggedIn = Astro.locals.session;
-
-if (!loggedIn) {
-  return Astro.redirect(`/${lang}/admin`);
-}
 
 const memberId = Astro.params.member;
 
@@ -47,15 +19,4 @@ if (!member) {
 }
 ---
 
-<Layout
-  description={t("admin.delta-force.title") +
-    (member ? `: ${member.firstName} ${member.lastName}` : "")}
->
-  <div class="flex flex-col justify-start flex-1 w-full gap-8 p-30 px-60">
-    <h1 class="text-3xl font-bold">{t("admin.delta-force.title")}</h1>
-    <div class="flex gap-8 w-full">
-      <MemberList />
-      <MemberEditor class="flex-1 h-fit" member={member} />
-    </div>
-  </div>
-</Layout>
+<Page member={member} />
