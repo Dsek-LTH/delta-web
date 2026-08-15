@@ -6,7 +6,7 @@ import LanguagePicker from "@/components/LanguagePicker.astro";
 import ThemePicker from "@/components/ThemePicker.astro";
 import Navbar from "@/components/Navbar.astro";
 import "@/styles/global.css";
-import { getLangFromUrl } from "@/i18n/utils";
+import { getLang } from "@/i18n/utils";
 
 interface Props {
   title: string;
@@ -22,7 +22,7 @@ const {
   class: className,
   ...rest
 } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
+const lang = getLang();
 ---
 
 <!doctype html>

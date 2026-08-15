@@ -6,7 +6,7 @@ import { i18n } from "@/i18n/utils";
 
 const loggedIn = Astro.locals.session;
 
-const { lang, translate: t } = await i18n(Astro.url);
+const { lang, translate: t } = await i18n(Astro.cookies);
 ---
 
 <Layout title={t("admin.title")} description={t("admin.description")}>

@@ -5,7 +5,7 @@ import { deltaForceTable } from "@/db/schema";
 import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
 import { Plus } from "@lucide/astro";
 
-const { lang, translate: t } = await i18n(Astro.url);
+const { lang, translate: t } = await i18n(Astro.cookies);
 
 const deltaForceMembers = await db.select().from(deltaForceTable).all();
 ---

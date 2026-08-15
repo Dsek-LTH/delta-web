@@ -6,7 +6,7 @@ interface Props {
   class?: String;
 }
 
-const { lang, translate: t } = i18n(Astro.url);
+const { lang, translate: t } = i18n(Astro.cookies);
 ---
 
 <nav>
