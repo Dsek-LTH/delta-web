@@ -3,7 +3,7 @@
   "en": {
     "title": "Admin Panel",
     "description": "Manage content on the website",
-    "welcome": "Welcome to the admin panel! This panel currently has no functionality and is only for testing authentication and permissions. While you're here, you can check out some propaganda instead.",
+    "welcome": "Welcome to the admin panel! Here you can manage the website's content, or you can just look at some propaganda while you're here.",
     "login-prompt": "You need to be logged in to access the admin panel.",
     "back": "Back to main page",
     "delta-force": "Manage DELTA --force_"
@@ -11,7 +11,7 @@
   "sv": {
     "title": "Administratörspanel",
     "description": "Hantera innehåll på webbplatsen",
-    "welcome": "Välkommen till adminpanelen! Denna panel har änu inga funktioner utan finns i dagsläget endast för att testa autentisering och behörigheter. Medans du är här kan du få kolla på lite propaganda istället.",
+    "welcome": "Välkommen till adminpanelen! Här kan du hantera webbplatsens innehåll, eller så kan du bara titta på lite propaganda medan du är här.",
     "login-prompt": "Du måste vara inloggad för att komma åt adminpanelen.",
     "back": "Tillbaka till huvudsidan",
     "delta-force": "Hantera DELTA --force_"
