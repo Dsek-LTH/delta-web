@@ -3,6 +3,8 @@ name: Conventional Commits
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
+    branches:
+      - main
 
 jobs:
   pr-conventional-commits:
