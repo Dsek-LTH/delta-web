@@ -7,19 +7,11 @@ import MemberEditor from "./MemberEditor.astro";
 import MemberList from "./MemberList.astro";
 import { ArrowLeft } from "@lucide/astro";
 
-const { class: classname, member } = Astro.props as {
+const { member } = Astro.props as {
   class: string;
   member: typeof deltaForceTable.$inferSelect;
 };
-
 const { lang, translate: t } = await i18n(Astro.url);
-const result = Astro.getActionResult(
-  actions.deltaForceMember.updateDeltaForceMember,
-);
-
-if (result?.data?.studentId) {
-  return Astro.redirect(`/${lang}/admin/delta-force/${result.data.studentId}`);
-}
 
 const loggedIn = Astro.locals.session;
 

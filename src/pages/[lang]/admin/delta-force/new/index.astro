@@ -1,0 +1,30 @@
+---
+import Page from "../Page.astro";
+import { actions } from "astro:actions";
+import { deltaForceTable } from "@/db/schema";
+import { deltaForceRoles } from "@/constants";
+
+const role = Astro.url.searchParams.get("role") as
+  | (typeof deltaForceRoles)[number]
+  | null;
+
+let member: typeof deltaForceTable.$inferSelect = {
+  studentId: "",
+  firstName: "",
+  lastName: "",
+  role: role ?? "general",
+  id: 0,
+  email: "",
+  linkedin: "",
+};
+
+const result = Astro.getActionResult(
+  actions.deltaForceMember.addDeltaForceMember,
+);
+
+if (result?.data?.studentId) {
+  return Astro.redirect(`/${lang}/admin/delta-force/${result.data.studentId}`);
+}
+---
+
+<Page member={member} />

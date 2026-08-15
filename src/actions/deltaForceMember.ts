@@ -33,6 +33,53 @@ export const deltaForceMember = {
         .where(eq(deltaForceTable.studentId, input.oldStudentId))
         .run();
       console.log("Member updated successfully:", input);
+
+      return { studentId: input.studentId };
+    },
+  }),
+  addDeltaForceMember: defineAction({
+    accept: "form",
+    input: z.object({
+      lang: z.string(),
+      firstName: z.string(),
+      lastName: z.string(),
+      studentId: z.string(),
+      role: z.enum(deltaForceRoles),
+      email: z.email(),
+      linkedin: z.url(),
+    }),
+    handler: async (input) => {
+      console.log("Adding new member:", input);
+      await db
+        .insert(deltaForceTable)
+        .values({
+          firstName: input.firstName,
+          lastName: input.lastName,
+          studentId: input.studentId,
+          role: input.role,
+          email: input.email,
+          linkedin: input.linkedin,
+        })
+        .run();
+      console.log("Member added successfully:", input);
+      return { studentId: input.studentId };
+    },
+  }),
+  deleteDeltaForceMember: defineAction({
+    accept: "form",
+    input: z.object({
+      studentId: z.string(),
+    }),
+    handler: async (input) => {
+      console.log("Deleting member with studentId:", input.studentId);
+      await db
+        .delete(deltaForceTable)
+        .where(eq(deltaForceTable.studentId, input.studentId))
+        .run();
+      console.log(
+        "Member deleted successfully with studentId:",
+        input.studentId,
+      );
       return { studentId: input.studentId };
     },
   }),

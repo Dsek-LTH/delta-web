@@ -1,9 +1,6 @@
 ---
 import { actions, isInputError } from "astro:actions";
-import { eq } from "drizzle-orm";
-import Layout from "@/layouts/Layout.astro";
 import { i18n } from "@/i18n/utils";
-import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
 import TextInput from "@/components/TextInput.astro";
 import Label from "@/components/Label.astro";
@@ -27,11 +24,6 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
-console.log(result);
-
-if (result?.data?.studentId) {
-  return Astro.redirect(`/${lang}/admin/delta-force/${result.data.studentId}`);
-}
 
 const loggedIn = Astro.locals.session;
 
@@ -106,10 +98,56 @@ if (!loggedIn) {
     <TextInput name="linkedin" value={member.linkedin} />
   </div>
 
-  <button
-    type="submit"
-    class="btn bg-pink/50 frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2"
-  >
-    {t("admin.delta-force.save")}
-  </button>
+  <div class="flex gap-4 justify-between mt-4">
+    <button
+      type="submit"
+      class="btn bg-pink/50 frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2"
+    >
+      {t("admin.delta-force.save")}
+    </button>
+    <button
+      type="button"
+      name="delete"
+      value={member.studentId}
+      class="btn bg-destructive/50 frosted-glass text-brand-secondary rounded-2xl hover:bg-destructive/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2"
+    >
+      {t("admin.delta-force.delete")}
+    </button>
+  </div>
 </form>
+
+<script>
+  import { actions } from "astro:actions";
+  import { getLangFromUrl } from "@/i18n/utils";
+  import { navigate } from "astro:transitions/client";
+  const lang = getLangFromUrl(new URL(window.location.href));
+
+  const deleteButton: HTMLButtonElement | null = document.querySelector(
+    "button[name='delete']",
+  );
+  if (deleteButton) {
+    deleteButton.addEventListener("click", async () => {
+      if (
+        confirm(
+          "Are you sure you want to delete this member? This action cannot be undone.",
+        )
+      ) {
+        const formData = new FormData();
+        formData.append("studentId", deleteButton.value);
+        formData.append("lang", lang);
+
+        const { data, error } =
+          await actions.deltaForceMember.deleteDeltaForceMember(formData);
+        if (error) {
+          alert(
+            `Failed to delete member: ${
+              error.message ?? "An unknown error occurred."
+            }`,
+          );
+        } else {
+          navigate(`/${lang}/admin/delta-force`);
+        }
+      }
+    });
+  }
+</script>
