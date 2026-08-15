@@ -1,12 +1,13 @@
 ---
-import { getLang, getLocalizedPath } from "@/i18n/utils";
+import { getLang } from "@/i18n/utils";
 import { Image } from "astro:assets";
 import { Languages, ChevronDown } from "@lucide/astro";
 import swedishFlag from "@/assets/sweden.svg";
 import ukFlag from "@/assets/uk.svg";
 
 const { class: className, ...rest } = Astro.props;
-const currentLanguage = getLang();
+const currentLanguage = getLang(Astro.cookies);
+
 const entries = [
   { slug: "sv", lang: "Svenska", flag: swedishFlag, desc: "Byt till svenska" },
   { slug: "en", lang: "English", flag: ukFlag, desc: "Switch to English" },
@@ -76,15 +77,19 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
 </div>
 
 <script>
-  const langButtons = document.querySelectorAll(
+  import { actions } from "astro:actions";
+  import { languages } from "@/i18n/ui";
+
+  const langButtons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
     ".group button[type='button'][value]",
-  ) as NodeListOf<HTMLButtonElement>;
+  );
 
   langButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const selectedLang = button.value;
-      document.cookie = `lang=${selectedLang}; path=/; max-age=${60 * 60 * 24 * 365}`;
-      window.location.reload();
+    button.addEventListener("click", async () => {
+      await actions.language.setLanguage({
+        lang: button.value as keyof typeof languages,
+      });
+      window.location.reload(); // Optional, only if needed for theme/UI sync
     });
   });
 </script>

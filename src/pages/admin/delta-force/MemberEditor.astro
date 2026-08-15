@@ -28,7 +28,7 @@ const inputErrorEntries = inputErrors
 const loggedIn = Astro.locals.session;
 
 if (!loggedIn) {
-  return Astro.redirect(`/${lang}/admin`);
+  return Astro.redirect(`/admin`);
 }
 ---
 
@@ -120,7 +120,7 @@ if (!loggedIn) {
   import { actions } from "astro:actions";
   import { getLang } from "@/i18n/utils";
   import { navigate } from "astro:transitions/client";
-  const lang = getLang();
+  const lang = getLang(Astro.cookies);
 
   const deleteButton: HTMLButtonElement | null = document.querySelector(
     "button[name='delete']",
@@ -145,7 +145,7 @@ if (!loggedIn) {
             }`,
           );
         } else {
-          navigate(`/${lang}/admin/delta-force`);
+          navigate(`/admin/delta-force`);
         }
       }
     });

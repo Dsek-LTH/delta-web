@@ -23,7 +23,7 @@ const result = Astro.getActionResult(
 );
 
 if (result?.data?.studentId) {
-  return Astro.redirect(`/${lang}/admin/delta-force/${result.data.studentId}`);
+  return Astro.redirect(`/admin/delta-force/${result.data.studentId}`);
 }
 ---
 
