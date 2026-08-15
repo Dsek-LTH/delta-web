@@ -1,8 +1,6 @@
 ---
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+import { i18n } from "@/i18n/utils";
+const { lang, translate: t } = await i18n(Astro.cookies);
 
 const { class: className, ...rest } = Astro.props as {
   class: string;

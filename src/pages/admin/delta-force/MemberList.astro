@@ -1,0 +1,64 @@
+---
+import { i18n } from "@/i18n/utils";
+import { db } from "@/db/connect";
+import { deltaForceTable } from "@/db/schema";
+import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
+import { Plus } from "@lucide/astro";
+
+const { lang, translate: t } = await i18n(Astro.cookies);
+
+const deltaForceMembers = await db.select().from(deltaForceTable).all();
+---
+
+<div class="flex gap-8">
+  {
+    deltaForceMembers.length > 0 ? (
+      <div class="flex flex-col gap-4 ">
+        <ul class="flex flex-col gap-4">
+          {deltaForceRoles.map((role) => (
+            <li>
+              <div class="flex gap-2 items-center mb-1">
+                <h2 class="font-bold text-xl">
+                  {t(
+                    deltaFordeRoleToTranslationKey(
+                      role,
+                      deltaForceMembers.filter((m) => m.role === role).length >
+                        1,
+                    ),
+                  )}
+                </h2>
+                <a
+                  class="btn btn-primary frosted-glass text-brand-secondary rounded-lg aspect-square hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit p-1 bg-card/50"
+                  href={`/admin/delta-force/new?role=${role}`}
+                >
+                  <Plus class="w-4 h-4 " />
+                </a>
+              </div>
+              <ul class="font-bold flex flex-col gap-2">
+                {deltaForceMembers
+                  .filter((member) => member.role === role)
+                  .map((member) => (
+                    <li class="frosted-glass items-center p-2 rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300 ease-out">
+                      <a
+                        class="w-full flex justify-between gap-4 text-sm"
+                        href={`/admin/delta-force/${member.studentId}`}
+                      >
+                        <span class="font-bold">
+                          {member.firstName} {member.lastName}
+                        </span>
+                        <span class="italic font-normal">
+                          {member.studentId}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : (
+      <p>{t("admin.delta-force.no-members")}</p>
+    )
+  }
+</div>
