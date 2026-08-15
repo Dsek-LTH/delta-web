@@ -13,22 +13,18 @@ const { lang, translate: t } = i18n(Astro.cookies);
   <ul
     class="frosted-glass rounded-3xl grid grid-flow-col auto-cols-[1fr_2em_1fr] text-2xl font-bold overflow-hidden text-center"
   >
-    <li
-      class="hover:text-brand-secondary/80 hover:bg-card-highlight p-2 rounded-3xl"
-    >
-      <a href={`/student`}>Student</a>
+    <li class="hover:text-brand-primary/80 p-2 rounded-3xl">
+      <a href="/student">Student</a>
     </li>
     <li>
       <a
-        href={`/`}
-        class="flex justify-center items-center text-brand-primary hover:text-brand-primary/80 hover:bg-card-highlight rounded-full aspect-square frosted-glass"
+        href="/"
+        class="flex justify-center items-center text-[1.5em] leading-none text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight rounded-full aspect-square frosted-glass"
         >&Delta;</a
       >
     </li>
-    <li
-      class="hover:text-brand-secondary/80 hover:bg-card-highlight p-2 rounded-3xl"
-    >
-      <a href={`/company`}>{t("navbar.company")}</a>
+    <li class="hover:text-brand-primary/80 p-2 rounded-3xl">
+      <a href="/company">{t("navbar.company")}</a>
     </li>
   </ul>
 </nav>
