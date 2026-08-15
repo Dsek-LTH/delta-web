@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 import { Languages, ChevronDown } from "@lucide/astro";
 import swedishFlag from "@/assets/sweden.svg";
 import ukFlag from "@/assets/uk.svg";
+import { twMerge } from "tailwind-merge";
 
 const { class: className, ...rest } = Astro.props;
 const currentLanguage = getLang(Astro.cookies);
@@ -19,10 +20,10 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
 <div
-  class:list={[
+  class={twMerge(
     "group flex flex-col rounded-2xl frosted-glass p-2 select-none",
     className,
-  ]}
+  )}
   {...rest}
 >
   <input
