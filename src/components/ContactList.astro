@@ -1,4 +1,6 @@
 ---
+import { twMerge } from "tailwind-merge";
+
 const {
   class: className,
   title,
@@ -19,7 +21,7 @@ const {
 ---
 
 <div
-  class:list={["flex flex-col justify-start h-full text-center", className]}
+  class={twMerge("flex flex-col justify-start h-full text-center", className)}
   {...rest}
 >
   <div class="mb-4">

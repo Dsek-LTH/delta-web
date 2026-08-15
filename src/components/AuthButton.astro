@@ -1,6 +1,7 @@
 ---
 import { i18n } from "@/i18n/utils";
 const { lang, translate: t } = await i18n(Astro.cookies);
+import { twMerge } from "tailwind-merge";
 
 const { class: className, ...rest } = Astro.props as {
   class: string;
@@ -11,10 +12,10 @@ const loggedIn = Astro.locals.session;
 
 <button
   id={loggedIn ? "logout-btn" : "login-btn"}
-  class:list={[
+  class={twMerge(
     "btn btn-primary frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50",
     className,
-  ]}
+  )}
   {...rest}
 >
   {t(loggedIn ? "authButton.logout" : "authButton.login")}

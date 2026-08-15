@@ -7,12 +7,13 @@ import ThemePicker from "@/components/ThemePicker.astro";
 import Navbar from "@/components/Navbar.astro";
 import "@/styles/global.css";
 import { getLang } from "@/i18n/utils";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
   title: string;
   description: string;
   backgroundImage?: ImageMetadata;
-  class?: String;
+  class?: string;
 }
 
 const {
@@ -75,10 +76,10 @@ const lang = getLang(Astro.cookies);
     </header>
 
     <main
-      class:list={[
+      class={twMerge(
         "flex flex-col items-center justify-center w-full min-h-dvh shrink-0 pt-30",
         className,
-      ]}
+      )}
       {...rest}
     >
       <slot />
