@@ -88,7 +88,7 @@ Props are destructured with `class: className` aliasing:
 const { class: className, ...rest } = Astro.props;
 ---
 
-<div class:list={["base", className]} {...rest}></div>
+<div class={twMerge("base", className)} {...rest}></div>
 ```
 
 ### Translations
