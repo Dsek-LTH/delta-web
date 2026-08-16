@@ -43,7 +43,7 @@
     "bun-types": "^1.3.14",
     "drizzle-kit": "^1.0.0-rc.5-ab785fc",
     "eslint": "^10.8.1",
-    "eslint-plugin-astro": "^2.1.1",
+    "eslint-plugin-astro": "^3.1.0",
     "lefhook": "^1.1.1",
     "tsx": "^4.23.12"
   }
