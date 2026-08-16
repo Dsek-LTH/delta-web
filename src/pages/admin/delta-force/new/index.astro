@@ -5,8 +5,7 @@ import { deltaForceTable } from "@/db/schema";
 import { deltaForceRoles } from "@/constants";
 
 const role = Astro.url.searchParams.get("role") as
-  | (typeof deltaForceRoles)[number]
-  | null;
+  (typeof deltaForceRoles)[number] | null;
 
 let member: typeof deltaForceTable.$inferSelect = {
   studentId: "",
