@@ -16,4 +16,10 @@ export default defineConfig({
     port: 8080,
   },
   integrations: [icon()],
+  security: {
+    allowedDomains: [
+      { hostname: "delta.dsek.se", protocol: "https" },
+      { hostname: "delta-staging.dsek.se", protocol: "https" },
+    ],
+  },
 });
