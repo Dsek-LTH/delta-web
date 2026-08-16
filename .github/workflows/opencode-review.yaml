@@ -7,7 +7,6 @@ permissions:
   contents: read
   pull-requests: write
   issues: write
-  id-token: write
 
 jobs:
   review:
@@ -24,6 +23,7 @@ jobs:
         uses: anomalyco/opencode/github@latest
         with:
           model: "opencode/big-pickle"
+          use_github_token: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_ZEN_API_KEY: ${{ secrets.OPENCODE_ZEN_API_KEY }}
