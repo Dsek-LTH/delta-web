@@ -133,7 +133,6 @@ type(scope): lowercase description
 | `fix`      | A bug fix                                       |
 | `docs`     | Documentation only changes                      |
 | `build`    | Build system or dependency changes              |
-| `style`    | Formatting, whitespace — no code meaning change |
 | `refactor` | Code restructuring without behavior change      |
 | `perf`     | Performance improvement                         |
 | `test`     | Adding or updating tests                        |
