@@ -88,12 +88,12 @@ Props are destructured with `class: className` aliasing:
 const { class: className, ...rest } = Astro.props;
 ---
 
-<div class:list={["base", className]} {...rest}></div>
+<div class={twMerge("base", className)} {...rest}></div>
 ```
 
 ### Translations
 
-Translations live in `src/i18n/translations/` as JSON files with a `prefix` field for namespacing. Use the `i18n()` or `useTranslations()` helpers from `@/i18n/utils`.
+Translations live in `src/i18n/translations/` as JSON files with a `prefix` field for namespacing. Use the `i18n(Astro.cookies)` or `useTranslations()` helpers from `@/i18n/utils`.
 
 ## Database
 

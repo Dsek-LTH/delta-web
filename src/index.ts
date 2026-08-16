@@ -39,7 +39,7 @@ export async function seedDeltaForce() {
       lastName: "Johansson",
       role: "general",
       email: "tim@delta.dsek.se",
-      linkedin: "https://www.youtube.com/watch?v=XfELJU1mRMg",
+      linkedin: "https://www.linkedin.com/in/tim-johansson-699474429/",
     },
     {
       studentId: "me5081wi-s",

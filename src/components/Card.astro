@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { twMerge } from "tailwind-merge";
 
 interface Props extends HTMLAttributes<"div"> {
   animate?: boolean;
@@ -9,12 +10,12 @@ const { animate = true, class: className, ...rest } = Astro.props;
 ---
 
 <div
-  class:list={[
+  class={twMerge(
     animate &&
       "tilt-card transition-[transform] duration-300 ease-out transform-3d",
     "relative overflow-hidden frosted-glass flex flex-col min-h-0 min-w-0 w-full h-full rounded-2xl",
     className,
-  ]}
+  )}
   {...rest}
 >
   {

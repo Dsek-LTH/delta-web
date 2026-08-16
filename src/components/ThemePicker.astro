@@ -3,10 +3,11 @@
 
 import { ChevronDown, SunMoon, Sun, Moon, Palette } from "@lucide/astro";
 import { i18n } from "@/i18n/utils";
+import { twMerge } from "tailwind-merge";
 
 const { class: className, ...rest } = Astro.props;
 
-const { lang, translate: t } = i18n(Astro.url);
+const { lang, translate: t } = i18n(Astro.cookies);
 
 const entries = [
   { slug: "system", label: t("theme.system"), Icon: SunMoon },
@@ -19,10 +20,10 @@ const toggleId = `theme-switcher-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
 <div
-  class:list={[
+  class={twMerge(
     "group theme-picker flex flex-col rounded-2xl frosted-glass p-2 select-none self-start",
     className,
-  ]}
+  )}
   {...rest}
 >
   <input
