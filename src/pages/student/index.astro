@@ -1,5 +1,14 @@
 ---
+import Layout from "@/layouts/Layout.astro";
 import ComingSoon from "@/components/ComingSoon.astro";
+import { i18n } from "@/i18n/utils";
+
+const { translate: t } = await i18n(Astro.cookies);
 ---
 
-<ComingSoon />
+<Layout
+  title={t("student.title") + " - " + t("comingSoon.title")}
+  description={t("comingSoon.description")}
+>
+  <ComingSoon />
+</Layout>
