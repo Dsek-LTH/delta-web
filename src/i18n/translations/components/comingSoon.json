@@ -1,0 +1,15 @@
+{
+  "prefix": "comingSoon",
+  "en": {
+    "title": "Coming soon",
+    "description": "This page is not implemented yet.",
+    "message": "This page is not implemented yet. Follow the development on ",
+    "return": "Click to return home"
+  },
+  "sv": {
+    "title": "Kommer snart",
+    "description": "Sidan är inte implementerad än.",
+    "message": "Denna sida är inte implementerad än. Följ utvecklingen på ",
+    "return": "Klicka för att återvända till startsidan"
+  }
+}
