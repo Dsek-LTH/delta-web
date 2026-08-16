@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import bun from "@wyattjoh/astro-bun-adapter";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
+import { env } from "./src/envvars.ts";
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,8 +19,10 @@ export default defineConfig({
   integrations: [icon()],
   security: {
     allowedDomains: [
-      { hostname: "delta.dsek.se", protocol: "https" },
-      { hostname: "delta-staging.dsek.se", protocol: "https" },
+      {
+        hostname: env.HOSTNAME ? env.HOSTNAME : "localhost",
+        protocol: "https",
+      },
     ],
   },
 });

@@ -6,7 +6,10 @@ export const auth = betterAuth({
   allowedHosts:
     env.BETTER_AUTH_TRUST_HOST === "true"
       ? "*"
-      : ["delta.dsek.se", "delta-staging.dsek.se"],
+      : env.HOSTNAME
+        ? [env.HOSTNAME]
+        : ["localhost"],
+  secret: env.BETTER_AUTH_SECRET!,
   protocol: env.NODE_ENV === "development" ? "http" : "https",
   session: {
     cookieCache: {
