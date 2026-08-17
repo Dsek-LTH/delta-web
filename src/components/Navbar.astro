@@ -2,14 +2,14 @@
 import "@/styles/global.css";
 import { i18n } from "@/i18n/utils";
 
-interface Props {
-  class?: String;
-}
+interface Props extends HTMLAttributes<"nav"> {}
+
+const { class: className, ...rest } = Astro.props;
 
 const { lang, translate: t } = i18n(Astro.cookies);
 ---
 
-<nav>
+<nav class={className} {...rest}>
   <ul
     class="frosted-glass rounded-3xl grid grid-flow-col auto-cols-[1fr_2em_1fr] text-2xl font-bold overflow-hidden text-center"
   >
