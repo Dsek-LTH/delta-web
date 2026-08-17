@@ -1,4 +1,6 @@
 ---
+import { twMerge } from "tailwind-merge";
+
 const {
   name,
   label,
@@ -11,6 +13,6 @@ const {
 };
 ---
 
-<label class:list={["flex flex-col gap-2", className]} {...rest} for={name}
+<label class={twMerge("flex flex-col gap-2", className)} {...rest} for={name}
   >{label}</label
 >
