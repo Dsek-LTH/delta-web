@@ -44,14 +44,14 @@ const toggleId = `theme-switcher-${Math.random().toString(36).slice(2, 9)}`;
     >
       <span
         data-theme-label
-        class="overflow-hidden whitespace-nowrap font-medium"
+        class="max-sm:hidden overflow-hidden whitespace-nowrap font-medium"
       >
         {entries[0].label}
       </span>
     </div>
 
     <ChevronDown
-      class="transition-transform duration-300 group-hover:rotate-180 group-has-checked:rotate-180 size-4"
+      class="max-sm:hidden transition-transform duration-300 group-hover:rotate-180 group-has-checked:rotate-180 size-4"
     />
   </label>
 
@@ -68,7 +68,9 @@ const toggleId = `theme-switcher-${Math.random().toString(36).slice(2, 9)}`;
             class="flex items-center gap-3 px-3 py-2 hover:bg-card-highlight rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out text-left w-full"
           >
             <Icon class="size-5 shrink-0" />
-            <span class="whitespace-nowrap font-medium">{label}</span>
+            <span class="max-sm:hidden whitespace-nowrap font-medium">
+              {label}
+            </span>
           </button>
         ))
       }
