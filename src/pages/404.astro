@@ -3,10 +3,13 @@ import Layout from "@/layouts/Layout.astro";
 import Card from "@/components/Card.astro";
 import Logo from "@/components/Logo.astro";
 import Countdown from "@/components/Countdown.astro";
+import { i18n } from "@/i18n/utils";
+const { lang, translate: t } = await i18n(Astro.cookies);
 ---
 
 <Layout
-  description="Page was not found."
+  title={t("404.title")}
+  description={t("404.description")}
   class="flex flex-col items-center gap-12 px-6 py-12 mx-auto w-full max-w-7xl lg:px-16"
 >
   <div class="text-center text-shadow-md/25">
@@ -23,16 +26,24 @@ import Countdown from "@/components/Countdown.astro";
       <h2
         class="text-5xl font-bold tracking-tight text-brand-primary text-shadow-sm/25 dark:text-shadow-none"
       >
-        Page was not found
+        {t("404.title")}
       </h2>
-      <p>The page you were looking for was not found (HTTP error: 404).</p>
+      <p>
+        {t("404.message")}
+        <a
+          class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
+          href="mailto:it@delta.dsek.se"
+        >
+          it@delta.dsek.se
+        </a>.
+      </p>
 
       <p>
-        Click to return <a
+        <a
           href="/"
           class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
-          >home</a
-        >.
+          >{t("404.return")}</a
+        >
       </p>
     </Card>
   </div>
