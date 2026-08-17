@@ -2,7 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import ErrorPage from "@/components/ErrorPage.astro";
 import { i18n } from "@/i18n/utils";
-const { translate: t } = await i18n(Astro.cookies);
+const { translate: t } = i18n(Astro.cookies);
 ---
 
 <Layout title={t("404.title")} description={t("404.description")}>
