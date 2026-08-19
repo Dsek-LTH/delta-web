@@ -62,19 +62,21 @@ const lang = getLang(Astro.cookies);
       )
     }
 
-    <header
-      class="flex justify-between lg:grid lg:grid-cols-3 fixed top-0 w-full z-1337 p-2 mt-4"
-    >
-      <Navbar class="flex justify-center lg:col-start-2" />
-      <div class="flex gap-2 justify-end items-start lg:col-start-3">
-        <ThemePicker />
-        <LanguagePicker />
+    <header class="h-20">
+      <div
+        class="flex justify-between lg:grid lg:grid-cols-3 fixed top-2 w-dvw z-1337"
+      >
+        <Navbar class="flex justify-center lg:col-start-2" />
+        <div class="flex gap-2 justify-end items-start lg:col-start-3">
+          <ThemePicker />
+          <LanguagePicker />
+        </div>
       </div>
     </header>
 
     <main
       class={twMerge(
-        "flex flex-col items-center justify-center w-full min-h-dvh shrink-0 mt-12 lg:mt-15",
+        "flex flex-col items-center justify-center w-full min-h-dvh shrink-0",
         className,
       )}
       {...rest}
