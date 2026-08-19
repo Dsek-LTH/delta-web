@@ -2,9 +2,7 @@
 import { Image } from "astro:assets";
 
 import Footer from "@/components/Footer.astro";
-import LanguagePicker from "@/components/LanguagePicker.astro";
-import ThemePicker from "@/components/ThemePicker.astro";
-import Navbar from "@/components/Navbar.astro";
+import Header from "@/components/Header.astro";
 import "@/styles/global.css";
 import { getLang } from "@/i18n/utils";
 import { twMerge } from "tailwind-merge";
@@ -62,22 +60,11 @@ const lang = getLang(Astro.cookies);
       )
     }
 
-    <header
-      class="lg:fixed sticky top-0 justify-end gap-4 w-full z-1337 p-2 grid grid-cols-3"
-    >
-      <div class="flex justify-start"></div>
-      <div class="flex justify-center">
-        <Navbar />
-      </div>
-      <div class="flex justify-end gap-2 items-start">
-        <ThemePicker />
-        <LanguagePicker />
-      </div>
-    </header>
+    <Header />
 
     <main
       class={twMerge(
-        "flex flex-col items-center justify-center w-full min-h-dvh shrink-0 pt-30",
+        "flex flex-col items-center justify-center w-full min-h-dvh shrink-0",
         className,
       )}
       {...rest}

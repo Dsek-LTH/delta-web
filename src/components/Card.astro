@@ -6,7 +6,7 @@ interface Props extends HTMLAttributes<"div"> {
   animate?: boolean;
 }
 
-const { animate = true, class: className, ...rest } = Astro.props;
+const { animate, class: className, ...rest } = Astro.props;
 ---
 
 <div
