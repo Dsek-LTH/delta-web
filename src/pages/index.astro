@@ -4,17 +4,12 @@ import Card from "@/components/Card.astro";
 import { CalendarDays, Clock, MapPin, Users } from "@lucide/astro";
 import Logo from "@/components/Logo.astro";
 import Countdown from "@/components/Countdown.astro";
-import { languages } from "@/i18n/ui.ts";
 import { i18n, getRenderedContent } from "@/i18n/utils";
 import { fairDate } from "@/constants";
 import { getEntry } from "astro:content";
 import cover from "@/assets/tekfok26_0003.webp";
 
-export function getStaticPaths() {
-  return Object.keys(languages).map((lang) => ({ params: { lang } }));
-}
-
-const { lang, translate: t } = i18n(Astro.cookies);
+const { lang, translate: t } = i18n(Astro);
 
 const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
 ---

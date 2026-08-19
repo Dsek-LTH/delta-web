@@ -22,7 +22,7 @@ const {
   newMember?: boolean;
 };
 
-const { lang, translate: t } = i18n(Astro.cookies);
+const { lang, translate: t } = i18n(Astro);
 const action = newMember
   ? actions.deltaForceMember.addDeltaForceMember
   : actions.deltaForceMember.updateDeltaForceMember;
@@ -151,11 +151,10 @@ const memberImage: ImageMetadata = await getMemberImage(member).catch(
 <script>
   import { actions } from "astro:actions";
   import { navigate } from "astro:transitions/client";
-  const lang =
-    document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("lang="))
-      ?.split("=")[1] ?? "en";
+  const langInput = document.querySelector(
+    "input[name='lang']",
+  ) as HTMLInputElement | null;
+  const lang = langInput?.value ?? "sv";
 
   const deleteButton: HTMLButtonElement | null = document.querySelector(
     "button[name='delete']",

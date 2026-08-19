@@ -8,7 +8,7 @@ import Logo from "@/components/Logo.astro";
 
 const deltaForceMembers = await db.select().from(deltaForceTable).all();
 
-const { translate: t } = i18n(Astro.cookies);
+const { translate: t } = i18n(Astro);
 ---
 
 <Layout
