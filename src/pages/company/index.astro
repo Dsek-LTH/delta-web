@@ -1,14 +1,67 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import ComingSoon from "@/components/ComingSoon.astro";
-import { i18n } from "@/i18n/utils";
+import { Picture } from "astro:assets";
 
-const { translate: t } = i18n(Astro.cookies);
+import Layout from "@/layouts/Layout.astro";
+import Package from "@/components/company/Package.astro";
+import PackageTitle from "@/components/company/PackageTitle.astro";
+import { CalendarDays, Clock, MapPin, Users } from "@lucide/astro";
+import Logo from "@/components/Logo.astro";
+import Countdown from "@/components/Countdown.astro";
+import { languages } from "@/i18n/ui.ts";
+import { i18n } from "@/i18n/utils";
+import { getEntry } from "astro:content";
+
+import tekfok from "@/assets/company/tekfok26_0019.jpg";
+
+export function getStaticPaths() {
+  return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+const { lang, translate: t } = i18n(Astro.cookies);
 ---
 
 <Layout
   title={t("company.head.title")}
   description={t("company.head.description")}
+  class="flex flex-col items-center gap-12 px-6 py-12 mx-auto max-w-7xl lg:px-16"
 >
-  <ComingSoon />
+  <section class="frosted-glass text-center p-4 rounded-xl">
+    <h1 class="text-5xl font-bold italic text-brand-secondary p-4">
+      <Logo /> for companies
+    </h1>
+
+    <article>
+      <h2 class="text-brand-primary text-xl font-bold">
+        Meet your future developers
+      </h2>
+      <p class="text-card-content">Lorem ipsum</p>
+    </article>
+  </section>
+
+  <div class="grid grid-rows-5 lg:grid-rows-3 lg:grid-cols-4 gap-8">
+    <Package class="lg:col-span-2 border-bronze">
+      <PackageTitle title="Standard" class="text-bronze" />
+      <p>Lorem ipsum</p>
+    </Package>
+
+    <Package class="lg:col-span-2 border-silver">
+      <PackageTitle title="Tailored" class="text-silver" />
+      <p>Lorem ipsum</p>
+    </Package>
+
+    <Package class="lg:col-span-2 border-gold">
+      <PackageTitle title="Startup" class="text-gold" />
+      <p>Lorem ipsum</p>
+    </Package>
+
+    <Package class="lg:col-span-2 border-diamond">
+      <PackageTitle title="Non-profit" class="text-diamond" />
+      <p>Lorem ipsum</p>
+    </Package>
+
+    <Package class="lg:col-span-2 lg:col-start-2 border-emerald-400">
+      <PackageTitle title="Main sponsor" class="text-emerald-400" />
+      <p>Lorem ipsum</p>
+    </Package>
+  </div>
 </Layout>
