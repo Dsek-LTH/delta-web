@@ -13,7 +13,7 @@ const { class: className, member } = Astro.props as {
   member: typeof deltaForceTable.$inferSelect;
 };
 
-const { lang, translate: t } = await i18n(Astro.cookies);
+const { lang, translate: t } = i18n(Astro);
 const result = Astro.getActionResult(
   actions.deltaForceMember.updateDeltaForceMember,
 );
@@ -36,7 +36,7 @@ if (!loggedIn) {
 <form
   class={twMerge(
     "flex flex-col gap-4 h-fit w-full frosted-glass p-4 rounded-lg bg-card/50 transition-all duration-300 ease-out",
-    classname,
+    className,
   )}
   action={actions.deltaForceMember.updateDeltaForceMember}
   method="POST"
@@ -119,9 +119,11 @@ if (!loggedIn) {
 
 <script>
   import { actions } from "astro:actions";
-  import { getLang } from "@/i18n/utils";
   import { navigate } from "astro:transitions/client";
-  const lang = getLang(Astro.cookies);
+  const langInput = document.querySelector(
+    "input[name='lang']",
+  ) as HTMLInputElement | null;
+  const lang = langInput?.value ?? "sv";
 
   const deleteButton: HTMLButtonElement | null = document.querySelector(
     "button[name='delete']",
