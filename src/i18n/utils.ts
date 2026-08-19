@@ -1,9 +1,33 @@
 import { ui, defaultLang } from "./ui";
-import { type AstroCookies } from "astro";
+import { type AstroGlobal } from "astro";
 
-export function getLang(cookies: AstroCookies | null): keyof typeof ui {
+function resolveLang(candidate: string): keyof typeof ui | null {
+  const normalized = candidate.trim().toLowerCase();
+  if (normalized in ui) return normalized as keyof typeof ui;
+
+  const baseLang = normalized.split("-")[0] as keyof typeof ui;
+  if (baseLang in ui) return baseLang;
+
+  return null;
+}
+
+export function getLang(astro: Readonly<AstroGlobal>): keyof typeof ui {
+  const { cookies, request } = astro;
   const lang = cookies?.get("lang")?.value;
   if (lang && lang in ui) return lang as keyof typeof ui;
+
+  const preferredLangs =
+    request.headers
+      .get("accept-language")
+      ?.split(",")
+      .map((entry) => entry.trim().split(";")[0])
+      .filter(Boolean) ?? [];
+
+  for (const candidate of preferredLangs) {
+    const resolved = resolveLang(candidate);
+    if (resolved) return resolved;
+  }
+
   return defaultLang;
 }
 
@@ -13,11 +37,11 @@ export function useTranslations(lang: keyof typeof ui) {
   };
 }
 
-export function i18n(cookies: AstroCookies | null): {
+export function i18n(astro: Readonly<AstroGlobal>): {
   lang: keyof typeof ui;
   translate: ReturnType<typeof useTranslations>;
 } {
-  const lang = getLang(cookies);
+  const lang = getLang(astro);
   const translate = useTranslations(lang);
   return { lang, translate };
 }

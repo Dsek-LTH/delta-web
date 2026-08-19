@@ -2,7 +2,7 @@
 import { i18n } from "@/i18n/utils";
 import ErrorPage from "./ErrorPage.astro";
 
-const { translate: t } = await i18n(Astro.cookies);
+const { translate: t } = i18n(Astro);
 ---
 
 <ErrorPage title={t("comingSoon.title")}>
