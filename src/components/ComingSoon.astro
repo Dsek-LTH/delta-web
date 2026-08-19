@@ -1,0 +1,17 @@
+---
+import { i18n } from "@/i18n/utils";
+import ErrorPage from "./ErrorPage.astro";
+
+const { translate: t } = await i18n(Astro.cookies);
+---
+
+<ErrorPage title={t("comingSoon.title")}>
+  <p>
+    {t("comingSoon.message")}<a
+      class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
+      href="https://github.com/Dsek-LTH/delta-web"
+    >
+      GitHub
+    </a>.
+  </p>
+</ErrorPage>

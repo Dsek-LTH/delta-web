@@ -1,0 +1,9 @@
+{
+  "prefix": "errorPage",
+  "en": {
+    "return": "Click to return home"
+  },
+  "sv": {
+    "return": "Klicka här för att återvända till startsidan"
+  }
+}

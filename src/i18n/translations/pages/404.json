@@ -3,13 +3,11 @@
   "en": {
     "title": "Page Not Found",
     "description": "The page you are looking for does not exist.",
-    "message": "The page you are looking for does not exist (HTTP error: 404). Is this an unexpected error? Contact support at ",
-    "return": "Click to return home"
+    "message": "The page you are looking for does not exist (HTTP error: 404). Is this an unexpected error? Contact support at "
   },
   "sv": {
     "title": "Sidan hittas inte",
     "description": "Sidan du söker finns inte.",
-    "message": "Sidan du söker finns inte (HTTP-fel: 404). Är detta ett oväntat fel? Kontakta support på ",
-    "return": "Klicka för att återvända till startsidan"
+    "message": "Sidan du söker finns inte (HTTP-fel: 404). Är detta ett oväntat fel? Kontakta support på "
   }
 }
