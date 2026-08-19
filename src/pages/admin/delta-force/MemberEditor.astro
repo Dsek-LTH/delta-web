@@ -1,4 +1,5 @@
 ---
+import { twMerge } from "tailwind-merge";
 import { actions, isInputError } from "astro:actions";
 import { i18n } from "@/i18n/utils";
 import { deltaForceTable } from "@/db/schema";
@@ -7,7 +8,7 @@ import Label from "@/components/Label.astro";
 import SelectInput from "@/components/SelectInput.astro";
 import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
 
-const { class: classname, member } = Astro.props as {
+const { class: className, member } = Astro.props as {
   class: string;
   member: typeof deltaForceTable.$inferSelect;
 };
@@ -33,10 +34,10 @@ if (!loggedIn) {
 ---
 
 <form
-  class:list={[
+  class={twMerge(
     "flex flex-col gap-4 h-fit w-full frosted-glass p-4 rounded-lg bg-card/50 transition-all duration-300 ease-out",
     classname,
-  ]}
+  )}
   action={actions.deltaForceMember.updateDeltaForceMember}
   method="POST"
 >
