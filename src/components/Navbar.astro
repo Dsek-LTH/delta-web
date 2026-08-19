@@ -13,8 +13,8 @@ const { lang, translate: t } = i18n(Astro.cookies);
   <ul
     class="frosted-glass rounded-3xl grid grid-flow-col auto-cols-[1fr_2.5em_1fr] text-xl lg:text-2xl font-bold overflow-hidden text-center items-center h-12 lg:h-16"
   >
-    <li class="p-2 rounded-3xl">
-      <a href="/student" class="hover:text-brand-primary/80">Student</a>
+    <li>
+      <a href="/student" class="hover:text-brand-primary/80 p-3">Student</a>
     </li>
     <li>
       <a
@@ -23,8 +23,8 @@ const { lang, translate: t } = i18n(Astro.cookies);
         >&Delta;</a
       >
     </li>
-    <li class="p-2 rounded-3xl">
-      <a href="/company" class="hover:text-brand-primary/80"
+    <li>
+      <a href="/company" class="hover:text-brand-primary/80 p-3"
         >{t("navbar.company")}</a
       >
     </li>
