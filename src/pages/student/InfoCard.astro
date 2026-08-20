@@ -1,0 +1,36 @@
+---
+import Card from "@/components/Card.astro";
+import { Image } from "astro:assets";
+import { twMerge } from "tailwind-merge";
+
+const { title, imgSrc, imgAlt, reverse } = Astro.props as {
+  title: string;
+  imgSrc: ImageMetadata;
+  imgAlt: string;
+  reverse: boolean;
+};
+---
+
+<Card
+  class="flex items-center flex-col sm:flex-row h-full p-6 lg:p-8 gap-4 sm:gap-8"
+  animate={false}
+>
+  <Image
+    src={imgSrc}
+    alt={imgAlt}
+    class={twMerge(
+      "sm:w-full sm:aspect-4/3 aspect-video h-full sm:max-w-1/4 object-cover rounded-lg lg:rounded-xl",
+      reverse && "sm:order-last",
+    )}
+  />
+  <div class="flex flex-col gap-4 h-full justify-center">
+    <h2
+      class="lg:text-5xl text-3xl font-bold tracking-tight text-brand-primary text-shadow-sm/25 dark:text-shadow-none"
+    >
+      {title}
+    </h2>
+    <div class="lg:text-lg text-base text-gray-600 dark:text-gray-300">
+      <slot />
+    </div>
+  </div>
+</Card>
