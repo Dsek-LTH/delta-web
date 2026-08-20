@@ -1,14 +1,89 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import ComingSoon from "@/components/ComingSoon.astro";
-import { i18n } from "@/i18n/utils";
+import { i18n, getRenderedContent } from "@/i18n/utils";
+import SessionImg from "@/assets/explaining.webp";
+import FairImg from "@/assets/helpdesk.webp";
+import InfoCard from "./InfoCard.astro";
+import FaqCard from "./FaqCard.astro";
+import { getEntry } from "astro:content";
 
-const { translate: t } = i18n(Astro.cookies);
+const { lang, translate: t } = i18n(Astro.cookies);
+
+const studentSession = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/student-sessions",
+);
+const studentFair = await getRenderedContent(getEntry, lang, "student/fair");
+const faqOrganizersAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/organizers",
+);
+const faqWhenAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/when",
+);
+const faqWhereAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/where",
+);
+const faqContactAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/contact",
+);
 ---
 
 <Layout
   title={t("student.title") + " - " + t("comingSoon.title")}
   description={t("comingSoon.description")}
+  class="flex flex-col justify-center items-center gap-16 lg:p-30 lg:px-60 2xl:px-90 p-8"
 >
-  <ComingSoon />
+  <h1
+    class="sm:text-7xl text-5xl font-bold tracking-tight text-brand-secondary text-shadow-sm/25"
+  >
+    {t("student.title")}
+  </h1>
+  <div class="flex flex-col gap-8">
+    <InfoCard
+      title={t("student.session.title")}
+      imgSrc={SessionImg}
+      imgAlt={t("student.session.imgAlt")}
+    >
+      {studentSession && <div set:html={studentSession.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.fair.title")}
+      imgSrc={FairImg}
+      imgAlt={t("student.fair.imgAlt")}
+      reverse
+    >
+      {studentFair && <div set:html={studentFair.html} />}
+    </InfoCard>
+  </div>
+  <div class="w-full">
+    <h2
+      class="lg:text-5xl text-3xl font-bold tracking-tight text-brand-secondary text-shadow-sm/25"
+    >
+      {t("student.faq.title")}
+    </h2>
+    <div class="flex flex-col gap-4 mt-4">
+      <FaqCard question={t("student.faq.organizers.question")}>
+        {faqOrganizersAnswer && <div set:html={faqOrganizersAnswer.html} />}
+      </FaqCard>
+      <FaqCard question={t("student.faq.when.question")}>
+        {faqWhenAnswer && <div set:html={faqWhenAnswer.html} />}
+      </FaqCard>
+      <FaqCard question={t("student.faq.where.question")}>
+        {faqWhereAnswer && <div set:html={faqWhereAnswer.html} />}
+      </FaqCard>
+      <FaqCard question={t("student.faq.contact.question")}>
+        {faqContactAnswer && <div set:html={faqContactAnswer.html} />}
+      </FaqCard>
+    </div>
+  </div>
 </Layout>
