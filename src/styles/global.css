@@ -53,6 +53,7 @@
   --color-silver: #c0c0c0;
   --color-gold: #d4af37;
   --color-diamond: #b9f2ff;
+  --color-emerald: #50c878;
 
   /* Background */
   --color-gradient-source: var(--color-fuchsia-100);
