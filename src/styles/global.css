@@ -49,6 +49,10 @@
 
   /* Misc */
   --color-destructive: var(--color-red-500);
+  --color-bronze: #cd7f32;
+  --color-silver: #c0c0c0;
+  --color-gold: #d4af37;
+  --color-diamond: #b9f2ff;
 
   --font-noto-sans: "Noto Sans", sans-serif;
   --font-noto-sans-mono: "Noto Sans Mono", sans-serif;
