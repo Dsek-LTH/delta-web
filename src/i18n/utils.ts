@@ -22,7 +22,7 @@ export function i18n(cookies: AstroCookies | null): {
   return { lang, translate };
 }
 
-export async function renderedContent(
+export async function getRenderedContent(
   // getEntry can not be immediately imported into a .ts file, hence parameter.
   getEntry: typeof import("astro:content").getEntry,
   lang: keyof typeof ui,
