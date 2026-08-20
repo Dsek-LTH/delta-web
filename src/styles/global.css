@@ -143,19 +143,19 @@ html[data-theme="dark"] {
 
   h1,
   h2 {
-    text-color: var(--color-brand-primary);
+    color: var(--color-brand-primary);
   }
 
   p {
-    text-color: var(--color-brand-secondary);
+    color: var(--color-brand-secondary);
   }
 
   a {
-    text-color: var(--color-backdrop-content-highlight);
+    color: var(--color-backdrop-content-highlight);
   }
 
   a:hover {
-    text-color: color-mix(
+    color: color-mix(
       in srgb,
       var(--color-backdrop-content-highlight) 20%,
       transparent
