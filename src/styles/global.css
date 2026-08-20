@@ -54,6 +54,15 @@
   --color-gold: #d4af37;
   --color-diamond: #b9f2ff;
 
+  /* Background */
+  --color-gradient-source: var(--color-fuchsia-100);
+  --color-gradient-goal: var(--color-backdrop);
+  --gradient-backdrop: radial-gradient(
+    circle at 65% 25%,
+    var(--color-gradient-source) 0%,
+    var(--color-gradient-goal) 100%
+  );
+
   --font-noto-sans: "Noto Sans", sans-serif;
   --font-noto-sans-mono: "Noto Sans Mono", sans-serif;
   --font-roboto: "Roboto", sans-serif;
@@ -96,6 +105,8 @@ html[data-theme="dark"] {
     var(--color-backdrop-content) 10%,
     transparent
   );
+
+  --color-gradient-source: var(--color-indigo-950);
 }
 
 .prose {
@@ -130,23 +141,20 @@ html[data-theme="dark"] {
     font-family: "Inter", sans-serif;
 
     color: var(--color-backdrop-content);
-    background-image: radial-gradient(
-      circle at 65% 25%,
-      var(--color-backdrop-content-muted) 0%,
-      var(--color-backdrop-content-highlight) 100%
-    );
+    background: var(--color-gradient-goal);
+    background-image: var(--gradient-backdrop);
   }
 
   p {
-    text-color: var(--color-brand-secondary);
+    color: var(--color-brand-secondary);
   }
 
   a {
-    text-color: var(--color-backdrop-content-highlight);
+    color: var(--color-backdrop-content-highlight);
   }
 
   a:hover {
-    text-color: color-mix(
+    color: color-mix(
       in srgb,
       var(--color-backdrop-content-highlight) 20%,
       transparent
