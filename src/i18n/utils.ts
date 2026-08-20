@@ -21,3 +21,12 @@ export function i18n(cookies: AstroCookies | null): {
   const translate = useTranslations(lang);
   return { lang, translate };
 }
+
+export async function renderedContent(
+  getEntry: typeof import("astro:content").getEntry,
+  lang: keyof typeof ui,
+  entry: string,
+) {
+  const content = await getEntry(lang, entry);
+  return content?.rendered ?? null;
+}
