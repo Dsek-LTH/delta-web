@@ -1,0 +1,1 @@
+Every great career fair needs awesome hosts and DELTA is no different. We will need lots of help with everything from setting up the fair to answering all kinds of questions in the info desk and hosting the companies to make sure they feel welcome.

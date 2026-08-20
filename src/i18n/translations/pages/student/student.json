@@ -1,9 +1,27 @@
 {
   "prefix": "student",
   "en": {
-    "title": "For Students"
+    "title": "For Students",
+    "session.title": "Engage in student sessions",
+    "session.imgAlt": "Student session",
+    "fair.title": "Have fun with us!",
+    "fair.imgAlt": "Student fair",
+    "faq.title": "FAQ",
+    "faq.organizers.question": "Who organizes DELTA?",
+    "faq.when.question": "When is DELTA?",
+    "faq.where.question": "Where will DELTA take place?",
+    "faq.contact.question": "Who should you contact if you have questions about the companies?"
   },
   "sv": {
-    "title": "För studenter"
+    "title": "För studenter",
+    "session.title": "Engagera dig i student sessions",
+    "session.imgAlt": "Student sessions",
+    "fair.title": "Ha kul med oss!",
+    "fair.imgAlt": "Karriärmässa för studenter",
+    "faq.title": "FAQ",
+    "faq.organizers.question": "Vem arrangerar DELTA?",
+    "faq.when.question": "När är DELTA?",
+    "faq.where.question": "Var kommer DELTA att hållas?",
+    "faq.contact.question": "Vem ska du kontakta om du har frågor om företagen?"
   }
 }

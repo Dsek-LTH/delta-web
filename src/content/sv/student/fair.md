@@ -1,0 +1,1 @@
+En bra karriärmässa behöver engagerade funktionärer, och DELTA är inget undantag. Vi behöver mycket hjälp med allt från att bygga upp mässan till att svara på frågor i infodisken och ta hand om företagen så att de känner sig välkomna.
