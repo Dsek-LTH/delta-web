@@ -141,11 +141,6 @@ html[data-theme="dark"] {
     background-image: var(--gradient-backdrop);
   }
 
-  h1,
-  h2 {
-    color: var(--color-brand-primary);
-  }
-
   p {
     color: var(--color-brand-secondary);
   }
