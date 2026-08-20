@@ -1,0 +1,1 @@
+Step into the spotlight with Student Sessions at the fair! Upload your CV, pick your favorite companies, and they might just choose you for a one-on-one chat. These pivotal meetings, set in the vibrant E-huset, are your gateway to exciting career paths. More details will be shared closer to the event, so stay tuned and get ready to make your mark!
