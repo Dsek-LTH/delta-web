@@ -5,7 +5,7 @@ import { CalendarDays, Clock, MapPin, Users } from "@lucide/astro";
 import Logo from "@/components/Logo.astro";
 import Countdown from "@/components/Countdown.astro";
 import { languages } from "@/i18n/ui.ts";
-import { i18n } from "@/i18n/utils";
+import { i18n, getRenderedContent } from "@/i18n/utils";
 import { fairDate } from "@/constants";
 import { getEntry } from "astro:content";
 import cover from "@/assets/tekfok26_0003.webp";
@@ -16,8 +16,7 @@ export function getStaticPaths() {
 
 const { lang, translate: t } = i18n(Astro.cookies);
 
-const whatIs = await getEntry(lang, "landing-what-is");
-const renderedWhatIs = whatIs?.rendered ?? null;
+const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
 ---
 
 <Layout
@@ -103,7 +102,7 @@ const renderedWhatIs = whatIs?.rendered ?? null;
       <div
         class="flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose"
       >
-        {renderedWhatIs && <div set:html={renderedWhatIs.html} />}
+        {whatIs && <div set:html={whatIs.html} />}
       </div>
     </Card>
   </div>
