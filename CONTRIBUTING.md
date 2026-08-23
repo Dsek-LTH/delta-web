@@ -48,14 +48,14 @@ Thanks for your interest in contributing! This guide covers everything you need 
 
 2. Make your changes.
 
-3. Lint and format code before committing:
+3. Format and lint your code before committing:
 
    ```bash
-   bun lint
    bun format:fix
+   bun lint
    ```
 
-   Git hooks also run Prettier automatically on staged files at commit time, and lint/format checks run before push.
+   Git hooks also run Prettier automatically on staged files at commit time, and format/lint checks run before push.
 
 4. Commit with a [Conventional Commit](#commit-messages) message.
 
