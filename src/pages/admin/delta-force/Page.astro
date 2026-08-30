@@ -11,7 +11,7 @@ const { member } = Astro.props as {
   class: string;
   member: typeof deltaForceTable.$inferSelect;
 };
-const { lang, translate: t } = await i18n(Astro.cookies);
+const { translate: t } = i18n(Astro);
 
 const loggedIn = Astro.locals.session;
 
