@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getActionContext } from "astro:actions";
 import { defineMiddleware } from "astro:middleware";
 
 export const onRequest = defineMiddleware(async (context, next) => {
@@ -10,6 +11,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const isAuthed = await auth.api.getSession({
     headers: context.request.headers,
   });
+
+  if (pathname.startsWith("/admin/") && !isAuthed) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const { action } = getActionContext(context);
+  if (action?.name.startsWith("deltaForceMember") && !isAuthed) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   if (isAuthed) {
     context.locals.user = isAuthed.user;

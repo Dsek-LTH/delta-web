@@ -12,12 +12,6 @@ const { member } = Astro.props as {
   member: typeof deltaForceTable.$inferSelect;
 };
 const { lang, translate: t } = await i18n(Astro.cookies);
-
-const loggedIn = Astro.locals.session;
-
-if (!loggedIn) {
-  return Astro.redirect(`/admin`);
-}
 ---
 
 <Layout
