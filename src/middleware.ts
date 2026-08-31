@@ -4,7 +4,11 @@ import { defineMiddleware } from "astro:middleware";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = new URL(context.request.url).pathname;
-  if (pathname.startsWith("/api/auth") || pathname.match(/\.\w+$/)) {
+  const { action } = getActionContext(context);
+  if (
+    pathname.startsWith("/api/auth") ||
+    (pathname.match(/\.\w+$/) && !action)
+  ) {
     return next();
   }
 
@@ -16,8 +20,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const { action } = getActionContext(context);
-  if (action?.name.startsWith("deltaForceMember") && !isAuthed) {
+  if (action && !action.name.startsWith("language") && !isAuthed) {
     return new Response("Unauthorized", { status: 401 });
   }
 
