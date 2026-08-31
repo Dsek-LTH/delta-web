@@ -3,20 +3,10 @@ import { defineConfig } from "astro/config";
 import bun from "@wyattjoh/astro-bun-adapter";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
+import { env } from "./src/envvars.ts";
 
 // https://astro.build/config
 export default defineConfig({
-  i18n: {
-    defaultLocale: "sv",
-    locales: ["en", "sv"],
-    fallback: {
-      en: "sv",
-    },
-    routing: {
-      prefixDefaultLocale: true,
-      redirectToDefaultLocale: true,
-    },
-  },
   vite: {
     plugins: [tailwindcss()],
   },
@@ -27,4 +17,12 @@ export default defineConfig({
     port: 8080,
   },
   integrations: [icon()],
+  security: {
+    allowedDomains: [
+      {
+        hostname: env.HOSTNAME ? env.HOSTNAME : "localhost",
+        protocol: "https",
+      },
+    ],
+  },
 });

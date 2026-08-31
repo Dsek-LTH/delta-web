@@ -1,18 +1,28 @@
 ---
-const { class: className, ...rest } = Astro.props;
+import type { HTMLAttributes } from "astro/types";
+import { twMerge } from "tailwind-merge";
+
+interface Props extends HTMLAttributes<"div"> {
+  animate?: boolean;
+}
+
+const { animate, class: className, ...rest } = Astro.props;
 ---
 
 <div
-  class:list={[
-    "tilt-card relative overflow-hidden frosted-glass flex flex-col min-h-0 min-w-0 w-full h-full rounded-2xl transition-[transform] duration-300 ease-out transform-3d",
+  class={twMerge(
+    animate &&
+      "tilt-card transition-[transform] duration-300 ease-out transform-3d",
+    "relative overflow-hidden frosted-glass flex flex-col min-h-0 min-w-0 w-full h-full rounded-2xl",
     className,
-  ]}
+  )}
   {...rest}
 >
-  <div
-    class="shimmer-layer -z-10 pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-out bg-[radial-gradient(circle_at_var(--x,50%)_var(--y,50%),var(--color-card-shimmer),transparent_60%)]"
-  >
-  </div>
+  {
+    animate && (
+      <div class="shimmer-layer -z-10 pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-out bg-[radial-gradient(circle_at_var(--x,50%)_var(--y,50%),var(--color-card-shimmer),transparent_60%)]" />
+    )
+  }
 
   <slot />
 </div>

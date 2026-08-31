@@ -1,9 +1,10 @@
 import "dotenv/config";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
-import { deltaForceTable } from "./db/schema";
+import { deltaForceTable } from "@/db/schema";
+import { env } from "@/envvars";
 
-const client = createClient({ url: process.env.DB_FILE_NAME! });
+const client = createClient({ url: env.DB_FILE_NAME! });
 export const db = drizzle({ client });
 
 export async function seedDeltaForce() {
@@ -38,7 +39,7 @@ export async function seedDeltaForce() {
       lastName: "Johansson",
       role: "general",
       email: "tim@delta.dsek.se",
-      linkedin: "https://www.youtube.com/watch?v=XfELJU1mRMg",
+      linkedin: "https://www.linkedin.com/in/tim-johansson-699474429/",
     },
     {
       studentId: "me5081wi-s",

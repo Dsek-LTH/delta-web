@@ -1,0 +1,148 @@
+---
+import { twMerge } from "tailwind-merge";
+import { actions, isInputError } from "astro:actions";
+import { i18n } from "@/i18n/utils";
+import { deltaForceTable } from "@/db/schema";
+import TextInput from "@/components/TextInput.astro";
+import Label from "@/components/Label.astro";
+import SelectInput from "@/components/SelectInput.astro";
+import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
+
+const { class: className, member } = Astro.props as {
+  class: string;
+  member: typeof deltaForceTable.$inferSelect;
+};
+
+const { lang, translate: t } = await i18n(Astro.cookies);
+const result = Astro.getActionResult(
+  actions.deltaForceMember.updateDeltaForceMember,
+);
+const inputErrors = isInputError(result?.error) ? result.error.fields : null;
+const actionError =
+  result?.error && !isInputError(result.error) ? result.error : null;
+const inputErrorEntries = inputErrors
+  ? (Object.entries(inputErrors as Record<string, string[]>) as Array<
+      [string, string[]]
+    >)
+  : [];
+---
+
+<form
+  class={twMerge(
+    "flex flex-col gap-4 h-fit w-full frosted-glass p-4 rounded-lg bg-card/50 transition-all duration-300 ease-out",
+    className,
+  )}
+  action={actions.deltaForceMember.updateDeltaForceMember}
+  method="POST"
+>
+  <input type="hidden" name="oldStudentId" value={member.studentId} />
+  <input type="hidden" name="lang" value={lang} />
+  {
+    (actionError || inputErrors) && (
+      <div class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
+        <p class="font-semibold">Could not save member</p>
+        {actionError && (
+          <p class="mt-1">
+            {actionError.message ?? "An unknown error occurred."}
+          </p>
+        )}
+        {inputErrors && (
+          <ul class="mt-2 list-disc pl-5">
+            {inputErrorEntries.map(([field, messages]) => (
+              <li>
+                <span class="font-medium">{field}:</span> {messages.join(", ")}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    )
+  }
+  <div class="flex flex-col gap-1">
+    <Label name="firstName" label={t("admin.delta-force.member.first-name")} />
+    <TextInput name="firstName" value={member.firstName} />
+  </div>
+  <div class="flex flex-col gap-1">
+    <Label name="lastName" label={t("admin.delta-force.member.last-name")} />
+    <TextInput name="lastName" value={member.lastName} />
+  </div>
+  <div class="flex flex-col gap-1">
+    <Label name="studentId" label={t("admin.delta-force.member.student-id")} />
+    <TextInput name="studentId" value={member.studentId} />
+  </div>
+  <div class="flex flex-col gap-1">
+    <Label name="role" label={t("admin.delta-force.member.role")} />
+    <SelectInput
+      name="role"
+      entries={deltaForceRoles.map((role) => ({
+        description: t(deltaFordeRoleToTranslationKey(role, false)),
+        value: role.toString(),
+      }))}
+      selectedEntry={{
+        description: t(deltaFordeRoleToTranslationKey(member.role, false)),
+        value: member.role.toString(),
+      }}
+    />
+  </div>
+  <div class="flex flex-col gap-1">
+    <Label name="email" label={t("admin.delta-force.member.email")} />
+    <TextInput name="email" value={member.email} />
+  </div>
+  <div class="flex flex-col gap-1">
+    <Label name="linkedin" label={t("admin.delta-force.member.linkedin")} />
+    <TextInput name="linkedin" value={member.linkedin} />
+  </div>
+
+  <div class="flex gap-4 justify-between mt-4">
+    <button
+      type="submit"
+      class="btn bg-pink/50 frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2"
+    >
+      {t("admin.delta-force.save")}
+    </button>
+    <button
+      type="button"
+      name="delete"
+      value={member.studentId}
+      class="btn bg-destructive/50 frosted-glass text-brand-secondary rounded-2xl hover:bg-destructive/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2"
+    >
+      {t("admin.delta-force.delete")}
+    </button>
+  </div>
+</form>
+
+<script>
+  import { actions } from "astro:actions";
+  import { getLang } from "@/i18n/utils";
+  import { navigate } from "astro:transitions/client";
+  const lang = getLang(Astro.cookies);
+
+  const deleteButton: HTMLButtonElement | null = document.querySelector(
+    "button[name='delete']",
+  );
+  if (deleteButton) {
+    deleteButton.addEventListener("click", async () => {
+      if (
+        confirm(
+          "Are you sure you want to delete this member? This action cannot be undone.",
+        )
+      ) {
+        const formData = new FormData();
+        formData.append("studentId", deleteButton.value);
+        formData.append("lang", lang);
+
+        const { data, error } =
+          await actions.deltaForceMember.deleteDeltaForceMember(formData);
+        if (error) {
+          alert(
+            `Failed to delete member: ${
+              error.message ?? "An unknown error occurred."
+            }`,
+          );
+        } else {
+          navigate(`/admin/delta-force`);
+        }
+      }
+    });
+  }
+</script>

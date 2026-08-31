@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 import { createSelectSchema } from "drizzle-orm/zod";
 import { db } from "@/db/connect";
 
-const { lang, translate: t } = i18n(Astro.url);
+const { lang, translate: t } = i18n(Astro.cookies);
 
 const contacts = sqliteTable("contacts", {
   firstName: text().notNull(),
@@ -41,18 +41,16 @@ const generalsValidated = generals.map((general) =>
 ---
 
 <footer
-  class="bg-backdrop p-4 leading-relaxed flex flex-col items-center gap-4"
+  class="bg-backdrop p-4 leading-relaxed flex flex-col items-center gap-4 text-center"
 >
-  <div class="text-center">
-    <p class="text-xl font-semibold">
+  <address class="not-italic">
+    <p class="text-xl font-semibold pb-2">
       {t("footer.contact")}
       : <a
         class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
         href="mailto:delta@dsek.se">delta@dsek.se</a
       >
     </p>
-  </div>
-  <div class="flex justify-center gap-10">
     <div class="grid grid-cols-2 gap-5 border-y border-border py-3">
       <ContactList
         title={t("footer.generals")}
@@ -65,14 +63,13 @@ const generalsValidated = generals.map((general) =>
         contacts={itManagersValidated}
       />
     </div>
-  </div>
-  <!-- <li><a href="https://www.linkedin.com/in/christofer-gartner/">LinkedIn></a></li> -->
+  </address>
 
-  <!-- addr -->
+  <!-- LinkedIn, GitHub, Instagram, ...? -->
 
   <p>&copy; 2026 DELTA. All rights reserved.</p>
 
-  <p class="text-xl text-center font-semibold italic text-brand-secondary">
+  <p class="text-xl font-semibold italic text-brand-secondary">
     {t("footer.development")}
     <a
       class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
@@ -81,4 +78,9 @@ const generalsValidated = generals.map((general) =>
       GitHub
     </a>.
   </p>
+
+  <a
+    class="absolute bottom-0 text-sm text-backdrop hover:text-backdrop-content-highlight/80"
+    href={`/admin`}>{t("footer.admin-panel")}</a
+  >
 </footer>

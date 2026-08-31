@@ -1,0 +1,20 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ErrorPage from "@/components/ErrorPage.astro";
+import { i18n } from "@/i18n/utils";
+const { translate: t } = i18n(Astro.cookies);
+---
+
+<Layout title={t("404.title")} description={t("404.description")}>
+  <ErrorPage title={t("404.title")}>
+    <p>
+      {t("404.message")}
+      <a
+        class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
+        href="mailto:it@delta.dsek.se"
+      >
+        it@delta.dsek.se
+      </a>.
+    </p>
+  </ErrorPage>
+</Layout>

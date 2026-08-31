@@ -1,18 +1,20 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { twMerge } from "tailwind-merge";
 
-interface Props extends HTMLAttributes<"div"> {
+interface Props extends HTMLAttributes<"span"> {
   animate?: boolean;
 }
 
 const { animate = false, class: className, ...rest } = Astro.props;
+const animation = animate ? "animate-caret-blink" : "";
 ---
 
-<div
-  class:list={["font-bold font-noto-sans text-brand-primary", className]}
+<span
+  class={twMerge("font-bold font-noto-sans text-brand-primary", className)}
   {...rest}
 >
   &gt;&nbsp;<span class="text-brand-secondary">DELT</span>&Delta;<span
-    class={animate ? "animate-caret-blink" : ""}>&#95;</span
+    class={animation}>&#95;</span
   >
-</div>
+</span>

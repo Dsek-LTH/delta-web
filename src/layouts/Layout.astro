@@ -2,19 +2,26 @@
 import { Image } from "astro:assets";
 
 import Footer from "@/components/Footer.astro";
-import LanguagePicker from "@/components/LanguagePicker.astro";
-import ThemePicker from "@/components/ThemePicker.astro";
+import Header from "@/components/Header.astro";
 import "@/styles/global.css";
-import { getLangFromUrl } from "@/i18n/utils";
+import { getLang } from "@/i18n/utils";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
+  title: string;
   description: string;
   backgroundImage?: ImageMetadata;
-  class?: String;
+  class?: string;
 }
 
-const { description, backgroundImage, class: className, ...rest } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
+const {
+  title,
+  description,
+  backgroundImage,
+  class: className,
+  ...rest
+} = Astro.props;
+const lang = getLang(Astro.cookies);
 ---
 
 <!doctype html>
@@ -25,7 +32,7 @@ const lang = getLangFromUrl(Astro.url);
     <link rel="icon" type="image/svg+xml" href="/delta-delta.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <title>DELTA | D-sektionen inom TLTH</title>
+    <title>{title}</title>
 
     <script is:inline>
       const stored = localStorage.getItem("theme");
@@ -40,9 +47,7 @@ const lang = getLangFromUrl(Astro.url);
     </script>
   </head>
 
-  <body
-    class="relative isolate flex flex-col bg-backdrop text-backdrop-content font-inter min-h-screen overflow-x-hidden"
-  >
+  <body>
     {
       backgroundImage && (
         <div class="absolute inset-0 -z-1337 pointer-events-none select-none overflow-hidden">
@@ -55,23 +60,19 @@ const lang = getLangFromUrl(Astro.url);
       )
     }
 
-    <header
-      class="lg:fixed sticky top-0 flex items-start justify-end gap-4 w-full z-1337 p-2"
-    >
-      <!-- ☀️🌙 -->
-      <ThemePicker />
-      <LanguagePicker />
-    </header>
+    <div class="flex min-h-dvh flex-col gap-6 lg:gap-0">
+      <Header />
 
-    <main
-      class:list={[
-        "flex flex-col items-center justify-center w-full min-h-dvh shrink-0",
-        className,
-      ]}
-      {...rest}
-    >
-      <slot />
-    </main>
+      <main
+        class={twMerge(
+          "flex flex-col items-center justify-center w-full flex-1 shrink-0",
+          className,
+        )}
+        {...rest}
+      >
+        <slot />
+      </main>
+    </div>
 
     <Footer />
   </body>

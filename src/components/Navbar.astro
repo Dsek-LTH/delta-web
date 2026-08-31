@@ -1,0 +1,37 @@
+---
+import "@/styles/global.css";
+import { i18n } from "@/i18n/utils";
+
+interface Props extends HTMLAttributes<"nav"> {}
+
+const { class: className, ...rest } = Astro.props;
+
+const { lang, translate: t } = i18n(Astro.cookies);
+---
+
+<nav class={className} {...rest}>
+  <ul
+    class="frosted-glass rounded-3xl grid grid-flow-col auto-cols-[1fr_2.5em_1fr] text-xl lg:text-2xl font-bold overflow-hidden text-center items-center h-12 lg:h-16"
+  >
+    <li>
+      <a
+        href="/student"
+        class="text-brand-secondary hover:text-brand-primary/80 p-3">Student</a
+      >
+    </li>
+    <li>
+      <a
+        href="/"
+        class="flex justify-center items-center text-4xl leading-none text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight rounded-full aspect-square frosted-glass"
+        >&Delta;</a
+      >
+    </li>
+    <li>
+      <a
+        href="/company"
+        class="text-brand-secondary hover:text-brand-primary/80 p-3"
+        >{t("navbar.company")}</a
+      >
+    </li>
+  </ul>
+</nav>

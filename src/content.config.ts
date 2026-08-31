@@ -3,14 +3,14 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const sv = defineCollection({
-  loader: glob({ pattern: "*.md", base: "./src/content/sv" }),
+  loader: glob({ pattern: "**/*.md", base: "./src/content/sv" }),
   schema: z.object({
     title: z.string().optional(),
   }),
 });
 
 const en = defineCollection({
-  loader: glob({ pattern: "*.md", base: "./src/content/en" }),
+  loader: glob({ pattern: "**/*.md", base: "./src/content/en" }),
   schema: z.object({
     title: z.string().optional(),
   }),

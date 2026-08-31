@@ -1,17 +1,19 @@
 {
   "prefix": "footer",
   "en": {
-    "contact": "Contact",
+    "contact": "Contact us",
     "development": "This page is under active development. The source code is available on ",
     "language.select": "Switch language: ",
     "it-managers": "IT Managers",
-    "generals": "Delta Generals"
+    "generals": "Delta Generals",
+    "admin-panel": "Admin Panel"
   },
   "sv": {
-    "contact": "Kontakt",
+    "contact": "Kontakta oss",
     "development": "Sidan är under pågående utveckling. Följ utvecklingen på ",
     "language.select": "Byt språk: ",
     "it-managers": "IT-ansvariga",
-    "generals": "Deltageneraler"
+    "generals": "Deltageneraler",
+    "admin-panel": "Administratörspanel"
   }
 }

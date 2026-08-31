@@ -1,0 +1,106 @@
+name: verify
+
+on:
+  pull_request:
+    branches: [main, release]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.x"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Lint
+        run: bun lint
+
+  format:
+    name: format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.x"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Format check
+        run: bun format:check
+
+  docker:
+    name: docker-build-and-smoke-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Build images
+        run: |
+          podman build -t delta-web_delta-web -f Dockerfile.release . &
+          podman build -t delta-web_db-init -f Dockerfile.tools . &
+          wait
+
+      - name: Run db-init
+        run: |
+          set -e
+          podman volume create delta-web-data
+          podman run --rm \
+            -v delta-web-data:/data \
+            -e DB_FILE_NAME=file:/data/local.db \
+            -e NODE_ENV=production \
+            delta-web_db-init
+
+      - name: Start app
+        run: |
+          podman run -d \
+            --name delta-web \
+            -v delta-web-data:/data \
+            -p 8080:8080 \
+            -e NODE_ENV=production \
+            -e HOSTNAME=localhost \
+            -e DB_FILE_NAME=file:/data/local.db \
+            -e BETTER_AUTH_URL=https://delta.dsek.se \
+            -e BETTER_AUTH_AUTHENTIK_DISCOVERY_ENDPOINT=https://auth.dsek.se/application/o/delta-web/.well-known/openid-configuration \
+            -e BETTER_AUTH_AUTHENTIK_ISSUER=https://auth.dsek.se/application/o/delta-web/ \
+            -e BETTER_AUTH_AUTHENTIK_AUTHORIZE_ENDPOINT=https://auth.dsek.se/application/o/authorize/ \
+            -e BETTER_AUTH_AUTHENTIK_TOKEN_ENDPOINT=https://auth.dsek.se/application/o/token/ \
+            -e BETTER_AUTH_SECRET="smoke-test-placeholder-secret-at-least-32-chars!!" \
+            -e BETTER_AUTH_AUTHENTIK_ID="" \
+            -e BETTER_AUTH_AUTHENTIK_SECRET="" \
+            delta-web_delta-web
+
+      - name: Verify homepage
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8080/ >/dev/null; then
+              echo "Homepage responded"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Homepage did not become ready"
+          exit 1
+
+      - name: Cleanup
+        if: always()
+        run: |
+          podman rm -f delta-web 2>/dev/null
+          podman volume rm -f delta-web-data 2>/dev/null
