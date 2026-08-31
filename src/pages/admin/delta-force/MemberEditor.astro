@@ -25,12 +25,6 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
-
-const loggedIn = Astro.locals.session;
-
-if (!loggedIn) {
-  return Astro.redirect(`/admin`);
-}
 ---
 
 <form
