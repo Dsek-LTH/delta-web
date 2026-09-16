@@ -280,7 +280,7 @@ const pricingRows = [
                   <span class={twMerge("text-2xl font-extrabold", tier.color)}>
                     {tier.name}
                   </span>
-                  <span class="text-lg font-semibold text-card-content-muted">
+                  <span class="text-lg font-semibold text-card-content">
                     {tier.price}
                   </span>
                 </div>
@@ -309,11 +309,11 @@ const pricingRows = [
                       ) : (
                         <X
                           aria-label={t("company.pricing.no")}
-                          class="size-6 mx-auto text-card-content-muted/60"
+                          class="size-6 mx-auto text-card-content"
                         />
                       )
                     ) : (
-                      <span class="text-card-content-muted">{value}</span>
+                      <span class="text-card-content">{value}</span>
                     )}
                   </td>
                 );
@@ -364,13 +364,11 @@ const pricingRows = [
                     ) : (
                       <X
                         aria-label={t("company.pricing.no")}
-                        class="size-6 shrink-0 text-card-content-muted/60"
+                        class="size-6 shrink-0 text-card-content"
                       />
                     )
                   ) : (
-                    <span class="text-card-content-muted font-medium">
-                      {value}
-                    </span>
+                    <span class="text-card-content font-medium">{value}</span>
                   )}
                 </li>
               );
