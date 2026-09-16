@@ -330,10 +330,7 @@ const pricingRows = [
       tierOrder.map((tier) => (
         <div class="frosted-glass rounded-2xl overflow-hidden">
           <div
-            class={twMerge(
-              "relative border-t-4 text-center py-6",
-              tier.border,
-            )}
+            class={twMerge("relative border-t-4 text-center py-6", tier.border)}
           >
             <span
               aria-hidden="true"
@@ -353,35 +350,31 @@ const pricingRows = [
             </div>
           </div>
           <ul class="flex flex-col">
-            {
-              pricingRows.map((row) => {
-                const value = row.values[tier.id];
-                return (
-                  <li
-                    class="flex items-center justify-between gap-4 px-4 py-3 border-t border-border odd:bg-card-highlight/40"
-                  >
-                    <span class="font-semibold">{row.label}</span>
-                    {typeof value === "boolean" ? (
-                      value ? (
-                        <Check
-                          aria-label={t("company.pricing.yes")}
-                          class={twMerge("size-6 shrink-0", tier.color)}
-                        />
-                      ) : (
-                        <X
-                          aria-label={t("company.pricing.no")}
-                          class="size-6 shrink-0 text-card-content-muted/60"
-                        />
-                      )
+            {pricingRows.map((row) => {
+              const value = row.values[tier.id];
+              return (
+                <li class="flex items-center justify-between gap-4 px-4 py-3 border-t border-border odd:bg-card-highlight/40">
+                  <span class="font-semibold">{row.label}</span>
+                  {typeof value === "boolean" ? (
+                    value ? (
+                      <Check
+                        aria-label={t("company.pricing.yes")}
+                        class={twMerge("size-6 shrink-0", tier.color)}
+                      />
                     ) : (
-                      <span class="text-card-content-muted font-medium">
-                        {value}
-                      </span>
-                    )}
-                  </li>
-                );
-              })
-            }
+                      <X
+                        aria-label={t("company.pricing.no")}
+                        class="size-6 shrink-0 text-card-content-muted/60"
+                      />
+                    )
+                  ) : (
+                    <span class="text-card-content-muted font-medium">
+                      {value}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       ))
