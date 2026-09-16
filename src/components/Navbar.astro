@@ -1,6 +1,8 @@
 ---
 import "@/styles/global.css";
 import { i18n } from "@/i18n/utils";
+import { twMerge } from "tailwind-merge";
+import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"nav"> {}
 
@@ -16,21 +18,30 @@ const { lang, translate: t } = i18n(Astro.cookies);
     <li>
       <a
         href="/student"
-        class="text-brand-secondary hover:text-brand-primary/80 p-3">Student</a
+        class={twMerge(
+          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
+          Astro.url.pathname === "/student" && "text-shadow-glow",
+        )}
       >
+        Student
+      </a>
     </li>
     <li>
       <a
         href="/"
-        class="flex justify-center items-center text-4xl leading-none text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight rounded-full aspect-square frosted-glass"
-        >&Delta;</a
+        class={twMerge(
+          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight hover:text-shadow-glow rounded-full aspect-square frosted-glass",
+          Astro.url.pathname === "/" && "text-shadow-glow-pink",
+        )}>&Delta;</a
       >
     </li>
     <li>
       <a
         href="/company"
-        class="text-brand-secondary hover:text-brand-primary/80 p-3"
-        >{t("navbar.company")}</a
+        class={twMerge(
+          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
+          Astro.url.pathname === "/company" && "text-shadow-glow",
+        )}>{t("navbar.company")}</a
       >
     </li>
   </ul>
