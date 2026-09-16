@@ -27,14 +27,23 @@ const { lang, translate: t } = i18n(Astro.cookies);
 >
   <section class="frosted-glass text-center p-4 rounded-xl">
     <h1 class="text-5xl font-bold italic text-brand-secondary p-4">
-      <Logo /> for companies
+      <Logo />
+      {t("company.hero.forCompanies")}
     </h1>
 
     <article>
       <h2 class="text-brand-primary text-xl font-bold">
-        Meet your future developers
+        {t("company.hero.meetDevelopers")}
       </h2>
-      <p class="text-card-content">Lorem ipsum</p>
+      <p class="text-card-content mt-5">
+        {t("company.hero.contactBefore")}{" "}
+        <a
+          href="mailto:delta@dsek.se"
+          class="text-brand-primary font-bold underline transition-colors hover:text-brand-primary/80"
+          >delta@dsek.se</a
+        >{" "}
+        {t("company.hero.contactAfter")}
+      </p>
     </article>
   </section>
 
