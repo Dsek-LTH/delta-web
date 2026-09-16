@@ -1,14 +1,162 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import ComingSoon from "@/components/ComingSoon.astro";
-import { i18n } from "@/i18n/utils";
+import { Picture } from "astro:assets";
 
-const { translate: t } = i18n(Astro.cookies);
+import Layout from "@/layouts/Layout.astro";
+import Package from "@/components/company/Package.astro";
+import PackageTitle from "@/components/company/PackageTitle.astro";
+import PricingTable from "@/components/company/PricingTable.astro";
+import Logo from "@/components/Logo.astro";
+import Countdown from "@/components/Countdown.astro";
+import { languages } from "@/i18n/ui.ts";
+import { i18n } from "@/i18n/utils";
+import { getEntry } from "astro:content";
+
+import tekfok from "@/assets/tekfok26_0003.webp";
+
+export function getStaticPaths() {
+  return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+const { lang, translate: t } = i18n(Astro.cookies);
 ---
 
 <Layout
-  title={t("company.title") + " - " + t("comingSoon.title")}
-  description={t("comingSoon.description")}
+  title={t("company.head.title")}
+  description={t("company.head.description")}
+  class="flex flex-col items-center gap-12 px-6 py-12 mx-auto max-w-7xl lg:px-16"
 >
-  <ComingSoon />
+  <section class="frosted-glass text-center p-4 rounded-xl">
+    <h1 class="text-5xl font-bold italic text-brand-secondary p-4">
+      <Logo />
+      {t("company.hero.forCompanies")}
+    </h1>
+
+    <article>
+      <h2 class="text-brand-primary text-xl font-bold">
+        {t("company.hero.meetDevelopers")}
+      </h2>
+      <p class="text-card-content mt-5">
+        {t("company.hero.contactBefore")}{" "}
+        <a
+          href="mailto:delta@dsek.se"
+          class="text-brand-primary font-bold underline transition-colors hover:text-brand-primary/80"
+          >delta@dsek.se</a
+        >{" "}
+        {t("company.hero.contactAfter")}
+      </p>
+    </article>
+  </section>
+
+  <div class="grid lg:grid-cols-4 gap-8">
+    <Package
+      class="lg:col-span-2 border-bronze shadow-[0_0_15px_3px] shadow-bronze/80 hover:shadow-bronze"
+    >
+      <PackageTitle title="Startup" class="text-bronze" />
+      <div class="flex flex-col gap-5 text-base leading-relaxed">
+        <p class="text-lg font-bold text-card-content">
+          {t("company.package.startup.intro")}
+        </p>
+        <p class="text-card-content">
+          {t("company.package.startup.subtitle")}
+        </p>
+        <p class="text-lg font-extrabold text-card-content">
+          {t("company.package.guarantees")}
+        </p>
+        <ul class="delta-bullets flex flex-col gap-2.5 text-card-content">
+          <li>{t("company.package.startup.booth")}</li>
+          <li>{t("company.package.startup.tableStool")}</li>
+          <li>{t("company.package.startup.afterParty")}</li>
+          <li>{t("company.package.startup.lounge")}</li>
+          <li>{t("company.package.startup.wardrobe")}</li>
+          <li>{t("company.package.startup.wifi")}</li>
+        </ul>
+      </div>
+    </Package>
+    <Package
+      class="lg:col-span-2 border-gold shadow-[0_0_15px_3px] shadow-gold/80 hover:shadow-gold"
+    >
+      <PackageTitle title="Standard" class="text-gold" />
+      <div class="flex flex-col gap-5 text-base leading-relaxed">
+        <p class="text-lg font-bold text-card-content">
+          {t("company.package.standard.intro")}
+        </p>
+        <p class="text-card-content">
+          {t("company.package.standard.subtitle")}
+        </p>
+        <p class="text-lg font-extrabold text-card-content">
+          {t("company.package.guarantees")}
+        </p>
+        <ul class="delta-bullets flex flex-col gap-2.5 text-card-content">
+          <li>{t("company.package.standard.booth")}</li>
+          <li>{t("company.package.standard.tableStool")}</li>
+          <li>{t("company.package.standard.afterParty")}</li>
+          <li>{t("company.package.standard.lunch")}</li>
+          <li>{t("company.package.standard.parking")}</li>
+          <li>{t("company.package.standard.lounge")}</li>
+          <li>{t("company.package.standard.wardrobe")}</li>
+          <li>{t("company.package.standard.host")}</li>
+          <li>{t("company.package.standard.wifi")}</li>
+        </ul>
+      </div>
+    </Package>
+
+    <Package
+      class="lg:col-span-2 border-emerald shadow-[0_0_15px_3px] shadow-emerald/80 hover:shadow-emerald"
+    >
+      <PackageTitle title="Main sponsor" class="text-emerald" />
+      <div class="flex flex-col gap-5 text-base leading-relaxed">
+        <p class="text-lg font-bold text-card-content">
+          {t("company.package.main.intro")}
+        </p>
+        <p class="text-card-content">
+          {t("company.package.main.subtitle")}
+        </p>
+        <p class="text-lg font-extrabold text-card-content">
+          {t("company.package.guarantees")}
+        </p>
+        <ul class="delta-bullets flex flex-col gap-2.5 text-card-content">
+          <li>{t("company.package.main.booth")}</li>
+          <li>{t("company.package.main.afterPartyTickets")}</li>
+          <li>{t("company.package.main.bannerLogo")}</li>
+          <li>{t("company.package.main.tv")}</li>
+          <li>{t("company.package.main.host")}</li>
+          <li>{t("company.package.main.afterParty")}</li>
+          <li>{t("company.package.main.parking")}</li>
+          <li>{t("company.package.main.lunch")}</li>
+          <li>{t("company.package.main.marketing")}</li>
+          <li>{t("company.package.main.tables")}</li>
+          <li>{t("company.package.main.wardrobe")}</li>
+          <li>{t("company.package.main.wifi")}</li>
+          <li>{t("company.package.main.priority")}</li>
+        </ul>
+      </div>
+    </Package>
+
+    <Package
+      class="lg:col-span-2 border-diamond shadow-[0_0_15px_3px] shadow-diamond/80 hover:shadow-diamond"
+    >
+      <PackageTitle title="Non-profit" class="text-diamond" />
+      <div class="flex flex-col gap-5 text-base leading-relaxed">
+        <p class="text-lg font-bold text-card-content">
+          {t("company.package.nonprofit.intro")}
+        </p>
+        <p class="text-card-content">
+          {t("company.package.nonprofit.subtitle")}
+        </p>
+        <p class="text-lg font-extrabold text-card-content">
+          {t("company.package.guarantees")}
+        </p>
+        <ul class="delta-bullets flex flex-col gap-2.5 text-card-content">
+          <li>{t("company.package.nonprofit.booth")}</li>
+          <li>{t("company.package.nonprofit.tableStool")}</li>
+          <li>{t("company.package.nonprofit.afterParty")}</li>
+          <li>{t("company.package.nonprofit.lounge")}</li>
+          <li>{t("company.package.nonprofit.wardrobe")}</li>
+          <li>{t("company.package.nonprofit.wifi")}</li>
+        </ul>
+      </div>
+    </Package>
+  </div>
+
+  <PricingTable />
 </Layout>
