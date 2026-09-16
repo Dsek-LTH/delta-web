@@ -14,7 +14,12 @@ const studentSession = await getRenderedContent(
   lang,
   "student/student-sessions",
 );
-const studentFair = await getRenderedContent(getEntry, lang, "student/fair");
+const what = await getRenderedContent(getEntry, lang, "student/what");
+const why = await getRenderedContent(getEntry, lang, "student/why");
+const how = await getRenderedContent(getEntry, lang, "student/how");
+const work = await getRenderedContent(getEntry, lang, "student/work");
+const after = await getRenderedContent(getEntry, lang, "student/after");
+
 const faqOrganizersAnswer = await getRenderedContent(
   getEntry,
   lang,
@@ -42,27 +47,56 @@ const faqContactAnswer = await getRenderedContent(
   description={t("comingSoon.description")}
   class="flex flex-col justify-center items-center gap-16 lg:p-30 lg:px-60 2xl:px-90 p-8"
 >
-  <h1
-    class="sm:text-7xl text-5xl font-bold tracking-tight text-brand-secondary text-shadow-sm/25"
-  >
-    {t("student.title")}
-  </h1>
   <div class="flex flex-col gap-8">
+    <InfoCard
+      title={t("student.what.title")}
+      imgSrc={FairImg}
+      imgAlt={t("student.what.imgAlt")}
+    >
+      {what && <div set:html={what.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.why.title")}
+      imgSrc={FairImg}
+      imgAlt={t("student.why.imgAlt")}
+      reverse
+    >
+      {why && <div set:html={why.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.how.title")}
+      imgSrc={FairImg}
+      imgAlt={t("student.how.imgAlt")}
+      reverse
+    >
+      {how && <div set:html={how.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.work.title")}
+      imgSrc={FairImg}
+      imgAlt={t("student.work.imgAlt")}
+    >
+      {work && <div set:html={work.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.after.title")}
+      imgSrc={FairImg}
+      imgAlt={t("student.after.imgAlt")}
+      reverse
+    >
+      {after && <div set:html={after.html} />}
+    </InfoCard>
+
     <InfoCard
       title={t("student.session.title")}
       imgSrc={SessionImg}
       imgAlt={t("student.session.imgAlt")}
     >
       {studentSession && <div set:html={studentSession.html} />}
-    </InfoCard>
-
-    <InfoCard
-      title={t("student.fair.title")}
-      imgSrc={FairImg}
-      imgAlt={t("student.fair.imgAlt")}
-      reverse
-    >
-      {studentFair && <div set:html={studentFair.html} />}
     </InfoCard>
   </div>
   <div class="w-full">
