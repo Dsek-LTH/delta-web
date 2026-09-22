@@ -2,6 +2,7 @@
   "prefix": "student",
   "en": {
     "title": "For Students",
+    "description": "Page for students to learn more about DELTA, the student fair, and how to get involved.",
     "session.title": "Engage in student sessions",
     "session.imgAlt": "Student session",
     "what.title": "What is DELTA?",
@@ -22,6 +23,7 @@
   },
   "sv": {
     "title": "För studenter",
+    "description": "Sida för studenter att lära sig mer om DELTA, studentmässan och hur man kan engagera sig.",
     "session.title": "Engagera dig i student sessions",
     "session.imgAlt": "Student sessions",
     "fair.title": "Ha kul med oss!",
