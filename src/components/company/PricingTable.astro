@@ -1,0 +1,381 @@
+---
+import { Check, X } from "@lucide/astro";
+import { twMerge } from "tailwind-merge";
+import { i18n } from "@/i18n/utils";
+
+const { translate: t } = i18n(Astro.cookies);
+
+const tierOrder = [
+  {
+    id: "nonprofit",
+    name: t("company.pricing.tier.nonprofit"),
+    price: t("company.pricing.price.nonprofit"),
+    color: "text-diamond",
+    border: "border-diamond",
+    bar: "bg-diamond",
+    glow: "shadow-[0_0_15px_3px] shadow-diamond/80",
+  },
+  {
+    id: "startup",
+    name: t("company.pricing.tier.startup"),
+    price: t("company.pricing.price.startup"),
+    color: "text-bronze",
+    border: "border-bronze",
+    bar: "bg-bronze",
+    glow: "shadow-[0_0_15px_3px] shadow-bronze/80",
+  },
+  {
+    id: "standard",
+    name: t("company.pricing.tier.standard"),
+    price: t("company.pricing.price.standard"),
+    color: "text-gold",
+    border: "border-gold",
+    bar: "bg-gold",
+    glow: "shadow-[0_0_15px_3px] shadow-gold/80",
+  },
+  {
+    id: "main",
+    name: t("company.pricing.tier.main"),
+    price: t("company.pricing.price.main"),
+    color: "text-emerald",
+    border: "border-emerald",
+    bar: "bg-emerald",
+    glow: "shadow-[0_0_15px_3px] shadow-emerald/80",
+  },
+] as const;
+
+const pricingRows = [
+  {
+    label: t("company.pricing.row.booth"),
+    values: {
+      standard: t("company.pricing.value.standardBooth"),
+      nonprofit: t("company.pricing.value.standardBooth"),
+      startup: t("company.pricing.value.standardBooth"),
+      main: t("company.pricing.value.specialBooth"),
+    },
+  },
+  {
+    label: t("company.pricing.row.boothPlacement"),
+    values: {
+      standard: false,
+      nonprofit: false,
+      startup: false,
+      main: t("company.pricing.value.boothPlacement"),
+    },
+  },
+  {
+    label: t("company.pricing.row.table"),
+    values: {
+      standard: "1",
+      nonprofit: "1",
+      startup: "1",
+      main: t("company.pricing.value.unlimited"),
+    },
+  },
+  {
+    label: t("company.pricing.row.chair"),
+    values: {
+      standard: 2,
+      nonprofit: 1,
+      startup: 1,
+      main: t("company.pricing.value.unlimited"),
+    },
+  },
+  {
+    label: t("company.pricing.row.outlets"),
+    values: {
+      standard: true,
+      nonprofit: false,
+      startup: true,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.wifi"),
+    values: {
+      standard: true,
+      nonprofit: false,
+      startup: false,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.tv"),
+    values: {
+      standard: false,
+      nonprofit: false,
+      startup: false,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.storageDelivery"),
+    values: {
+      standard: true,
+      nonprofit: false,
+      startup: false,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.lunch"),
+    values: {
+      standard: 2,
+      nonprofit: false,
+      startup: false,
+      main: t("company.pricing.value.unlimited"),
+    },
+  },
+  {
+    label: t("company.pricing.row.breakfast"),
+    values: {
+      standard: 2,
+      nonprofit: false,
+      startup: false,
+      main: t("company.pricing.value.unlimited"),
+    },
+  },
+  {
+    label: t("company.pricing.row.afterParty"),
+    values: {
+      standard: 2,
+      nonprofit: false,
+      startup: false,
+      main: t("company.pricing.value.unlimited"),
+    },
+  },
+  {
+    label: t("company.pricing.row.afterPartySponsor"),
+    values: {
+      standard: false,
+      nonprofit: false,
+      startup: false,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.afterPartyFoodTicket"),
+    values: {
+      standard: false,
+      nonprofit: false,
+      startup: false,
+      main: 100,
+    },
+  },
+  {
+    label: t("company.pricing.row.afterPartyDrinkTicket"),
+    values: {
+      standard: false,
+      nonprofit: false,
+      startup: false,
+      main: 100,
+    },
+  },
+  {
+    label: t("company.pricing.row.lounge"),
+    values: {
+      standard: true,
+      nonprofit: false,
+      startup: false,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.parking"),
+    values: {
+      standard: 2,
+      nonprofit: false,
+      startup: false,
+      main: t("company.pricing.value.unlimited"),
+    },
+  },
+  {
+    label: t("company.pricing.row.priorityHeadSponsor"),
+    values: {
+      standard: false,
+      nonprofit: false,
+      startup: false,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.representative"),
+    values: {
+      standard: true,
+      nonprofit: false,
+      startup: false,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.wardrobeInfodesk"),
+    values: {
+      standard: true,
+      nonprofit: false,
+      startup: false,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.logo"),
+    values: {
+      standard: true,
+      nonprofit: true,
+      startup: true,
+      main: true,
+    },
+  },
+  {
+    label: t("company.pricing.row.social"),
+    values: {
+      standard: false,
+      nonprofit: false,
+      startup: false,
+      main: true,
+    },
+  },
+];
+---
+
+<section id="pricing" class="w-full scroll-mt-28 flex flex-col gap-6">
+  <div class="flex flex-col items-center gap-4 text-center">
+    <h2
+      class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary text-shadow-sm/25 dark:text-shadow-none"
+    >
+      {t("company.pricing.title")}
+    </h2>
+    <p class="max-w-3xl leading-relaxed text-card-content">
+      {t("company.pricing.subtitle")}
+    </p>
+  </div>
+
+  <div class="hidden lg:block overflow-x-auto rounded-2xl frosted-glass">
+    <table class="w-full min-w-200 border-collapse">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            class="px-6 py-6 text-left text-xl font-bold uppercase tracking-tight min-w-56"
+          >
+            {t("company.pricing.feature")}
+          </th>
+          {
+            tierOrder.map((tier) => (
+              <th
+                scope="col"
+                class={twMerge(
+                  "relative px-4 pt-6 pb-6 border-t-4 text-center min-w-44",
+                  tier.border,
+                )}
+              >
+                <span
+                  aria-hidden="true"
+                  class={twMerge(
+                    "absolute -top-0.5 inset-x-0 h-1",
+                    tier.bar,
+                    tier.glow,
+                  )}
+                />
+                <div class="flex flex-col items-center gap-2">
+                  <span class={twMerge("text-2xl font-extrabold", tier.color)}>
+                    {tier.name}
+                  </span>
+                  <span class="text-lg font-semibold text-card-content">
+                    {tier.price}
+                  </span>
+                </div>
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          pricingRows.map((row) => (
+            <tr class="border-t border-border odd:bg-card-highlight/40">
+              <th scope="row" class="px-6 py-4 text-left font-semibold">
+                {row.label}
+              </th>
+              {tierOrder.map((tier) => {
+                const value = row.values[tier.id];
+                return (
+                  <td class="px-4 py-4 text-center min-w-44">
+                    {typeof value === "boolean" ? (
+                      value ? (
+                        <Check
+                          aria-label={t("company.pricing.yes")}
+                          class={twMerge("size-6 mx-auto", tier.color)}
+                        />
+                      ) : (
+                        <X
+                          aria-label={t("company.pricing.no")}
+                          class="size-6 mx-auto text-card-content"
+                        />
+                      )
+                    ) : (
+                      <span class="text-card-content">{value}</span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="lg:hidden flex flex-col gap-8">
+    {
+      tierOrder.map((tier) => (
+        <div class="frosted-glass rounded-2xl overflow-hidden">
+          <div
+            class={twMerge("relative border-t-4 text-center py-6", tier.border)}
+          >
+            <span
+              aria-hidden="true"
+              class={twMerge(
+                "absolute -top-0.5 inset-x-0 h-1",
+                tier.bar,
+                tier.glow,
+              )}
+            />
+            <div class="flex flex-col items-center gap-2">
+              <span class={twMerge("text-2xl font-extrabold", tier.color)}>
+                {tier.name}
+              </span>
+              <span class="text-lg font-semibold text-card-content-muted">
+                {tier.price}
+              </span>
+            </div>
+          </div>
+          <ul class="flex flex-col">
+            {pricingRows.map((row) => {
+              const value = row.values[tier.id];
+              return (
+                <li class="flex items-center justify-between gap-4 px-4 py-3 border-t border-border odd:bg-card-highlight/40">
+                  <span class="font-semibold">{row.label}</span>
+                  {typeof value === "boolean" ? (
+                    value ? (
+                      <Check
+                        aria-label={t("company.pricing.yes")}
+                        class={twMerge("size-6 shrink-0", tier.color)}
+                      />
+                    ) : (
+                      <X
+                        aria-label={t("company.pricing.no")}
+                        class="size-6 shrink-0 text-card-content"
+                      />
+                    )
+                  ) : (
+                    <span class="text-card-content font-medium">{value}</span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
