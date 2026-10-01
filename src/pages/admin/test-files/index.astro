@@ -22,7 +22,6 @@ pictures = env.MINIO_BUCKET_PUBLIC
       })
   : [];
 
-
 const result = Astro.getActionResult(
   actions.deltaForceMember.updateDeltaForceMember,
 );
@@ -34,8 +33,6 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
-
-
 ---
 
 <Layout title="Test files" description="Test files">
@@ -53,28 +50,28 @@ const inputErrorEntries = inputErrors
     >
       <input type="hidden" name="prefix" value="test" />
       <input type="hidden" name="bucket" value={env.MINIO_BUCKET_PUBLIC} />
-    {
-      (actionError || inputErrors) && (
-        <div class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
-          <p class="font-semibold">Could not upload file</p>
-          {actionError && (
-            <p class="mt-1">
-              {actionError.message ?? "An unknown error occurred."}
-            </p>
-          )}
-          {inputErrors && (
-            <ul class="mt-2 list-disc pl-5">
-              {inputErrorEntries.map(([field, messages]) => (
-                <li>
-                  <span class="font-medium">{field}:</span>{" "}
-                  {messages.join(", ")}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )
-    }
+      {
+        (actionError || inputErrors) && (
+          <div class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
+            <p class="font-semibold">Could not upload file</p>
+            {actionError && (
+              <p class="mt-1">
+                {actionError.message ?? "An unknown error occurred."}
+              </p>
+            )}
+            {inputErrors && (
+              <ul class="mt-2 list-disc pl-5">
+                {inputErrorEntries.map(([field, messages]) => (
+                  <li>
+                    <span class="font-medium">{field}:</span>{" "}
+                    {messages.join(", ")}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )
+      }
       <input
         type="file"
         name="file"
