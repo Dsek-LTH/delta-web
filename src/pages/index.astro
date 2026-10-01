@@ -71,7 +71,7 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
       <ul class="flex flex-col h-full justify-center gap-6 mx-auto text-2xl">
         <li class="flex items-start gap-3">
           <CalendarDays class="size-6 text-card-content-muted shrink-0 mt-1" />
-          <span>
+          <span class="capitalize">
             {
               fairDate.toLocaleDateString(lang, {
                 weekday: "long",
