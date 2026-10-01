@@ -1,8 +1,11 @@
 ---
+import { Image } from "astro:assets";
+
 import Layout from "@/layouts/Layout.astro";
 import { fileHandler } from "@/files";
 import { type FileData } from "@/files/fileHandler";
 import { env } from "@/envvars";
+import { actions, isInputError } from "astro:actions";
 
 let pictures: FileData[] = [];
 pictures = env.MINIO_BUCKET_PUBLIC
@@ -18,6 +21,21 @@ pictures = env.MINIO_BUCKET_PUBLIC
         return [];
       })
   : [];
+
+
+const result = Astro.getActionResult(
+  actions.deltaForceMember.updateDeltaForceMember,
+);
+const inputErrors = isInputError(result?.error) ? result.error.fields : null;
+const actionError =
+  result?.error && !isInputError(result.error) ? result.error : null;
+const inputErrorEntries = inputErrors
+  ? (Object.entries(inputErrors as Record<string, string[]>) as Array<
+      [string, string[]]
+    >)
+  : [];
+
+
 ---
 
 <Layout title="Test files" description="Test files">
@@ -26,24 +44,104 @@ pictures = env.MINIO_BUCKET_PUBLIC
     <p class="text-balance">
       This page is for testing file uploads and downloads.
     </p>
+    <h2 class="text-2xl font-bold">Upload a file</h2>
+    <form
+      class="flex flex-col gap-4 p-8 border rounded-lg shadow-md bg-card/50"
+      action={actions.files.upload}
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="hidden" name="prefix" value="test" />
+      <input type="hidden" name="bucket" value={env.MINIO_BUCKET_PUBLIC} />
+    {
+      (actionError || inputErrors) && (
+        <div class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
+          <p class="font-semibold">Could not upload file</p>
+          {actionError && (
+            <p class="mt-1">
+              {actionError.message ?? "An unknown error occurred."}
+            </p>
+          )}
+          {inputErrors && (
+            <ul class="mt-2 list-disc pl-5">
+              {inputErrorEntries.map(([field, messages]) => (
+                <li>
+                  <span class="font-medium">{field}:</span>{" "}
+                  {messages.join(", ")}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
+      <input
+        type="file"
+        name="file"
+        class="file-input file-input-bordered file-input-primary w-full max-w-xs"
+      />
+      <input
+        type="text"
+        name="name"
+        placeholder="File name (optional)"
+        class="input input-bordered input-primary w-full max-w-xs"
+      />
+      <button
+        type="submit"
+        class="btn btn-primary frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50"
+      >
+        Upload
+      </button>
+    </form>
+    <h2 class="text-2xl font-bold">Delete a file</h2>
+    <form
+      class="flex flex-col gap-4 p-8 border rounded-lg shadow-md bg-card/50"
+      action="/api/files/delete"
+      method="post"
+    >
+      <input
+        type="text"
+        name="fileName"
+        placeholder="File name"
+        class="input input-bordered input-primary w-full max-w-xs"
+      />
+      <button
+        type="submit"
+        class="btn btn-primary frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50"
+      >
+        Delete
+      </button>
+    </form>
+    <h2 class="text-2xl font-bold">Avalible Files</h2>
+    {
+      pictures.map((picture) => {
+        return (
+          <div class="flex flex-col justify-start gap-4 p-8 border rounded-lg shadow-md bg-card/50">
+            <h3 class="text-2xl font-bold">{picture.name}</h3>
+            {picture.thumbnailUrl && (
+              <Image
+                src={picture.thumbnailUrl}
+                alt="Background Cover"
+                width={160}
+                height={90}
+              />
+            )}
+
+            <p class="text-balance">Size: {picture.size} bytes</p>
+            <p class="text-balance">
+              Last modified: {picture.modDate?.toISOString()}
+            </p>
+            <a
+              class="btn btn-primary frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50"
+              href={picture.thumbnailUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download
+            </a>
+          </div>
+        );
+      })
+    }
   </div>
-  {
-    pictures.map((picture) => {
-      <div class="flex flex-col justify-start flex-1 w-full gap-8 p-30 px-60">
-        <h2 class="text-2xl font-bold">{picture.name}</h2>
-        <p class="text-balance">Size: {picture.size} bytes</p>
-        <p class="text-balance">
-          Last modified: {picture.modDate?.toISOString()}
-        </p>
-        <a
-          class="btn btn-primary frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50"
-          href={picture.thumbnailUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Download
-        </a>
-      </div>;
-    })
-  }
 </Layout>

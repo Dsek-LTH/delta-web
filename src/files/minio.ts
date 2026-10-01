@@ -9,8 +9,8 @@ const minio = new Client({
       ? 443
       : 80,
   useSSL: env.MINIO_USE_SSL === "true",
-  accessKey: env.MINIO_ROOT_USER || "",
-  secretKey: env.MINIO_ROOT_PASSWORD || "",
+  accessKey: env.MINIO_USERNAME || "",
+  secretKey: env.MINIO_PASSWORD || "",
 });
 
 export { CopyConditions } from "minio";

@@ -26,13 +26,15 @@ export const compressImage = async (
     .webp(options?.webp)
     .toBuffer();
 
+export type CompressionOptions = Parameters<typeof compressImage>[1];
+
 export const uploadFile = async (
   headers: Headers | undefined,
   file: File,
   prefix: string,
   bucket: string,
   name?: string,
-  compressionOptions?: Parameters<typeof compressImage>[1] | false, // false means no compression, undefined is default compression (for images only of course)
+  compressionOptions?: CompressionOptions | false, // false means no compression, undefined is default compression (for images only of course)
 ) => {
   let formattedName = prepareNameForFilesystem(
     name ?? getNameOfFile(file.name),
