@@ -5,5 +5,5 @@ import { files } from "./files";
 export const server = {
   deltaForceMember,
   language,
-  files
+  files,
 };
