@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
 
-const { lang } = await i18n(Astro.cookies);
+const { lang } = i18n(Astro);
 const memberId = Astro.params.member;
 const result = Astro.getActionResult(
   actions.deltaForceMember.updateDeltaForceMember,
