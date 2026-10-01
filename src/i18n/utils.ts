@@ -20,8 +20,14 @@ export function getLang(astro: Readonly<AstroGlobal>): keyof typeof ui {
     request.headers
       .get("accept-language")
       ?.split(",")
-      .map((entry) => entry.trim().split(";")[0])
-      .filter(Boolean) ?? [];
+      .map((entry) => {
+        const [lang, qPart] = entry.trim().split(";");
+        const q = qPart ? parseFloat(qPart.replace("q=", "")) : 1.0;
+        return { lang: lang.toLowerCase(), q };
+      })
+      .filter(({ lang }) => lang)
+      .sort((a, b) => b.q - a.q)
+      .map(({ lang }) => lang) ?? [];
 
   for (const candidate of preferredLangs) {
     const resolved = resolveLang(candidate);
