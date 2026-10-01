@@ -1,9 +1,19 @@
 {
   "prefix": "navbar",
   "en": {
-    "company": "Company"
+    "home": "Home",
+    "menu": "Open menu",
+    "company": "For Companies",
+    "student": "For Students",
+    "project-group": "Project group",
+    "attendees": "Attendees"
   },
   "sv": {
-    "company": "Företag"
+    "home": "Hem",
+    "menu": "Öppna meny",
+    "company": "För företag",
+    "student": "För studenter",
+    "project-group": "Projektgrupp",
+    "attendees": "Deltagare"
   }
 }
