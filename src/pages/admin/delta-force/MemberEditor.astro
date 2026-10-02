@@ -10,6 +10,7 @@ import SelectInput from "@/components/SelectInput.astro";
 import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
 import FileInput from "@/components/FileInput.astro";
 import DefaultProfilePicture from "@/assets/default-profile.webp";
+import { getFileUrl } from "@/files/client";
 
 const {
   class: className,
@@ -112,7 +113,7 @@ const inputErrorEntries = inputErrors
     <Label name="image" label={t("admin.delta-force.member.picture")} />
 
     <Image
-      src={member.imageUrl || DefaultProfilePicture}
+      src={getFileUrl(member.imageUrl) || DefaultProfilePicture}
       alt={t("admin.delta-force.member.picture")}
       width={128}
       height={128}
