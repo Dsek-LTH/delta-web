@@ -19,9 +19,22 @@ export const checkMemberImageExists = async (member: {
 
   try {
     await minio.statObject(bucket, objectName);
+    const url = `${MINIO_BASE_URL}${bucket}/${objectName}`;
+    if (!url) {
+      return false;
+    }
     return true;
-  } catch (error) {
-    return false;
+  } catch (err: any) {
+    if (
+      err.code === "NotFound" ||
+      err.code === "NoSuchKey" ||
+      err.statusCode === 404
+    ) {
+      return false;
+    }
+
+    console.error(`Unexpected MinIO error for ${objectName}:`, err);
+    throw err;
   }
 };
 
