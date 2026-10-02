@@ -116,14 +116,12 @@ const removeFileGivenPath = async (
   }
 };
 
-/**
- * As the name implies this removes an object from the storage without checking any valid access, make sure to check access before calling this function
- */
-const removeFilesWithoutAccessCheck = async (
+const removeObjects = async (
   context: APIContext,
   bucket: string,
   fileNames: string[],
 ): Promise<FileData[]> => {
+  authorize(context);
   const deleted: FileData[] = [];
 
   try {
@@ -143,15 +141,6 @@ const removeFilesWithoutAccessCheck = async (
     throw e;
   }
   return deleted;
-};
-
-const removeObjects = async (
-  context: APIContext,
-  bucket: string,
-  fileNames: string[],
-) => {
-  authorize(context);
-  await removeFilesWithoutAccessCheck(context, bucket, fileNames);
 };
 
 type FileChange = {
