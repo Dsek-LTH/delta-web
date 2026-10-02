@@ -4,6 +4,8 @@ import { deltaForceRoles } from "@/constants";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { uploadFile } from "@/files/uploadFiles";
+import { env } from "@/envvars";
 
 export const deltaForceMember = {
   updateDeltaForceMember: defineAction({
@@ -17,8 +19,34 @@ export const deltaForceMember = {
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
+      image: z
+        .instanceof(File)
+        .refine((f) => f.size > 0)
+        .optional(),
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
+      let fileURL: string | undefined;
+
+      if (input.image) {
+        fileURL = await uploadFile(
+          context.request.headers,
+          input.image,
+          "delta-force-members",
+          env.MINIO_BUCKET_PUBLIC || "delta-public",
+          `${input.studentId}`,
+          {
+            resize: {
+              width: 800,
+              height: 800,
+              fit: "cover",
+            },
+            webp: {
+              quality: 80,
+            },
+          },
+        );
+      }
+
       console.log("Updating member:", input);
       await db
         .update(deltaForceTable)
@@ -29,6 +57,7 @@ export const deltaForceMember = {
           role: input.role,
           email: input.email,
           linkedin: input.linkedin,
+          imageUrl: fileURL,
         })
         .where(eq(deltaForceTable.studentId, input.oldStudentId))
         .run();
@@ -47,8 +76,33 @@ export const deltaForceMember = {
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
+      image: z
+        .instanceof(File)
+        .refine((f) => f.size > 0)
+        .optional(),
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
+      let fileURL: string | undefined;
+
+      if (input.image) {
+        fileURL = await uploadFile(
+          context.request.headers,
+          input.image,
+          "delta-force-members",
+          env.MINIO_BUCKET_PUBLIC || "delta-public",
+          `${input.studentId}`,
+          {
+            resize: {
+              width: 800,
+              height: 800,
+              fit: "cover",
+            },
+            webp: {
+              quality: 80,
+            },
+          },
+        );
+      }
       console.log("Adding new member:", input);
       await db
         .insert(deltaForceTable)
@@ -59,6 +113,7 @@ export const deltaForceMember = {
           role: input.role,
           email: input.email,
           linkedin: input.linkedin,
+          imageUrl: fileURL,
         })
         .run();
       console.log("Member added successfully:", input);
