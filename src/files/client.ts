@@ -34,7 +34,7 @@ export const checkMemberImageExists = async (member: {
     }
 
     console.error(`Unexpected MinIO error for ${objectName}:`, err);
-    throw err;
+    throw new Error(`Unexpected MinIO error for ${objectName}: ${err.message}`);
   }
 };
 
@@ -66,6 +66,6 @@ export const getMemberImage = async (member: {
     }
 
     console.error(`Unexpected MinIO error for ${objectName}:`, err);
-    throw err;
+    return DefaultProfilePicture;
   }
 };
