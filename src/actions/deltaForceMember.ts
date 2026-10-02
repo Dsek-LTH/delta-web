@@ -19,7 +19,10 @@ export const deltaForceMember = {
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
-      image: z.instanceof(File).optional(),
+      image: z
+        .instanceof(File)
+        .refine((f) => f.size > 0)
+        .optional(),
     }),
     handler: async (input, context) => {
       let fileURL: string | undefined;
@@ -73,7 +76,10 @@ export const deltaForceMember = {
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
-      image: z.instanceof(File).optional(),
+      image: z
+        .instanceof(File)
+        .refine((f) => f.size > 0)
+        .optional(),
     }),
     handler: async (input, context) => {
       let fileURL: string | undefined;
