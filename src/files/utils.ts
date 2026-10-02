@@ -1,5 +1,4 @@
 export const isFileImage = (file: File) => file.type.split("/")[0] === "image";
-export const isFilePDF = (file: File) => file.type === "application/pdf";
 
 export const getNameOfFile = (fileName: string) => {
   const dotIndex = fileName.lastIndexOf(".");
