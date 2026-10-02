@@ -1,4 +1,4 @@
-import { defineAction } from "astro:actions";
+import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro/zod";
 import { deltaForceRoles } from "@/constants";
 import { db } from "@/db/connect";
@@ -35,18 +35,6 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Updating member:", input);
-      await db
-        .update(deltaForceTable)
-        .set({
-          firstName: input.firstName,
-          lastName: input.lastName,
-          studentId: input.studentId,
-          role: input.role,
-          email: input.email,
-          linkedin: input.linkedin,
-        })
-        .where(eq(deltaForceTable.studentId, input.oldStudentId))
-        .run();
       if (
         input.oldStudentId !== input.studentId &&
         (await checkMemberImageExists({ studentId: input.oldStudentId }))
@@ -61,10 +49,10 @@ export const deltaForceMember = {
               ],
             );
           } catch (error) {
-            console.error(
-              `Failed to delete image for studentId ${input.studentId}:`,
-              error,
-            );
+            throw new ActionError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+            });
           }
         } else {
           try {
@@ -75,15 +63,16 @@ export const deltaForceMember = {
               `delta-force-members/${prepareNameForFilesystem(input.studentId, input.studentId, "webp")}`,
             );
             if (!res) {
-              console.error(
-                `Failed to rename image for studentId ${input.oldStudentId} to ${input.studentId}: No response from fileHandler.rename`,
-              );
+              throw new ActionError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: `Failed to rename image for studentId ${input.oldStudentId} to ${input.studentId}: No response from fileHandler.rename`,
+              });
             }
           } catch (error) {
-            console.error(
-              `Failed to rename old image for studentId ${input.oldStudentId}:`,
-              error,
-            );
+            throw new ActionError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: `Failed to rename old image for studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
+            });
           }
         }
       }
@@ -105,6 +94,25 @@ export const deltaForceMember = {
             },
           },
         );
+      }
+      try {
+        await db
+          .update(deltaForceTable)
+          .set({
+            firstName: input.firstName,
+            lastName: input.lastName,
+            studentId: input.studentId,
+            role: input.role,
+            email: input.email,
+            linkedin: input.linkedin,
+          })
+          .where(eq(deltaForceTable.studentId, input.oldStudentId))
+          .run();
+      } catch (error) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to update member with studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
+        });
       }
       return { studentId: input.studentId };
     },
@@ -123,17 +131,6 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Adding new member:", input);
-      await db
-        .insert(deltaForceTable)
-        .values({
-          firstName: input.firstName,
-          lastName: input.lastName,
-          studentId: input.studentId,
-          role: input.role,
-          email: input.email,
-          linkedin: input.linkedin,
-        })
-        .run();
       if (input.image) {
         await uploadFile(
           context as APIContext,
@@ -153,6 +150,24 @@ export const deltaForceMember = {
           },
         );
       }
+      try {
+        await db
+          .insert(deltaForceTable)
+          .values({
+            firstName: input.firstName,
+            lastName: input.lastName,
+            studentId: input.studentId,
+            role: input.role,
+            email: input.email,
+            linkedin: input.linkedin,
+          })
+          .run();
+      } catch (error) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to add new member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+        });
+      }
       return { studentId: input.studentId };
     },
   }),
@@ -163,11 +178,6 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Deleting member with studentId:", input.studentId);
-      await db
-        .delete(deltaForceTable)
-        .where(eq(deltaForceTable.studentId, input.studentId))
-        .run();
-
       if (await checkMemberImageExists(input)) {
         try {
           await fileHandler.remove(
@@ -178,12 +188,24 @@ export const deltaForceMember = {
             ],
           );
         } catch (error) {
-          console.error(
-            `Failed to delete image for studentId ${input.studentId}:`,
-            error,
-          );
+          throw new ActionError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+          });
         }
       }
+      try {
+        await db
+          .delete(deltaForceTable)
+          .where(eq(deltaForceTable.studentId, input.studentId))
+          .run();
+      } catch (error) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to delete member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+        });
+      }
+
       return { studentId: input.studentId };
     },
   }),
