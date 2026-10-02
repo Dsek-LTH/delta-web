@@ -23,9 +23,10 @@ const {
 };
 
 const { lang, translate: t } = await i18n(Astro.cookies);
-const result = Astro.getActionResult(
-  actions.deltaForceMember.updateDeltaForceMember,
-);
+const action = newMember
+  ? actions.deltaForceMember.addDeltaForceMember
+  : actions.deltaForceMember.updateDeltaForceMember;
+const result = Astro.getActionResult(action);
 const inputErrors = isInputError(result?.error) ? result.error.fields : null;
 const actionError =
   result?.error && !isInputError(result.error) ? result.error : null;
@@ -41,9 +42,7 @@ const inputErrorEntries = inputErrors
     "flex flex-col gap-4 h-fit w-full frosted-glass p-4 rounded-lg bg-card/50 transition-all duration-300 ease-out",
     className,
   )}
-  action={newMember
-    ? actions.deltaForceMember.addDeltaForceMember
-    : actions.deltaForceMember.updateDeltaForceMember}
+  action={action}
   method="POST"
   enctype="multipart/form-data"
 >
@@ -130,14 +129,19 @@ const inputErrorEntries = inputErrors
     >
       {t("admin.delta-force.save")}
     </button>
-    <button
-      type="button"
-      name="delete"
-      value={member.studentId}
-      class="btn bg-destructive/50 frosted-glass text-brand-secondary rounded-2xl hover:bg-destructive/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2"
-    >
-      {t("admin.delta-force.delete")}
-    </button>
+
+    {
+      !newMember && (
+        <button
+          type="button"
+          name="delete"
+          value={member.studentId}
+          class="btn bg-destructive/50 frosted-glass text-brand-secondary rounded-2xl hover:bg-destructive/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2"
+        >
+          {t("admin.delta-force.delete")}
+        </button>
+      )
+    }
   </div>
 </form>
 
