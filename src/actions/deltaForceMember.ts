@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { uploadFile } from "@/files/uploadFiles";
 import { env } from "@/envvars";
 import type { APIContext } from "astro";
+import fileHandler from "@/files/fileHandler";
 
 export const deltaForceMember = {
   updateDeltaForceMember: defineAction({
@@ -46,6 +47,23 @@ export const deltaForceMember = {
             },
           },
         );
+      }
+      if (input.oldStudentId !== input.studentId) {
+        if (fileURL) {
+          try {
+            await fileHandler.rename(
+              context as APIContext,
+              env.MINIO_BUCKET_PUBLIC || "delta-public",
+              `delta-force-members/${input.oldStudentId}`,
+              `delta-force-members/${input.studentId}`,
+            );
+          } catch (error) {
+            console.error(
+              `Failed to rename old image for studentId ${input.oldStudentId}:`,
+              error,
+            );
+          }
+        }
       }
 
       console.log("Updating member:", input);
