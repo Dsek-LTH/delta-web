@@ -48,10 +48,17 @@ const faqContactAnswer = await getRenderedContent(
 ---
 
 <Layout
-  title={t("student.title") + " - " + t("comingSoon.title")}
-  description={t("comingSoon.description")}
+  title={t("student.meta.title") + " - " + t("comingSoon.meta.title")}
+  description={t("student.meta.description")}
   class="flex flex-col justify-center items-center gap-16 lg:p-30 lg:px-60 2xl:px-90 p-8"
 >
+  <h1>
+    <span
+      class="lg:text-7xl text-5xl font-bold tracking-tight text-brand-secondary text-shadow-sm/25"
+    >
+      {t("student.title")}
+    </span>
+  </h1>
   <div class="flex flex-col gap-8">
     <InfoCard
       title={t("student.what.title")}
