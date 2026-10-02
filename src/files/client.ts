@@ -6,9 +6,12 @@ import { prepareNameForFilesystem } from "./utils";
 export const MINIO_BASE_URL = (() => {
   if (env.MINIO_PORT === "443") return `https://${env.MINIO_ENDPOINT}/`;
   if (env.MINIO_PORT === "80") return `http://${env.MINIO_ENDPOINT}/`;
-  return `http${
-    env.MINIO_USE_SSL === "true" ? "s" : ""
-  }://${env.MINIO_ENDPOINT}:${env.MINIO_PORT}/`;
+  if (env.MINIO_PORT)
+    return `http${
+      env.MINIO_USE_SSL === "true" ? "s" : ""
+    }://${env.MINIO_ENDPOINT}:${env.MINIO_PORT}/`;
+  else
+    return `http${env.MINIO_USE_SSL === "true" ? "s" : ""}://${env.MINIO_ENDPOINT}:443/`;
 })();
 
 export const checkMemberImageExists = async (member: {
