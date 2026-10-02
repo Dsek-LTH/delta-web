@@ -24,5 +24,6 @@ export default defineConfig({
         protocol: "https",
       },
     ],
+    actionBodySizeLimit: 12 * 1024 * 1024, // 12 MB
   },
 });
