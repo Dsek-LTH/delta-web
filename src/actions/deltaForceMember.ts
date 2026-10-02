@@ -6,6 +6,7 @@ import { deltaForceTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { uploadFile } from "@/files/uploadFiles";
 import { env } from "@/envvars";
+import type { APIContext } from "astro";
 
 export const deltaForceMember = {
   updateDeltaForceMember: defineAction({
@@ -26,7 +27,7 @@ export const deltaForceMember = {
 
       if (input.image) {
         fileURL = await uploadFile(
-          context.request.headers,
+          context as APIContext,
           input.image,
           "delta-force-members",
           env.MINIO_BUCKET_PUBLIC || "delta-public",
@@ -80,7 +81,7 @@ export const deltaForceMember = {
 
       if (input.image) {
         fileURL = await uploadFile(
-          context.request.headers,
+          context as APIContext,
           input.image,
           "delta-force-members",
           env.MINIO_BUCKET_PUBLIC || "delta-public",

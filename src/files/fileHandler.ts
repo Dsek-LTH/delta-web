@@ -4,6 +4,7 @@ import minio, { CopyConditions } from "@/files/minio";
 import { authorize } from "@/auth/authorize";
 
 import path from "path";
+import type { APIContext } from "astro";
 
 export type FileData = {
   id: string;
@@ -69,7 +70,7 @@ const getFilesInFolder = async (
 };
 
 const getFilesInBucket = async (
-  headers: Headers | undefined,
+  context: APIContext,
   bucket: string,
   prefix: string,
   recursive = false,
@@ -81,7 +82,7 @@ const getFilesInBucket = async (
   if (!bucket) {
     return Promise.resolve([]);
   }
-  authorize(headers);
+authorize(context);
   const basePath = "";
   const files = (
     await getFilesInFolder(
@@ -95,7 +96,7 @@ const getFilesInBucket = async (
 
 const ONE_HOUR_IN_SECONDS = 60 * 60;
 const getPresignedPutUrl = async (
-  headers: Headers | undefined,
+  context: APIContext,
   bucket: string,
   fileName: string,
   allowOverwrite = false,
@@ -104,7 +105,7 @@ const getPresignedPutUrl = async (
   if (!isHealthy) {
     return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
   }
-  authorize(headers);
+  authorize(context);
   if (fileName === "") Error("File name cannot be empty");
 
   if (!allowOverwrite && (await fileExists(bucket, fileName))) {
@@ -120,7 +121,7 @@ const getPresignedPutUrl = async (
 
 // Returns deleted files data
 const removeFileGivenPath = async (
-  headers: Headers | undefined,
+  context: APIContext,
   bucket: string,
   filePath: string,
 ): Promise<FileData[]> => {
@@ -156,7 +157,7 @@ const removeFileGivenPath = async (
  * As the name implies this removes an object from the storage without checking any valid access, make sure to check access before calling this function
  */
 export const removeFilesWithoutAccessCheck = async (
-  headers: Headers | undefined,
+  context: APIContext,
   bucket: string,
   fileNames: string[],
 ): Promise<FileData[]> => {
@@ -170,7 +171,7 @@ export const removeFilesWithoutAccessCheck = async (
     await Promise.all(
       fileNames.map(async (fileName) => {
         const deltedForFilePath = await removeFileGivenPath(
-          headers,
+          context,
           bucket,
           fileName,
         );
@@ -186,7 +187,7 @@ export const removeFilesWithoutAccessCheck = async (
 };
 
 const removeObjects = async (
-  headers: Headers | undefined,
+  context: APIContext,
   bucket: string,
   fileNames: string[],
 ) => {
@@ -194,8 +195,8 @@ const removeObjects = async (
   if (!isHealthy) {
     return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
   }
-  authorize(headers);
-  await removeFilesWithoutAccessCheck(headers, bucket, fileNames);
+  authorize(context);
+  await removeFilesWithoutAccessCheck(context, bucket, fileNames);
 };
 
 type FileChange = {
@@ -203,7 +204,7 @@ type FileChange = {
   oldFile?: FileData;
 };
 const moveObject = async (
-  headers: Headers | undefined,
+  context: APIContext,
   bucket: string,
   fileNames: string[],
   newFolder: string,
@@ -212,7 +213,7 @@ const moveObject = async (
   if (!isHealthy) {
     return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
   }
-  authorize(headers);
+  authorize(context);
   const moved: FileChange[] = [];
 
   await Promise.all(
@@ -220,10 +221,10 @@ const moveObject = async (
       const basename = path.basename(fileName);
 
       if (isDir(fileName)) {
-        const filesInFolder = await getFilesInBucket(headers, bucket, fileName);
+        const filesInFolder = await getFilesInBucket(context, bucket, fileName);
         if (filesInFolder) {
           const recursivedMoved = await moveObject(
-            headers,
+            context,
             bucket,
             filesInFolder.map((file) => file.id),
             `${newFolder + basename}/`,
@@ -284,7 +285,7 @@ const moveObject = async (
 };
 
 const renameObject = async (
-  headers: Headers | undefined,
+  context: APIContext,
   bucket: string,
   fileName: string,
   newFileName: string,
@@ -293,17 +294,17 @@ const renameObject = async (
   if (!isHealthy) {
     return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
   }
-  authorize(headers);
+  authorize(context);
   if (await fileExists(bucket, newFileName)) {
     Error(`File ${newFileName} already exists`);
   }
   const dirname = path.dirname(fileName);
 
   if (isDir(fileName)) {
-    const filesInFolder = await getFilesInBucket(headers, bucket, fileName);
+    const filesInFolder = await getFilesInBucket(context, bucket, fileName);
     if (filesInFolder) {
       await moveObject(
-        headers,
+        context,
         bucket,
         filesInFolder.map((file) => file.id),
         `${newFileName}/`,

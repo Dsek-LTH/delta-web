@@ -6,6 +6,7 @@ import {
   prepareNameForFilesystem,
 } from "@/files/utils";
 import { MINIO_BASE_URL } from "@/files/client";
+import type { APIContext } from "astro";
 
 export const compressImage = async (
   image: File,
@@ -29,7 +30,7 @@ export const compressImage = async (
 export type CompressionOptions = Parameters<typeof compressImage>[1];
 
 export const uploadFile = async (
-  headers: Headers | undefined,
+  context: APIContext,
   file: File,
   prefix: string,
   bucket: string,
@@ -65,7 +66,7 @@ export const uploadFile = async (
 
   try {
     const putUrl = await fileHandler.getPresignedPutUrl(
-      headers,
+      context,
       bucket,
       filePath,
       true,
