@@ -16,4 +16,6 @@ Du kan bland annat få:
 Du behöver inte vara på jakt efter ett jobb för att Delta ska vara värdefullt. Att gå runt, ställa frågor och prata med olika representanter kan ge dig insikter som är svåra att få någon annanstans.
 <br>
 <br>
-Som D- eller C-student är din närvaro dessutom ett av de bästa sätten att bidra till både din egen och sektionens framtid. **Ju fler studenter som deltar, desto starkare blir Deltas betydelse och desto bättre blir möjligheterna för framtida studenter.**
+Som D- eller C-student är din närvaro dessutom ett av de bästa sätten att bidra till både din egen och sektionens framtid.
+
+**Ju fler studenter som deltar, desto starkare blir Deltas betydelse och desto bättre blir möjligheterna för framtida studenter.**
