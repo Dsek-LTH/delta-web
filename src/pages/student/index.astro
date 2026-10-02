@@ -1,14 +1,135 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import ComingSoon from "@/components/ComingSoon.astro";
-import { i18n } from "@/i18n/utils";
+import { i18n, getRenderedContent } from "@/i18n/utils";
+import SessionImg from "@/assets/explaining.webp";
+import WhatImg from "@/assets/tekfok/0010.webp";
+import WhyImg from "@/assets/tekfok/0012.webp";
+import HowImg from "@/assets/tekfok/tekfok26_0001.webp";
+import WorkImg from "@/assets/tekfok/0009.webp";
+import AfterImg from "@/assets/tekfok/banket.webp";
 
-const { translate: t } = i18n(Astro.cookies);
+import InfoCard from "./InfoCard.astro";
+import FaqCard from "./FaqCard.astro";
+import { getEntry } from "astro:content";
+
+const { lang, translate: t } = i18n(Astro.cookies);
+
+const studentSession = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/student-sessions",
+);
+const what = await getRenderedContent(getEntry, lang, "student/what");
+const why = await getRenderedContent(getEntry, lang, "student/why");
+const how = await getRenderedContent(getEntry, lang, "student/how");
+const work = await getRenderedContent(getEntry, lang, "student/work");
+const after = await getRenderedContent(getEntry, lang, "student/after");
+
+const faqOrganizersAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/organizers",
+);
+const faqWhenAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/when",
+);
+const faqWhereAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/where",
+);
+const faqContactAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/contact",
+);
 ---
 
 <Layout
-  title={t("student.title") + " - " + t("comingSoon.title")}
-  description={t("comingSoon.description")}
+  title={t("student.meta.title") + " - " + t("comingSoon.meta.title")}
+  description={t("student.meta.description")}
+  class="flex flex-col justify-center items-center gap-16 lg:p-30 lg:px-60 2xl:px-90 p-8"
 >
-  <ComingSoon />
+  <h1>
+    <span
+      class="lg:text-7xl text-5xl font-bold tracking-tight text-brand-secondary text-shadow-sm/25"
+    >
+      {t("student.title")}
+    </span>
+  </h1>
+  <div class="flex flex-col gap-8">
+    <InfoCard
+      title={t("student.what.title")}
+      imgSrc={WhatImg}
+      imgAlt={t("student.what.imgAlt")}
+    >
+      {what && <div set:html={what.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.why.title")}
+      imgSrc={WhyImg}
+      imgAlt={t("student.why.imgAlt")}
+      reverse
+    >
+      {why && <div set:html={why.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.how.title")}
+      imgSrc={HowImg}
+      imgAlt={t("student.how.imgAlt")}
+    >
+      {how && <div set:html={how.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.work.title")}
+      imgSrc={WorkImg}
+      imgAlt={t("student.work.imgAlt")}
+      reverse
+    >
+      {work && <div set:html={work.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.after.title")}
+      imgSrc={AfterImg}
+      imgAlt={t("student.after.imgAlt")}
+    >
+      {after && <div set:html={after.html} />}
+    </InfoCard>
+
+    <InfoCard
+      title={t("student.session.title")}
+      imgSrc={SessionImg}
+      imgAlt={t("student.session.imgAlt")}
+      reverse
+    >
+      {studentSession && <div set:html={studentSession.html} />}
+    </InfoCard>
+  </div>
+  <div class="w-full">
+    <h1
+      class="lg:text-5xl text-3xl font-bold tracking-tight text-brand-secondary text-shadow-sm/25"
+    >
+      {t("student.faq.title")}
+    </h1>
+    <div class="flex flex-col gap-4 mt-4">
+      <FaqCard question={t("student.faq.organizers.question")}>
+        {faqOrganizersAnswer && <div set:html={faqOrganizersAnswer.html} />}
+      </FaqCard>
+      <FaqCard question={t("student.faq.when.question")}>
+        {faqWhenAnswer && <div set:html={faqWhenAnswer.html} />}
+      </FaqCard>
+      <FaqCard question={t("student.faq.where.question")}>
+        {faqWhereAnswer && <div set:html={faqWhereAnswer.html} />}
+      </FaqCard>
+      <FaqCard question={t("student.faq.contact.question")}>
+        {faqContactAnswer && <div set:html={faqContactAnswer.html} />}
+      </FaqCard>
+    </div>
+  </div>
 </Layout>

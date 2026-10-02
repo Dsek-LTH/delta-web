@@ -1,9 +1,49 @@
 {
   "prefix": "student",
   "en": {
-    "title": "For Students"
+    "meta.title": "For Students",
+    "meta.description": "Page for students to learn more about DELTA, the student fair, and how to get involved.",
+    "title": "Students, look here!",
+    "session.title": "Engage in student sessions",
+    "session.imgAlt": "Student session",
+    "what.title": "What is DELTA?",
+    "what.imgAlt": "What is DELTA?",
+    "why.title": "Why should you participate in DELTA?",
+    "why.imgAlt": "Why should you participate in DELTA?",
+    "how.title": "How does DELTA work?",
+    "how.imgAlt": "How does DELTA work?",
+    "work.title": "Work at DELTA?",
+    "work.imgAlt": "Work at DELTA?",
+    "after.title": "What is AFTER-DELTA?",
+    "after.imgAlt": "What is AFTER-DELTA?",
+    "faq.title": "FAQ",
+    "faq.organizers.question": "Who organizes DELTA?",
+    "faq.when.question": "When is DELTA?",
+    "faq.where.question": "Where will DELTA take place?",
+    "faq.contact.question": "Who should you contact if you have questions about the companies?"
   },
   "sv": {
-    "title": "För studenter"
+    "meta.title": "För studenter",
+    "meta.description": "Sida för studenter att lära sig mer om DELTA, studentmässan och hur man kan engagera sig.",
+    "title": "Studenter, se hit!",
+    "session.title": "Engagera dig i student sessions",
+    "session.imgAlt": "Student sessions",
+    "fair.title": "Ha kul med oss!",
+    "fair.imgAlt": "Karriärmässa för studenter",
+    "what.title": "Vad är DELTA?",
+    "what.imgAlt": "Vad är DELTA?",
+    "why.title": "Varför delta på DELTA?",
+    "why.imgAlt": "Varför delta på DELTA?",
+    "how.title": "Hur fungerar DELTA?",
+    "how.imgAlt": "Hur fungerar DELTA?",
+    "work.title": "Arbeta på DELTA?",
+    "work.imgAlt": "Arbeta på DELTA?",
+    "after.title": "Vad är AFTER-DELTA?",
+    "after.imgAlt": "Vad är AFTER-DELTA?",
+    "faq.title": "FAQ",
+    "faq.organizers.question": "Vem arrangerar DELTA?",
+    "faq.when.question": "När är DELTA?",
+    "faq.where.question": "Var kommer DELTA att hållas?",
+    "faq.contact.question": "Vem ska du kontakta om du har frågor om företagen?"
   }
 }
