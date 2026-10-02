@@ -8,6 +8,16 @@ import { uploadFile } from "@/files/uploadFiles";
 import { env } from "@/envvars";
 import type { APIContext } from "astro";
 import fileHandler from "@/files/fileHandler";
+import { checkMemberImageExists } from "@/files/client";
+import { prepareNameForFilesystem } from "@/files/utils";
+
+const optionalImage = z.preprocess(
+  (value) => (value instanceof File && value.size === 0 ? undefined : value),
+  z
+    .instanceof(File)
+    .refine((f) => f.size > 0)
+    .optional(),
+);
 
 export const deltaForceMember = {
   updateDeltaForceMember: defineAction({
@@ -21,16 +31,64 @@ export const deltaForceMember = {
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
-      image: z
-        .instanceof(File)
-        .refine((f) => f.size > 0)
-        .optional(),
+      image: optionalImage,
     }),
     handler: async (input, context) => {
-      let fileURL: string | undefined;
-
+      console.log("Updating member:", input);
+      await db
+        .update(deltaForceTable)
+        .set({
+          firstName: input.firstName,
+          lastName: input.lastName,
+          studentId: input.studentId,
+          role: input.role,
+          email: input.email,
+          linkedin: input.linkedin,
+        })
+        .where(eq(deltaForceTable.studentId, input.oldStudentId))
+        .run();
+      if (
+        input.oldStudentId !== input.studentId &&
+        (await checkMemberImageExists({ studentId: input.oldStudentId }))
+      ) {
+        if (input.image) {
+          try {
+            await fileHandler.remove(
+              context as APIContext,
+              env.MINIO_BUCKET_PUBLIC || "delta-public",
+              [
+                `delta-force-members/${prepareNameForFilesystem(input.oldStudentId, input.oldStudentId, "webp")}`,
+              ],
+            );
+          } catch (error) {
+            console.error(
+              `Failed to delete image for studentId ${input.studentId}:`,
+              error,
+            );
+          }
+        } else {
+          try {
+            const res = await fileHandler.rename(
+              context as APIContext,
+              env.MINIO_BUCKET_PUBLIC || "delta-public",
+              `delta-force-members/${prepareNameForFilesystem(input.oldStudentId, input.oldStudentId, "webp")}`,
+              `delta-force-members/${prepareNameForFilesystem(input.studentId, input.studentId, "webp")}`,
+            );
+            if (!res) {
+              console.error(
+                `Failed to rename image for studentId ${input.oldStudentId} to ${input.studentId}: No response from fileHandler.rename`,
+              );
+            }
+          } catch (error) {
+            console.error(
+              `Failed to rename old image for studentId ${input.oldStudentId}:`,
+              error,
+            );
+          }
+        }
+      }
       if (input.image) {
-        fileURL = await uploadFile(
+        await uploadFile(
           context as APIContext,
           input.image,
           "delta-force-members",
@@ -48,40 +106,6 @@ export const deltaForceMember = {
           },
         );
       }
-      if (input.oldStudentId !== input.studentId) {
-        if (fileURL) {
-          try {
-            await fileHandler.rename(
-              context as APIContext,
-              env.MINIO_BUCKET_PUBLIC || "delta-public",
-              `delta-force-members/${input.oldStudentId}`,
-              `delta-force-members/${input.studentId}`,
-            );
-          } catch (error) {
-            console.error(
-              `Failed to rename old image for studentId ${input.oldStudentId}:`,
-              error,
-            );
-          }
-        }
-      }
-
-      console.log("Updating member:", input);
-      await db
-        .update(deltaForceTable)
-        .set({
-          firstName: input.firstName,
-          lastName: input.lastName,
-          studentId: input.studentId,
-          role: input.role,
-          email: input.email,
-          linkedin: input.linkedin,
-          imageUrl: fileURL,
-        })
-        .where(eq(deltaForceTable.studentId, input.oldStudentId))
-        .run();
-      console.log("Member updated successfully:", input);
-
       return { studentId: input.studentId };
     },
   }),
@@ -95,16 +119,23 @@ export const deltaForceMember = {
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
-      image: z
-        .instanceof(File)
-        .refine((f) => f.size > 0)
-        .optional(),
+      image: optionalImage,
     }),
     handler: async (input, context) => {
-      let fileURL: string | undefined;
-
+      console.log("Adding new member:", input);
+      await db
+        .insert(deltaForceTable)
+        .values({
+          firstName: input.firstName,
+          lastName: input.lastName,
+          studentId: input.studentId,
+          role: input.role,
+          email: input.email,
+          linkedin: input.linkedin,
+        })
+        .run();
       if (input.image) {
-        fileURL = await uploadFile(
+        await uploadFile(
           context as APIContext,
           input.image,
           "delta-force-members",
@@ -122,20 +153,6 @@ export const deltaForceMember = {
           },
         );
       }
-      console.log("Adding new member:", input);
-      await db
-        .insert(deltaForceTable)
-        .values({
-          firstName: input.firstName,
-          lastName: input.lastName,
-          studentId: input.studentId,
-          role: input.role,
-          email: input.email,
-          linkedin: input.linkedin,
-          imageUrl: fileURL,
-        })
-        .run();
-      console.log("Member added successfully:", input);
       return { studentId: input.studentId };
     },
   }),
@@ -144,16 +161,29 @@ export const deltaForceMember = {
     input: z.object({
       studentId: z.string(),
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
       console.log("Deleting member with studentId:", input.studentId);
       await db
         .delete(deltaForceTable)
         .where(eq(deltaForceTable.studentId, input.studentId))
         .run();
-      console.log(
-        "Member deleted successfully with studentId:",
-        input.studentId,
-      );
+
+      if (await checkMemberImageExists(input)) {
+        try {
+          await fileHandler.remove(
+            context as APIContext,
+            env.MINIO_BUCKET_PUBLIC || "delta-public",
+            [
+              `delta-force-members/${prepareNameForFilesystem(input.studentId, input.studentId, "webp")}`,
+            ],
+          );
+        } catch (error) {
+          console.error(
+            `Failed to delete image for studentId ${input.studentId}:`,
+            error,
+          );
+        }
+      }
       return { studentId: input.studentId };
     },
   }),

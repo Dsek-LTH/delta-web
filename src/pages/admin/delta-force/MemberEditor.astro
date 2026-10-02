@@ -1,16 +1,15 @@
 ---
-import { Image } from "astro:assets";
 import { actions, isInputError } from "astro:actions";
 import { twMerge } from "tailwind-merge";
 import { i18n } from "@/i18n/utils";
-import { deltaForceTable } from "@/db/schema";
 import TextInput from "@/components/TextInput.astro";
 import Label from "@/components/Label.astro";
 import SelectInput from "@/components/SelectInput.astro";
 import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
 import FileInput from "@/components/FileInput.astro";
-import DefaultProfilePicture from "@/assets/default-profile.webp";
-import { getFileUrl } from "@/files/client";
+import { getMemberImage } from "@/files/client";
+import type { Member } from "@/types";
+import { Image } from "astro:assets";
 
 const {
   class: className,
@@ -18,7 +17,7 @@ const {
   newMember,
 } = Astro.props as {
   class: string;
-  member: typeof deltaForceTable.$inferSelect;
+  member: Member;
   newMember?: boolean;
 };
 
@@ -35,6 +34,7 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
+const memberImage = await getMemberImage(member);
 ---
 
 <form
@@ -112,7 +112,7 @@ const inputErrorEntries = inputErrors
     <Label name="image" label={t("admin.delta-force.member.picture")} />
 
     <Image
-      src={getFileUrl(member.imageUrl) || DefaultProfilePicture}
+      src={memberImage.src}
       alt={t("admin.delta-force.member.picture")}
       width={128}
       height={128}
@@ -147,9 +147,12 @@ const inputErrorEntries = inputErrors
 
 <script>
   import { actions } from "astro:actions";
-  import { getLang } from "@/i18n/utils";
   import { navigate } from "astro:transitions/client";
-  const lang = getLang(Astro.cookies);
+  const lang =
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("lang="))
+      ?.split("=")[1] ?? "en";
 
   const deleteButton: HTMLButtonElement | null = document.querySelector(
     "button[name='delete']",
