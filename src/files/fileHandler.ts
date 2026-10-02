@@ -14,32 +14,11 @@ export type FileData = {
   isDir?: boolean;
 };
 
-const isMinIOHealthy = async (): Promise<boolean> => {
-  // https://min.io/docs/minio/linux/operations/monitoring/healthcheck-probe.html
-
-  const url = `${MINIO_BASE_URL}minio/health/live`;
-  return fetch(url, {
-    method: "GET",
-    cache: "reload", // Force cache reload to avoid stale data
-  })
-    .then((response) => {
-      return response.ok && response.status === 200;
-    })
-    .catch((e) => {
-      console.error(e);
-      return false;
-    });
-};
-
 const getFilesInFolder = async (
   bucket: string,
   prefix: string,
   recursive: boolean,
 ): Promise<FileData[]> => {
-  const isHealthy: boolean = await isMinIOHealthy();
-  if (!isHealthy) {
-    return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
-  }
   return new Promise<FileData[]>((resolve, reject) => {
     const stream = minio.listObjectsV2(bucket, prefix, recursive);
     const files: FileData[] = [];
@@ -74,10 +53,6 @@ const getFilesInBucket = async (
   prefix: string,
   recursive = false,
 ): Promise<FileData[]> => {
-  const isHealthy: boolean = await isMinIOHealthy();
-  if (!isHealthy) {
-    return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
-  }
   if (!bucket) {
     return Promise.resolve([]);
   }
@@ -100,10 +75,6 @@ const getPresignedPutUrl = async (
   fileName: string,
   allowOverwrite = false,
 ): Promise<string> => {
-  const isHealthy: boolean = await isMinIOHealthy();
-  if (!isHealthy) {
-    return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
-  }
   authorize(headers);
   if (fileName === "") throw new Error("File name cannot be empty");
 
@@ -124,10 +95,6 @@ const removeFileGivenPath = async (
   bucket: string,
   filePath: string,
 ): Promise<FileData[]> => {
-  const isHealthy: boolean = await isMinIOHealthy();
-  if (!isHealthy) {
-    return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
-  }
   const filesInFolder = await getFilesInFolder(bucket, filePath, true);
   if (filesInFolder.length > 1) {
     await minio.removeObjects(
@@ -160,10 +127,6 @@ export const removeFilesWithoutAccessCheck = async (
   bucket: string,
   fileNames: string[],
 ): Promise<FileData[]> => {
-  const isHealthy: boolean = await isMinIOHealthy();
-  if (!isHealthy) {
-    return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
-  }
   const deleted: FileData[] = [];
 
   try {
@@ -190,10 +153,6 @@ const removeObjects = async (
   bucket: string,
   fileNames: string[],
 ) => {
-  const isHealthy: boolean = await isMinIOHealthy();
-  if (!isHealthy) {
-    return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
-  }
   authorize(headers);
   await removeFilesWithoutAccessCheck(headers, bucket, fileNames);
 };
@@ -208,10 +167,6 @@ const moveObject = async (
   fileNames: string[],
   newFolder: string,
 ) => {
-  const isHealthy: boolean = await isMinIOHealthy();
-  if (!isHealthy) {
-    return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
-  }
   authorize(headers);
   const moved: FileChange[] = [];
 
@@ -289,10 +244,6 @@ const renameObject = async (
   fileName: string,
   newFileName: string,
 ) => {
-  const isHealthy: boolean = await isMinIOHealthy();
-  if (!isHealthy) {
-    return Promise.reject(new Error("MinIO is not healthy, cannot get files"));
-  }
   authorize(headers);
   if (await fileExists(bucket, newFileName)) {
     throw new Error(`File ${newFileName} already exists`);
@@ -350,7 +301,6 @@ const renameObject = async (
   return FileChange;
 };
 const fileHandler = {
-  isMinIOHealthy: isMinIOHealthy,
   getInBucket: getFilesInBucket,
   getPresignedPutUrl,
   remove: removeObjects,
