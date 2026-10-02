@@ -45,11 +45,6 @@ export const uploadFile = async (
     name ?? getNameOfFile(file.name),
     file.name,
   );
-  // await prisma.meeting.upsert({
-  //   where: { url: folderPath },
-  //   update: {},
-  //   create: { title: meeting, date, url: folderPath },
-  // });
 
   let dataToUpload: File | Uint8Array<ArrayBuffer> = file;
   if (compressionOptions !== false) {

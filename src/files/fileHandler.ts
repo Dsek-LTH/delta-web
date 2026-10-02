@@ -57,14 +57,9 @@ const getFilesInBucket = async (
   if (!bucket) {
     return Promise.resolve([]);
   }
-authorize(context);
-  const basePath = "";
+  authorize(context);
   const files = (
-    await getFilesInFolder(
-      bucket,
-      prefix !== "/" ? basePath + prefix : basePath,
-      recursive,
-    )
+    await getFilesInFolder(bucket, prefix !== "/" ? prefix : "", recursive)
   ).filter((file) => file.name !== "_folder-preserver");
   return files;
 };
