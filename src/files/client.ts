@@ -1,4 +1,7 @@
 import { env } from "@/envvars";
+import DefaultProfilePicture from "@/assets/default-profile.webp";
+import minio from "@/files/minio";
+import { prepareNameForFilesystem } from "./utils";
 
 export const MINIO_BASE_URL = (() => {
   if (env.MINIO_PORT === "443") return `https://${env.MINIO_ENDPOINT}/`;
@@ -8,10 +11,48 @@ export const MINIO_BASE_URL = (() => {
   }://${env.MINIO_ENDPOINT}:${env.MINIO_PORT}/`;
 })();
 
-export const getFileUrl = (imageUrl: string | null | undefined) => {
-  if (!imageUrl) return imageUrl;
-  if (imageUrl.startsWith("minio/")) {
-    return `${MINIO_BASE_URL}${imageUrl.substring(6)}`;
+export const checkMemberImageExists = async (member: {
+  studentId: string;
+}): Promise<boolean> => {
+  const bucket = env.MINIO_BUCKET_PUBLIC || "delta-public";
+  const objectName = `delta-force-members/${prepareNameForFilesystem(member.studentId, member.studentId, "webp")}`;
+
+  try {
+    await minio.statObject(bucket, objectName);
+    return true;
+  } catch (error) {
+    return false;
   }
-  return imageUrl;
+};
+
+export const getMemberImage = async (member: {
+  studentId: string;
+}): Promise<ImageMetadata> => {
+  const bucket = env.MINIO_BUCKET_PUBLIC || "delta-public";
+  const objectName = `delta-force-members/${prepareNameForFilesystem(member.studentId, member.studentId, "webp")}`;
+
+  try {
+    await minio.statObject(bucket, objectName);
+    const url = `${MINIO_BASE_URL}${bucket}/${objectName}`;
+    if (!url) {
+      return DefaultProfilePicture;
+    }
+    return {
+      src: url,
+      width: 800,
+      height: 800,
+      format: "webp",
+    };
+  } catch (err: any) {
+    if (
+      err.code === "NotFound" ||
+      err.code === "NoSuchKey" ||
+      err.statusCode === 404
+    ) {
+      return DefaultProfilePicture;
+    }
+
+    console.error(`Unexpected MinIO error for ${objectName}:`, err);
+    throw err;
+  }
 };
