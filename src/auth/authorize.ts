@@ -1,12 +1,5 @@
-import { auth } from "@/auth";
+import type { APIContext } from "astro";
 
-export async function authorize(headers?: Headers) {
-  if (
-    !headers ||
-    !(await auth.api.getSession({
-      headers,
-    }))
-  ) {
-    throw Error("Unauthorized");
-  }
+export function authorize(context: APIContext): void {
+  if (!context.locals.session) throw Error("Unauthorized");
 }
