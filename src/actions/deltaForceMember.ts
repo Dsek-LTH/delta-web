@@ -19,6 +19,8 @@ const optionalImage = z.preprocess(
     .optional(),
 );
 
+const studentIdRegex = /^[a-z]{2}[0-9]{4}[a-z]{2}(-s)$/;
+
 export const deltaForceMember = {
   updateDeltaForceMember: defineAction({
     accept: "form",
@@ -26,8 +28,8 @@ export const deltaForceMember = {
       lang: z.string(),
       firstName: z.string(),
       lastName: z.string(),
-      oldStudentId: z.string(),
-      studentId: z.string(),
+      oldStudentId: z.string().regex(studentIdRegex),
+      studentId: z.string().regex(studentIdRegex),
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
@@ -126,7 +128,7 @@ export const deltaForceMember = {
       lang: z.string(),
       firstName: z.string(),
       lastName: z.string(),
-      studentId: z.string(),
+      studentId: z.string().regex(studentIdRegex),
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
@@ -183,7 +185,7 @@ export const deltaForceMember = {
   deleteDeltaForceMember: defineAction({
     accept: "form",
     input: z.object({
-      studentId: z.string(),
+      studentId: z.string().regex(studentIdRegex),
     }),
     handler: async (input, context) => {
       console.log("Deleting member with studentId:", input.studentId);
