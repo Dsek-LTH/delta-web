@@ -35,6 +35,25 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Updating member:", input);
+      try {
+        await db
+          .update(deltaForceTable)
+          .set({
+            firstName: input.firstName,
+            lastName: input.lastName,
+            studentId: input.studentId,
+            role: input.role,
+            email: input.email,
+            linkedin: input.linkedin,
+          })
+          .where(eq(deltaForceTable.studentId, input.oldStudentId))
+          .run();
+      } catch (error) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to update member with studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
+        });
+      }
       if (
         input.oldStudentId !== input.studentId &&
         (await checkMemberImageExists({ studentId: input.oldStudentId }))
@@ -95,25 +114,6 @@ export const deltaForceMember = {
           },
         );
       }
-      try {
-        await db
-          .update(deltaForceTable)
-          .set({
-            firstName: input.firstName,
-            lastName: input.lastName,
-            studentId: input.studentId,
-            role: input.role,
-            email: input.email,
-            linkedin: input.linkedin,
-          })
-          .where(eq(deltaForceTable.studentId, input.oldStudentId))
-          .run();
-      } catch (error) {
-        throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to update member with studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
-        });
-      }
       return { studentId: input.studentId };
     },
   }),
@@ -131,6 +131,24 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Adding new member:", input);
+      try {
+        await db
+          .insert(deltaForceTable)
+          .values({
+            firstName: input.firstName,
+            lastName: input.lastName,
+            studentId: input.studentId,
+            role: input.role,
+            email: input.email,
+            linkedin: input.linkedin,
+          })
+          .run();
+      } catch (error) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to add new member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+        });
+      }
       if (input.image) {
         await uploadFile(
           context as APIContext,
@@ -150,24 +168,6 @@ export const deltaForceMember = {
           },
         );
       }
-      try {
-        await db
-          .insert(deltaForceTable)
-          .values({
-            firstName: input.firstName,
-            lastName: input.lastName,
-            studentId: input.studentId,
-            role: input.role,
-            email: input.email,
-            linkedin: input.linkedin,
-          })
-          .run();
-      } catch (error) {
-        throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to add new member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
-        });
-      }
       return { studentId: input.studentId };
     },
   }),
@@ -178,6 +178,17 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Deleting member with studentId:", input.studentId);
+      try {
+        await db
+          .delete(deltaForceTable)
+          .where(eq(deltaForceTable.studentId, input.studentId))
+          .run();
+      } catch (error) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to delete member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+        });
+      }
       if (await checkMemberImageExists(input)) {
         try {
           await fileHandler.remove(
@@ -193,17 +204,6 @@ export const deltaForceMember = {
             message: `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
           });
         }
-      }
-      try {
-        await db
-          .delete(deltaForceTable)
-          .where(eq(deltaForceTable.studentId, input.studentId))
-          .run();
-      } catch (error) {
-        throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to delete member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
-        });
       }
 
       return { studentId: input.studentId };
