@@ -2,6 +2,7 @@ Delta gives you much more than just job opportunities and new contacts. By talki
 <br>
 <br>
 You can, among other things, get:
+
 <ul class="list-disc ml-[4ch]">
 <li> Insights into what you want – and don't want – to work with. </li>
 <li> An idea of which companies and organizations work with what you're interested in. </li>
@@ -15,6 +16,6 @@ You can, among other things, get:
 You don't need to be looking for a job for Delta to be valuable. Walking around, asking questions, and talking to different representatives can give you insights that are hard to get anywhere else.
 <br>
 <br>
-As a D- or C-student, your presence is also one of the best ways to contribute to both your own and the guilds's future.
+As a D- or C-student, your presence is also one of the best ways to contribute to both your own and the guild's future.
 
 **The more students who participate, the stronger Delta's importance becomes and the better the opportunities for future students.**
