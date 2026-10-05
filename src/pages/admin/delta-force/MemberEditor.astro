@@ -35,7 +35,7 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
-const memberImage = await getMemberImage(member).catch(
+const memberImage: ImageMetadata = await getMemberImage(member).catch(
   () => DefaultProfileImage,
 );
 ---
@@ -115,7 +115,7 @@ const memberImage = await getMemberImage(member).catch(
     <Label name="image" label={t("admin.delta-force.member.picture")} />
 
     <Image
-      src={memberImage.src}
+      src={memberImage}
       alt={t("admin.delta-force.member.picture")}
       width={128}
       height={128}
