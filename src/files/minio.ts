@@ -1,6 +1,12 @@
 import { env } from "@/envvars";
 import { Client } from "minio";
 
+if (!env.MINIO_PASSWORD) {
+  console.warn(
+    "MINIO_PASSWORD is unset — running anonymously. Uploads and object deletion may fail.",
+  );
+}
+
 const minio = new Client({
   endPoint: env.MINIO_ENDPOINT || "minio-sandbox.dsek.se",
   port: env.MINIO_PORT
