@@ -19,6 +19,8 @@ const { title, imgSrc, imgAlt, reverse } = Astro.props;
   <Image
     src={imgSrc}
     alt={imgAlt}
+    height={600}
+    width={800}
     class={twMerge(
       "sm:w-full sm:aspect-4/3 aspect-video h-full sm:max-w-1/4 object-cover rounded-lg lg:rounded-xl",
       reverse && "sm:order-last",
