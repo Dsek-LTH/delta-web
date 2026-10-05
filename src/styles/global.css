@@ -28,12 +28,12 @@
   --color-card-content-highlight: var(--color-backdrop-content-highlight);
   --color-card-highlight: color-mix(
     in srgb,
-    var(--color-amber-100) 40%,
+    var(--color-fuchsia-100) 40%,
     transparent
   );
   --color-card-shimmer: color-mix(
     in srgb,
-    var(--color-amber-100) 20%,
+    var(--color-fuchsia-100) 20%,
     transparent
   );
   --color-glow: var(--brand-purple);
@@ -93,7 +93,7 @@
 
 html[data-theme="dark"] {
   --color-backdrop: var(--color-slate-900);
-  --color-backdrop-content: var(--color-amber-50);
+  --color-backdrop-content: var(--color-fuchsia-50);
   --color-backdrop-content-muted: var(--color-slate-400);
   --color-backdrop-content-highlight: var(--brand-purple);
 
