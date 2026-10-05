@@ -114,9 +114,12 @@ export const deltaForceMember = {
           .where(eq(deltaForceTable.studentId, input.oldStudentId))
           .run();
       } catch (error) {
+        console.error(
+          `Failed to update member with studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
+        );
         throw new ActionError({
           code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to update member with studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
+          message: `Failed to update database. See server logs for details.`,
         });
       }
       return { studentId: input.studentId };
@@ -174,9 +177,13 @@ export const deltaForceMember = {
           })
           .run();
       } catch (error) {
+        console.error(
+          `Failed to add new member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+        );
         throw new ActionError({
           code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to add new member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+          message:
+            "Failed to add new member to database. See server logs for details.",
         });
       }
       return { studentId: input.studentId };
@@ -210,9 +217,13 @@ export const deltaForceMember = {
           .where(eq(deltaForceTable.studentId, input.studentId))
           .run();
       } catch (error) {
+        console.error(
+          `Failed to delete member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+        );
         throw new ActionError({
           code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to delete member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+          message:
+            "Failed to delete member from database. See server logs for details.",
         });
       }
 
