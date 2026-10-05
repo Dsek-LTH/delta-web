@@ -9,8 +9,8 @@ const { question } = Astro.props;
 
 <Card animate={false} class="flex items-center flex-col lg:flex-row h-full">
   <details class="h-full w-full">
-    <!-- The weird margin and padding is to make sure the entire card is clickable  -->
     <summary class="text-xl font-bold p-6 sm:p-8">{question}</summary>
+    <!-- The weird margin and padding is to make sure the entire card is clickable  -->
     <div class="pb-6 px-6 -mt-3 sm:pb-8 sm:px-8 sm:-mt-4">
       <slot />
     </div>
