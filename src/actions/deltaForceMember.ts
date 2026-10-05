@@ -35,6 +35,69 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Updating member:", input);
+      if (
+        input.oldStudentId !== input.studentId &&
+        (await checkMemberImageExists({ studentId: input.oldStudentId }))
+      ) {
+        if (input.image) {
+          try {
+            await fileHandler.remove(
+              context as APIContext,
+              env.MINIO_BUCKET_PUBLIC || "delta-public",
+              [
+                `delta-force-members/${prepareNameForFilesystem(input.oldStudentId, input.oldStudentId, "webp")}`,
+              ],
+            );
+          } catch (error) {
+            console.error(
+              `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+            );
+          }
+        } else {
+          try {
+            const res = await fileHandler.rename(
+              context as APIContext,
+              env.MINIO_BUCKET_PUBLIC || "delta-public",
+              `delta-force-members/${prepareNameForFilesystem(input.oldStudentId, input.oldStudentId, "webp")}`,
+              `delta-force-members/${prepareNameForFilesystem(input.studentId, input.studentId, "webp")}`,
+            );
+            if (!res) {
+              console.error(
+                `Failed to rename image for studentId ${input.oldStudentId} to ${input.studentId}: No response from fileHandler.rename`,
+              );
+            }
+          } catch (error) {
+            console.error(
+              `Failed to rename old image for studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
+            );
+          }
+        }
+      }
+      if (input.image) {
+        try {
+          await uploadFile(
+            context as APIContext,
+            input.image,
+            "delta-force-members",
+            env.MINIO_BUCKET_PUBLIC || "delta-public",
+            `${input.studentId}`,
+            {
+              resize: {
+                width: 800,
+                height: 800,
+                fit: "cover",
+              },
+              webp: {
+                quality: 80,
+              },
+            },
+          );
+        } catch (error) {
+          console.error(
+            `Failed to upload new image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+          );
+        }
+      }
       try {
         await db
           .update(deltaForceTable)
@@ -54,66 +117,6 @@ export const deltaForceMember = {
           message: `Failed to update member with studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
         });
       }
-      if (
-        input.oldStudentId !== input.studentId &&
-        (await checkMemberImageExists({ studentId: input.oldStudentId }))
-      ) {
-        if (input.image) {
-          try {
-            await fileHandler.remove(
-              context as APIContext,
-              env.MINIO_BUCKET_PUBLIC || "delta-public",
-              [
-                `delta-force-members/${prepareNameForFilesystem(input.oldStudentId, input.oldStudentId, "webp")}`,
-              ],
-            );
-          } catch (error) {
-            throw new ActionError({
-              code: "INTERNAL_SERVER_ERROR",
-              message: `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
-            });
-          }
-        } else {
-          try {
-            const res = await fileHandler.rename(
-              context as APIContext,
-              env.MINIO_BUCKET_PUBLIC || "delta-public",
-              `delta-force-members/${prepareNameForFilesystem(input.oldStudentId, input.oldStudentId, "webp")}`,
-              `delta-force-members/${prepareNameForFilesystem(input.studentId, input.studentId, "webp")}`,
-            );
-            if (!res) {
-              throw new ActionError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: `Failed to rename image for studentId ${input.oldStudentId} to ${input.studentId}: No response from fileHandler.rename`,
-              });
-            }
-          } catch (error) {
-            throw new ActionError({
-              code: "INTERNAL_SERVER_ERROR",
-              message: `Failed to rename old image for studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
-            });
-          }
-        }
-      }
-      if (input.image) {
-        await uploadFile(
-          context as APIContext,
-          input.image,
-          "delta-force-members",
-          env.MINIO_BUCKET_PUBLIC || "delta-public",
-          `${input.studentId}`,
-          {
-            resize: {
-              width: 800,
-              height: 800,
-              fit: "cover",
-            },
-            webp: {
-              quality: 80,
-            },
-          },
-        );
-      }
       return { studentId: input.studentId };
     },
   }),
@@ -131,6 +134,31 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Adding new member:", input);
+      if (input.image) {
+        try {
+          await uploadFile(
+            context as APIContext,
+            input.image,
+            "delta-force-members",
+            env.MINIO_BUCKET_PUBLIC || "delta-public",
+            `${input.studentId}`,
+            {
+              resize: {
+                width: 800,
+                height: 800,
+                fit: "cover",
+              },
+              webp: {
+                quality: 80,
+              },
+            },
+          );
+        } catch (error) {
+          console.error(
+            `Failed to upload new image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+          );
+        }
+      }
       try {
         await db
           .insert(deltaForceTable)
@@ -149,25 +177,6 @@ export const deltaForceMember = {
           message: `Failed to add new member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
         });
       }
-      if (input.image) {
-        await uploadFile(
-          context as APIContext,
-          input.image,
-          "delta-force-members",
-          env.MINIO_BUCKET_PUBLIC || "delta-public",
-          `${input.studentId}`,
-          {
-            resize: {
-              width: 800,
-              height: 800,
-              fit: "cover",
-            },
-            webp: {
-              quality: 80,
-            },
-          },
-        );
-      }
       return { studentId: input.studentId };
     },
   }),
@@ -178,17 +187,6 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Deleting member with studentId:", input.studentId);
-      try {
-        await db
-          .delete(deltaForceTable)
-          .where(eq(deltaForceTable.studentId, input.studentId))
-          .run();
-      } catch (error) {
-        throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to delete member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
-        });
-      }
       if (await checkMemberImageExists(input)) {
         try {
           await fileHandler.remove(
@@ -199,11 +197,21 @@ export const deltaForceMember = {
             ],
           );
         } catch (error) {
-          throw new ActionError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
-          });
+          console.error(
+            `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+          );
         }
+      }
+      try {
+        await db
+          .delete(deltaForceTable)
+          .where(eq(deltaForceTable.studentId, input.studentId))
+          .run();
+      } catch (error) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to delete member with studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+        });
       }
 
       return { studentId: input.studentId };

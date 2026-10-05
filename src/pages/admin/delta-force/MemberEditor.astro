@@ -10,6 +10,7 @@ import FileInput from "@/components/FileInput.astro";
 import { getMemberImage } from "@/files/client";
 import type { Member } from "@/types";
 import { Image } from "astro:assets";
+import DefaultProfileImage from "@/assets/default-profile.webp";
 
 const {
   class: className,
@@ -34,7 +35,9 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
-const memberImage = await getMemberImage(member);
+const memberImage = await getMemberImage(member).catch(
+  () => DefaultProfileImage,
+);
 ---
 
 <form
