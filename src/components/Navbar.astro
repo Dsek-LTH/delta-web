@@ -8,7 +8,7 @@ interface Props extends HTMLAttributes<"nav"> {}
 
 const { class: className, ...rest } = Astro.props;
 
-const { lang, translate: t } = i18n(Astro.cookies);
+const { translate: t } = i18n(Astro.cookies);
 const toggleId = `navbar-menu-${Math.random().toString(36).slice(2, 9)}`;
 const currentPageLabel = {
   "/project-group": t("navbar.project-group"),
@@ -18,10 +18,10 @@ const currentPageLabel = {
 }[Astro.url.pathname];
 const navItems = [
   { href: "/", label: t("navbar.home") },
-  { href: "/project-group", label: t("navbar.project-group") },
   { href: "/student", label: t("navbar.student") },
   { href: "/company", label: t("navbar.company") },
   { href: "/attendees", label: t("navbar.attendees") },
+  { href: "/project-group", label: t("navbar.project-group") },
 ];
 ---
 
