@@ -91,6 +91,7 @@ const removeFileGivenPath = async (
   bucket: string,
   filePath: string,
 ): Promise<FileData[]> => {
+  authorize(context);
   const filesInFolder = await getFilesInFolder(bucket, filePath, true);
   if (filesInFolder.length > 1) {
     await minio.removeObjects(
