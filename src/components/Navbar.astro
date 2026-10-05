@@ -20,7 +20,9 @@ const { translate: t } = i18n(Astro.cookies);
         href="/student"
         class={twMerge(
           "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/student" && "text-shadow-glow",
+          Astro.url.pathname === "/student"
+            ? "text-shadow-glow"
+            : "text-shadow-md",
         )}
       >
         Student
@@ -30,7 +32,7 @@ const { translate: t } = i18n(Astro.cookies);
       <a
         href="/"
         class={twMerge(
-          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight hover:text-shadow-glow rounded-full aspect-square frosted-glass",
+          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight hover:text-shadow-glow-secondary rounded-full aspect-square frosted-glass",
           Astro.url.pathname === "/" && "text-shadow-glow-pink",
         )}>&Delta;</a
       >
@@ -40,7 +42,9 @@ const { translate: t } = i18n(Astro.cookies);
         href="/company"
         class={twMerge(
           "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/company" && "text-shadow-glow",
+          Astro.url.pathname === "/company"
+            ? "text-shadow-glow"
+            : "text-shadow-md",
         )}>{t("navbar.company")}</a
       >
     </li>

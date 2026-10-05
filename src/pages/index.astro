@@ -43,8 +43,8 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
       </h2>
       <div class="flex flex-col gap-4">
         <div class="flex items-start gap-2 shrink-0">
-          <MapPin class="size-4 text-card-content-muted shrink-0 mt-1" />
-          <p class="leading-relaxed">
+          <MapPin class="size-4 shrink-0 mt-1" />
+          <p class="leading-relaxed text-card-content">
             E-Huset, LTH
             <br />
             Ole Römers väg 3, 223 63 Lund, {t("landing.card.where.sweden")}
@@ -70,7 +70,7 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
       </h2>
       <ul class="flex flex-col h-full justify-center gap-6 mx-auto text-2xl">
         <li class="flex items-start gap-3">
-          <CalendarDays class="size-6 text-card-content-muted shrink-0 mt-1" />
+          <CalendarDays class="size-6 text-card-content shrink-0 mt-1" />
           <span class="capitalize">
             {
               fairDate.toLocaleDateString(lang, {
@@ -83,11 +83,11 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
           </span>
         </li>
         <li class="flex items-start gap-3">
-          <Clock class="size-6 text-card-content-muted shrink-0 mt-1" />
+          <Clock class="size-6 text-card-content shrink-0 mt-1" />
           <span>08:00 - 17:00</span>
         </li>
         <li class="flex items-start gap-3">
-          <Users class="size-6 text-card-content-muted shrink-0 mt-1" />
+          <Users class="size-6 text-card-content shrink-0 mt-1" />
           <span>{t("landing.card.when.networking")}</span>
         </li>
       </ul>
@@ -102,7 +102,7 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
       <div
         class="flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose"
       >
-        {whatIs && <div set:html={whatIs.html} />}
+        {whatIs && <div class="prose" set:html={whatIs.html} />}
       </div>
     </Card>
   </div>
@@ -110,7 +110,7 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
   <a
     href="mailto:delta@dsek.se"
     target="_blank"
-    class="frosted-glass text-brand-secondary font-bold py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out text-shadow-sm/25 dark:text-shadow-none"
+    class="frosted-glass text-brand-secondary text-shadow-md font-bold py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out dark:text-shadow-none"
   >
     <span>{t("landing.button.attend")}</span>
     <Logo />

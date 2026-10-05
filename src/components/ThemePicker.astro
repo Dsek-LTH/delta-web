@@ -97,7 +97,7 @@ const toggleId = `theme-switcher-${Math.random().toString(36).slice(2, 9)}`;
     // Show every option except the currently active one -- same pattern
     // as LanguagePicker filtering out the current language.
     function sync() {
-      const active = localStorage.getItem("theme") || "system";
+      const active = localStorage.getItem("theme") ?? "dark";
       picker
         .querySelectorAll<HTMLButtonElement>("[data-theme-option]")
         .forEach((btn) => {
@@ -115,8 +115,7 @@ const toggleId = `theme-switcher-${Math.random().toString(36).slice(2, 9)}`;
       if (!btn) return;
 
       const theme = btn.dataset.themeOption!;
-      if (theme === "system") localStorage.removeItem("theme");
-      else localStorage.setItem("theme", theme);
+      localStorage.setItem("theme", theme);
 
       document.documentElement.setAttribute(
         "data-theme",
