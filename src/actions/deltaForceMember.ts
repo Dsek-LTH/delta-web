@@ -36,7 +36,7 @@ export const deltaForceMember = {
       image: optionalImage,
     }),
     handler: async (input, context) => {
-      console.log("Updating member:", input);
+      console.log("Updating member:", input.studentId);
       if (
         input.oldStudentId !== input.studentId &&
         (await checkMemberImageExists({ studentId: input.oldStudentId }))
@@ -135,7 +135,7 @@ export const deltaForceMember = {
       image: optionalImage,
     }),
     handler: async (input, context) => {
-      console.log("Adding new member:", input);
+      console.log("Adding new member:", input.studentId);
       if (input.image) {
         try {
           await uploadFile(
