@@ -3,12 +3,13 @@ import Card from "@/components/Card.astro";
 import { Image } from "astro:assets";
 import { twMerge } from "tailwind-merge";
 
-const { title, imgSrc, imgAlt, reverse } = Astro.props as {
+interface Props {
   title: string;
   imgSrc: ImageMetadata;
   imgAlt: string;
-  reverse: boolean;
-};
+  reverse?: boolean;
+}
+const { title, imgSrc, imgAlt, reverse } = Astro.props;
 ---
 
 <Card
