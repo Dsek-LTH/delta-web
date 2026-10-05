@@ -1,6 +1,10 @@
 {
   "prefix": "delta-force",
   "en": {
+    "title": "DELTA --Force_",
+    "meta.description": "A list of all the members of the DELTA --Force_ team",
+    "description": "We in the DELTA project group are responsible for running and developing DELTA. We are a group of dedicated students who work together to create an amazing experience for all participants at DELTA. If you have any questions, don't hesitate to contact us!",
+    "project-group": "Project group",
     "general": "General",
     "generals": "Generals",
     "it": "IT manager",
@@ -16,9 +20,13 @@
     "relations": "Relations manager",
     "relationss": "Relations managers",
     "staff": "Staff manager",
-    "staffss": "Staff managers"
+    "staffs": "Staff managers"
   },
   "sv": {
+    "title": "DELTA --Force_",
+    "meta.description": "En lista över alla medlemmar i DELTA --Force_ teamet",
+    "description": "Vi i projektruppen DELTA ansvarar för att driva och utveckla DELTA. Vi är en grupp av engagerade studenter som arbetar tillsammans för att skapa en fantastisk upplevelse för alla deltagare på DELTA. Om du har några frågor är det bara att kontakta oss!",
+    "project-group": "Projektgrupp",
     "general": "General",
     "generals": "Generaler",
     "it": "IT-ansvarig",
@@ -34,6 +42,6 @@
     "relations": "Företagsansvarig",
     "relationss": "Företagsansvariga",
     "staff": "Funkisansvarig",
-    "staffss": "Funkisansvariga"
+    "staffs": "Funkisansvariga"
   }
 }
