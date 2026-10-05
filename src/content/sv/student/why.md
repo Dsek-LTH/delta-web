@@ -1,4 +1,4 @@
-Delta ger dig mycket mer än bara möjligheter till jobb och nya kontakter. Genom att prata med representanter från många olika företag, startups och ideellaföreningar får du möjlighet att skapa dig en bättre förståelse för vad du faktiskt vill göra efter studierna.
+Delta ger dig mycket mer än bara möjligheter till jobb och nya kontakter. Genom att prata med representanter från många olika företag, startups och ideella föreningar får du möjlighet att skapa dig en bättre förståelse för vad du faktiskt vill göra efter studierna.
 <br>
 <br>
 Du kan bland annat få:
