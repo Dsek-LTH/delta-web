@@ -29,55 +29,29 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
     <h1 aria-label="DELTA" role="img" class="contents text-7xl lg:text-9xl">
       <Logo animate inverse />
     </h1>
-    <Countdown class="text-white lg:text-4xl text-2xl" />
   </div>
 
-  <div class="flex flex-col gap-8 w-full max-w-110 lg:max-w-none">
-    <div class="grid gap-8 w-full lg:grid-cols-5">
-      <Card
-        class="lg:col-span-3 p-8 lg:p-10 flex flex-col justify-center gap-8"
+  <div
+    class="grid gap-8 w-full max-w-110 lg:grid-cols-3 lg:items-end lg:max-w-full"
+  >
+    <Card class="p-8 lg:order-1 order-2 flex flex-col gap-6 lg:h-108">
+      <h2
+        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
       >
-        <div class="flex flex-col gap-2">
-          <h2
-            class="text-2xl font-bold uppercase tracking-tight text-brand-primary"
-          >
-            {t("landing.card.when")}
-          </h2>
-          <p class="text-3xl font-bold leading-tight lg:text-5xl">
-            {
-              fairDate.toLocaleDateString(lang, {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
-            }
-          </p>
-          <p class="text-xl text-card-content-muted lg:text-2xl">08:00–17:00</p>
-        </div>
-        <p class="flex items-center gap-3 text-card-content-muted">
-          <Users class="size-5 shrink-0" />
-          <span>{t("landing.card.when.networking")}</span>
-        </p>
-      </Card>
-
-      <Card class="lg:col-span-2 p-0 flex flex-col">
-        <div class="flex flex-col gap-2 p-8 pb-6">
-          <h2
-            class="text-2xl font-bold uppercase tracking-tight text-brand-primary"
-          >
-            {t("landing.card.where")}
-          </h2>
+        {t("landing.card.where")}
+      </h2>
+      <div class="flex flex-col flex-1 gap-4">
+        <div class="flex flex-col items-center gap-1 text-center">
           <p class="text-xl font-semibold">E-Huset, LTH</p>
-          <p class="flex items-start gap-2 text-sm text-card-content-muted">
-            <MapPin class="mt-0.5 size-4 shrink-0" />
+          <p class="flex items-center gap-2 text-sm text-card-content-muted">
+            <MapPin class="size-4 shrink-0" />
             <span>
               Ole Römers väg 3, 223 63 Lund, {t("landing.card.where.sweden")}
             </span>
           </p>
         </div>
         <iframe
-          class="min-h-56 w-full flex-1 border-0"
+          class="w-full flex-1 min-h-50 rounded-xl border-0"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
           title={t("landing.card.where.map.title")}
           loading="lazy"
@@ -85,21 +59,53 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
         >
           E-huset LTH Ole Römers väg 3.
         </iframe>
-      </Card>
-    </div>
+      </div>
+    </Card>
 
-    <Card class="p-8 lg:p-12">
-      <div
-        class="flex flex-col gap-6 lg:grid lg:grid-cols-[auto_1fr] lg:items-start lg:gap-16"
+    <Card
+      class="p-8 lg:order-2 order-1 flex flex-col justify-center gap-6 lg:h-120"
+    >
+      <h2
+        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
       >
-        <h2
-          class="text-4xl font-bold uppercase tracking-tight text-brand-primary lg:text-5xl"
+        {t("landing.card.when")}
+      </h2>
+      <div class="flex flex-col gap-4 text-center">
+        <p class="text-3xl font-bold leading-tight text-balance lg:text-4xl">
+          {
+            fairDate.toLocaleDateString(lang, {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          }
+        </p>
+        <p class="text-xl text-card-content-muted lg:text-2xl">08:00–17:00</p>
+        <Countdown class="text-2xl tracking-tight lg:text-3xl" />
+        <p
+          class="flex items-center justify-center gap-2 text-base text-card-content-muted"
         >
-          {t("landing.card.what")}
-        </h2>
-        <div class="prose leading-relaxed">
-          {whatIs && <div set:html={whatIs.html} />}
-        </div>
+          <Users class="size-5 shrink-0" />
+          <span>{t("landing.card.when.networking")}</span>
+        </p>
+      </div>
+    </Card>
+
+    <Card class="p-8 order-3 flex flex-col gap-6 lg:h-108">
+      <h2
+        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
+      >
+        {t("landing.card.what")}
+      </h2>
+      <div
+        class="flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose"
+      >
+        {whatIs && <div set:html={whatIs.html} />}
+      </div>
+      <div
+        class="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-2xl bg-gradient-to-t from-card to-transparent"
+      >
       </div>
     </Card>
   </div>
