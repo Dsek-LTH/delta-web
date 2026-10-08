@@ -1,5 +1,6 @@
 ---
 import Card from "@/components/Card.astro";
+import { ChevronDown } from "@lucide/astro";
 
 interface Props {
   question: string;
@@ -9,8 +10,13 @@ const { question } = Astro.props;
 
 <Card animate={false} class="flex items-center flex-col lg:flex-row h-full">
   <details class="group h-full w-full">
-    <summary class="text-xl font-bold p-6 sm:p-8 cursor-pointer">
+    <summary
+      class="flex cursor-pointer items-center justify-between gap-4 p-6 text-xl font-bold sm:p-8"
+    >
       {question}
+      <ChevronDown
+        class="size-5 shrink-0 text-brand-primary transition-transform duration-300 group-open:rotate-180"
+      />
     </summary>
     <div
       class="grid grid-rows-[0fr] group-open:grid-rows-[1fr] transition-[grid-template-rows] duration-300 ease-out"

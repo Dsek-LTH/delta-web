@@ -182,10 +182,10 @@ const tiers = [
               data-tier-details={tier.id}
               aria-expanded="false"
               aria-controls={`tier-details-${tier.id}`}
-              class="flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+              class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
             >
               {t("company.package.showDetails")}
-              <ChevronDown class="size-4" />
+              <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
             </button>
             <a
               href="mailto:delta@dsek.se"
@@ -201,44 +201,50 @@ const tiers = [
 
   {
     tiers.map((tier) => (
-      <section
-        id={`tier-details-${tier.id}`}
-        data-tier-panel={tier.id}
-        hidden
-        class={`frosted-glass w-full scroll-mt-28 rounded-2xl border-t-4 p-8 lg:p-10 ${tier.accent}`}
-      >
-        <div class="flex items-start justify-between gap-6">
-          <div>
-            <h3 class={`text-3xl font-extrabold ${tier.color}`}>{tier.name}</h3>
-            <p class="mt-2 text-xl font-bold text-card-content">{tier.price}</p>
-          </div>
-          <button
-            type="button"
-            data-tier-close
-            aria-label={t("company.package.hideDetails")}
-            class="btn btn-ghost rounded-full p-2"
-          >
-            <X class="size-5" />
-          </button>
-        </div>
-        <p class="mt-4 leading-relaxed text-card-content-muted">
-          {tier.subtitle}
-        </p>
-        <p class="mt-6 font-extrabold text-card-content">
-          {t("company.package.guarantees")}
-        </p>
-        <ul class="delta-bullets mt-4 grid gap-x-10 gap-y-3 text-sm text-card-content lg:grid-cols-2">
-          {tier.items.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
-        <a
-          href="mailto:delta@dsek.se"
-          class={`mt-8 rounded-full px-6 ${tier.cta}`}
+      <div data-tier-panel-wrap={tier.id} class="tier-panel-wrap w-full">
+        <section
+          id={`tier-details-${tier.id}`}
+          data-tier-panel={tier.id}
+          inert
+          class={`tier-panel frosted-glass w-full scroll-mt-28 rounded-2xl border-t-4 p-8 lg:p-10 ${tier.accent}`}
         >
-          {t("company.package.contact")}
-        </a>
-      </section>
+          <div class="flex items-start justify-between gap-6">
+            <div>
+              <h3 class={`text-3xl font-extrabold ${tier.color}`}>
+                {tier.name}
+              </h3>
+              <p class="mt-2 text-xl font-bold text-card-content">
+                {tier.price}
+              </p>
+            </div>
+            <button
+              type="button"
+              data-tier-close
+              aria-label={t("company.package.hideDetails")}
+              class="btn btn-ghost rounded-full p-2"
+            >
+              <X class="size-5" />
+            </button>
+          </div>
+          <p class="mt-4 leading-relaxed text-card-content-muted">
+            {tier.subtitle}
+          </p>
+          <p class="mt-6 font-extrabold text-card-content">
+            {t("company.package.guarantees")}
+          </p>
+          <ul class="delta-bullets mt-4 grid gap-x-10 gap-y-3 text-sm text-card-content lg:grid-cols-2">
+            {tier.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          <a
+            href="mailto:delta@dsek.se"
+            class={`mt-8 rounded-full px-6 ${tier.cta}`}
+          >
+            {t("company.package.contact")}
+          </a>
+        </section>
+      </div>
     ))
   }
 
@@ -249,11 +255,15 @@ const tiers = [
   const detailButtons = document.querySelectorAll<HTMLButtonElement>(
     "[data-tier-details]",
   );
-  const panels = document.querySelectorAll<HTMLElement>("[data-tier-panel]");
+  const panelWraps = document.querySelectorAll<HTMLElement>(
+    "[data-tier-panel-wrap]",
+  );
 
   const closePanels = () => {
-    panels.forEach((panel) => {
-      panel.hidden = true;
+    panelWraps.forEach((wrap) => {
+      wrap.removeAttribute("data-open");
+      const panel = wrap.querySelector<HTMLElement>("[data-tier-panel]");
+      if (panel) panel.inert = true;
     });
     detailButtons.forEach((button) => {
       button.setAttribute("aria-expanded", "false");
@@ -263,15 +273,23 @@ const tiers = [
   detailButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const id = button.dataset.tierDetails;
-      const panel = document.getElementById(`tier-details-${id}`);
-      const isOpen = panel instanceof HTMLElement && !panel.hidden;
+      const wrap = document.querySelector<HTMLElement>(
+        `[data-tier-panel-wrap="${id}"]`,
+      );
+      const isOpen = wrap?.hasAttribute("data-open") ?? false;
 
       closePanels();
 
-      if (panel instanceof HTMLElement && !isOpen) {
-        panel.hidden = false;
+      if (wrap && !isOpen) {
+        wrap.setAttribute("data-open", "");
+        const panel = wrap.querySelector<HTMLElement>("[data-tier-panel]");
+        if (panel) {
+          panel.inert = false;
+          requestAnimationFrame(() => {
+            panel.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        }
         button.setAttribute("aria-expanded", "true");
-        panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     });
   });

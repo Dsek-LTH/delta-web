@@ -140,6 +140,7 @@ html[data-theme="dark"] {
 @layer base {
   html {
     color-scheme: light;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -212,7 +213,7 @@ html[data-theme="dark"] {
 
   /* Buttons */
   .btn {
-    @apply inline-flex w-fit items-center justify-center gap-2 rounded-xl px-4 py-2 font-semibold no-underline transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60 disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex w-fit items-center justify-center gap-2 rounded-xl px-4 py-2 font-semibold no-underline transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
   }
 
   .btn-accent {
@@ -225,5 +226,43 @@ html[data-theme="dark"] {
 
   .btn-ghost {
     @apply bg-card text-card-content ring-1 ring-border hover:bg-card-highlight;
+  }
+
+  /* Expandable detail panels (company page) */
+  .tier-panel-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 300ms ease-out;
+  }
+
+  .tier-panel-wrap[data-open] {
+    grid-template-rows: 1fr;
+  }
+
+  .tier-panel {
+    min-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    translate: 0 -0.5rem;
+    transition:
+      opacity 300ms ease-out,
+      translate 300ms ease-out;
+  }
+
+  .tier-panel-wrap[data-open] .tier-panel {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Respect users who prefer reduced motion -- animations become instant. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
