@@ -6,12 +6,14 @@ interface Props extends HTMLAttributes<"span"> {
   animate?: boolean;
   /** Use light text for the wordmark on dark/photo backgrounds. */
   inverse?: boolean;
+  command?: string;
 }
 
 const {
   animate = false,
   inverse = false,
   class: className,
+  command,
   ...rest
 } = Astro.props;
 const animation = animate ? "animate-caret-blink" : "";
@@ -23,5 +25,7 @@ const animation = animate ? "animate-caret-blink" : "";
 >
   &gt;&nbsp;<span class={inverse ? "text-white" : "text-card-content"}
     >DELT</span
-  >&Delta;<span class={animation}>&#95;</span>
+  >&Delta;<span>{command ? ` ${command}` : ""}</span><span class={animation}
+    >&#95;</span
+  >
 </span>

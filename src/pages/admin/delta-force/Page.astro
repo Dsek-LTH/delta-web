@@ -7,9 +7,9 @@ import MemberEditor from "./MemberEditor.astro";
 import MemberList from "./MemberList.astro";
 import { ArrowLeft } from "@lucide/astro";
 
-const { member } = Astro.props as {
-  class: string;
+const { member, newMember } = Astro.props as {
   member: typeof deltaForceTable.$inferSelect;
+  newMember?: boolean;
 };
 const { lang, translate: t } = await i18n(Astro.cookies);
 ---
@@ -28,7 +28,15 @@ const { lang, translate: t } = await i18n(Astro.cookies);
       <h1 class="text-3xl font-bold">{t("admin.delta-force.title")}</h1>
       <div class="flex gap-8 w-full">
         <MemberList />
-        {member && <MemberEditor class="flex-1 h-fit" member={member} />}
+        {
+          member && (
+            <MemberEditor
+              class="flex-1 h-fit"
+              member={member}
+              newMember={newMember}
+            />
+          )
+        }
       </div>
     </div>
   </div>

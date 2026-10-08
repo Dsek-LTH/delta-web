@@ -1,0 +1,57 @@
+---
+import { Image } from "astro:assets";
+import { i18n } from "@/i18n/utils";
+import { deltaForceTable } from "@/db/schema";
+import { getMemberImage } from "@/files/client";
+import { deltaFordeRoleToTranslationKey } from "@/constants";
+import DefaultProfileImage from "@/assets/default-profile.webp";
+
+const { translate: t } = await i18n(Astro.cookies);
+
+const { member, showRole } = Astro.props as {
+  member: typeof deltaForceTable.$inferSelect;
+  showRole?: boolean;
+};
+
+const memberImage = await getMemberImage(member).catch(
+  () => DefaultProfileImage,
+);
+---
+
+<li
+  class="frosted-glass flex flex-col gap-2 items-center p-4 rounded-2xl hover:bg-card-highlight transition-colors duration-200"
+>
+  {
+    showRole && (
+      <span class="italic font-normal w-full sm:text-center text-left">
+        {t(deltaFordeRoleToTranslationKey(member.role, false))}
+      </span>
+    )
+  }
+  <div class="flex flex-row sm:flex-col gap-4 items-center">
+    <Image
+      src={memberImage}
+      alt={t("admin.delta-force.member.picture")}
+      width={500}
+      height={500}
+      class="w-32 sm:w-[20vw] lg:w-[16vw] sm:max-w-none aspect-square object-cover rounded-xl"
+    />
+    <p class="flex flex-col gap-1 order-2 text-left sm:text-center">
+      <a
+        href={member.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-bold"
+      >
+        {member.firstName}
+        {member.lastName}
+      </a>
+      <a
+        href={`mailto:${member.email}`}
+        class="text-sm text-card-content-muted hover:text-card-content-highlight"
+      >
+        {member.email}
+      </a>
+    </p>
+  </div>
+</li>
