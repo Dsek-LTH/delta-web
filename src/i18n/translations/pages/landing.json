@@ -9,6 +9,7 @@
     "card.where.sweden": "Sweden",
     "card.what": "What",
     "card.when.networking": "Networking event after",
+    "card.when.calendar": "Add to calendar",
     "button.attend": "Attend"
   },
   "sv": {
@@ -20,6 +21,7 @@
     "card.where.sweden": "Sverige",
     "card.what": "Vad",
     "card.when.networking": "Nätverkningsevent efter",
+    "card.when.calendar": "Lägg till i kalendern",
     "button.attend": "Delta på"
   }
 }
