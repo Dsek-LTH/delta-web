@@ -8,7 +8,7 @@ interface Props extends HTMLAttributes<"nav"> {}
 
 const { class: className, ...rest } = Astro.props;
 
-const { lang, translate: t } = i18n(Astro.cookies);
+const { translate: t } = i18n(Astro.cookies);
 ---
 
 <nav class={className} {...rest}>
