@@ -21,7 +21,8 @@
 
   /* Surfaces */
   --color-backdrop: var(--color-white);
-  --color-card: color-mix(in srgb, var(--color-white) 70%, transparent);
+  --color-card: color-mix(in srgb, var(--color-white) 55%, transparent);
+  --color-card-edge: color-mix(in srgb, var(--color-white) 70%, transparent);
   --color-card-content: var(--color-backdrop-content);
   --color-card-content-muted: var(--color-backdrop-content-muted);
   --color-card-content-highlight: var(--color-backdrop-content-highlight);
@@ -79,7 +80,8 @@ html[data-theme="dark"] {
   --color-backdrop-content-muted: var(--color-slate-400);
   --color-backdrop-content-highlight: var(--brand-purple);
 
-  --color-card: color-mix(in srgb, var(--color-slate-900) 70%, transparent);
+  --color-card: color-mix(in srgb, var(--color-slate-900) 60%, transparent);
+  --color-card-edge: color-mix(in srgb, var(--color-white) 8%, transparent);
   --color-card-content-muted: var(--color-slate-400);
   --color-card-highlight: color-mix(
     in srgb,
@@ -177,7 +179,7 @@ html[data-theme="dark"] {
 @layer components {
   /* Signature surface -- use for elevated/floating elements only */
   .frosted-glass {
-    @apply bg-card text-card-content backdrop-blur-lg ring-1 ring-border shadow-lg shadow-black/5 dark:shadow-black/30;
+    @apply bg-card text-card-content backdrop-blur-xl inset-shadow-sm inset-shadow-card-edge ring-1 ring-border shadow-lg shadow-black/5 dark:shadow-black/30;
   }
 
   /* Form controls */
