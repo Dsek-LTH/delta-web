@@ -4,7 +4,7 @@ import Package from "@/components/company/Package.astro";
 import PackageTitle from "@/components/company/PackageTitle.astro";
 import PricingTable from "@/components/company/PricingTable.astro";
 import Logo from "@/components/Logo.astro";
-import { Check } from "@lucide/astro";
+import { Check, ChevronDown, X } from "@lucide/astro";
 import { languages } from "@/i18n/ui.ts";
 import { i18n } from "@/i18n/utils";
 
@@ -20,6 +20,7 @@ const tiers = [
     name: t("company.pricing.tier.nonprofit"),
     price: t("company.pricing.price.nonprofit"),
     intro: t("company.package.nonprofit.intro"),
+    subtitle: t("company.package.nonprofit.subtitle"),
     accent: "border-diamond",
     color: "text-diamond",
     glow: "shadow-diamond/20",
@@ -30,12 +31,21 @@ const tiers = [
       t("company.pricing.row.logo"),
       t("company.pricing.row.wardrobeInfodesk"),
     ],
+    items: [
+      t("company.package.nonprofit.booth"),
+      t("company.package.nonprofit.tableStool"),
+      t("company.package.nonprofit.afterParty"),
+      t("company.package.nonprofit.lounge"),
+      t("company.package.nonprofit.wardrobe"),
+      t("company.package.nonprofit.wifi"),
+    ],
   },
   {
     id: "startup",
     name: t("company.pricing.tier.startup"),
     price: t("company.pricing.price.startup"),
     intro: t("company.package.startup.intro"),
+    subtitle: t("company.package.startup.subtitle"),
     accent: "border-bronze",
     color: "text-bronze",
     glow: "shadow-bronze/20",
@@ -46,12 +56,21 @@ const tiers = [
       t("company.pricing.row.logo"),
       t("company.pricing.row.lounge"),
     ],
+    items: [
+      t("company.package.startup.booth"),
+      t("company.package.startup.tableStool"),
+      t("company.package.startup.afterParty"),
+      t("company.package.startup.lounge"),
+      t("company.package.startup.wardrobe"),
+      t("company.package.startup.wifi"),
+    ],
   },
   {
     id: "standard",
     name: t("company.pricing.tier.standard"),
     price: t("company.pricing.price.standard"),
     intro: t("company.package.standard.intro"),
+    subtitle: t("company.package.standard.subtitle"),
     accent: "border-gold",
     color: "text-gold",
     glow: "shadow-gold/20",
@@ -62,12 +81,24 @@ const tiers = [
       t("company.pricing.row.parking"),
       t("company.pricing.row.lounge"),
     ],
+    items: [
+      t("company.package.standard.booth"),
+      t("company.package.standard.tableStool"),
+      t("company.package.standard.afterParty"),
+      t("company.package.standard.lunch"),
+      t("company.package.standard.parking"),
+      t("company.package.standard.lounge"),
+      t("company.package.standard.wardrobe"),
+      t("company.package.standard.host"),
+      t("company.package.standard.wifi"),
+    ],
   },
   {
     id: "main",
     name: t("company.pricing.tier.main"),
     price: t("company.pricing.price.main"),
     intro: t("company.package.main.intro"),
+    subtitle: t("company.package.main.subtitle"),
     accent: "border-emerald",
     color: "text-emerald",
     glow: "shadow-emerald/20",
@@ -77,6 +108,21 @@ const tiers = [
       t("company.pricing.row.tv"),
       t("company.pricing.row.social"),
       t("company.pricing.row.priorityHeadSponsor"),
+    ],
+    items: [
+      t("company.package.main.booth"),
+      t("company.package.main.afterPartyTickets"),
+      t("company.package.main.bannerLogo"),
+      t("company.package.main.tv"),
+      t("company.package.main.host"),
+      t("company.package.main.afterParty"),
+      t("company.package.main.parking"),
+      t("company.package.main.lunch"),
+      t("company.package.main.marketing"),
+      t("company.package.main.tables"),
+      t("company.package.main.wardrobe"),
+      t("company.package.main.wifi"),
+      t("company.package.main.priority"),
     ],
   },
 ];
@@ -130,16 +176,109 @@ const tiers = [
               </li>
             ))}
           </ul>
-          <a
-            href="mailto:delta@dsek.se"
-            class={`mx-auto mt-auto rounded-full px-5 ${tier.cta}`}
-          >
-            {t("company.package.contact")}
-          </a>
+          <div class="mt-auto flex flex-col items-center gap-3">
+            <button
+              type="button"
+              data-tier-details={tier.id}
+              aria-expanded="false"
+              aria-controls={`tier-details-${tier.id}`}
+              class="flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+            >
+              {t("company.package.showDetails")}
+              <ChevronDown class="size-4" />
+            </button>
+            <a
+              href="mailto:delta@dsek.se"
+              class={`rounded-full px-5 ${tier.cta}`}
+            >
+              {t("company.package.contact")}
+            </a>
+          </div>
         </Package>
       ))
     }
   </div>
 
+  {
+    tiers.map((tier) => (
+      <section
+        id={`tier-details-${tier.id}`}
+        data-tier-panel={tier.id}
+        hidden
+        class={`frosted-glass w-full scroll-mt-28 rounded-2xl border-t-4 p-8 lg:p-10 ${tier.accent}`}
+      >
+        <div class="flex items-start justify-between gap-6">
+          <div>
+            <h3 class={`text-3xl font-extrabold ${tier.color}`}>{tier.name}</h3>
+            <p class="mt-2 text-xl font-bold text-card-content">{tier.price}</p>
+          </div>
+          <button
+            type="button"
+            data-tier-close
+            aria-label={t("company.package.hideDetails")}
+            class="btn btn-ghost rounded-full p-2"
+          >
+            <X class="size-5" />
+          </button>
+        </div>
+        <p class="mt-4 leading-relaxed text-card-content-muted">
+          {tier.subtitle}
+        </p>
+        <p class="mt-6 font-extrabold text-card-content">
+          {t("company.package.guarantees")}
+        </p>
+        <ul class="delta-bullets mt-4 grid gap-x-10 gap-y-3 text-sm text-card-content lg:grid-cols-2">
+          {tier.items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <a
+          href="mailto:delta@dsek.se"
+          class={`mt-8 rounded-full px-6 ${tier.cta}`}
+        >
+          {t("company.package.contact")}
+        </a>
+      </section>
+    ))
+  }
+
   <PricingTable />
 </Layout>
+
+<script>
+  const detailButtons = document.querySelectorAll<HTMLButtonElement>(
+    "[data-tier-details]",
+  );
+  const panels = document.querySelectorAll<HTMLElement>("[data-tier-panel]");
+
+  const closePanels = () => {
+    panels.forEach((panel) => {
+      panel.hidden = true;
+    });
+    detailButtons.forEach((button) => {
+      button.setAttribute("aria-expanded", "false");
+    });
+  };
+
+  detailButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.dataset.tierDetails;
+      const panel = document.getElementById(`tier-details-${id}`);
+      const isOpen = panel instanceof HTMLElement && !panel.hidden;
+
+      closePanels();
+
+      if (panel instanceof HTMLElement && !isOpen) {
+        panel.hidden = false;
+        button.setAttribute("aria-expanded", "true");
+        panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    });
+  });
+
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-tier-close]")
+    .forEach((button) => {
+      button.addEventListener("click", closePanels);
+    });
+</script>
