@@ -39,6 +39,13 @@
   /* Feedback */
   --color-destructive: var(--color-red-600);
 
+  /* Package tiers */
+  --color-bronze: #cd7f32;
+  --color-silver: #c0c0c0;
+  --color-gold: #d4af37;
+  --color-diamond: #b9f2ff;
+  --color-emerald: #50c878;
+
   /* Background */
   --color-gradient-source: var(--color-fuchsia-100);
   --color-gradient-goal: var(--color-backdrop);
@@ -173,6 +180,18 @@ html[data-theme="dark"] {
       var(--color-backdrop-content-highlight) 75%,
       transparent
     );
+  }
+
+  .delta-bullets li::before {
+    content: "";
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+    vertical-align: middle;
+    background-image: url("/public/delta-delta-bullet.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 0.5rem;
   }
 }
 

@@ -25,7 +25,6 @@ const animation = animate ? "animate-caret-blink" : "";
 >
   &gt;&nbsp;<span class={inverse ? "text-white" : "text-card-content"}
     >DELT</span
-  >&Delta;<span>{command ? ` ${command}` : ""}</span><span class={animation}
-    >&#95;</span
-  >
+  >&Delta;<span class="whitespace-nowrap">{command ? ` ${command}` : ""}</span
+  ><span class={animation}>&#95;</span>
 </span>
