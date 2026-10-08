@@ -103,6 +103,7 @@ const navItems = [
     <li>
       <a
         href="/"
+        aria-label={t("navbar.home")}
         class={twMerge(
           "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass",
           Astro.url.pathname === "/" && "text-shadow-glow-pink",
