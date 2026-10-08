@@ -50,19 +50,20 @@ const lang = getLang(Astro.cookies);
   </head>
 
   <body>
-    {
-      backgroundImage && (
-        <div class="absolute inset-0 -z-1337 pointer-events-none select-none overflow-hidden">
-          <Image
-            src={backgroundImage}
-            alt="Background Cover"
-            class="w-full h-full object-cover blur-sm fixed scale-105"
-          />
-        </div>
-      )
-    }
+    <div class="relative isolate flex min-h-dvh flex-col gap-6 lg:gap-0">
+      {
+        backgroundImage && (
+          <div class="absolute inset-0 -z-10 pointer-events-none select-none overflow-hidden">
+            <Image
+              src={backgroundImage}
+              alt="Background Cover"
+              class="h-full w-full object-cover blur-sm scale-105"
+            />
+            <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-backdrop" />
+          </div>
+        )
+      }
 
-    <div class="flex min-h-dvh flex-col gap-6 lg:gap-0">
       <Header />
 
       <main
