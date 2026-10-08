@@ -28,7 +28,7 @@ const deltaForceMembers = await db.select().from(deltaForceTable).all();
                   )}
                 </h2>
                 <a
-                  class="btn btn-primary frosted-glass text-brand-secondary rounded-lg aspect-square hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit p-1 bg-card/50"
+                  class="btn btn-ghost aspect-square w-fit p-1"
                   href={`/admin/delta-force/new?role=${role}`}
                 >
                   <Plus class="w-4 h-4 " />
@@ -38,7 +38,7 @@ const deltaForceMembers = await db.select().from(deltaForceTable).all();
                 {deltaForceMembers
                   .filter((member) => member.role === role)
                   .map((member) => (
-                    <li class="frosted-glass items-center p-2 rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300 ease-out">
+                    <li class="frosted-glass items-center p-2 rounded-xl hover:bg-card-highlight transition-colors duration-200">
                       <a
                         class="w-full flex justify-between gap-4 text-sm"
                         href={`/admin/delta-force/${member.studentId}`}

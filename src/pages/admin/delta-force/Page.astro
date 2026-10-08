@@ -21,10 +21,7 @@ const { lang, translate: t } = await i18n(Astro.cookies);
     t("admin.delta-force.description")}
 >
   <div class="flex w-3/4 min-w-fit items-top gap-8 p-30">
-    <a
-      class="btn btn-primary frosted-glass flex items-center text-brand-secondary rounded-xl aspect-square hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit h-fit p-1 bg-card/50"
-      href={`/admin`}
-    >
+    <a class="btn btn-ghost aspect-square h-fit w-fit p-2" href={`/admin`}>
       <ArrowLeft class="w-6 h-6" />
     </a>
     <div class="flex flex-col justify-startflex-1 w-full gap-8">

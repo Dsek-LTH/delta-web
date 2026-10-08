@@ -13,14 +13,15 @@ const { lang, translate: t } = i18n(Astro.cookies);
 
 <nav class={className} {...rest}>
   <ul
-    class="frosted-glass rounded-3xl grid grid-flow-col auto-cols-[1fr_2.5em_1fr] text-xl lg:text-2xl font-bold overflow-hidden text-center items-center h-12 lg:h-16"
+    class="frosted-glass rounded-2xl grid grid-flow-col auto-cols-[1fr_2.5em_1fr] text-xl lg:text-2xl font-bold overflow-hidden text-center items-center h-12 lg:h-16"
   >
     <li>
       <a
         href="/student"
         class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/student" && "text-shadow-glow",
+          "text-card-content hover:text-brand-primary p-3",
+          Astro.url.pathname === "/student" &&
+            "text-brand-primary text-shadow-glow",
         )}
       >
         Student
@@ -30,7 +31,7 @@ const { lang, translate: t } = i18n(Astro.cookies);
       <a
         href="/"
         class={twMerge(
-          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight hover:text-shadow-glow rounded-full aspect-square frosted-glass",
+          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass",
           Astro.url.pathname === "/" && "text-shadow-glow-pink",
         )}>&Delta;</a
       >
@@ -39,8 +40,9 @@ const { lang, translate: t } = i18n(Astro.cookies);
       <a
         href="/company"
         class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/company" && "text-shadow-glow",
+          "text-card-content hover:text-brand-primary p-3",
+          Astro.url.pathname === "/company" &&
+            "text-brand-primary text-shadow-glow",
         )}>{t("navbar.company")}</a
       >
     </li>

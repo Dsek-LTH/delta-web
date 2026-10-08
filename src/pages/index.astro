@@ -27,9 +27,9 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
 >
   <div class="text-center text-shadow-md/25">
     <h1 aria-label="DELTA" role="img" class="contents text-7xl lg:text-9xl">
-      <Logo animate />
+      <Logo animate inverse />
     </h1>
-    <Countdown class="lg:text-4xl text-2xl" />
+    <Countdown class="text-white lg:text-4xl text-2xl" />
   </div>
 
   <div
@@ -37,7 +37,7 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
   >
     <Card class="p-8 lg:order-1 order-2 flex flex-col gap-6">
       <h2
-        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary text-shadow-sm/25 dark:text-shadow-none"
+        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
       >
         {t("landing.card.where")}
       </h2>
@@ -64,7 +64,7 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
 
     <Card class="p-8 lg:order-2 order-1 flex flex-col gap-6">
       <h2
-        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary text-shadow-sm/25 dark:text-shadow-none"
+        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
       >
         {t("landing.card.when")}
       </h2>
@@ -95,7 +95,7 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
 
     <Card class="p-8 order-3 flex flex-col gap-6">
       <h2
-        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary text-shadow-sm/25 dark:text-shadow-none"
+        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
       >
         {t("landing.card.what")}
       </h2>
@@ -110,7 +110,7 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
   <a
     href="mailto:delta@dsek.se"
     target="_blank"
-    class="frosted-glass text-brand-secondary font-bold py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out text-shadow-sm/25 dark:text-shadow-none"
+    class="frosted-glass text-card-content font-bold py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline transition-colors duration-200 hover:bg-card-highlight"
   >
     <span>{t("landing.button.attend")}</span>
     <Logo />
