@@ -9,6 +9,7 @@ import Logo from "@/components/Logo.astro";
 import Card from "@/components/Card.astro";
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
+import { twMerge } from "tailwind-merge";
 
 const deltaForceMembers = await db.select().from(deltaForceTable).all();
 
@@ -39,7 +40,9 @@ const teams = deltaForceRoles
     photo: photoFor(role),
     members: deltaForceMembers.filter((member) => member.role === role),
   }))
-  .filter((team) => team.members.length > 0);
+  .filter((team) => team.members.length > 0)
+  // Biggest teams get the bigger tiles, packed densely so there are no holes.
+  .sort((a, b) => b.members.length - a.members.length);
 ---
 
 <Layout
@@ -47,96 +50,100 @@ const teams = deltaForceRoles
   description={t("delta-force.meta.description")}
   class="flex flex-col items-center gap-16 px-6 py-16 mx-auto max-w-7xl lg:px-16"
 >
-  <Card class="relative w-full overflow-hidden p-0">
-    {
-      allPhoto ? (
-        <>
-          <Image
-            src={allPhoto}
-            alt=""
-            width={1600}
-            height={700}
-            class="h-80 w-full object-cover lg:h-[26rem]"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/40 to-slate-950/10" />
-          <div class="absolute inset-x-0 bottom-0 flex flex-col gap-3 p-6 lg:p-10">
-            <h1 class="text-3xl font-bold sm:text-4xl lg:text-5xl">
-              <Logo
-                animate
-                inverse
-                command="--force"
-                class="inline-block text-white"
-              />
-            </h1>
-            <p class="max-w-3xl text-balance text-sm text-white/85 lg:text-base">
-              {t("delta-force.description")}
-            </p>
-          </div>
-        </>
-      ) : (
-        <div class="flex flex-col gap-4 p-8 lg:p-10">
-          <h1 class="text-4xl font-bold sm:text-5xl lg:text-6xl">
-            <Logo animate command="--force" class="inline-block" />
-          </h1>
-          <p class="max-w-3xl text-balance">{t("delta-force.description")}</p>
-        </div>
-      )
-    }
-  </Card>
+  <div
+    class="flex w-full flex-col justify-between gap-10 sm:text-left text-center lg:flex-row"
+  >
+    <div class="flex flex-col justify-center items-start gap-4 lg:max-w-1/2">
+      <h1 class="text-4xl font-bold text-left sm:text-5xl lg:text-6xl">
+        <Logo animate command="--force" class="inline-block" />
+      </h1>
+      <p class="text-balance">
+        {t("delta-force.description")}
+      </p>
+    </div>
+    <div class="flex flex-col justify-center items-center gap-4 lg:items-start">
+      <h2 class="text-3xl font-bold">{t("delta-force.generals")}</h2>
+      <ul class="flex flex-col items-center gap-4 font-bold sm:flex-row">
+        {generals.map((member) => <MemberCard member={member} />)}
+      </ul>
+    </div>
+  </div>
 
-  <section class="flex w-full flex-col gap-8">
-    <h2 class="text-3xl font-bold">{t("delta-force.generals")}</h2>
-    <ul class="flex flex-col items-center gap-4 font-bold sm:flex-row">
-      {generals.map((member) => <MemberCard member={member} />)}
-    </ul>
-  </section>
+  {
+    allPhoto && (
+      <Card class="w-full overflow-hidden p-0">
+        <Image
+          src={allPhoto}
+          alt=""
+          width={1600}
+          height={700}
+          class="h-64 w-full object-cover lg:h-96"
+        />
+      </Card>
+    )
+  }
 
   <section class="flex w-full flex-col gap-8">
     <h2 class="text-center text-3xl font-bold lg:text-4xl">
       {t("delta-force.project-group")}
     </h2>
-    <div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div
+      class="grid w-full grid-flow-row-dense grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+    >
       {
-        teams.map((team) => (
-          <Card class="overflow-hidden p-0">
-            {team.photo ? (
-              <Image
-                src={team.photo}
-                alt=""
-                width={800}
-                height={600}
-                class="aspect-4/3 w-full object-cover"
-              />
-            ) : (
-              <div class="grid aspect-4/3 w-full place-items-center bg-card-highlight/40 font-display text-8xl text-brand-primary/25">
-                Δ
+        teams.map((team) => {
+          const wide = team.members.length >= 2;
+          return (
+            <Card
+              class={twMerge("overflow-hidden p-0", wide && "lg:col-span-2")}
+            >
+              {team.photo ? (
+                <Image
+                  src={team.photo}
+                  alt=""
+                  width={800}
+                  height={600}
+                  class={twMerge(
+                    "w-full object-cover aspect-4/3",
+                    wide && "lg:aspect-video",
+                  )}
+                />
+              ) : (
+                <div
+                  class={twMerge(
+                    "grid w-full place-items-center bg-card-highlight/40 font-display text-8xl text-brand-primary/25 aspect-4/3",
+                    wide && "lg:aspect-video",
+                  )}
+                >
+                  Δ
+                </div>
+              )}
+              <div class="flex flex-col gap-3 p-6">
+                <h3 class="flex items-baseline gap-3 text-xl font-bold text-brand-primary">
+                  <span class="font-mono">&gt;</span>
+                  {team.label}
+                  <span class="font-mono text-sm font-normal text-card-content-muted">
+                    {String(team.members.length).padStart(2, "0")}
+                  </span>
+                </h3>
+                <ul class="flex flex-col gap-1 text-sm text-card-content">
+                  {team.members.map((member) => (
+                    <li>
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-card-content hover:text-card-content-highlight"
+                      >
+                        {member.firstName} {member.lastName}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            )}
-            <div class="flex flex-col gap-3 p-6">
-              <h3 class="flex items-baseline gap-3 text-xl font-bold text-brand-primary">
-                <span class="font-mono">&gt;</span>
-                {team.label}
-                <span class="font-mono text-sm font-normal text-card-content-muted">
-                  {String(team.members.length).padStart(2, "0")}
-                </span>
-              </h3>
-              <ul class="flex flex-col gap-1 text-sm text-card-content">
-                {team.members.map((member) => (
-                  <li>
-                    <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-card-content hover:text-card-content-highlight"
-                    >
-                      {member.firstName} {member.lastName}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Card>
-        ))
+            </Card>
+          );
+        })
       }
     </div>
   </section>
