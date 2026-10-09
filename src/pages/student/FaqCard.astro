@@ -11,7 +11,7 @@ const { question } = Astro.props;
 <Card animate={false} class="flex items-center flex-col lg:flex-row h-full">
   <details class="group h-full w-full">
     <summary
-      class="flex cursor-pointer items-center justify-between gap-4 p-6 text-xl font-bold sm:p-8"
+      class="flex cursor-pointer items-center justify-between gap-4 p-6 text-xl font-bold transition-colors duration-200 hover:bg-card-highlight sm:p-8"
     >
       {question}
       <ChevronDown

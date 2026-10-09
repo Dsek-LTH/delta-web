@@ -16,6 +16,12 @@ const { title, imgSrc, imgAlt, reverse } = Astro.props;
   class="flex items-center flex-col sm:flex-row sm:items-start lg:items-center h-full p-6 lg:p-8 gap-4 sm:gap-8 bg-card-highlight/40"
   animate={false}
 >
+  <span
+    aria-hidden="true"
+    class="pointer-events-none absolute -right-4 -bottom-12 select-none font-display text-[9rem] leading-none text-brand-primary/10"
+  >
+    Δ
+  </span>
   <Image
     src={imgSrc}
     alt={imgAlt}

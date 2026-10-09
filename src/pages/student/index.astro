@@ -9,6 +9,7 @@ import WorkImg from "@/assets/tekfok/0009.webp";
 import AfterImg from "@/assets/tekfok/banket.webp";
 
 import InfoCard from "./InfoCard.astro";
+import Countdown from "@/components/Countdown.astro";
 import FaqCard from "./FaqCard.astro";
 import { getEntry } from "astro:content";
 
@@ -52,13 +53,19 @@ const faqContactAnswer = await getRenderedContent(
   description={t("student.meta.description")}
   class="flex flex-col justify-center items-center max-w-7xl gap-16 lg:p-30 lg:px-60 p-8"
 >
-  <h1>
-    <span
-      class="lg:text-7xl text-5xl font-bold tracking-tight text-brand-primary"
-    >
-      {t("student.title")}
-    </span>
-  </h1>
+  <div class="flex flex-col items-center gap-4 text-center">
+    <p class="font-mono text-sm font-semibold text-brand-primary">
+      {t("student.kicker")}<span class="animate-caret-blink">_</span>
+    </p>
+    <h1>
+      <span
+        class="lg:text-7xl text-5xl font-bold tracking-tight text-brand-primary"
+      >
+        {t("student.title")}
+      </span>
+    </h1>
+    <Countdown class="lg:text-3xl text-2xl" />
+  </div>
   <div class="flex flex-col gap-8">
     <InfoCard
       title={t("student.what.title")}
