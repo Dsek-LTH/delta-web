@@ -146,7 +146,10 @@ Accordions, “read more” and package details all use one pattern — **not** 
   Always `mx-auto` — a `max-w-*` without it is left-aligned (this shipped once; don’t repeat it).
 - **Hero (text)**: wordmark → 64–80 px → tagline → 24 px → mono capability line → 40–48 px →
   contact line. Keep that rhythm.
-- **Hero (photo)**: image with a dark scrim, `Logo inverse`, light text.
+- **Hero (typographic)**: wordmark + countdown directly on the gradient; no background
+  photo. The landing closes with a four-photo band under the CTA (student-built formula car,
+  hall, conversation, group). Photos otherwise live where they carry meaning: student
+  timeline and team tiles.
 - **Pricing**: intro → entry pair (quiet) → core packages (full) → top tier (featured, wide) →
   comparison table. Details unfold directly under the clicked group.
 - **Long-form pages**: first paragraph + fold per section; never a wall of text.
@@ -227,8 +230,8 @@ On top of `design/scroll-polish` this branch adds:
   variants.
 - **Anchor offset**: `html { scroll-padding-top: 6rem }` compensates for the floating header;
   the hero is `#top`.
-- **Hero backdrop scoped to the first viewport** (`h-dvh`), so reading chapters sit on the
-  gradient, not on the photo.
+- **Typographic hero**: no background photo; a four-photo band under the CTA carries the
+  "real fair" imagery before the chapters begin.
 - **One countdown per page**: `Countdown` writes into fixed element IDs, so only the hero
   instance exists on the one-pager.
 

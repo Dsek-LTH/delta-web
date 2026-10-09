@@ -11,7 +11,11 @@
     "card.when.networking": "After DELTA Pub",
     "card.when.calendar": "Add to calendar",
     "button.attend": "Attend",
-    "section.fullPage": "Read the full page"
+    "section.fullPage": "Read the full page",
+    "gallery.alt.formula": "Student-built formula car at the fair",
+    "gallery.alt.hall": "Visitors in the hallway during DELTA",
+    "gallery.alt.talk": "A student and a company representative in conversation",
+    "gallery.alt.group": "Students together at DELTA"
   },
   "sv": {
     "head.title": "Hem | DELTA",
@@ -24,6 +28,10 @@
     "card.when.networking": "After DELTA Pub",
     "card.when.calendar": "Lägg till i kalendern",
     "button.attend": "Delta på",
-    "section.fullPage": "Läs hela sidan"
+    "section.fullPage": "Läs hela sidan",
+    "gallery.alt.formula": "Studentbyggd formelbil på mässan",
+    "gallery.alt.hall": "Besökare i korridoren under DELTA",
+    "gallery.alt.talk": "Student och företagsrepresentant i samtal",
+    "gallery.alt.group": "Studenter tillsammans på DELTA"
   }
 }
