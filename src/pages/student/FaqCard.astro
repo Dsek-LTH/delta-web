@@ -9,7 +9,7 @@ const { question } = Astro.props;
 ---
 
 <Card animate={false} class="flex items-center flex-col lg:flex-row h-full">
-  <details class="group h-full w-full">
+  <details class="group animated-details h-full w-full">
     <summary
       class="flex cursor-pointer items-center justify-between gap-4 p-6 text-xl font-bold transition-colors duration-200 hover:bg-card-highlight sm:p-8"
     >
@@ -18,12 +18,8 @@ const { question } = Astro.props;
         class="size-5 shrink-0 text-brand-primary transition-transform duration-300 group-open:rotate-180"
       />
     </summary>
-    <div
-      class="grid grid-rows-[0fr] group-open:grid-rows-[1fr] transition-[grid-template-rows] duration-300 ease-out"
-    >
-      <div class="overflow-hidden pb-6 px-6 sm:pb-8 sm:px-8">
-        <slot />
-      </div>
+    <div class="pb-6 px-6 sm:pb-8 sm:px-8">
+      <slot />
     </div>
   </details>
 </Card>

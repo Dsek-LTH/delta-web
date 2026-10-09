@@ -149,6 +149,7 @@ html[data-theme="dark"] {
   html {
     color-scheme: light;
     scroll-behavior: smooth;
+    interpolate-size: allow-keywords;
   }
 
   body {
@@ -261,13 +262,31 @@ html[data-theme="dark"] {
     opacity: 1;
     translate: 0 0;
   }
+
+  /* Animated <details>: animate the browser's own content wrapper so open and
+     close animate reliably on repeated toggles. */
+  .animated-details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      block-size 300ms cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 300ms cubic-bezier(0.23, 1, 0.32, 1),
+      content-visibility 300ms allow-discrete;
+  }
+
+  .animated-details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
 }
 
 /* Respect users who prefer reduced motion -- animations become instant. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
-  *::after {
+  *::after,
+  *::details-content {
     animation-duration: 0.01ms !important;
     animation-delay: 0.01ms !important;
     animation-iteration-count: 1 !important;
