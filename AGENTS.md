@@ -34,6 +34,7 @@ The dev server runs on port **8080** (not the Astro default).
 ## Code Conventions
 
 - **Formatting**: Prettier — 2-space indent, double quotes, semicolons, trailing commas.
+- **Design**: Follow `DESIGN.md` — semantic tokens, component conventions, motion rules and the UI review checklist. UI changes should be checked against it (see the `design-review` skill).
 - **Linting**: ESLint with `eslint-plugin-astro`.
 - **Imports**: Use the `@/` alias (maps to `src/`). Prefer absolute over relative imports.
 - **Type imports**: Use `import type` for type-only imports.
