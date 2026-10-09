@@ -66,6 +66,7 @@
 
   --animate-caret-blink: caret-blink 1s step-end infinite;
   --animate-rise: rise 450ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  --ease-strong: cubic-bezier(0.23, 1, 0.32, 1);
 
   @keyframes rise {
     from {
@@ -265,6 +266,42 @@ html[data-theme="dark"] {
     opacity: 1;
     translate: 0 0;
   }
+
+  /* Scroll reveals: blocks below the first screen fade in when they enter
+     the viewport (shared observer in Layout). The hidden state is gated
+     behind `html.js`, so without JavaScript nothing is ever hidden. */
+  .reveal {
+    transition:
+      opacity 550ms var(--ease-strong),
+      translate 550ms var(--ease-strong);
+  }
+
+  html.js .reveal:not(.is-visible) {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+
+  /* Scroll progress hairline (Header.astro); transform is set from JS. */
+  [data-scroll-progress] {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  /* Timeline rail fill (student timeline); --rail-progress is set from the
+     shared scroll script in Layout. */
+  [data-timeline-rail] {
+    transform: scaleY(var(--rail-progress, 0));
+    transform-origin: top;
+  }
+
+  /* Oversized closing mark: stroke-only Δ, theme-aware and decorative. */
+  .footer-mark {
+    color: transparent;
+    font-size: clamp(8rem, 20vw, 15rem);
+    font-weight: 700;
+    line-height: 0.75;
+    -webkit-text-stroke: 1px var(--color-border);
+  }
 }
 
 /* Respect users who prefer reduced motion -- animations become instant. */
@@ -284,6 +321,7 @@ html[data-theme="dark"] {
     animation-delay: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }

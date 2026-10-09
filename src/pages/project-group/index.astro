@@ -30,14 +30,11 @@ const photoFor = (name: string): ImageMetadata | null => {
 };
 
 const allPhoto = photoFor("all") ?? photoFor("team");
-const tileDelays = [
-  "[animation-delay:120ms]",
-  "[animation-delay:180ms]",
-  "[animation-delay:240ms]",
-  "[animation-delay:300ms]",
-  "[animation-delay:360ms]",
-  "[animation-delay:420ms]",
-  "[animation-delay:480ms]",
+// Stagger within a revealed row; each tile still waits for the viewport.
+const tileRevealDelays = [
+  "[transition-delay:0ms]",
+  "[transition-delay:90ms]",
+  "[transition-delay:180ms]",
 ];
 const generals = deltaForceMembers.filter(
   (member) => member.role === "general",
@@ -102,7 +99,7 @@ const teams = deltaForceRoles
     </div>
   </div>
 
-  <Card class="w-full overflow-hidden p-0 animate-rise [animation-delay:60ms]">
+  <Card class="w-full overflow-hidden p-0 reveal">
     {
       allPhoto ? (
         <Image
@@ -119,7 +116,7 @@ const teams = deltaForceRoles
   </Card>
 
   <section class="flex w-full flex-col gap-8">
-    <h2 class="text-center text-3xl font-bold lg:text-4xl">
+    <h2 class="reveal text-center text-3xl font-bold lg:text-4xl">
       {t("delta-force.project-group")}
     </h2>
     <div
@@ -128,7 +125,7 @@ const teams = deltaForceRoles
       {
         teams.map((team, index) => (
           <TeamTile
-            class={`animate-rise ${tileDelays[index] ?? "[animation-delay:540ms]"}`}
+            class={`reveal ${tileRevealDelays[index % tileRevealDelays.length] ?? "[transition-delay:0ms]"}`}
             label={team.label}
             members={team.members}
             photo={team.photo}

@@ -64,11 +64,16 @@ const faqContactAnswer = await getRenderedContent(
     </h1>
     <Countdown class="lg:text-3xl text-2xl" />
   </div>
-  <div class="relative w-full">
+  <div class="relative w-full" data-timeline>
     <span
       aria-hidden="true"
       class="absolute top-0 bottom-0 left-4 w-px -translate-x-1/2 bg-border lg:left-1/2"
-    ></span>
+    >
+      <span
+        data-timeline-rail
+        style="--rail-progress: 0"
+        class="absolute inset-0 bg-brand-primary/70"></span>
+    </span>
     <div class="flex flex-col gap-8 lg:gap-12">
       <div class="relative lg:grid lg:grid-cols-2 lg:gap-16">
         <span
@@ -76,9 +81,7 @@ const faqContactAnswer = await getRenderedContent(
           class="absolute left-4 top-1/2 grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
           >Δ</span
         >
-        <div
-          class="animate-rise pl-12 [animation-delay:0ms] lg:pl-0 lg:col-start-1"
-        >
+        <div class="reveal pl-12 lg:pl-0 lg:col-start-1">
           <InfoCard
             title={t("student.what.title")}
             imgSrc={WhatImg}
@@ -94,9 +97,7 @@ const faqContactAnswer = await getRenderedContent(
           class="absolute left-4 top-1/2 grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
           >Δ</span
         >
-        <div
-          class="animate-rise pl-12 [animation-delay:60ms] lg:pl-0 lg:col-start-2"
-        >
+        <div class="reveal pl-12 lg:pl-0 lg:col-start-2">
           <InfoCard
             title={t("student.why.title")}
             imgSrc={WhyImg}
@@ -113,9 +114,7 @@ const faqContactAnswer = await getRenderedContent(
           class="absolute left-4 top-1/2 grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
           >Δ</span
         >
-        <div
-          class="animate-rise pl-12 [animation-delay:120ms] lg:pl-0 lg:col-start-1"
-        >
+        <div class="reveal pl-12 lg:pl-0 lg:col-start-1">
           <InfoCard
             title={t("student.how.title")}
             imgSrc={HowImg}
@@ -131,9 +130,7 @@ const faqContactAnswer = await getRenderedContent(
           class="absolute left-4 top-1/2 grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
           >Δ</span
         >
-        <div
-          class="animate-rise pl-12 [animation-delay:180ms] lg:pl-0 lg:col-start-2"
-        >
+        <div class="reveal pl-12 lg:pl-0 lg:col-start-2">
           <InfoCard
             title={t("student.work.title")}
             imgSrc={WorkImg}
@@ -150,9 +147,7 @@ const faqContactAnswer = await getRenderedContent(
           class="absolute left-4 top-1/2 grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
           >Δ</span
         >
-        <div
-          class="animate-rise pl-12 [animation-delay:240ms] lg:pl-0 lg:col-start-1"
-        >
+        <div class="reveal pl-12 lg:pl-0 lg:col-start-1">
           <InfoCard
             title={t("student.after.title")}
             imgSrc={AfterImg}
@@ -168,9 +163,7 @@ const faqContactAnswer = await getRenderedContent(
           class="absolute left-4 top-1/2 grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
           >Δ</span
         >
-        <div
-          class="animate-rise pl-12 [animation-delay:300ms] lg:pl-0 lg:col-start-2"
-        >
+        <div class="reveal pl-12 lg:pl-0 lg:col-start-2">
           <InfoCard
             title={t("student.session.title")}
             imgSrc={SessionImg}
@@ -184,7 +177,7 @@ const faqContactAnswer = await getRenderedContent(
     </div>
   </div>
 
-  <div class="w-full max-w-3xl">
+  <div class="reveal w-full max-w-3xl">
     <h2
       class="lg:text-5xl text-3xl font-bold tracking-tight text-brand-primary"
     >

@@ -41,7 +41,7 @@ const generalsValidated = generals.map((general) =>
 ---
 
 <footer
-  class="relative p-4 leading-relaxed flex flex-col items-center gap-4 text-center"
+  class="relative p-4 pb-12 leading-relaxed flex flex-col items-center gap-4 text-center"
 >
   <address class="not-italic">
     <p class="text-xl font-semibold pb-2">
@@ -83,4 +83,11 @@ const generalsValidated = generals.map((general) =>
     class="absolute bottom-0 text-sm text-backdrop-content-muted hover:text-backdrop-content-highlight/80"
     href={`/admin`}>{t("footer.admin-panel")}</a
   >
+
+  <span
+    aria-hidden="true"
+    class="footer-mark pointer-events-none select-none font-display"
+  >
+    &Delta;
+  </span>
 </footer>
