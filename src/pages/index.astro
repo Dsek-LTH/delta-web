@@ -13,6 +13,20 @@ import GalleryHall from "@/assets/tekfok/tekfok26_0011.webp";
 import GalleryTalk from "@/assets/tekfok/tekfok26_0014.webp";
 import GalleryGroup from "@/assets/tekfok/tekfok26_0018.webp";
 
+// Extra photos shown opposite a student card while its fold is open.
+import WhatPhoto2 from "@/assets/tekfok/0004.webp";
+import WhatPhoto3 from "@/assets/tekfok/tekfok26_0013.webp";
+import WhyPhoto2 from "@/assets/tekfok/0005.webp";
+import WhyPhoto3 from "@/assets/tekfok/tekfok26_0015.webp";
+import HowPhoto2 from "@/assets/tekfok/tekfok26_0002.webp";
+import HowPhoto3 from "@/assets/tekfok/tekfok26_0007.webp";
+import WorkPhoto2 from "@/assets/tekfok/tekfok26_0019.webp";
+import WorkPhoto3 from "@/assets/tekfok/0008.webp";
+import AfterPhoto2 from "@/assets/tekfok/tekfok26_0022.webp";
+import AfterPhoto3 from "@/assets/tekfok/tekfok26_0004.webp";
+import SessionPhoto2 from "@/assets/tekfok/tekfok26_0021.webp";
+import SessionPhoto3 from "@/assets/tekfok/tekfok26_0023.webp";
+
 import Package from "@/components/company/Package.astro";
 import PackageTitle from "@/components/company/PackageTitle.astro";
 import PackageDetails from "@/components/company/PackageDetails.astro";
@@ -277,42 +291,54 @@ const faqContactAnswer = await getRenderedContent(
   "student/faq/contact",
 );
 
-const timelineItems = [
+const timelineItems: {
+  title: string;
+  img: ImageMetadata;
+  imgAlt: string;
+  html: string | null | undefined;
+  gallery: [ImageMetadata, ImageMetadata];
+}[] = [
   {
     title: t("student.what.title"),
     img: WhatImg,
     imgAlt: t("student.what.imgAlt"),
     html: what?.html,
+    gallery: [WhatPhoto2, WhatPhoto3],
   },
   {
     title: t("student.why.title"),
     img: WhyImg,
     imgAlt: t("student.why.imgAlt"),
     html: why?.html,
+    gallery: [WhyPhoto2, WhyPhoto3],
   },
   {
     title: t("student.how.title"),
     img: HowImg,
     imgAlt: t("student.how.imgAlt"),
     html: how?.html,
+    gallery: [HowPhoto2, HowPhoto3],
   },
   {
     title: t("student.work.title"),
     img: WorkImg,
     imgAlt: t("student.work.imgAlt"),
     html: work?.html,
+    gallery: [WorkPhoto2, WorkPhoto3],
   },
   {
     title: t("student.after.title"),
     img: AfterImg,
     imgAlt: t("student.after.imgAlt"),
     html: after?.html,
+    gallery: [AfterPhoto2, AfterPhoto3],
   },
   {
     title: t("student.session.title"),
     img: SessionImg,
     imgAlt: t("student.session.imgAlt"),
     html: studentSession?.html,
+    gallery: [SessionPhoto2, SessionPhoto3],
   },
 ];
 
@@ -814,7 +840,10 @@ const teams = deltaForceRoles
           timelineItems.map((item, index) => {
             const reversed = index % 2 === 1;
             return (
-              <div class="relative lg:grid lg:grid-cols-2 lg:gap-16">
+              <div
+                class="relative lg:grid lg:grid-cols-2 lg:gap-16"
+                data-timeline-row
+              >
                 <span
                   aria-hidden="true"
                   class="absolute left-4 top-1/2 grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
@@ -835,6 +864,32 @@ const teams = deltaForceRoles
                   >
                     <CardContent html={item.html} />
                   </InfoCard>
+                </div>
+                <div
+                  aria-hidden="true"
+                  data-row-gallery
+                  data-from={reversed ? "right" : "left"}
+                  class:list={[
+                    "pointer-events-none relative hidden lg:row-start-1 lg:block",
+                    reversed ? "lg:col-start-1" : "lg:col-start-2",
+                  ]}
+                >
+                  <div class="absolute inset-0">
+                    <Image
+                      src={item.gallery[0]}
+                      alt=""
+                      width={800}
+                      height={600}
+                      class="absolute left-0 top-6 w-[72%] aspect-4/3 rounded-2xl object-cover"
+                    />
+                    <Image
+                      src={item.gallery[1]}
+                      alt=""
+                      width={600}
+                      height={600}
+                      class="absolute right-0 top-1/2 w-[48%] aspect-square rounded-2xl object-cover"
+                    />
+                  </div>
                 </div>
               </div>
             );
