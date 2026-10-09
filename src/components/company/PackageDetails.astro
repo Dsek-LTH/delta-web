@@ -1,0 +1,81 @@
+---
+import { X } from "@lucide/astro";
+import { i18n } from "@/i18n/utils";
+
+interface PackageTier {
+  id: string;
+  name: string;
+  price: string;
+  discount: string | null;
+  intro: string;
+  subtitle: string | null;
+  closing: string | null;
+  color: string;
+  accent: string;
+  cta: string;
+  items: string[];
+}
+
+const { translate: t } = i18n(Astro.cookies);
+const { tier } = Astro.props as { tier: PackageTier };
+---
+
+<section
+  id={`tier-details-${tier.id}`}
+  data-tier-panel={tier.id}
+  inert
+  hidden
+  class={`frosted-glass w-full rounded-2xl border-t-4 p-8 lg:p-10 ${tier.accent}`}
+>
+  <div class="flex items-start justify-between gap-6">
+    <div>
+      <h3 class={`text-3xl font-extrabold ${tier.color}`}>{tier.name}</h3>
+      <p
+        class="mt-2 font-mono text-xl font-bold tabular-nums text-card-content"
+      >
+        {tier.price}
+      </p>
+      {
+        tier.discount && (
+          <p class="mt-1 font-mono text-xs text-card-content-muted">
+            {tier.discount}
+          </p>
+        )
+      }
+    </div>
+    <button
+      type="button"
+      data-tier-close
+      aria-label={t("company.package.hideDetails")}
+      class="btn btn-ghost rounded-full p-2"
+    >
+      <X class="size-5" />
+    </button>
+  </div>
+  <p class="mt-4 text-lg font-bold text-card-content">{tier.intro}</p>
+  {
+    tier.subtitle && (
+      <p class="mt-3 leading-relaxed text-card-content-muted">
+        {tier.subtitle}
+      </p>
+    )
+  }
+  <p class="mt-6 font-extrabold text-card-content">
+    {t("company.package.guarantees")}
+  </p>
+  <ul
+    class="delta-bullets mt-4 grid gap-x-10 gap-y-3 text-sm text-card-content lg:grid-cols-2"
+  >
+    {tier.items.map((item) => <li>{item}</li>)}
+  </ul>
+  {
+    tier.closing && (
+      <p class="mt-6 text-sm leading-relaxed text-card-content-muted">
+        {tier.closing}
+      </p>
+    )
+  }
+  <a href="mailto:delta@dsek.se" class={`mt-8 rounded-full px-6 ${tier.cta}`}>
+    {t("company.package.contact")}
+  </a>
+</section>
