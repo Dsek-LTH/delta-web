@@ -8,13 +8,85 @@ interface Props extends HTMLAttributes<"nav"> {}
 
 const { class: className, ...rest } = Astro.props;
 
-const { lang, translate: t } = i18n(Astro.cookies);
+const { translate: t } = i18n(Astro.cookies);
+const toggleId = `navbar-menu-${Math.random().toString(36).slice(2, 9)}`;
+const currentPageLabel = {
+  "/project-group": t("navbar.project-group"),
+  "/student": t("navbar.student"),
+  "/company": t("navbar.company"),
+  "/attendees": t("navbar.attendees"),
+}[Astro.url.pathname];
+const navItems = [
+  { href: "/", label: t("navbar.home") },
+  { href: "/student", label: t("navbar.student") },
+  { href: "/company", label: t("navbar.company") },
+  { href: "/attendees", label: t("navbar.attendees") },
+  { href: "/project-group", label: t("navbar.project-group") },
+];
 ---
 
-<nav class={className} {...rest}>
-  <ul
-    class="frosted-glass rounded-3xl grid grid-flow-col auto-cols-[1fr_2.5em_1fr] text-xl lg:text-2xl font-bold overflow-hidden text-center items-center h-12 lg:h-16"
+<nav class={twMerge("w-fit", className)} {...rest}>
+  <div
+    class="lg:hidden group mobile-navbar flex flex-col rounded-2xl frosted-glass p-2 select-none w-fit max-w-[calc(100vw-0.5rem)]"
   >
+    <input
+      type="checkbox"
+      id={toggleId}
+      class="sr-only"
+      aria-label={t("navbar.menu")}
+    />
+    <label
+      for={toggleId}
+      aria-label={t("navbar.menu")}
+      class={twMerge(
+        "flex items-center min-h-9 cursor-pointer",
+        currentPageLabel
+          ? "justify-start px-2 text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink text-shadow-glow text-nowrap text-lg font-bold"
+          : twMerge(
+              "justify-start px-2 text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight hover:text-shadow-glow text-4xl font-bold leading-none",
+              Astro.url.pathname === "/" && "text-shadow-glow-pink",
+            ),
+      )}
+    >
+      {currentPageLabel ?? <span aria-label={t("navbar.home")}>&Delta;</span>}
+    </label>
+    <div
+      class="grid grid-rows-[0fr] grid-cols-[0fr] group-has-checked:grid-rows-[1fr] group-has-checked:grid-cols-[1fr] transition-[grid-template-rows,grid-template-columns] duration-300 ease-out"
+    >
+      <ul
+        class="min-w-0 overflow-hidden flex flex-col gap-1 pt-1 text-lg font-bold text-nowrap"
+      >
+        {
+          navItems
+            .filter(({ href }) => href !== Astro.url.pathname)
+            .map(({ href, label }) => (
+              <li>
+                <a
+                  href={href}
+                  class="block text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-2"
+                >
+                  {label}
+                </a>
+              </li>
+            ))
+        }
+      </ul>
+    </div>
+  </div>
+  <ul
+    class="hidden lg:grid frosted-glass rounded-3xl grid-flow-col auto-cols-[1_fr_1fr_2.5em_1fr_1fr] text-xl lg:text-2xl font-bold overflow-hidden text-center items-center h-12 lg:h-16 text-nowrap"
+  >
+    <li>
+      <a
+        href="/project-group"
+        class={twMerge(
+          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
+          Astro.url.pathname === "/project-group" && "text-shadow-glow",
+        )}
+      >
+        {t("navbar.project-group")}
+      </a>
+    </li>
     <li>
       <a
         href="/student"
@@ -23,7 +95,7 @@ const { lang, translate: t } = i18n(Astro.cookies);
           Astro.url.pathname === "/student" && "text-shadow-glow",
         )}
       >
-        Student
+        {t("navbar.student")}
       </a>
     </li>
     <li>
@@ -42,6 +114,15 @@ const { lang, translate: t } = i18n(Astro.cookies);
           "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
           Astro.url.pathname === "/company" && "text-shadow-glow",
         )}>{t("navbar.company")}</a
+      >
+    </li>
+    <li>
+      <a
+        href="/attendees"
+        class={twMerge(
+          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
+          Astro.url.pathname === "/attendees" && "text-shadow-glow",
+        )}>{t("navbar.attendees")}</a
       >
     </li>
   </ul>
