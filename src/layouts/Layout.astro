@@ -78,5 +78,30 @@ const lang = getLang(Astro.cookies);
     </div>
 
     <Footer />
+
+    <script>
+      // JS-toggled fold panels: works in every browser, unlike ::details-content.
+      document.addEventListener("click", (event) => {
+        const button = (
+          event.target as Element | null
+        )?.closest<HTMLButtonElement>("[data-fold-toggle]");
+        if (!button) return;
+
+        const id = button.getAttribute("aria-controls");
+        const wrap = id ? document.getElementById(id) : null;
+        if (!wrap) return;
+
+        const open = wrap.hasAttribute("data-open");
+        if (open) {
+          wrap.removeAttribute("data-open");
+          wrap.inert = true;
+          button.setAttribute("aria-expanded", "false");
+        } else {
+          wrap.setAttribute("data-open", "");
+          wrap.inert = false;
+          button.setAttribute("aria-expanded", "true");
+        }
+      });
+    </script>
   </body>
 </html>

@@ -6,20 +6,29 @@ interface Props {
   question: string;
 }
 const { question } = Astro.props;
+const id = `faq-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
 <Card animate={false} class="flex items-center flex-col lg:flex-row h-full">
-  <details class="group animated-details h-full w-full">
-    <summary
-      class="flex cursor-pointer items-center justify-between gap-4 p-6 text-xl font-bold transition-colors duration-200 hover:bg-card-highlight sm:p-8"
+  <div class="flex h-full w-full flex-col">
+    <button
+      type="button"
+      data-fold-toggle
+      aria-expanded="false"
+      aria-controls={id}
+      class="group flex cursor-pointer items-center justify-between gap-4 p-6 text-left text-xl font-bold transition-colors duration-200 hover:bg-card-highlight sm:p-8"
     >
       {question}
       <ChevronDown
-        class="size-5 shrink-0 text-brand-primary transition-transform duration-300 group-open:rotate-180"
+        class="size-5 shrink-0 text-brand-primary transition-transform duration-300 group-aria-expanded:rotate-180"
       />
-    </summary>
-    <div class="pb-6 px-6 sm:pb-8 sm:px-8">
-      <slot />
+    </button>
+    <div id={id} class="fold-wrap" inert>
+      <div class="fold-panel">
+        <div class="pb-6 px-6 sm:pb-8 sm:px-8">
+          <slot />
+        </div>
+      </div>
     </div>
-  </details>
+  </div>
 </Card>

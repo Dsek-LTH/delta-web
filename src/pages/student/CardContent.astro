@@ -8,18 +8,31 @@ const { html } = Astro.props as { html: string | null | undefined };
 
 const lead = html?.match(/^[\s\S]*?<\/p>/)?.[0] ?? html ?? "";
 const rest = html ? html.slice(lead.length).trim() : "";
+const id = `read-more-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
 <div class="space-y-4" set:html={lead} />
 {
   rest && (
-    <details class="group animated-details mt-4">
-      <summary class="flex w-fit cursor-pointer items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80">
-        <span class="group-open:hidden">{t("student.readMore")}</span>
-        <span class="hidden group-open:inline">{t("student.readLess")}</span>
-        <ChevronDown class="size-4 transition-transform duration-300 group-open:rotate-180" />
-      </summary>
-      <div class="space-y-4 pt-4" set:html={rest} />
-    </details>
+    <div class="mt-4">
+      <button
+        type="button"
+        data-fold-toggle
+        aria-expanded="false"
+        aria-controls={id}
+        class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+      >
+        <span class="group-aria-expanded:hidden">{t("student.readMore")}</span>
+        <span class="hidden group-aria-expanded:inline">
+          {t("student.readLess")}
+        </span>
+        <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
+      </button>
+      <div id={id} class="fold-wrap" inert>
+        <div class="fold-panel">
+          <div class="space-y-4 pt-4" set:html={rest} />
+        </div>
+      </div>
+    </div>
   )
 }

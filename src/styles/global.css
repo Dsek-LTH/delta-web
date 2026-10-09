@@ -153,7 +153,6 @@ html[data-theme="dark"] {
   html {
     color-scheme: light;
     scroll-behavior: smooth;
-    interpolate-size: allow-keywords;
   }
 
   body {
@@ -241,18 +240,18 @@ html[data-theme="dark"] {
     @apply bg-card text-card-content ring-1 ring-border hover:bg-card-highlight;
   }
 
-  /* Expandable detail panels (company page) */
-  .tier-panel-wrap {
+  /* JS-toggled fold panels (package details, read more, FAQ) */
+  .fold-wrap {
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 300ms ease-out;
   }
 
-  .tier-panel-wrap[data-open] {
+  .fold-wrap[data-open] {
     grid-template-rows: 1fr;
   }
 
-  .tier-panel {
+  .fold-panel {
     min-height: 0;
     overflow: hidden;
     opacity: 0;
@@ -262,26 +261,9 @@ html[data-theme="dark"] {
       translate 300ms ease-out;
   }
 
-  .tier-panel-wrap[data-open] .tier-panel {
+  .fold-wrap[data-open] .fold-panel {
     opacity: 1;
     translate: 0 0;
-  }
-
-  /* Animated <details>: animate the browser's own content wrapper so open and
-     close animate reliably on repeated toggles. */
-  .animated-details::details-content {
-    block-size: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition:
-      block-size 300ms cubic-bezier(0.23, 1, 0.32, 1),
-      opacity 300ms cubic-bezier(0.23, 1, 0.32, 1),
-      content-visibility 300ms allow-discrete;
-  }
-
-  .animated-details[open]::details-content {
-    block-size: auto;
-    opacity: 1;
   }
 }
 
