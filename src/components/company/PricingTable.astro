@@ -7,22 +7,13 @@ const { translate: t } = i18n(Astro.cookies);
 
 const tierOrder = [
   {
-    id: "nonprofit",
-    name: t("company.pricing.tier.nonprofit"),
-    price: t("company.pricing.price.nonprofit"),
+    id: "entry",
+    name: t("company.pricing.tier.entry"),
+    price: t("company.pricing.price.entry"),
     color: "text-diamond",
     border: "border-diamond",
     bar: "bg-diamond",
     glow: "shadow-[0_0_15px_3px] shadow-diamond/80",
-  },
-  {
-    id: "startup",
-    name: t("company.pricing.tier.startup"),
-    price: t("company.pricing.price.startup"),
-    color: "text-bronze",
-    border: "border-bronze",
-    bar: "bg-bronze",
-    glow: "shadow-[0_0_15px_3px] shadow-bronze/80",
   },
   {
     id: "standard",
@@ -66,8 +57,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.booth"),
     values: {
-      nonprofit: t("company.pricing.value.standardBooth"),
-      startup: t("company.pricing.value.standardBooth"),
+      entry: t("company.pricing.value.standardBooth"),
       standard: t("company.pricing.value.standardBooth"),
       plus: t("company.pricing.value.standardBooth"),
       hash: t("company.pricing.value.standardBooth"),
@@ -77,8 +67,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.placement"),
     values: {
-      nonprofit: t("company.pricing.value.notGuaranteed"),
-      startup: t("company.pricing.value.notGuaranteed"),
+      entry: t("company.pricing.value.notGuaranteed"),
       standard: false,
       plus: t("company.pricing.value.central"),
       hash: t("company.pricing.value.choose"),
@@ -88,8 +77,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.table"),
     values: {
-      nonprofit: t("company.pricing.value.oneStool"),
-      startup: t("company.pricing.value.oneStool"),
+      entry: t("company.pricing.value.oneStool"),
       standard: t("company.pricing.value.twoStools"),
       plus: t("company.pricing.value.twoStools"),
       hash: t("company.pricing.value.twoStools"),
@@ -98,20 +86,12 @@ const pricingRows = [
   },
   {
     label: t("company.pricing.row.afterEvent"),
-    values: {
-      nonprofit: true,
-      startup: true,
-      standard: true,
-      plus: true,
-      hash: true,
-      main: true,
-    },
+    values: { entry: true, standard: true, plus: true, hash: true, main: true },
   },
   {
     label: t("company.pricing.row.meals"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: true,
       plus: true,
       hash: true,
@@ -121,8 +101,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.parking"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: true,
       plus: true,
       hash: true,
@@ -132,8 +111,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.lounge"),
     values: {
-      nonprofit: t("company.pricing.value.coffee"),
-      startup: t("company.pricing.value.coffee"),
+      entry: t("company.pricing.value.coffee"),
       standard: t("company.pricing.value.breakfast"),
       plus: t("company.pricing.value.breakfast"),
       hash: t("company.pricing.value.breakfast"),
@@ -142,20 +120,12 @@ const pricingRows = [
   },
   {
     label: t("company.pricing.row.wardrobe"),
-    values: {
-      nonprofit: true,
-      startup: true,
-      standard: true,
-      plus: true,
-      hash: true,
-      main: true,
-    },
+    values: { entry: true, standard: true, plus: true, hash: true, main: true },
   },
   {
     label: t("company.pricing.row.host"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: true,
       plus: true,
       hash: true,
@@ -164,20 +134,12 @@ const pricingRows = [
   },
   {
     label: t("company.pricing.row.wifi"),
-    values: {
-      nonprofit: true,
-      startup: true,
-      standard: true,
-      plus: true,
-      hash: true,
-      main: true,
-    },
+    values: { entry: true, standard: true, plus: true, hash: true, main: true },
   },
   {
     label: t("company.pricing.row.caseEvening"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: false,
       plus: true,
       hash: false,
@@ -187,8 +149,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.studentSessions"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: false,
       plus: true,
       hash: false,
@@ -198,8 +159,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.lunchLecture"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: false,
       plus: false,
       hash: true,
@@ -209,8 +169,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.tv"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: false,
       plus: false,
       hash: false,
@@ -220,8 +179,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.flag"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: false,
       plus: false,
       hash: false,
@@ -231,8 +189,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.foodTickets"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: false,
       plus: false,
       hash: false,
@@ -242,8 +199,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.drinkTickets"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: false,
       plus: false,
       hash: false,
@@ -253,8 +209,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.marketing"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: false,
       plus: false,
       hash: false,
@@ -264,8 +219,7 @@ const pricingRows = [
   {
     label: t("company.pricing.row.priority"),
     values: {
-      nonprofit: false,
-      startup: false,
+      entry: false,
       standard: false,
       plus: false,
       hash: false,

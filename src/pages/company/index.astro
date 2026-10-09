@@ -181,6 +181,12 @@ const tiers = [
     ],
   },
 ];
+
+// Card layout: the two entry packages are small, the three DELTΔ packages share
+// a row, and the main sponsor gets a featured wide card.
+const entryTiers = tiers.slice(0, 2);
+const deltaTiers = tiers.slice(2, 5);
+const mainTier = tiers[5]!;
 ---
 
 <Layout
@@ -225,9 +231,50 @@ const tiers = [
       </p>
     </div>
 
+    <div class="grid w-full gap-6 sm:grid-cols-2">
+      {
+        entryTiers.map((tier) => (
+          <Package
+            class={`border-0 border-t-4 p-5 shadow-md ${tier.accent} ${tier.glow}`}
+          >
+            <div class="flex items-baseline justify-between gap-4">
+              <PackageTitle
+                title={tier.name}
+                class={`text-left text-2xl ${tier.color}`}
+              />
+              <p class="font-mono text-lg font-semibold tabular-nums text-card-content">
+                {tier.price}
+              </p>
+            </div>
+            <p class="line-clamp-3 text-sm leading-relaxed text-card-content-muted">
+              {tier.intro}
+            </p>
+            <div class="mt-auto flex items-center justify-between gap-3">
+              <button
+                type="button"
+                data-tier-details={tier.id}
+                aria-expanded="false"
+                aria-controls={`tier-details-${tier.id}`}
+                class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+              >
+                {t("company.package.showDetails")}
+                <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
+              </button>
+              <a
+                href="mailto:delta@dsek.se"
+                class={`rounded-full px-4 py-1.5 text-sm ${tier.cta}`}
+              >
+                {t("company.package.contact")}
+              </a>
+            </div>
+          </Package>
+        ))
+      }
+    </div>
+
     <div class="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
-        tiers.map((tier) => (
+        deltaTiers.map((tier) => (
           <Package
             class={`border-0 border-t-4 p-6 shadow-lg ${tier.accent} ${tier.glow}`}
           >
@@ -275,6 +322,64 @@ const tiers = [
         ))
       }
     </div>
+
+    <Package
+      class={`border-0 border-t-8 p-8 shadow-xl lg:p-10 ${mainTier.accent} ${mainTier.glow}`}
+    >
+      <div
+        class="flex w-full flex-col gap-8 lg:flex-row lg:items-center lg:gap-16"
+      >
+        <div class="flex flex-1 flex-col gap-4">
+          <PackageTitle
+            title={mainTier.name}
+            class={`text-left text-4xl ${mainTier.color}`}
+          />
+          <div class="flex items-baseline gap-3">
+            <p
+              class="font-mono text-3xl font-bold tabular-nums text-card-content"
+            >
+              {mainTier.price}
+            </p>
+            <p class="font-mono text-sm text-card-content-muted">
+              {mainTier.discount}
+            </p>
+          </div>
+          <p class="leading-relaxed text-card-content-muted">
+            {mainTier.intro}
+          </p>
+          <div class="mt-2 flex flex-wrap items-center gap-4">
+            <a
+              href="mailto:delta@dsek.se"
+              class={`rounded-full px-6 ${mainTier.cta}`}
+            >
+              {t("company.package.contact")}
+            </a>
+            <button
+              type="button"
+              data-tier-details={mainTier.id}
+              aria-expanded="false"
+              aria-controls={`tier-details-${mainTier.id}`}
+              class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+            >
+              {t("company.package.showDetails")}
+              <ChevronDown
+                class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180"
+              />
+            </button>
+          </div>
+        </div>
+        <ul class="grid flex-1 gap-3 text-sm text-card-content sm:grid-cols-2">
+          {
+            mainTier.highlights.map((highlight) => (
+              <li class="flex items-start gap-2">
+                <Check class={`mt-0.5 size-5 shrink-0 ${mainTier.color}`} />
+                <span>{highlight}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </Package>
 
     <div
       data-tier-panel-host

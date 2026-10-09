@@ -111,7 +111,9 @@
     "pricing.value.coffee": "Coffee",
     "pricing.value.breakfast": "Breakfast & coffee",
     "pricing.value.oneStool": "1 + 1",
-    "pricing.value.twoStools": "1 + 2"
+    "pricing.value.twoStools": "1 + 2",
+    "pricing.tier.entry": "Non-profit & Startup",
+    "pricing.price.entry": "Free / Contact us"
   },
   "sv": {
     "head.title": "Företag | DELTA",
@@ -224,6 +226,8 @@
     "pricing.value.coffee": "Kaffe",
     "pricing.value.breakfast": "Frukost & kaffe",
     "pricing.value.oneStool": "1 + 1",
-    "pricing.value.twoStools": "1 + 2"
+    "pricing.value.twoStools": "1 + 2",
+    "pricing.tier.entry": "Ideella & Startup",
+    "pricing.price.entry": "Kostnadsfritt / Kontakta oss"
   }
 }
