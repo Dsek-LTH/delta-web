@@ -90,9 +90,9 @@ redesign with this document updated.
 - **Enter reveals**: hero blocks use `animate-rise`; content below the first screen uses
   `.reveal` (shared IntersectionObserver in `Layout`) — 550 ms opacity/translate, only once it
   enters the viewport. The hidden state is gated behind `html.js`, so no-JS users see everything.
-- **Position feedback**: the header scroll-progress hairline and the student timeline rail fill
-  track scroll position directly (rAF-throttled, no timed animation). They are indicators, not
-  decoration, so they stay under reduced motion.
+- **Position feedback**: the student timeline rail fill tracks scroll position directly
+  (rAF-throttled, no timed animation). It is an indicator, not decoration, so it stays under
+  reduced motion.
 - **Hover**: color/background changes only. Motion on hover must be gated behind
   `@media (hover: hover) and (pointer: fine)` — touch fires false hovers.
 - **Never** animate keyboard-initiated or rapid actions; never reveal required information on
@@ -133,7 +133,6 @@ Accordions, “read more” and package details all use one pattern — **not** 
 | Pricing table     | `src/components/company/PricingTable.astro`        | Comparison matrix; equivalent tiers merged into one column; horizontal scroll allowed.          |
 | Timeline          | `src/pages/student/index.astro`                    | Rail + Δ marker centered on each card; alternating sides from `lg`.                             |
 | Card content      | `src/pages/student/CardContent.astro`              | Lead paragraph + fold for the rest.                                                             |
-| Scroll progress   | `src/components/Header.astro`                      | Hairline indicator; scale from scroll, hidden at top; `aria-hidden`.                            |
 | Timeline rail     | `src/pages/student/index.astro`                    | Track + fill; `--rail-progress` updated on scroll; without JS only the track shows.             |
 | Footer mark       | `src/components/Footer.astro`                      | Oversized stroke-only Δ, `aria-hidden`, decorative; footer keeps extra bottom padding.          |
 
