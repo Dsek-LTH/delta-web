@@ -46,6 +46,11 @@ not a patch — new components must look intentional in both.
 - `font-sans` = Inter (body/UI), `font-display` = Noto Sans (wordmark), `font-mono` =
   Noto Sans Mono (countdown/terminal accents). Do not add new families.
 
+## Documented exceptions
+
+- `text-white` is allowed on photo/inverse contexts (home hero over the cover image) and on
+  saturated accent buttons (e.g. the emerald CTA), where semantic text tokens would drop contrast.
+
 ## Accessibility checklist for page PRs
 
 - [ ] Test light **and** dark at 390 px and 1440 px.

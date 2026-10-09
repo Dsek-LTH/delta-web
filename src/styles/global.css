@@ -92,7 +92,7 @@ html[data-theme="dark"] {
   --color-backdrop: var(--color-slate-950);
   --color-backdrop-content: var(--color-slate-100);
   --color-backdrop-content-muted: var(--color-slate-400);
-  --color-backdrop-content-highlight: var(--brand-purple);
+  --color-backdrop-content-highlight: var(--color-violet-400);
 
   --color-card: color-mix(in srgb, var(--color-slate-900) 60%, transparent);
   --color-card-edge: color-mix(in srgb, var(--color-white) 8%, transparent);
