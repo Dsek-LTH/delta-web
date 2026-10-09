@@ -3,6 +3,7 @@ import Card from "@/components/Card.astro";
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { twMerge } from "tailwind-merge";
+import PhotoPlaceholder from "./PhotoPlaceholder.astro";
 
 interface Member {
   firstName: string;
@@ -46,14 +47,10 @@ const aspect =
         class={twMerge("w-full object-cover", aspect)}
       />
     ) : (
-      <div
-        class={twMerge(
-          "grid w-full place-items-center bg-card-highlight/40 font-display text-8xl text-brand-primary/25",
-          aspect,
-        )}
-      >
-        Δ
-      </div>
+      <PhotoPlaceholder
+        kind={members.length > 1 ? "group" : "profile"}
+        class={aspect}
+      />
     )
   }
   <div class="flex flex-col gap-3 p-6">
