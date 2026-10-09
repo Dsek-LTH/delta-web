@@ -10,6 +10,7 @@
     "member.role": "Role",
     "member.student-id": "Student ID",
     "member.linkedin": "LinkedIn",
+    "member.picture": "Profile Picture",
     "submit": "Edit",
     "save": "Save",
     "delete": "Delete",
@@ -25,6 +26,7 @@
     "member.role": "Roll",
     "member.student-id": "Student-ID",
     "member.linkedin": "LinkedIn",
+    "member.picture": "Profilbild",
     "save": "Spara",
     "delete": "Ta bort",
     "back": "Tillbaka"

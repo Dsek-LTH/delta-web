@@ -1,0 +1,24 @@
+---
+import { twMerge } from "tailwind-merge";
+
+const {
+  name,
+  class: className,
+  ...rest
+} = Astro.props as {
+  name: string;
+  class: string | undefined;
+};
+---
+
+<input
+  class={twMerge(
+    "w-full rounded-lg p-2 bg-card/5 frosted-glass hover:bg-card/80 transition-all duration-300 ease-out",
+    className,
+  )}
+  {...rest}
+  type="file"
+  name={name}
+  id={name}
+  accept="image/*"
+/>
