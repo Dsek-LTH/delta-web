@@ -117,8 +117,9 @@ Accordions, “read more” and package details all use one pattern — **not** 
   above animates in every browser and gives correct a11y states.
 - **Opposite-side galleries**: a timeline row can carry a decorative photo collage in its
   empty column; the fold listener sets `data-row-open` on the row and the images fade/slide
-  in from the card (320 ms, one-step stagger). It is absolutely positioned, so it never
-  affects layout while closed.
+  in from the card (320 ms, one-step stagger). The collage is absolutely positioned (never
+  affects layout while closed) and sticky while the card is open, so it stays beside the
+  reader on long cards without ever leaving its row.
 
 ## 4. Components
 
