@@ -8,7 +8,11 @@ import { languages } from "@/i18n/ui.ts";
 import { i18n, getRenderedContent } from "@/i18n/utils";
 import { fairDate } from "@/constants";
 import { getEntry } from "astro:content";
-import cover from "@/assets/tekfok26_0003.webp";
+import { Image } from "astro:assets";
+import GalleryFormula from "@/assets/tekfok/0000.webp";
+import GalleryHall from "@/assets/tekfok/tekfok26_0011.webp";
+import GalleryTalk from "@/assets/tekfok/tekfok26_0014.webp";
+import GalleryGroup from "@/assets/tekfok/tekfok26_0018.webp";
 
 export function getStaticPaths() {
   return Object.keys(languages).map((lang) => ({ params: { lang } }));
@@ -36,14 +40,13 @@ const calendarUrl =
 <Layout
   title={t("landing.head.title")}
   description={t("landing.head.description")}
-  backgroundImage={cover}
   class="flex flex-col items-center gap-12 pb-12 px-6 mx-auto w-full max-w-7xl lg:px-16"
 >
-  <div class="text-center text-shadow-md/25 animate-rise">
+  <div class="text-center animate-rise">
     <h1 aria-label="DELTA" role="img" class="contents text-7xl lg:text-9xl">
-      <Logo animate inverse />
+      <Logo animate />
     </h1>
-    <Countdown class="text-white lg:text-4xl text-2xl" />
+    <Countdown class="lg:text-4xl text-2xl" />
   </div>
 
   <div
@@ -149,4 +152,35 @@ const calendarUrl =
     <span>{t("landing.button.attend")}</span>
     <Logo />
   </a>
+
+  <div class="grid w-full grid-cols-2 gap-3 reveal sm:grid-cols-4 sm:gap-4">
+    <Image
+      src={GalleryFormula}
+      alt={t("landing.gallery.alt.formula")}
+      width={600}
+      height={450}
+      class="aspect-[4/3] w-full rounded-2xl object-cover"
+    />
+    <Image
+      src={GalleryHall}
+      alt={t("landing.gallery.alt.hall")}
+      width={600}
+      height={450}
+      class="aspect-[4/3] w-full rounded-2xl object-cover"
+    />
+    <Image
+      src={GalleryTalk}
+      alt={t("landing.gallery.alt.talk")}
+      width={600}
+      height={450}
+      class="aspect-[4/3] w-full rounded-2xl object-cover"
+    />
+    <Image
+      src={GalleryGroup}
+      alt={t("landing.gallery.alt.group")}
+      width={600}
+      height={450}
+      class="aspect-[4/3] w-full rounded-2xl object-cover"
+    />
+  </div>
 </Layout>
