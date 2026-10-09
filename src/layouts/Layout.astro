@@ -102,6 +102,10 @@ const lang = getLang(Astro.cookies);
           wrap.inert = false;
           button.setAttribute("aria-expanded", "true");
         }
+
+        // Timeline rows reveal their opposite-side photo collage while open.
+        const row = wrap.closest<HTMLElement>("[data-timeline-row]");
+        if (row) row.toggleAttribute("data-row-open", !open);
       });
 
       // Scroll reveals: content below the first screen fades in once it

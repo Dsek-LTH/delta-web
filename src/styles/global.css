@@ -288,6 +288,32 @@ html[data-theme="dark"] {
     transform-origin: top;
   }
 
+  /* Opposite-side timeline galleries: hidden until the row's fold opens, then
+     they slide out from the card with a quick fade. Decorative only. */
+  [data-row-gallery] img {
+    opacity: 0;
+    transition:
+      opacity 320ms var(--ease-strong),
+      translate 320ms var(--ease-strong);
+  }
+
+  [data-row-gallery][data-from="left"] img {
+    translate: -0.75rem 0;
+  }
+
+  [data-row-gallery][data-from="right"] img {
+    translate: 0.75rem 0;
+  }
+
+  [data-timeline-row][data-row-open] [data-row-gallery] img {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  [data-timeline-row][data-row-open] [data-row-gallery] img:nth-of-type(2) {
+    transition-delay: 80ms;
+  }
+
   /* Oversized closing mark: stroke-only Δ, theme-aware and decorative. */
   .footer-mark {
     color: transparent;
