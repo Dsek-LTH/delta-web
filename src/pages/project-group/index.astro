@@ -33,18 +33,25 @@ const allPhoto = photoFor("all") ?? photoFor("team");
 const generals = deltaForceMembers.filter(
   (member) => member.role === "general",
 );
+const generalsLabel = t(
+  deltaFordeRoleToTranslationKey("general", generals.length > 1),
+);
 
 // Biggest team takes the full-width tile; wide tiles then alternate sides so the
 // singles fill in around them (grid is dense, so no holes).
 let wideCount = 0;
 const teams = deltaForceRoles
   .filter((role) => role !== "general")
-  .map((role) => ({
-    role,
-    label: t(deltaFordeRoleToTranslationKey(role, true)),
-    photo: photoFor(role),
-    members: deltaForceMembers.filter((member) => member.role === role),
-  }))
+  .map((role) => {
+    const members = deltaForceMembers.filter((member) => member.role === role);
+    return {
+      role,
+      // Singular for one-person teams ("IT-ansvarig"), plural for the rest.
+      label: t(deltaFordeRoleToTranslationKey(role, members.length > 1)),
+      photo: photoFor(role),
+      members,
+    };
+  })
   .filter((team) => team.members.length > 0)
   .sort((a, b) => b.members.length - a.members.length)
   .map((team, index) => {
@@ -79,7 +86,7 @@ const teams = deltaForceRoles
     </div>
     <div class="flex w-full flex-col items-center lg:w-2/5 lg:items-start">
       <TeamTile
-        label={t("delta-force.generals")}
+        label={generalsLabel}
         members={generals}
         photo={photoFor("general")}
       />
