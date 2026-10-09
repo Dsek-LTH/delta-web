@@ -269,6 +269,13 @@ html[data-theme="dark"] {
 
 /* Respect users who prefer reduced motion -- animations become instant. */
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+
   *,
   *::before,
   *::after,
@@ -279,4 +286,21 @@ html[data-theme="dark"] {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Cross-document view transitions: soft crossfade between pages with the
+   header kept stable. Progressive enhancement (Chromium); other engines
+   simply navigate as before. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+::view-transition-new(root) {
+  animation-duration: 250ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }

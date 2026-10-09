@@ -19,9 +19,17 @@ interface Props {
   photo: ImageMetadata | null;
   span?: 1 | 2 | 3;
   startRight?: boolean;
+  class?: string;
 }
 
-const { label, members, photo, span = 1, startRight = false } = Astro.props;
+const {
+  label,
+  members,
+  photo,
+  span = 1,
+  startRight = false,
+  class: className,
+} = Astro.props;
 
 // Fixed media heights keep photo areas level across tiles in the same row
 // (wide and single tiles share the same height; the full-width tile is taller).
@@ -34,6 +42,7 @@ const media = span === 3 ? "h-64 lg:h-96" : "h-56 lg:h-72";
     span === 3 && "lg:col-span-3",
     span === 2 && "lg:col-span-2",
     startRight && "lg:col-start-2",
+    className,
   )}
 >
   {

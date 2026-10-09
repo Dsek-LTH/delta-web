@@ -30,6 +30,15 @@ const photoFor = (name: string): ImageMetadata | null => {
 };
 
 const allPhoto = photoFor("all") ?? photoFor("team");
+const tileDelays = [
+  "[animation-delay:120ms]",
+  "[animation-delay:180ms]",
+  "[animation-delay:240ms]",
+  "[animation-delay:300ms]",
+  "[animation-delay:360ms]",
+  "[animation-delay:420ms]",
+  "[animation-delay:480ms]",
+];
 const generals = deltaForceMembers.filter(
   (member) => member.role === "general",
 );
@@ -74,7 +83,7 @@ const teams = deltaForceRoles
   class="flex flex-col items-center gap-16 px-6 py-16 mx-auto max-w-7xl lg:px-16"
 >
   <div
-    class="flex w-full flex-col justify-between gap-10 sm:text-left text-center lg:flex-row"
+    class="flex w-full flex-col justify-between gap-10 animate-rise sm:text-left text-center lg:flex-row"
   >
     <div class="flex flex-col justify-center items-start gap-4 lg:max-w-1/2">
       <h1 class="text-4xl font-bold text-left sm:text-5xl lg:text-6xl">
@@ -93,7 +102,7 @@ const teams = deltaForceRoles
     </div>
   </div>
 
-  <Card class="w-full overflow-hidden p-0">
+  <Card class="w-full overflow-hidden p-0 animate-rise [animation-delay:60ms]">
     {
       allPhoto ? (
         <Image
@@ -117,8 +126,9 @@ const teams = deltaForceRoles
       class="grid w-full grid-flow-row-dense grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
     >
       {
-        teams.map((team) => (
+        teams.map((team, index) => (
           <TeamTile
+            class={`animate-rise ${tileDelays[index] ?? "[animation-delay:540ms]"}`}
             label={team.label}
             members={team.members}
             photo={team.photo}

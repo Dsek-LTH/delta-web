@@ -39,7 +39,7 @@ const calendarUrl =
   backgroundImage={cover}
   class="flex flex-col items-center gap-12 pb-12 px-6 mx-auto w-full max-w-7xl lg:px-16"
 >
-  <div class="text-center text-shadow-md/25">
+  <div class="text-center text-shadow-md/25 animate-rise">
     <h1 aria-label="DELTA" role="img" class="contents text-7xl lg:text-9xl">
       <Logo animate inverse />
     </h1>
@@ -49,7 +49,9 @@ const calendarUrl =
   <div
     class="grid gap-8 w-full max-w-110 lg:grid-cols-3 lg:items-end lg:max-w-full"
   >
-    <Card class="p-8 lg:order-1 order-2 flex flex-col gap-6 lg:h-108">
+    <Card
+      class="p-8 lg:order-1 order-2 flex flex-col gap-6 animate-rise [animation-delay:60ms] lg:h-108"
+    >
       <h2
         class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
       >
@@ -78,7 +80,7 @@ const calendarUrl =
     </Card>
 
     <Card
-      class="p-8 lg:order-2 order-1 flex flex-col justify-between gap-6 lg:h-120"
+      class="p-8 lg:order-2 order-1 flex flex-col justify-between gap-6 animate-rise [animation-delay:120ms] lg:h-120"
     >
       <h2
         class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
@@ -119,7 +121,9 @@ const calendarUrl =
       </div>
     </Card>
 
-    <Card class="p-8 order-3 flex flex-col gap-6 lg:h-108">
+    <Card
+      class="p-8 order-3 flex flex-col gap-6 animate-rise [animation-delay:180ms] lg:h-108"
+    >
       <h2
         class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
       >
@@ -140,7 +144,7 @@ const calendarUrl =
   <a
     href="mailto:delta@dsek.se"
     target="_blank"
-    class="frosted-glass text-card-content font-bold py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline transition-colors duration-200 hover:bg-card-highlight"
+    class="frosted-glass text-card-content font-bold py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline transition-colors duration-200 animate-rise [animation-delay:240ms] hover:bg-card-highlight"
   >
     <span>{t("landing.button.attend")}</span>
     <Logo />
