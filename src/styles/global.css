@@ -282,12 +282,6 @@ html[data-theme="dark"] {
     translate: 0 1rem;
   }
 
-  /* Scroll progress hairline (Header.astro); transform is set from JS. */
-  [data-scroll-progress] {
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-
   /* Timeline rail fill (student timeline); --rail-progress is set from the
      shared scroll script in Layout. */
   [data-timeline-rail] {
