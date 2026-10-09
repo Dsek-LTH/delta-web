@@ -23,12 +23,9 @@ interface Props {
 
 const { label, members, photo, span = 1, startRight = false } = Astro.props;
 
-const aspect =
-  span === 3
-    ? "aspect-video lg:aspect-[21/9]"
-    : span === 2
-      ? "aspect-4/3 lg:aspect-video"
-      : "aspect-4/3";
+// Fixed media heights keep photo areas level across tiles in the same row
+// (wide and single tiles share the same height; the full-width tile is taller).
+const media = span === 3 ? "h-64 lg:h-96" : "h-56 lg:h-72";
 ---
 
 <Card
@@ -46,12 +43,12 @@ const aspect =
         alt=""
         width={800}
         height={600}
-        class={twMerge("w-full object-cover", aspect)}
+        class={twMerge("w-full object-cover", media)}
       />
     ) : (
       <PhotoPlaceholder
         kind={members.length > 1 ? "group" : "profile"}
-        class={aspect}
+        class={media}
       />
     )
   }
