@@ -237,18 +237,7 @@ const pricingRows = [
 ];
 ---
 
-<section id="pricing" class="w-full scroll-mt-28 flex flex-col gap-6">
-  <div class="flex flex-col items-center gap-4 text-center">
-    <h2
-      class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
-    >
-      {t("company.pricing.title")}
-    </h2>
-    <p class="max-w-3xl leading-relaxed text-card-content">
-      {t("company.pricing.subtitle")}
-    </p>
-  </div>
-
+<div class="w-full flex flex-col gap-6">
   <div class="hidden lg:block overflow-x-auto rounded-2xl frosted-glass">
     <table class="w-full min-w-200 border-collapse">
       <thead>
@@ -280,7 +269,7 @@ const pricingRows = [
                   <span class={twMerge("text-2xl font-extrabold", tier.color)}>
                     {tier.name}
                   </span>
-                  <span class="text-lg font-semibold text-card-content">
+                  <span class="font-mono text-lg font-semibold tabular-nums text-card-content">
                     {tier.price}
                   </span>
                 </div>
@@ -344,7 +333,7 @@ const pricingRows = [
               <span class={twMerge("text-2xl font-extrabold", tier.color)}>
                 {tier.name}
               </span>
-              <span class="text-lg font-semibold text-card-content-muted">
+              <span class="font-mono text-lg font-semibold tabular-nums text-card-content-muted">
                 {tier.price}
               </span>
             </div>
@@ -378,4 +367,4 @@ const pricingRows = [
       ))
     }
   </div>
-</section>
+</div>

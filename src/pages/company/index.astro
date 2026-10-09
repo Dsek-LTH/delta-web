@@ -137,12 +137,15 @@ const tiers = [
     class="frosted-glass w-full max-w-5xl rounded-2xl px-6 py-12 text-center lg:px-16 lg:py-16"
   >
     <h1 class="text-4xl font-bold text-card-content lg:text-6xl">
-      <Logo />
+      <Logo animate />
       <span class="italic">{t("company.hero.forCompanies")}</span>
     </h1>
 
     <p class="mt-6 text-xl font-bold text-brand-primary lg:text-2xl">
       {t("company.hero.meetDevelopers")}
+    </p>
+    <p class="mt-3 font-mono text-sm text-card-content-muted">
+      {t("company.hero.fields")}
     </p>
     <p class="mt-6 text-card-content-muted">
       {t("company.hero.contactBefore")}{" "}
@@ -155,103 +158,123 @@ const tiers = [
     </p>
   </section>
 
-  <div class="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-4">
-    {
-      tiers.map((tier) => (
-        <Package
-          class={`border-0 border-t-4 p-6 shadow-lg ${tier.accent} ${tier.glow}`}
-        >
-          <PackageTitle title={tier.name} class={`text-3xl ${tier.color}`} />
-          <p class="text-center text-2xl font-bold text-card-content">
-            {tier.price}
-          </p>
-          <p class="text-center text-sm leading-relaxed text-card-content-muted">
-            {tier.intro}
-          </p>
-          <ul class="mt-2 flex flex-col gap-2.5 text-sm text-card-content">
-            {tier.highlights.map((highlight) => (
-              <li class="flex items-start gap-2">
-                <Check class={`mt-0.5 size-4 shrink-0 ${tier.color}`} />
-                <span>{highlight}</span>
-              </li>
-            ))}
-          </ul>
-          <div class="mt-auto flex flex-col items-center gap-3">
-            <button
-              type="button"
-              data-tier-details={tier.id}
-              aria-expanded="false"
-              aria-controls={`tier-details-${tier.id}`}
-              class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
-            >
-              {t("company.package.showDetails")}
-              <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
-            </button>
-            <a
-              href="mailto:delta@dsek.se"
-              class={`rounded-full px-5 ${tier.cta}`}
-            >
-              {t("company.package.contact")}
-            </a>
-          </div>
-        </Package>
-      ))
-    }
-  </div>
+  <section id="pricing" class="flex w-full scroll-mt-28 flex-col gap-10">
+    <div class="flex flex-col items-center gap-4 text-center">
+      <p class="font-mono text-sm font-semibold text-brand-primary">
+        {t("company.pricing.kicker")}<span class="animate-caret-blink">_</span>
+      </p>
+      <h2
+        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
+      >
+        {t("company.pricing.title")}
+      </h2>
+      <p class="max-w-3xl leading-relaxed text-card-content">
+        {t("company.pricing.subtitle")}
+      </p>
+    </div>
 
-  <div data-tier-panel-host hidden class="tier-panel-wrap w-full scroll-mt-28">
-    <div class="tier-panel">
+    <div class="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {
         tiers.map((tier) => (
-          <section
-            id={`tier-details-${tier.id}`}
-            data-tier-panel={tier.id}
-            inert
-            hidden
-            class={`frosted-glass w-full rounded-2xl border-t-4 p-8 lg:p-10 ${tier.accent}`}
+          <Package
+            class={`border-0 border-t-4 p-6 shadow-lg ${tier.accent} ${tier.glow}`}
           >
-            <div class="flex items-start justify-between gap-6">
-              <div>
-                <h3 class={`text-3xl font-extrabold ${tier.color}`}>
-                  {tier.name}
-                </h3>
-                <p class="mt-2 text-xl font-bold text-card-content">
-                  {tier.price}
-                </p>
-              </div>
-              <button
-                type="button"
-                data-tier-close
-                aria-label={t("company.package.hideDetails")}
-                class="btn btn-ghost rounded-full p-2"
-              >
-                <X class="size-5" />
-              </button>
-            </div>
-            <p class="mt-4 leading-relaxed text-card-content-muted">
-              {tier.subtitle}
+            <PackageTitle title={tier.name} class={`text-3xl ${tier.color}`} />
+            <p class="text-center font-mono text-2xl font-bold tabular-nums text-card-content">
+              {tier.price}
             </p>
-            <p class="mt-6 font-extrabold text-card-content">
-              {t("company.package.guarantees")}
+            <p class="text-center text-sm leading-relaxed text-card-content-muted">
+              {tier.intro}
             </p>
-            <ul class="delta-bullets mt-4 grid gap-x-10 gap-y-3 text-sm text-card-content lg:grid-cols-2">
-              {tier.items.map((item) => (
-                <li>{item}</li>
+            <ul class="mt-2 flex flex-col gap-2.5 text-sm text-card-content">
+              {tier.highlights.map((highlight) => (
+                <li class="flex items-start gap-2">
+                  <Check class={`mt-0.5 size-4 shrink-0 ${tier.color}`} />
+                  <span>{highlight}</span>
+                </li>
               ))}
             </ul>
-            <a
-              href="mailto:delta@dsek.se"
-              class={`mt-8 rounded-full px-6 ${tier.cta}`}
-            >
-              {t("company.package.contact")}
-            </a>
-          </section>
+            <div class="mt-auto flex flex-col items-center gap-3">
+              <button
+                type="button"
+                data-tier-details={tier.id}
+                aria-expanded="false"
+                aria-controls={`tier-details-${tier.id}`}
+                class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+              >
+                {t("company.package.showDetails")}
+                <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
+              </button>
+              <a
+                href="mailto:delta@dsek.se"
+                class={`rounded-full px-5 ${tier.cta}`}
+              >
+                {t("company.package.contact")}
+              </a>
+            </div>
+          </Package>
         ))
       }
     </div>
-  </div>
 
-  <PricingTable />
+    <div
+      data-tier-panel-host
+      hidden
+      class="tier-panel-wrap w-full scroll-mt-28"
+    >
+      <div class="tier-panel">
+        {
+          tiers.map((tier) => (
+            <section
+              id={`tier-details-${tier.id}`}
+              data-tier-panel={tier.id}
+              inert
+              hidden
+              class={`frosted-glass w-full rounded-2xl border-t-4 p-8 lg:p-10 ${tier.accent}`}
+            >
+              <div class="flex items-start justify-between gap-6">
+                <div>
+                  <h3 class={`text-3xl font-extrabold ${tier.color}`}>
+                    {tier.name}
+                  </h3>
+                  <p class="mt-2 text-xl font-bold text-card-content">
+                    {tier.price}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  data-tier-close
+                  aria-label={t("company.package.hideDetails")}
+                  class="btn btn-ghost rounded-full p-2"
+                >
+                  <X class="size-5" />
+                </button>
+              </div>
+              <p class="mt-4 leading-relaxed text-card-content-muted">
+                {tier.subtitle}
+              </p>
+              <p class="mt-6 font-extrabold text-card-content">
+                {t("company.package.guarantees")}
+              </p>
+              <ul class="delta-bullets mt-4 grid gap-x-10 gap-y-3 text-sm text-card-content lg:grid-cols-2">
+                {tier.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+              <a
+                href="mailto:delta@dsek.se"
+                class={`mt-8 rounded-full px-6 ${tier.cta}`}
+              >
+                {t("company.package.contact")}
+              </a>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+
+    <PricingTable />
+  </section>
 </Layout>
 
 <script>
