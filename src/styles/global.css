@@ -63,6 +63,14 @@
   --font-mono: "Noto Sans Mono", ui-monospace, monospace;
 
   --animate-caret-blink: caret-blink 1s step-end infinite;
+  --animate-rise: rise 450ms cubic-bezier(0.23, 1, 0.32, 1) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
 
   @keyframes caret-blink {
     0%,
@@ -261,6 +269,7 @@ html[data-theme="dark"] {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;

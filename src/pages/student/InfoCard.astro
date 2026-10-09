@@ -8,8 +8,9 @@ interface Props {
   imgSrc: ImageMetadata;
   imgAlt: string;
   reverse?: boolean;
+  class?: string;
 }
-const { title, imgSrc, imgAlt, reverse } = Astro.props;
+const { title, imgSrc, imgAlt, reverse, class: className } = Astro.props;
 ---
 
 <Card
