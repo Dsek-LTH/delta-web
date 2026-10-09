@@ -1,4 +1,4 @@
-Ja! Medlemmar i D-sektionen kan ansöka om att bli invalda för att arbeta under mässan. Som funkis (> DELTΔ_staff) får du möjlighet att vara en del av arbetet bakom mässan och kan få en bred variation av arbetsuppgifter:
+Ja! Medlemmar i D-sektionen kan ansöka om att bli invalda för att arbeta under mässan. Som funkis får du möjlighet att vara en del av arbetet bakom mässan och kan få en bred variation av arbetsuppgifter:
 
 <ul class="delta-bullets ml-[4ch]">
 <li>Informationsdisken</li>
