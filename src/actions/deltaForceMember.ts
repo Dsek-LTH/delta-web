@@ -33,6 +33,7 @@ export const deltaForceMember = {
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
+      github: z.string().url().or(z.literal("")).optional(),
       image: optionalImage,
     }),
     handler: async (input, context) => {
@@ -110,6 +111,7 @@ export const deltaForceMember = {
             role: input.role,
             email: input.email,
             linkedin: input.linkedin,
+            github: input.github || null,
           })
           .where(eq(deltaForceTable.studentId, input.oldStudentId))
           .run();
@@ -135,6 +137,7 @@ export const deltaForceMember = {
       role: z.enum(deltaForceRoles),
       email: z.email(),
       linkedin: z.url(),
+      github: z.string().url().or(z.literal("")).optional(),
       image: optionalImage,
     }),
     handler: async (input, context) => {
@@ -174,6 +177,7 @@ export const deltaForceMember = {
             role: input.role,
             email: input.email,
             linkedin: input.linkedin,
+            github: input.github || null,
           })
           .run();
       } catch (error) {

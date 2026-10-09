@@ -110,6 +110,10 @@ const memberImage: ImageMetadata = await getMemberImage(member).catch(
     <Label name="linkedin" label={t("admin.delta-force.member.linkedin")} />
     <TextInput name="linkedin" value={member.linkedin} />
   </div>
+  <div class="flex flex-col gap-1">
+    <Label name="github" label={t("admin.delta-force.member.github")} />
+    <TextInput name="github" value={member.github ?? ""} />
+  </div>
 
   <div class="flex flex-col gap-1">
     <Label name="image" label={t("admin.delta-force.member.picture")} />
