@@ -9,6 +9,7 @@ import WorkImg from "@/assets/tekfok/0009.webp";
 import AfterImg from "@/assets/tekfok/banket.webp";
 
 import InfoCard from "./InfoCard.astro";
+import CardContent from "./CardContent.astro";
 import Countdown from "@/components/Countdown.astro";
 import FaqCard from "./FaqCard.astro";
 import { getEntry } from "astro:content";
@@ -54,9 +55,6 @@ const faqContactAnswer = await getRenderedContent(
   class="flex flex-col items-center gap-16 px-6 py-16 mx-auto max-w-7xl lg:px-16"
 >
   <div class="flex flex-col items-center gap-4 text-center">
-    <p class="font-mono text-sm font-semibold text-brand-primary">
-      {t("student.kicker")}<span class="animate-caret-blink">_</span>
-    </p>
     <h1>
       <span
         class="lg:text-7xl text-5xl font-bold tracking-tight text-brand-primary"
@@ -86,7 +84,7 @@ const faqContactAnswer = await getRenderedContent(
             imgSrc={WhatImg}
             imgAlt={t("student.what.imgAlt")}
           >
-            {what && <div set:html={what.html} />}
+            <CardContent html={what?.html} />
           </InfoCard>
         </div>
       </div>
@@ -105,7 +103,7 @@ const faqContactAnswer = await getRenderedContent(
             imgAlt={t("student.why.imgAlt")}
             reverse
           >
-            {why && <div set:html={why.html} />}
+            <CardContent html={why?.html} />
           </InfoCard>
         </div>
       </div>
@@ -123,7 +121,7 @@ const faqContactAnswer = await getRenderedContent(
             imgSrc={HowImg}
             imgAlt={t("student.how.imgAlt")}
           >
-            {how && <div set:html={how.html} />}
+            <CardContent html={how?.html} />
           </InfoCard>
         </div>
       </div>
@@ -142,7 +140,7 @@ const faqContactAnswer = await getRenderedContent(
             imgAlt={t("student.work.imgAlt")}
             reverse
           >
-            {work && <div set:html={work.html} />}
+            <CardContent html={work?.html} />
           </InfoCard>
         </div>
       </div>
@@ -160,7 +158,7 @@ const faqContactAnswer = await getRenderedContent(
             imgSrc={AfterImg}
             imgAlt={t("student.after.imgAlt")}
           >
-            {after && <div set:html={after.html} />}
+            <CardContent html={after?.html} />
           </InfoCard>
         </div>
       </div>
@@ -179,7 +177,7 @@ const faqContactAnswer = await getRenderedContent(
             imgAlt={t("student.session.imgAlt")}
             reverse
           >
-            {studentSession && <div set:html={studentSession.html} />}
+            <CardContent html={studentSession?.html} />
           </InfoCard>
         </div>
       </div>
@@ -194,16 +192,32 @@ const faqContactAnswer = await getRenderedContent(
     </h2>
     <div class="flex flex-col gap-4 mt-4">
       <FaqCard question={t("student.faq.organizers.question")}>
-        {faqOrganizersAnswer && <div set:html={faqOrganizersAnswer.html} />}
+        {
+          faqOrganizersAnswer && (
+            <div class="space-y-3" set:html={faqOrganizersAnswer.html} />
+          )
+        }
       </FaqCard>
       <FaqCard question={t("student.faq.when.question")}>
-        {faqWhenAnswer && <div set:html={faqWhenAnswer.html} />}
+        {
+          faqWhenAnswer && (
+            <div class="space-y-3" set:html={faqWhenAnswer.html} />
+          )
+        }
       </FaqCard>
       <FaqCard question={t("student.faq.where.question")}>
-        {faqWhereAnswer && <div set:html={faqWhereAnswer.html} />}
+        {
+          faqWhereAnswer && (
+            <div class="space-y-3" set:html={faqWhereAnswer.html} />
+          )
+        }
       </FaqCard>
       <FaqCard question={t("student.faq.contact.question")}>
-        {faqContactAnswer && <div set:html={faqContactAnswer.html} />}
+        {
+          faqContactAnswer && (
+            <div class="space-y-3" set:html={faqContactAnswer.html} />
+          )
+        }
       </FaqCard>
     </div>
   </div>

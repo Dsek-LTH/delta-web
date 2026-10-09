@@ -1,0 +1,29 @@
+---
+import { ChevronDown } from "@lucide/astro";
+import { i18n } from "@/i18n/utils";
+
+const { translate: t } = i18n(Astro.cookies);
+
+const { html } = Astro.props as { html: string | null | undefined };
+
+const lead = html?.match(/^[\s\S]*?<\/p>/)?.[0] ?? html ?? "";
+const rest = html ? html.slice(lead.length).trim() : "";
+---
+
+<div class="space-y-4" set:html={lead} />
+{
+  rest && (
+    <details class="group mt-4">
+      <summary class="flex w-fit cursor-pointer items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80">
+        <span class="group-open:hidden">{t("student.readMore")}</span>
+        <span class="hidden group-open:inline">{t("student.readLess")}</span>
+        <ChevronDown class="size-4 transition-transform duration-300 group-open:rotate-180" />
+      </summary>
+      <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-open:grid-rows-[1fr]">
+        <div class="overflow-hidden">
+          <div class="space-y-4 pt-4" set:html={rest} />
+        </div>
+      </div>
+    </details>
+  )
+}

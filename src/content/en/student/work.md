@@ -1,7 +1,6 @@
 Yes! Members of the D-guild can apply to be elected to work during the fair. As a committee member (> DELTΔ_staff), you get the opportunity to be part of the work behind the fair and can get a wide variety of tasks:
-<br>
-<br>
-<ul class="list-disc ml-[4ch]">
+
+<ul class="delta-bullets ml-[4ch]">
 <li>Information desk</li>
 <li>Company host</li>
 <li>Night watch</li>
@@ -10,6 +9,5 @@ Yes! Members of the D-guild can apply to be elected to work during the fair. As 
 <li>Setting up network connection</li>
 <li>Responsibility for wardrobe and lounge area</li>
 </ul>
-<br>
-<br>
+
 Applications are sent out via the D-guild app. So keep your eyes open as the fair approaches!
