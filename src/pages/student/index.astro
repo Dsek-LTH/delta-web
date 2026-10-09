@@ -66,64 +66,126 @@ const faqContactAnswer = await getRenderedContent(
     </h1>
     <Countdown class="lg:text-3xl text-2xl" />
   </div>
-  <div class="grid w-full grid-cols-1 gap-8 lg:grid-cols-12">
-    <InfoCard
-      class="animate-rise lg:col-span-7"
-      title={t("student.what.title")}
-      imgSrc={WhatImg}
-      imgAlt={t("student.what.imgAlt")}
-    >
-      {what && <div set:html={what.html} />}
-    </InfoCard>
-
-    <InfoCard
-      class="animate-rise lg:col-span-5 [animation-delay:60ms]"
-      title={t("student.why.title")}
-      imgSrc={WhyImg}
-      imgAlt={t("student.why.imgAlt")}
-      reverse
-    >
-      {why && <div set:html={why.html} />}
-    </InfoCard>
-
-    <InfoCard
-      class="animate-rise lg:col-span-5 [animation-delay:120ms]"
-      title={t("student.how.title")}
-      imgSrc={HowImg}
-      imgAlt={t("student.how.imgAlt")}
-    >
-      {how && <div set:html={how.html} />}
-    </InfoCard>
-
-    <InfoCard
-      class="animate-rise lg:col-span-7 [animation-delay:180ms]"
-      title={t("student.work.title")}
-      imgSrc={WorkImg}
-      imgAlt={t("student.work.imgAlt")}
-      reverse
-    >
-      {work && <div set:html={work.html} />}
-    </InfoCard>
-
-    <InfoCard
-      class="animate-rise lg:col-span-7 [animation-delay:240ms]"
-      title={t("student.after.title")}
-      imgSrc={AfterImg}
-      imgAlt={t("student.after.imgAlt")}
-    >
-      {after && <div set:html={after.html} />}
-    </InfoCard>
-
-    <InfoCard
-      class="animate-rise lg:col-span-5 [animation-delay:300ms]"
-      title={t("student.session.title")}
-      imgSrc={SessionImg}
-      imgAlt={t("student.session.imgAlt")}
-      reverse
-    >
-      {studentSession && <div set:html={studentSession.html} />}
-    </InfoCard>
+  <div class="relative w-full">
+    <span
+      aria-hidden="true"
+      class="absolute top-0 bottom-0 left-4 w-px -translate-x-1/2 bg-border lg:left-1/2"
+    ></span>
+    <div class="flex flex-col gap-8 lg:gap-12">
+      <div class="relative lg:grid lg:grid-cols-2 lg:gap-16">
+        <span
+          aria-hidden="true"
+          class="absolute left-4 top-8 grid size-8 -translate-x-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
+          >Δ</span
+        >
+        <div
+          class="animate-rise pl-12 [animation-delay:0ms] lg:pl-0 lg:col-start-1"
+        >
+          <InfoCard
+            title={t("student.what.title")}
+            imgSrc={WhatImg}
+            imgAlt={t("student.what.imgAlt")}
+          >
+            {what && <div set:html={what.html} />}
+          </InfoCard>
+        </div>
+      </div>
+      <div class="relative lg:grid lg:grid-cols-2 lg:gap-16">
+        <span
+          aria-hidden="true"
+          class="absolute left-4 top-8 grid size-8 -translate-x-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
+          >Δ</span
+        >
+        <div
+          class="animate-rise pl-12 [animation-delay:60ms] lg:pl-0 lg:col-start-2"
+        >
+          <InfoCard
+            title={t("student.why.title")}
+            imgSrc={WhyImg}
+            imgAlt={t("student.why.imgAlt")}
+            reverse
+          >
+            {why && <div set:html={why.html} />}
+          </InfoCard>
+        </div>
+      </div>
+      <div class="relative lg:grid lg:grid-cols-2 lg:gap-16">
+        <span
+          aria-hidden="true"
+          class="absolute left-4 top-8 grid size-8 -translate-x-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
+          >Δ</span
+        >
+        <div
+          class="animate-rise pl-12 [animation-delay:120ms] lg:pl-0 lg:col-start-1"
+        >
+          <InfoCard
+            title={t("student.how.title")}
+            imgSrc={HowImg}
+            imgAlt={t("student.how.imgAlt")}
+          >
+            {how && <div set:html={how.html} />}
+          </InfoCard>
+        </div>
+      </div>
+      <div class="relative lg:grid lg:grid-cols-2 lg:gap-16">
+        <span
+          aria-hidden="true"
+          class="absolute left-4 top-8 grid size-8 -translate-x-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
+          >Δ</span
+        >
+        <div
+          class="animate-rise pl-12 [animation-delay:180ms] lg:pl-0 lg:col-start-2"
+        >
+          <InfoCard
+            title={t("student.work.title")}
+            imgSrc={WorkImg}
+            imgAlt={t("student.work.imgAlt")}
+            reverse
+          >
+            {work && <div set:html={work.html} />}
+          </InfoCard>
+        </div>
+      </div>
+      <div class="relative lg:grid lg:grid-cols-2 lg:gap-16">
+        <span
+          aria-hidden="true"
+          class="absolute left-4 top-8 grid size-8 -translate-x-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
+          >Δ</span
+        >
+        <div
+          class="animate-rise pl-12 [animation-delay:240ms] lg:pl-0 lg:col-start-1"
+        >
+          <InfoCard
+            title={t("student.after.title")}
+            imgSrc={AfterImg}
+            imgAlt={t("student.after.imgAlt")}
+          >
+            {after && <div set:html={after.html} />}
+          </InfoCard>
+        </div>
+      </div>
+      <div class="relative lg:grid lg:grid-cols-2 lg:gap-16">
+        <span
+          aria-hidden="true"
+          class="absolute left-4 top-8 grid size-8 -translate-x-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
+          >Δ</span
+        >
+        <div
+          class="animate-rise pl-12 [animation-delay:300ms] lg:pl-0 lg:col-start-2"
+        >
+          <InfoCard
+            title={t("student.session.title")}
+            imgSrc={SessionImg}
+            imgAlt={t("student.session.imgAlt")}
+            reverse
+          >
+            {studentSession && <div set:html={studentSession.html} />}
+          </InfoCard>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div class="w-full max-w-3xl">
     <h2
       class="lg:text-5xl text-3xl font-bold tracking-tight text-brand-primary"
