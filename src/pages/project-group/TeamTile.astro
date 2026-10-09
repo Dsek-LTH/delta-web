@@ -61,15 +61,17 @@ const aspect =
         {String(members.length).padStart(2, "0")}
       </span>
     </h3>
-    <ul class="flex flex-col gap-1 text-sm text-card-content">
+    <ul
+      class="flex w-full flex-wrap items-start justify-center gap-x-4 gap-y-2 text-center text-base font-semibold"
+    >
       {
         members.map((member) => (
-          <li>
+          <li class="min-w-24 flex-1 sm:min-w-28">
             <a
               href={member.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-card-content hover:text-card-content-highlight"
+              class="text-card-content transition-colors hover:text-brand-primary"
             >
               {member.firstName} {member.lastName}
             </a>
