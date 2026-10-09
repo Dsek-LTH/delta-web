@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Card from "@/components/Card.astro";
-import { CalendarPlus, MapPin, Users } from "@lucide/astro";
+import { CalendarPlus, Check, ChevronDown, MapPin, Users } from "@lucide/astro";
 import Logo from "@/components/Logo.astro";
 import Countdown from "@/components/Countdown.astro";
 import { languages } from "@/i18n/ui.ts";
@@ -10,11 +10,39 @@ import { fairDate } from "@/constants";
 import { getEntry } from "astro:content";
 import cover from "@/assets/tekfok26_0003.webp";
 
+import Package from "@/components/company/Package.astro";
+import PackageTitle from "@/components/company/PackageTitle.astro";
+import PackageDetails from "@/components/company/PackageDetails.astro";
+import PricingTable from "@/components/company/PricingTable.astro";
+
+import InfoCard from "./student/InfoCard.astro";
+import CardContent from "./student/CardContent.astro";
+import FaqCard from "./student/FaqCard.astro";
+
+import SessionImg from "@/assets/explaining.webp";
+import WhatImg from "@/assets/tekfok/0010.webp";
+import WhyImg from "@/assets/tekfok/0012.webp";
+import HowImg from "@/assets/tekfok/tekfok26_0001.webp";
+import WorkImg from "@/assets/tekfok/0009.webp";
+import AfterImg from "@/assets/tekfok/banket.webp";
+
+import TeamTile from "./project-group/TeamTile.astro";
+import PhotoPlaceholder from "./project-group/PhotoPlaceholder.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { db } from "@/db/connect";
+import { deltaForceTable } from "@/db/schema";
+import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
+
 export function getStaticPaths() {
   return Object.keys(languages).map((lang) => ({ params: { lang } }));
 }
 
 const { lang, translate: t } = i18n(Astro.cookies);
+
+/* ------------------------------------------------------------------ *
+ * Hero — the top of the one-page scroll
+ * ------------------------------------------------------------------ */
 
 const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
 
@@ -31,122 +59,985 @@ const calendarUrl =
   `&dates=${toCalendarDate(fairDate)}/${toCalendarDate(fairEnd)}` +
   "&ctz=Europe%2FStockholm" +
   `&location=${encodeURIComponent("E-Huset, LTH, Ole Römers väg 3, 223 63 Lund")}`;
+
+/* ------------------------------------------------------------------ *
+ * Companies
+ * ------------------------------------------------------------------ */
+
+const tiers = [
+  {
+    id: "nonprofit",
+    name: t("company.pricing.tier.nonprofit"),
+    price: t("company.pricing.price.nonprofit"),
+    discount: null,
+    intro: t("company.package.nonprofit.intro"),
+    subtitle: null,
+    closing: null,
+    accent: "border-diamond",
+    color: "text-diamond",
+    glow: "shadow-diamond/20",
+    cta: "btn btn-ghost",
+    highlights: [
+      t("company.pricing.row.booth"),
+      t("company.pricing.row.table"),
+      t("company.pricing.row.afterEvent"),
+      t("company.pricing.row.lounge"),
+    ],
+    items: [
+      t("company.package.nonprofit.booth"),
+      t("company.package.nonprofit.tableStool"),
+      t("company.package.nonprofit.afterParty"),
+      t("company.package.nonprofit.lounge"),
+      t("company.package.nonprofit.wardrobe"),
+      t("company.package.nonprofit.wifi"),
+    ],
+  },
+  {
+    id: "startup",
+    name: t("company.pricing.tier.startup"),
+    price: t("company.pricing.price.startup"),
+    discount: null,
+    intro: t("company.package.startup.intro"),
+    subtitle: null,
+    closing: t("company.package.startup.closing"),
+    accent: "border-bronze",
+    color: "text-bronze",
+    glow: "shadow-bronze/20",
+    cta: "btn btn-ghost",
+    highlights: [
+      t("company.pricing.row.booth"),
+      t("company.pricing.row.table"),
+      t("company.pricing.row.afterEvent"),
+      t("company.pricing.row.lounge"),
+    ],
+    items: [
+      t("company.package.startup.booth"),
+      t("company.package.startup.tableStool"),
+      t("company.package.startup.afterParty"),
+      t("company.package.startup.lounge"),
+      t("company.package.startup.wardrobe"),
+      t("company.package.startup.wifi"),
+    ],
+  },
+  {
+    id: "standard",
+    name: t("company.pricing.tier.standard"),
+    price: t("company.pricing.price.standard"),
+    discount: null,
+    intro: t("company.package.standard.intro"),
+    subtitle: t("company.package.standard.subtitle"),
+    closing: null,
+    accent: "border-gold",
+    color: "text-gold",
+    glow: "shadow-gold/20",
+    cta: "btn btn-ghost",
+    highlights: [
+      t("company.pricing.row.booth"),
+      t("company.pricing.row.meals"),
+      t("company.pricing.row.parking"),
+      t("company.pricing.row.host"),
+    ],
+    items: [
+      t("company.package.standard.booth"),
+      t("company.package.standard.tableStool"),
+      t("company.package.standard.afterParty"),
+      t("company.package.standard.lunchDinner"),
+      t("company.package.standard.parking"),
+      t("company.package.standard.lounge"),
+      t("company.package.standard.wardrobe"),
+      t("company.package.standard.host"),
+      t("company.package.standard.wifi"),
+    ],
+  },
+  {
+    id: "plus",
+    name: t("company.pricing.tier.plus"),
+    price: t("company.pricing.price.plus"),
+    discount: t("company.pricing.discount.plus"),
+    intro: t("company.package.plus.intro"),
+    subtitle: t("company.package.plus.subtitle"),
+    closing: null,
+    accent: "border-silver",
+    color: "text-silver",
+    glow: "shadow-silver/20",
+    cta: "btn btn-ghost",
+    highlights: [
+      t("company.pricing.row.caseEvening"),
+      t("company.pricing.row.studentSessions"),
+      t("company.pricing.row.placement"),
+      t("company.pricing.row.afterEvent"),
+    ],
+    items: [
+      t("company.package.plus.base"),
+      t("company.package.plus.caseEvening"),
+      t("company.package.plus.studentSessions"),
+      t("company.package.plus.boothPlacement"),
+    ],
+  },
+  {
+    id: "hash",
+    name: t("company.pricing.tier.hash"),
+    price: t("company.pricing.price.hash"),
+    discount: t("company.pricing.discount.hash"),
+    intro: t("company.package.hash.intro"),
+    subtitle: t("company.package.hash.subtitle"),
+    closing: null,
+    accent: "border-amethyst",
+    color: "text-amethyst",
+    glow: "shadow-amethyst/20",
+    cta: "btn btn-ghost",
+    highlights: [
+      t("company.pricing.row.lunchLecture"),
+      t("company.pricing.row.placement"),
+      t("company.pricing.row.meals"),
+      t("company.pricing.row.afterEvent"),
+    ],
+    items: [
+      t("company.package.hash.base"),
+      t("company.package.hash.lunchLecture"),
+      t("company.package.hash.boothPlacement"),
+    ],
+  },
+  {
+    id: "main",
+    name: t("company.pricing.tier.main"),
+    price: t("company.pricing.price.main"),
+    discount: t("company.pricing.discount.main"),
+    intro: t("company.package.main.intro"),
+    subtitle: t("company.package.main.subtitle"),
+    closing: t("company.package.main.closing"),
+    accent: "border-emerald",
+    color: "text-emerald",
+    glow: "shadow-emerald/20",
+    cta: "btn bg-emerald text-white hover:bg-emerald/85 dark:text-slate-950",
+    highlights: [
+      t("company.pricing.row.placement"),
+      t("company.pricing.row.tv"),
+      t("company.pricing.row.foodTickets"),
+      t("company.pricing.row.priority"),
+    ],
+    items: [
+      t("company.package.main.base"),
+      t("company.package.main.boothPlacement"),
+      t("company.package.main.drinkTickets"),
+      t("company.package.main.foodTickets"),
+      t("company.package.main.lunchLecture"),
+      t("company.package.main.studentSessions"),
+      t("company.package.main.tv"),
+      t("company.package.main.flag"),
+      t("company.package.main.host"),
+      t("company.package.main.marketing"),
+      t("company.package.main.priority"),
+    ],
+  },
+];
+
+// Card layout: the two entry packages are small, the three DELTΔ packages share
+// a row, and the main sponsor gets a featured wide card.
+const entryTiers = tiers.slice(0, 2);
+const deltaTiers = tiers.slice(2, 5);
+const mainTier = tiers[5]!;
+
+/* ------------------------------------------------------------------ *
+ * Students
+ * ------------------------------------------------------------------ */
+
+const studentSession = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/student-sessions",
+);
+const what = await getRenderedContent(getEntry, lang, "student/what");
+const why = await getRenderedContent(getEntry, lang, "student/why");
+const how = await getRenderedContent(getEntry, lang, "student/how");
+const work = await getRenderedContent(getEntry, lang, "student/work");
+const after = await getRenderedContent(getEntry, lang, "student/after");
+
+const faqOrganizersAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/organizers",
+);
+const faqWhenAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/when",
+);
+const faqWhereAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/where",
+);
+const faqContactAnswer = await getRenderedContent(
+  getEntry,
+  lang,
+  "student/faq/contact",
+);
+
+const timelineItems = [
+  {
+    title: t("student.what.title"),
+    img: WhatImg,
+    imgAlt: t("student.what.imgAlt"),
+    html: what?.html,
+  },
+  {
+    title: t("student.why.title"),
+    img: WhyImg,
+    imgAlt: t("student.why.imgAlt"),
+    html: why?.html,
+  },
+  {
+    title: t("student.how.title"),
+    img: HowImg,
+    imgAlt: t("student.how.imgAlt"),
+    html: how?.html,
+  },
+  {
+    title: t("student.work.title"),
+    img: WorkImg,
+    imgAlt: t("student.work.imgAlt"),
+    html: work?.html,
+  },
+  {
+    title: t("student.after.title"),
+    img: AfterImg,
+    imgAlt: t("student.after.imgAlt"),
+    html: after?.html,
+  },
+  {
+    title: t("student.session.title"),
+    img: SessionImg,
+    imgAlt: t("student.session.imgAlt"),
+    html: studentSession?.html,
+  },
+];
+
+/* ------------------------------------------------------------------ *
+ * Project group
+ * ------------------------------------------------------------------ */
+
+const deltaForceMembers = await db.select().from(deltaForceTable).all();
+
+// Drop team photos into src/assets/team/ and they are picked up automatically.
+// Names: all (= whole team), general, it, event, finance, logistics, marketing,
+// relations, staff.
+const teamPhotos = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/team/*.{webp,jpg,jpeg,png}",
+  { eager: true },
+);
+const photoFor = (name: string): ImageMetadata | null => {
+  const entry = Object.entries(teamPhotos).find(([path]) =>
+    new RegExp(`/${name}\\.(webp|jpe?g|png)$`).test(path),
+  );
+  return entry?.[1].default ?? null;
+};
+
+const allPhoto = photoFor("all") ?? photoFor("team");
+// Stagger within a revealed row; each tile still waits for the viewport.
+const tileRevealDelays = [
+  "[transition-delay:0ms]",
+  "[transition-delay:90ms]",
+  "[transition-delay:180ms]",
+];
+const generals = deltaForceMembers.filter(
+  (member) => member.role === "general",
+);
+const generalsLabel = t(
+  deltaFordeRoleToTranslationKey("general", generals.length > 1),
+);
+
+// Biggest team takes the full-width tile; wide tiles then alternate sides so the
+// singles fill in around them (grid is dense, so no holes).
+let wideCount = 0;
+const teams = deltaForceRoles
+  .filter((role) => role !== "general")
+  .map((role) => {
+    const members = deltaForceMembers.filter((member) => member.role === role);
+    return {
+      role,
+      // Singular for one-person teams ("IT-ansvarig"), plural for the rest.
+      label: t(deltaFordeRoleToTranslationKey(role, members.length > 1)),
+      photo: photoFor(role),
+      members,
+    };
+  })
+  .filter((team) => team.members.length > 0)
+  .sort((a, b) => b.members.length - a.members.length)
+  .map((team, index) => {
+    let span: 1 | 2 | 3 = 1;
+    let startRight = false;
+    if (index === 0) {
+      span = 3;
+    } else if (team.members.length >= 2) {
+      span = 2;
+      startRight = wideCount % 2 === 1;
+      wideCount += 1;
+    }
+    return { ...team, span, startRight };
+  });
 ---
 
 <Layout
   title={t("landing.head.title")}
   description={t("landing.head.description")}
   backgroundImage={cover}
-  class="flex flex-col items-center gap-12 pb-12 px-6 mx-auto w-full max-w-7xl lg:px-16"
+  class="w-full"
 >
-  <div class="text-center text-shadow-md/25 animate-rise">
-    <h1 aria-label="DELTA" role="img" class="contents text-7xl lg:text-9xl">
-      <Logo animate inverse />
-    </h1>
-    <Countdown class="text-white lg:text-4xl text-2xl" />
-  </div>
-
-  <div
-    class="grid gap-8 w-full max-w-110 lg:grid-cols-3 lg:items-end lg:max-w-full"
+  <!-- Hero — the top of the one-page scroll -->
+  <section
+    id="top"
+    class="mx-auto flex w-full max-w-7xl flex-col items-center gap-12 px-6 pb-24 lg:px-16"
   >
-    <Card
-      class="p-8 lg:order-1 order-2 flex flex-col gap-6 animate-rise [animation-delay:60ms] lg:h-108"
-    >
-      <h2
-        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
-      >
-        {t("landing.card.where")}
-      </h2>
-      <div class="flex flex-col flex-1 gap-4">
-        <div class="flex flex-col items-center gap-1 text-center">
-          <p class="text-xl font-semibold">E-Huset, LTH</p>
-          <p class="flex items-center gap-2 text-sm text-card-content-muted">
-            <MapPin class="size-4 shrink-0" />
-            <span>
-              Ole Römers väg 3, 223 63 Lund, {t("landing.card.where.sweden")}
-            </span>
-          </p>
-        </div>
-        <iframe
-          class="w-full flex-1 min-h-50 rounded-xl border-0"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
-          title={t("landing.card.where.map.title")}
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        >
-          E-huset LTH Ole Römers väg 3.
-        </iframe>
-      </div>
-    </Card>
+    <div class="text-center text-shadow-md/25 animate-rise">
+      <h1 aria-label="DELTA" role="img" class="contents text-7xl lg:text-9xl">
+        <Logo animate inverse />
+      </h1>
+      <Countdown class="text-white lg:text-4xl text-2xl" />
+    </div>
 
-    <Card
-      class="p-8 lg:order-2 order-1 flex flex-col justify-between gap-6 animate-rise [animation-delay:120ms] lg:h-120"
+    <div
+      class="grid gap-8 w-full max-w-110 lg:grid-cols-3 lg:items-end lg:max-w-full"
     >
-      <h2
-        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
+      <Card
+        class="p-8 lg:order-1 order-2 flex flex-col gap-6 animate-rise [animation-delay:60ms] lg:h-108"
       >
-        {t("landing.card.when")}
+        <h2
+          class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
+        >
+          {t("landing.card.where")}
+        </h2>
+        <div class="flex flex-col flex-1 gap-4">
+          <div class="flex flex-col items-center gap-1 text-center">
+            <p class="text-xl font-semibold">E-Huset, LTH</p>
+            <p class="flex items-center gap-2 text-sm text-card-content-muted">
+              <MapPin class="size-4 shrink-0" />
+              <span>
+                Ole Römers väg 3, 223 63 Lund, {t("landing.card.where.sweden")}
+              </span>
+            </p>
+          </div>
+          <iframe
+            class="w-full flex-1 min-h-50 rounded-xl border-0"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
+            title={t("landing.card.where.map.title")}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          >
+            E-huset LTH Ole Römers väg 3.
+          </iframe>
+        </div>
+      </Card>
+
+      <Card
+        class="p-8 lg:order-2 order-1 flex flex-col justify-between gap-6 animate-rise [animation-delay:120ms] lg:h-120"
+      >
+        <h2
+          class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
+        >
+          {t("landing.card.when")}
+        </h2>
+        <div class="flex flex-col gap-4 text-center">
+          <p
+            class="text-3xl font-bold leading-tight text-balance first-letter:uppercase lg:text-4xl"
+          >
+            {
+              fairDate.toLocaleDateString(lang, {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            }
+          </p>
+          <p class="text-xl text-card-content-muted lg:text-2xl">08:00–17:00</p>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+          <p
+            class="flex items-center justify-center gap-2 text-base text-card-content-muted"
+          >
+            <Users class="size-5 shrink-0" />
+            <span>{t("landing.card.when.networking")}</span>
+          </p>
+          <a
+            href={calendarUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-ghost rounded-full px-4 py-2 text-sm"
+          >
+            <CalendarPlus class="size-4" />
+            {t("landing.card.when.calendar")}
+          </a>
+        </div>
+      </Card>
+
+      <Card
+        class="p-8 order-3 flex flex-col gap-6 animate-rise [animation-delay:180ms] lg:h-108"
+      >
+        <h2
+          class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
+        >
+          {t("landing.card.what")}
+        </h2>
+        <div
+          class="flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose"
+        >
+          {whatIs && <div set:html={whatIs.html} />}
+        </div>
+        <div
+          class="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-2xl bg-gradient-to-t from-card to-transparent"
+        >
+        </div>
+      </Card>
+    </div>
+
+    <a
+      href="mailto:delta@dsek.se"
+      target="_blank"
+      class="frosted-glass text-card-content font-bold py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline transition-colors duration-200 animate-rise [animation-delay:240ms] hover:bg-card-highlight"
+    >
+      <span>{t("landing.button.attend")}</span>
+      <Logo />
+    </a>
+  </section>
+
+  <!-- För företag -->
+  <section
+    id="foretag"
+    data-nav-section="foretag"
+    class="flex w-full max-w-7xl flex-col items-center gap-16 border-t border-border/60 px-6 py-24 lg:gap-20 lg:px-16"
+  >
+    <div
+      class="frosted-glass w-full max-w-5xl rounded-2xl px-6 py-12 text-center reveal lg:px-16 lg:py-16"
+    >
+      <h2 class="text-4xl font-bold text-card-content lg:text-6xl">
+        <Logo animate />
+        <span class="ms-[0.5em] italic">{t("company.hero.forCompanies")}</span>
       </h2>
-      <div class="flex flex-col gap-4 text-center">
-        <p
-          class="text-3xl font-bold leading-tight text-balance first-letter:uppercase lg:text-4xl"
-        >
-          {
-            fairDate.toLocaleDateString(lang, {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })
-          }
-        </p>
-        <p class="text-xl text-card-content-muted lg:text-2xl">08:00–17:00</p>
-      </div>
-      <div class="flex flex-col items-center gap-4">
-        <p
-          class="flex items-center justify-center gap-2 text-base text-card-content-muted"
-        >
-          <Users class="size-5 shrink-0" />
-          <span>{t("landing.card.when.networking")}</span>
-        </p>
+
+      <p
+        class="mt-16 text-xl font-bold text-brand-primary lg:mt-20 lg:text-2xl"
+      >
+        {t("company.hero.meetDevelopers")}
+      </p>
+      <p class="mt-6 font-mono text-sm text-card-content-muted">
+        {t("company.hero.fields")}
+      </p>
+      <p class="mt-10 text-card-content-muted lg:mt-12">
+        {t("company.hero.contactBefore")}{" "}
         <a
-          href={calendarUrl}
+          href="mailto:delta@dsek.se"
+          class="font-semibold text-brand-primary underline transition-colors hover:text-brand-primary/80"
+          >delta@dsek.se</a
+        >{" "}
+        {t("company.hero.contactAfter")}
+      </p>
+    </div>
+
+    <div
+      class="flex w-full max-w-3xl flex-col gap-4 text-center leading-relaxed reveal"
+    >
+      <p class="text-card-content">{t("company.intro.attend")}</p>
+      <p class="text-card-content">
+        {t("company.intro.combine")}{" "}
+        <a
+          href="mailto:delta@dsek.se"
+          class="font-semibold text-brand-primary underline transition-colors hover:text-brand-primary/80"
+          >delta@dsek.se</a
+        >
+      </p>
+      <p class="text-sm text-card-content-muted">
+        {t("company.intro.websiteBefore")}{" "}
+        <a
+          href="https://www.dsek.se"
           target="_blank"
           rel="noopener noreferrer"
-          class="btn btn-ghost rounded-full px-4 py-2 text-sm"
+          class="text-backdrop-content-highlight transition-colors hover:text-backdrop-content-highlight/80"
+          >{t("company.intro.websiteLink")}</a
+        >{t("company.intro.websiteAfter")}
+      </p>
+    </div>
+
+    <div id="pricing" class="flex w-full flex-col gap-10">
+      <div class="flex flex-col items-center gap-4 text-center reveal">
+        <h3
+          class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
         >
-          <CalendarPlus class="size-4" />
-          {t("landing.card.when.calendar")}
-        </a>
+          {t("company.pricing.title")}
+        </h3>
+        <p class="max-w-3xl leading-relaxed text-card-content">
+          {t("company.pricing.subtitle")}
+        </p>
       </div>
-    </Card>
 
-    <Card
-      class="p-8 order-3 flex flex-col gap-6 animate-rise [animation-delay:180ms] lg:h-108"
-    >
-      <h2
-        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
-      >
-        {t("landing.card.what")}
-      </h2>
-      <div
-        class="flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose"
-      >
-        {whatIs && <div set:html={whatIs.html} />}
+      <div class="grid w-full gap-6 sm:grid-cols-2 reveal">
+        {
+          entryTiers.map((tier) => (
+            <Package
+              class={`border-0 border-t-4 p-5 shadow-md ${tier.accent} ${tier.glow}`}
+            >
+              <div class="flex items-baseline justify-between gap-4">
+                <PackageTitle
+                  title={tier.name}
+                  class={`text-left text-2xl ${tier.color}`}
+                />
+                <p class="font-mono text-lg font-semibold tabular-nums text-card-content">
+                  {tier.price}
+                </p>
+              </div>
+              <p class="line-clamp-3 text-sm leading-relaxed text-card-content-muted">
+                {tier.intro}
+              </p>
+              <div class="mt-auto flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  data-tier-details={tier.id}
+                  aria-expanded="false"
+                  aria-controls={`tier-details-${tier.id}`}
+                  class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+                >
+                  {t("company.package.showDetails")}
+                  <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
+                </button>
+                <a
+                  href="mailto:delta@dsek.se"
+                  class={`rounded-full px-4 py-1.5 text-sm ${tier.cta}`}
+                >
+                  {t("company.package.contact")}
+                </a>
+              </div>
+            </Package>
+          ))
+        }
       </div>
-      <div
-        class="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-2xl bg-gradient-to-t from-card to-transparent"
-      >
-      </div>
-    </Card>
-  </div>
 
-  <a
-    href="mailto:delta@dsek.se"
-    target="_blank"
-    class="frosted-glass text-card-content font-bold py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline transition-colors duration-200 animate-rise [animation-delay:240ms] hover:bg-card-highlight"
+      <div data-tier-panel-host hidden class="fold-wrap w-full">
+        <div class="fold-panel">
+          {entryTiers.map((tier) => <PackageDetails tier={tier} />)}
+        </div>
+      </div>
+
+      <div class="grid w-full gap-6 reveal sm:grid-cols-2 lg:grid-cols-3">
+        {
+          deltaTiers.map((tier) => (
+            <Package
+              class={`border-0 border-t-4 p-6 shadow-lg ${tier.accent} ${tier.glow}`}
+            >
+              <PackageTitle
+                title={tier.name}
+                class={`text-3xl ${tier.color}`}
+              />
+              <div class="flex flex-col gap-1">
+                <p class="text-center font-mono text-2xl font-bold tabular-nums text-card-content">
+                  {tier.price}
+                </p>
+                {tier.discount && (
+                  <p class="text-center font-mono text-xs text-card-content-muted">
+                    {tier.discount}
+                  </p>
+                )}
+              </div>
+              <p class="text-center text-sm leading-relaxed text-card-content-muted">
+                {tier.intro}
+              </p>
+              <ul class="mt-2 flex flex-col gap-2.5 text-sm text-card-content">
+                {tier.highlights.map((highlight) => (
+                  <li class="flex items-start gap-2">
+                    <Check class={`mt-0.5 size-4 shrink-0 ${tier.color}`} />
+                    <span>{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-auto flex flex-col items-center gap-3">
+                <button
+                  type="button"
+                  data-tier-details={tier.id}
+                  aria-expanded="false"
+                  aria-controls={`tier-details-${tier.id}`}
+                  class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+                >
+                  {t("company.package.showDetails")}
+                  <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
+                </button>
+                <a
+                  href="mailto:delta@dsek.se"
+                  class={`rounded-full px-5 ${tier.cta}`}
+                >
+                  {t("company.package.contact")}
+                </a>
+              </div>
+            </Package>
+          ))
+        }
+      </div>
+
+      <div data-tier-panel-host hidden class="fold-wrap w-full">
+        <div class="fold-panel">
+          {deltaTiers.map((tier) => <PackageDetails tier={tier} />)}
+        </div>
+      </div>
+
+      <Package
+        class={`border-0 border-t-8 p-8 shadow-xl reveal lg:p-10 ${mainTier.accent} ${mainTier.glow}`}
+      >
+        <div
+          class="flex w-full flex-col gap-8 lg:flex-row lg:items-center lg:gap-16"
+        >
+          <div class="flex flex-1 flex-col gap-4">
+            <PackageTitle
+              title={mainTier.name}
+              class={`text-left text-4xl ${mainTier.color}`}
+            />
+            <div class="flex items-baseline gap-3">
+              <p
+                class="font-mono text-3xl font-bold tabular-nums text-card-content"
+              >
+                {mainTier.price}
+              </p>
+              <p class="font-mono text-sm text-card-content-muted">
+                {mainTier.discount}
+              </p>
+            </div>
+            <p class="leading-relaxed text-card-content-muted">
+              {mainTier.intro}
+            </p>
+            <div class="mt-2 flex flex-wrap items-center gap-4">
+              <a
+                href="mailto:delta@dsek.se"
+                class={`rounded-full px-6 ${mainTier.cta}`}
+              >
+                {t("company.package.contact")}
+              </a>
+              <button
+                type="button"
+                data-tier-details={mainTier.id}
+                aria-expanded="false"
+                aria-controls={`tier-details-${mainTier.id}`}
+                class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+              >
+                {t("company.package.showDetails")}
+                <ChevronDown
+                  class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180"
+                />
+              </button>
+            </div>
+          </div>
+          <ul
+            class="grid flex-1 gap-3 text-sm text-card-content sm:grid-cols-2"
+          >
+            {
+              mainTier.highlights.map((highlight) => (
+                <li class="flex items-start gap-2">
+                  <Check class={`mt-0.5 size-5 shrink-0 ${mainTier.color}`} />
+                  <span>{highlight}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </Package>
+
+      <div data-tier-panel-host hidden class="fold-wrap w-full">
+        <div class="fold-panel">
+          <PackageDetails tier={mainTier} />
+        </div>
+      </div>
+      <PricingTable />
+    </div>
+
+    <a href="/company" class="btn btn-ghost reveal">
+      {t("landing.section.fullPage")}
+    </a>
+  </section>
+
+  <!-- För studenter -->
+  <section
+    id="studenter"
+    data-nav-section="studenter"
+    class="flex w-full max-w-7xl flex-col items-center gap-16 border-t border-border/60 px-6 py-24 lg:px-16"
   >
-    <span>{t("landing.button.attend")}</span>
-    <Logo />
-  </a>
+    <div class="flex flex-col items-center gap-4 text-center reveal">
+      <h2>
+        <span
+          class="lg:text-7xl text-5xl font-bold tracking-tight text-brand-primary"
+        >
+          {t("student.title")}
+        </span>
+      </h2>
+    </div>
+
+    <div class="relative w-full" data-timeline>
+      <span
+        aria-hidden="true"
+        class="absolute top-0 bottom-0 left-4 w-px -translate-x-1/2 bg-border lg:left-1/2"
+      >
+        <span
+          data-timeline-rail
+          style="--rail-progress: 0"
+          class="absolute inset-0 bg-brand-primary/70"></span>
+      </span>
+      <div class="flex flex-col gap-8 lg:gap-12">
+        {
+          timelineItems.map((item, index) => {
+            const reversed = index % 2 === 1;
+            return (
+              <div class="relative lg:grid lg:grid-cols-2 lg:gap-16">
+                <span
+                  aria-hidden="true"
+                  class="absolute left-4 top-1/2 grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full frosted-glass font-display text-brand-primary lg:left-1/2"
+                >
+                  Δ
+                </span>
+                <div
+                  class:list={[
+                    "reveal pl-12 lg:pl-0",
+                    reversed ? "lg:col-start-2" : "lg:col-start-1",
+                  ]}
+                >
+                  <InfoCard
+                    title={item.title}
+                    imgSrc={item.img}
+                    imgAlt={item.imgAlt}
+                    reverse={reversed}
+                  >
+                    <CardContent html={item.html} />
+                  </InfoCard>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+
+    <div class="reveal w-full max-w-3xl">
+      <h3
+        class="lg:text-5xl text-3xl font-bold tracking-tight text-brand-primary"
+      >
+        {t("student.faq.title")}
+      </h3>
+      <div class="flex flex-col gap-4 mt-4">
+        <FaqCard question={t("student.faq.organizers.question")}>
+          {
+            faqOrganizersAnswer && (
+              <div class="space-y-3" set:html={faqOrganizersAnswer.html} />
+            )
+          }
+        </FaqCard>
+        <FaqCard question={t("student.faq.when.question")}>
+          {
+            faqWhenAnswer && (
+              <div class="space-y-3" set:html={faqWhenAnswer.html} />
+            )
+          }
+        </FaqCard>
+        <FaqCard question={t("student.faq.where.question")}>
+          {
+            faqWhereAnswer && (
+              <div class="space-y-3" set:html={faqWhereAnswer.html} />
+            )
+          }
+        </FaqCard>
+        <FaqCard question={t("student.faq.contact.question")}>
+          {
+            faqContactAnswer && (
+              <div class="space-y-3" set:html={faqContactAnswer.html} />
+            )
+          }
+        </FaqCard>
+      </div>
+    </div>
+
+    <a href="/student" class="btn btn-ghost reveal">
+      {t("landing.section.fullPage")}
+    </a>
+  </section>
+
+  <!-- Projektgrupp -->
+  <section
+    id="projektgrupp"
+    data-nav-section="projektgrupp"
+    class="flex w-full max-w-7xl flex-col items-center gap-16 border-t border-border/60 px-6 py-24 lg:px-16"
+  >
+    <div
+      class="flex w-full flex-col justify-between gap-10 reveal sm:text-left text-center lg:flex-row"
+    >
+      <div class="flex flex-col justify-center items-start gap-4 lg:max-w-1/2">
+        <h2 class="text-4xl font-bold text-left sm:text-5xl lg:text-6xl">
+          <Logo animate command="--force" class="inline-block" />
+        </h2>
+        <p class="text-balance">
+          {t("delta-force.description")}
+        </p>
+      </div>
+      <div class="flex w-full flex-col items-center lg:w-2/5 lg:items-start">
+        <TeamTile
+          label={generalsLabel}
+          members={generals}
+          photo={photoFor("general")}
+        />
+      </div>
+    </div>
+
+    <Card class="w-full overflow-hidden p-0 reveal">
+      {
+        allPhoto ? (
+          <Image
+            src={allPhoto}
+            alt=""
+            width={1600}
+            height={700}
+            class="h-64 w-full object-cover lg:h-96"
+          />
+        ) : (
+          <PhotoPlaceholder kind="group" class="h-64 lg:h-96" />
+        )
+      }
+    </Card>
+
+    <div class="flex w-full flex-col gap-8">
+      <h3 class="reveal text-center text-3xl font-bold lg:text-4xl">
+        {t("delta-force.project-group")}
+      </h3>
+      <div
+        class="grid w-full grid-flow-row-dense grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        {
+          teams.map((team, index) => (
+            <TeamTile
+              class={`reveal ${tileRevealDelays[index % tileRevealDelays.length] ?? "[transition-delay:0ms]"}`}
+              label={team.label}
+              members={team.members}
+              photo={team.photo}
+              span={team.span}
+              startRight={team.startRight}
+            />
+          ))
+        }
+      </div>
+    </div>
+
+    <a href="/project-group" class="btn btn-ghost reveal">
+      {t("landing.section.fullPage")}
+    </a>
+  </section>
+
+  <!-- Deltagare -->
+  <section
+    id="besokare"
+    data-nav-section="besokare"
+    class="flex w-full max-w-7xl flex-col items-center gap-10 border-t border-border/60 px-6 py-24 lg:px-16"
+  >
+    <h3 class="reveal text-center text-3xl font-bold lg:text-4xl">
+      {t("attendees.title")}
+    </h3>
+    <Card class="reveal w-full max-w-2xl p-8 text-center">
+      <p>
+        {t("comingSoon.message")}<a
+          class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
+          href="https://github.com/Dsek-LTH/delta-web"
+        >
+          GitHub</a
+        >.
+      </p>
+    </Card>
+  </section>
 </Layout>
+
+<script>
+  const detailButtons = document.querySelectorAll<HTMLButtonElement>(
+    "[data-tier-details]",
+  );
+  const hosts = document.querySelectorAll<HTMLElement>(
+    "[data-tier-panel-host]",
+  );
+  const panels = document.querySelectorAll<HTMLElement>("[data-tier-panel]");
+
+  const setActive = (activeId: string | undefined) => {
+    panels.forEach((panel) => {
+      panel.inert = panel.dataset.tierPanel !== activeId;
+    });
+    detailButtons.forEach((button) => {
+      button.setAttribute(
+        "aria-expanded",
+        String(button.dataset.tierDetails === activeId),
+      );
+    });
+  };
+
+  const closeHost = (host: HTMLElement) => {
+    host.removeAttribute("data-open");
+    window.setTimeout(() => {
+      if (!host.hasAttribute("data-open")) host.hidden = true;
+    }, 350);
+  };
+
+  const closePanels = () => {
+    hosts.forEach(closeHost);
+    setActive(undefined);
+  };
+
+  const openPanel = (tierId: string) => {
+    const target = [...panels].find(
+      (panel) => panel.dataset.tierPanel === tierId,
+    );
+    const host = target?.closest<HTMLElement>("[data-tier-panel-host]");
+    if (!target || !host) return;
+
+    // Only one group's panel is open at a time; others close instantly.
+    hosts.forEach((other) => {
+      if (other !== host) {
+        other.removeAttribute("data-open");
+        other.hidden = true;
+      }
+    });
+
+    panels.forEach((panel) => {
+      panel.hidden = panel !== target;
+    });
+    setActive(tierId);
+
+    host.hidden = false;
+    if (!host.hasAttribute("data-open")) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          host.setAttribute("data-open", "");
+        });
+      });
+    }
+
+    window.setTimeout(() => {
+      if (host.hasAttribute("data-open")) {
+        target.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    }, 340);
+  };
+
+  detailButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.dataset.tierDetails;
+      const target = [...panels].find(
+        (panel) => panel.dataset.tierPanel === id,
+      );
+      const host = target?.closest<HTMLElement>("[data-tier-panel-host]");
+      const isOpen =
+        !!host &&
+        host.hasAttribute("data-open") &&
+        !host.hidden &&
+        !!target &&
+        !target.hidden;
+
+      if (isOpen) {
+        closePanels();
+      } else {
+        openPanel(id ?? "");
+      }
+    });
+  });
+
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-tier-close]")
+    .forEach((button) => {
+      button.addEventListener("click", closePanels);
+    });
+</script>

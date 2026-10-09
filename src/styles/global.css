@@ -154,6 +154,7 @@ html[data-theme="dark"] {
   html {
     color-scheme: light;
     scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
   }
 
   body {

@@ -10,7 +10,8 @@
     "card.what": "What",
     "card.when.networking": "After DELTA Pub",
     "card.when.calendar": "Add to calendar",
-    "button.attend": "Attend"
+    "button.attend": "Attend",
+    "section.fullPage": "Read the full page"
   },
   "sv": {
     "head.title": "Hem | DELTA",
@@ -22,6 +23,7 @@
     "card.what": "Vad",
     "card.when.networking": "After DELTA Pub",
     "card.when.calendar": "Lägg till i kalendern",
-    "button.attend": "Delta på"
+    "button.attend": "Delta på",
+    "section.fullPage": "Läs hela sidan"
   }
 }

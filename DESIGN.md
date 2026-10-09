@@ -209,3 +209,31 @@ src/i18n/translations/           all copy, en + sv
 src/content/<lang>/              long-form markdown
 src/assets/team/                 team photos (auto-loaded by filename)
 ```
+
+## 11. Concept: one-page scroll (`design/one-page`)
+
+This branch experiments with turning the landing page into one continuous scroll, adapted from
+a friend's concept site (Next.js, dark terminal aesthetic) but kept in our language. The nav
+items are anchors (`/#foretag`, `/#studenter`, `/#projektgrupp`, `/#besokare`) instead of
+subpage links, so navigation only sets scroll position. Subpages stay reachable through the
+`Läs hela sidan` links at the end of each chapter.
+
+On top of `design/scroll-polish` this branch adds:
+
+- **Chapters**: hero → För företag → För studenter → Projektgrupp → Deltagare, each a
+  `<section id="…" data-nav-section="…">` separated by a hairline border; chapter content is
+  reused from the subpages (same components, copy and prices).
+- **Active section tracking**: `Navbar` observes the sections (middle ~5% of the viewport) and
+  toggles `data-active` on `[data-nav-section-link]` links, styled with `data-[active]:`
+  variants.
+- **Anchor offset**: `html { scroll-padding-top: 6rem }` compensates for the floating header;
+  the hero is `#top`.
+- **Hero backdrop scoped to the first viewport** (`h-dvh`), so reading chapters sit on the
+  gradient, not on the photo.
+- **One countdown per page**: `Countdown` writes into fixed element IDs, so only the hero
+  instance exists on the one-pager.
+
+Ideas from the reference we deliberately rejected (kept our identity): canvas particle hero,
+typewriter headline, terminal/JSON props, scanlines, dark-only palette, invented stats and
+pricing, cursor-spotlight cards, marquee. Package copy and prices stay verbatim from the
+official document.

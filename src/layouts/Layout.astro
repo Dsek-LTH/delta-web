@@ -54,7 +54,7 @@ const lang = getLang(Astro.cookies);
     <div class="relative isolate flex min-h-dvh flex-col gap-6 lg:gap-0">
       {
         backgroundImage && (
-          <div class="absolute inset-0 -z-10 pointer-events-none select-none overflow-hidden">
+          <div class="absolute inset-x-0 top-0 h-dvh -z-10 pointer-events-none select-none overflow-hidden">
             <Image
               src={backgroundImage}
               alt="Background Cover"

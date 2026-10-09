@@ -16,12 +16,17 @@ const currentPageLabel = {
   "/company": t("navbar.company"),
   "/attendees": t("navbar.attendees"),
 }[Astro.url.pathname];
+// One-page navigation: every item is an anchor into the landing page scroll.
 const navItems = [
-  { href: "/", label: t("navbar.home") },
-  { href: "/student", label: t("navbar.student") },
-  { href: "/company", label: t("navbar.company") },
-  { href: "/attendees", label: t("navbar.attendees") },
-  { href: "/project-group", label: t("navbar.project-group") },
+  { href: "/#top", label: t("navbar.home"), section: null },
+  { href: "/#studenter", label: t("navbar.student"), section: "studenter" },
+  { href: "/#foretag", label: t("navbar.company"), section: "foretag" },
+  { href: "/#besokare", label: t("navbar.attendees"), section: "besokare" },
+  {
+    href: "/#projektgrupp",
+    label: t("navbar.project-group"),
+    section: "projektgrupp",
+  },
 ];
 ---
 
@@ -57,18 +62,17 @@ const navItems = [
         class="min-w-0 overflow-hidden flex flex-col gap-1 pt-1 text-lg font-bold text-nowrap"
       >
         {
-          navItems
-            .filter(({ href }) => href !== Astro.url.pathname)
-            .map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class="block text-card-content hover:text-brand-primary p-2"
-                >
-                  {label}
-                </a>
-              </li>
-            ))
+          navItems.map(({ href, label, section }) => (
+            <li>
+              <a
+                href={href}
+                data-nav-section-link={section ?? undefined}
+                class="block text-card-content hover:text-brand-primary p-2 data-[active]:text-brand-primary data-[active]:text-shadow-glow"
+              >
+                {label}
+              </a>
+            </li>
+          ))
         }
       </ul>
     </div>
@@ -78,9 +82,10 @@ const navItems = [
   >
     <li>
       <a
-        href="/project-group"
+        href="/#projektgrupp"
+        data-nav-section-link="projektgrupp"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3",
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-brand-primary data-[active]:text-shadow-glow",
           Astro.url.pathname === "/project-group" &&
             "text-brand-primary text-shadow-glow",
         )}
@@ -90,9 +95,10 @@ const navItems = [
     </li>
     <li>
       <a
-        href="/student"
+        href="/#studenter"
+        data-nav-section-link="studenter"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3",
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-brand-primary data-[active]:text-shadow-glow",
           Astro.url.pathname === "/student" &&
             "text-brand-primary text-shadow-glow",
         )}
@@ -102,7 +108,7 @@ const navItems = [
     </li>
     <li>
       <a
-        href="/"
+        href="/#top"
         aria-label={t("navbar.home")}
         class={twMerge(
           "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass",
@@ -112,9 +118,10 @@ const navItems = [
     </li>
     <li>
       <a
-        href="/company"
+        href="/#foretag"
+        data-nav-section-link="foretag"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3",
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-brand-primary data-[active]:text-shadow-glow",
           Astro.url.pathname === "/company" &&
             "text-brand-primary text-shadow-glow",
         )}>{t("navbar.company")}</a
@@ -122,9 +129,10 @@ const navItems = [
     </li>
     <li>
       <a
-        href="/attendees"
+        href="/#besokare"
+        data-nav-section-link="besokare"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3",
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-brand-primary data-[active]:text-shadow-glow",
           Astro.url.pathname === "/attendees" &&
             "text-brand-primary text-shadow-glow",
         )}>{t("navbar.attendees")}</a
@@ -132,3 +140,30 @@ const navItems = [
     </li>
   </ul>
 </nav>
+
+<script>
+  // One-page navigation: highlight the section crossing the viewport middle.
+  const sectionLinks = document.querySelectorAll<HTMLElement>(
+    "[data-nav-section-link]",
+  );
+  const sections = document.querySelectorAll<HTMLElement>("[data-nav-section]");
+  if (sectionLinks.length > 0 && sections.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            sectionLinks.forEach((link) => {
+              link.toggleAttribute(
+                "data-active",
+                link.dataset.navSectionLink === id,
+              );
+            });
+          }
+        }
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    sections.forEach((section) => observer.observe(section));
+  }
+</script>
