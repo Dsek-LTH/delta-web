@@ -19,8 +19,10 @@ const tiers = [
     id: "nonprofit",
     name: t("company.pricing.tier.nonprofit"),
     price: t("company.pricing.price.nonprofit"),
+    discount: null,
     intro: t("company.package.nonprofit.intro"),
-    subtitle: t("company.package.nonprofit.subtitle"),
+    subtitle: null,
+    closing: null,
     accent: "border-diamond",
     color: "text-diamond",
     glow: "shadow-diamond/20",
@@ -28,8 +30,8 @@ const tiers = [
     highlights: [
       t("company.pricing.row.booth"),
       t("company.pricing.row.table"),
-      t("company.pricing.row.logo"),
-      t("company.pricing.row.wardrobeInfodesk"),
+      t("company.pricing.row.afterEvent"),
+      t("company.pricing.row.lounge"),
     ],
     items: [
       t("company.package.nonprofit.booth"),
@@ -44,8 +46,10 @@ const tiers = [
     id: "startup",
     name: t("company.pricing.tier.startup"),
     price: t("company.pricing.price.startup"),
+    discount: null,
     intro: t("company.package.startup.intro"),
-    subtitle: t("company.package.startup.subtitle"),
+    subtitle: null,
+    closing: t("company.package.startup.closing"),
     accent: "border-bronze",
     color: "text-bronze",
     glow: "shadow-bronze/20",
@@ -53,7 +57,7 @@ const tiers = [
     highlights: [
       t("company.pricing.row.booth"),
       t("company.pricing.row.table"),
-      t("company.pricing.row.logo"),
+      t("company.pricing.row.afterEvent"),
       t("company.pricing.row.lounge"),
     ],
     items: [
@@ -69,23 +73,25 @@ const tiers = [
     id: "standard",
     name: t("company.pricing.tier.standard"),
     price: t("company.pricing.price.standard"),
+    discount: null,
     intro: t("company.package.standard.intro"),
     subtitle: t("company.package.standard.subtitle"),
+    closing: null,
     accent: "border-gold",
     color: "text-gold",
     glow: "shadow-gold/20",
     cta: "btn btn-ghost",
     highlights: [
       t("company.pricing.row.booth"),
-      t("company.pricing.row.lunch"),
+      t("company.pricing.row.meals"),
       t("company.pricing.row.parking"),
-      t("company.pricing.row.lounge"),
+      t("company.pricing.row.host"),
     ],
     items: [
       t("company.package.standard.booth"),
       t("company.package.standard.tableStool"),
       t("company.package.standard.afterParty"),
-      t("company.package.standard.lunch"),
+      t("company.package.standard.lunchDinner"),
       t("company.package.standard.parking"),
       t("company.package.standard.lounge"),
       t("company.package.standard.wardrobe"),
@@ -94,34 +100,83 @@ const tiers = [
     ],
   },
   {
+    id: "plus",
+    name: t("company.pricing.tier.plus"),
+    price: t("company.pricing.price.plus"),
+    discount: t("company.pricing.discount.plus"),
+    intro: t("company.package.plus.intro"),
+    subtitle: t("company.package.plus.subtitle"),
+    closing: null,
+    accent: "border-silver",
+    color: "text-silver",
+    glow: "shadow-silver/20",
+    cta: "btn btn-ghost",
+    highlights: [
+      t("company.pricing.row.caseEvening"),
+      t("company.pricing.row.studentSessions"),
+      t("company.pricing.row.placement"),
+      t("company.pricing.row.afterEvent"),
+    ],
+    items: [
+      t("company.package.plus.base"),
+      t("company.package.plus.caseEvening"),
+      t("company.package.plus.studentSessions"),
+      t("company.package.plus.boothPlacement"),
+    ],
+  },
+  {
+    id: "hash",
+    name: t("company.pricing.tier.hash"),
+    price: t("company.pricing.price.hash"),
+    discount: t("company.pricing.discount.hash"),
+    intro: t("company.package.hash.intro"),
+    subtitle: t("company.package.hash.subtitle"),
+    closing: null,
+    accent: "border-amethyst",
+    color: "text-amethyst",
+    glow: "shadow-amethyst/20",
+    cta: "btn btn-ghost",
+    highlights: [
+      t("company.pricing.row.lunchLecture"),
+      t("company.pricing.row.placement"),
+      t("company.pricing.row.meals"),
+      t("company.pricing.row.afterEvent"),
+    ],
+    items: [
+      t("company.package.hash.base"),
+      t("company.package.hash.lunchLecture"),
+      t("company.package.hash.boothPlacement"),
+    ],
+  },
+  {
     id: "main",
     name: t("company.pricing.tier.main"),
     price: t("company.pricing.price.main"),
+    discount: t("company.pricing.discount.main"),
     intro: t("company.package.main.intro"),
     subtitle: t("company.package.main.subtitle"),
+    closing: t("company.package.main.closing"),
     accent: "border-emerald",
     color: "text-emerald",
     glow: "shadow-emerald/20",
     cta: "btn bg-emerald text-white hover:bg-emerald/85 dark:text-slate-950",
     highlights: [
-      t("company.pricing.row.boothPlacement"),
+      t("company.pricing.row.placement"),
       t("company.pricing.row.tv"),
-      t("company.pricing.row.social"),
-      t("company.pricing.row.priorityHeadSponsor"),
+      t("company.pricing.row.foodTickets"),
+      t("company.pricing.row.priority"),
     ],
     items: [
-      t("company.package.main.booth"),
-      t("company.package.main.afterPartyTickets"),
-      t("company.package.main.bannerLogo"),
+      t("company.package.main.base"),
+      t("company.package.main.boothPlacement"),
+      t("company.package.main.drinkTickets"),
+      t("company.package.main.foodTickets"),
+      t("company.package.main.lunchLecture"),
+      t("company.package.main.studentSessions"),
       t("company.package.main.tv"),
+      t("company.package.main.flag"),
       t("company.package.main.host"),
-      t("company.package.main.afterParty"),
-      t("company.package.main.parking"),
-      t("company.package.main.lunch"),
       t("company.package.main.marketing"),
-      t("company.package.main.tables"),
-      t("company.package.main.wardrobe"),
-      t("company.package.main.wifi"),
       t("company.package.main.priority"),
     ],
   },
@@ -170,16 +225,23 @@ const tiers = [
       </p>
     </div>
 
-    <div class="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         tiers.map((tier) => (
           <Package
             class={`border-0 border-t-4 p-6 shadow-lg ${tier.accent} ${tier.glow}`}
           >
             <PackageTitle title={tier.name} class={`text-3xl ${tier.color}`} />
-            <p class="text-center font-mono text-2xl font-bold tabular-nums text-card-content">
-              {tier.price}
-            </p>
+            <div class="flex flex-col gap-1">
+              <p class="text-center font-mono text-2xl font-bold tabular-nums text-card-content">
+                {tier.price}
+              </p>
+              {tier.discount && (
+                <p class="text-center font-mono text-xs text-card-content-muted">
+                  {tier.discount}
+                </p>
+              )}
+            </div>
             <p class="text-center text-sm leading-relaxed text-card-content-muted">
               {tier.intro}
             </p>
@@ -234,9 +296,14 @@ const tiers = [
                   <h3 class={`text-3xl font-extrabold ${tier.color}`}>
                     {tier.name}
                   </h3>
-                  <p class="mt-2 text-xl font-bold text-card-content">
+                  <p class="mt-2 font-mono text-xl font-bold tabular-nums text-card-content">
                     {tier.price}
                   </p>
+                  {tier.discount && (
+                    <p class="mt-1 font-mono text-xs text-card-content-muted">
+                      {tier.discount}
+                    </p>
+                  )}
                 </div>
                 <button
                   type="button"
@@ -250,9 +317,11 @@ const tiers = [
               <p class="mt-4 text-lg font-bold text-card-content">
                 {tier.intro}
               </p>
-              <p class="mt-3 leading-relaxed text-card-content-muted">
-                {tier.subtitle}
-              </p>
+              {tier.subtitle && (
+                <p class="mt-3 leading-relaxed text-card-content-muted">
+                  {tier.subtitle}
+                </p>
+              )}
               <p class="mt-6 font-extrabold text-card-content">
                 {t("company.package.guarantees")}
               </p>
@@ -261,6 +330,11 @@ const tiers = [
                   <li>{item}</li>
                 ))}
               </ul>
+              {tier.closing && (
+                <p class="mt-6 text-sm leading-relaxed text-card-content-muted">
+                  {tier.closing}
+                </p>
+              )}
               <a
                 href="mailto:delta@dsek.se"
                 class={`mt-8 rounded-full px-6 ${tier.cta}`}

@@ -41,8 +41,10 @@
 
   /* Package tiers -- light values are darkened for contrast; dark theme restores the bright ones below */
   --color-bronze: #a5611f;
+  --color-silver: #6b7280;
   --color-gold: #8a6a00;
   --color-diamond: #0e7490;
+  --color-amethyst: #7c3aed;
   --color-emerald: #157f47;
 
   /* Background */
@@ -108,8 +110,10 @@ html[data-theme="dark"] {
   --color-destructive: var(--color-red-500);
 
   --color-bronze: #cd7f32;
+  --color-silver: #c0c0c0;
   --color-gold: #d4af37;
   --color-diamond: #b9f2ff;
+  --color-amethyst: #c4b5fd;
   --color-emerald: #50c878;
 
   --color-gradient-source: var(--color-indigo-950);
