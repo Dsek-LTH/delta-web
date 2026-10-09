@@ -199,54 +199,57 @@ const tiers = [
     }
   </div>
 
-  {
-    tiers.map((tier) => (
-      <div data-tier-panel-wrap={tier.id} class="tier-panel-wrap w-full">
-        <section
-          id={`tier-details-${tier.id}`}
-          data-tier-panel={tier.id}
-          inert
-          class={`tier-panel frosted-glass w-full scroll-mt-28 rounded-2xl border-t-4 p-8 lg:p-10 ${tier.accent}`}
-        >
-          <div class="flex items-start justify-between gap-6">
-            <div>
-              <h3 class={`text-3xl font-extrabold ${tier.color}`}>
-                {tier.name}
-              </h3>
-              <p class="mt-2 text-xl font-bold text-card-content">
-                {tier.price}
-              </p>
-            </div>
-            <button
-              type="button"
-              data-tier-close
-              aria-label={t("company.package.hideDetails")}
-              class="btn btn-ghost rounded-full p-2"
-            >
-              <X class="size-5" />
-            </button>
-          </div>
-          <p class="mt-4 leading-relaxed text-card-content-muted">
-            {tier.subtitle}
-          </p>
-          <p class="mt-6 font-extrabold text-card-content">
-            {t("company.package.guarantees")}
-          </p>
-          <ul class="delta-bullets mt-4 grid gap-x-10 gap-y-3 text-sm text-card-content lg:grid-cols-2">
-            {tier.items.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-          <a
-            href="mailto:delta@dsek.se"
-            class={`mt-8 rounded-full px-6 ${tier.cta}`}
+  <div data-tier-panel-host hidden class="tier-panel-wrap w-full scroll-mt-28">
+    <div class="tier-panel">
+      {
+        tiers.map((tier) => (
+          <section
+            id={`tier-details-${tier.id}`}
+            data-tier-panel={tier.id}
+            inert
+            hidden
+            class={`frosted-glass w-full rounded-2xl border-t-4 p-8 lg:p-10 ${tier.accent}`}
           >
-            {t("company.package.contact")}
-          </a>
-        </section>
-      </div>
-    ))
-  }
+            <div class="flex items-start justify-between gap-6">
+              <div>
+                <h3 class={`text-3xl font-extrabold ${tier.color}`}>
+                  {tier.name}
+                </h3>
+                <p class="mt-2 text-xl font-bold text-card-content">
+                  {tier.price}
+                </p>
+              </div>
+              <button
+                type="button"
+                data-tier-close
+                aria-label={t("company.package.hideDetails")}
+                class="btn btn-ghost rounded-full p-2"
+              >
+                <X class="size-5" />
+              </button>
+            </div>
+            <p class="mt-4 leading-relaxed text-card-content-muted">
+              {tier.subtitle}
+            </p>
+            <p class="mt-6 font-extrabold text-card-content">
+              {t("company.package.guarantees")}
+            </p>
+            <ul class="delta-bullets mt-4 grid gap-x-10 gap-y-3 text-sm text-card-content lg:grid-cols-2">
+              {tier.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+            <a
+              href="mailto:delta@dsek.se"
+              class={`mt-8 rounded-full px-6 ${tier.cta}`}
+            >
+              {t("company.package.contact")}
+            </a>
+          </section>
+        ))
+      }
+    </div>
+  </div>
 
   <PricingTable />
 </Layout>
@@ -255,41 +258,75 @@ const tiers = [
   const detailButtons = document.querySelectorAll<HTMLButtonElement>(
     "[data-tier-details]",
   );
-  const panelWraps = document.querySelectorAll<HTMLElement>(
-    "[data-tier-panel-wrap]",
-  );
+  const host = document.querySelector<HTMLElement>("[data-tier-panel-host]");
+  const panels = host?.querySelectorAll<HTMLElement>("[data-tier-panel]");
 
-  const closePanels = () => {
-    panelWraps.forEach((wrap) => {
-      wrap.removeAttribute("data-open");
-      const panel = wrap.querySelector<HTMLElement>("[data-tier-panel]");
-      if (panel) panel.inert = true;
+  const setActive = (activeId: string | undefined) => {
+    panels?.forEach((panel) => {
+      panel.inert = panel.dataset.tierPanel !== activeId;
     });
     detailButtons.forEach((button) => {
-      button.setAttribute("aria-expanded", "false");
+      button.setAttribute(
+        "aria-expanded",
+        String(button.dataset.tierDetails === activeId),
+      );
     });
+  };
+
+  const closePanel = () => {
+    if (!host) return;
+    host.removeAttribute("data-open");
+    setActive(undefined);
+
+    // Hide the collapsed host once the fold animation is done. The timeout
+    // (rather than transitionend) avoids child transitions consuming the
+    // event and leaving the host stuck open.
+    window.setTimeout(() => {
+      if (!host.hasAttribute("data-open")) host.hidden = true;
+    }, 350);
+  };
+
+  const openPanel = (tierId: string) => {
+    const target = host?.querySelector<HTMLElement>(
+      `[data-tier-panel="${tierId}"]`,
+    );
+    if (!host || !target) return;
+
+    panels?.forEach((panel) => {
+      panel.hidden = panel !== target;
+    });
+    setActive(tierId);
+
+    host.hidden = false;
+    if (!host.hasAttribute("data-open")) {
+      // Wait two frames so the collapsed state paints before expanding.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          host.setAttribute("data-open", "");
+        });
+      });
+    }
+
+    // Scroll once the unfold has finished so the panel's real height is known;
+    // "nearest" moves the page the minimum needed.
+    window.setTimeout(() => {
+      if (host.hasAttribute("data-open")) {
+        target.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    }, 340);
   };
 
   detailButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const id = button.dataset.tierDetails;
-      const wrap = document.querySelector<HTMLElement>(
-        `[data-tier-panel-wrap="${id}"]`,
-      );
-      const isOpen = wrap?.hasAttribute("data-open") ?? false;
+      const isOpen =
+        host?.hasAttribute("data-open") &&
+        host.querySelector(`[data-tier-panel="${id}"]:not([hidden])`);
 
-      closePanels();
-
-      if (wrap && !isOpen) {
-        wrap.setAttribute("data-open", "");
-        const panel = wrap.querySelector<HTMLElement>("[data-tier-panel]");
-        if (panel) {
-          panel.inert = false;
-          requestAnimationFrame(() => {
-            panel.scrollIntoView({ behavior: "smooth", block: "start" });
-          });
-        }
-        button.setAttribute("aria-expanded", "true");
+      if (isOpen) {
+        closePanel();
+      } else {
+        openPanel(id ?? "");
       }
     });
   });
@@ -297,6 +334,6 @@ const tiers = [
   document
     .querySelectorAll<HTMLButtonElement>("[data-tier-close]")
     .forEach((button) => {
-      button.addEventListener("click", closePanels);
+      button.addEventListener("click", closePanel);
     });
 </script>
