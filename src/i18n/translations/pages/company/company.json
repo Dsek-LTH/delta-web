@@ -113,7 +113,12 @@
     "pricing.value.oneStool": "1 + 1",
     "pricing.value.twoStools": "1 + 2",
     "pricing.tier.entry": "Non-profit && Startup",
-    "pricing.price.entry": "Free / Contact us"
+    "pricing.price.entry": "Free / Contact us",
+    "intro.attend": "Are you interested in attending the DELTA fair? We would be delighted to hear from you! Please contact us via our email address and let us know how many company representatives you are planning to attend with. We look forward to hearing from you!",
+    "intro.combine": "If you have any questions or would like to combine a package with the D-Guilds other marketing opportunities, please don't hesitate to contact us at",
+    "intro.websiteBefore": "More information about the D-Guilds other marketing opportunities can be found at the",
+    "intro.websiteLink": "D-Guilds webpage",
+    "intro.websiteAfter": "."
   },
   "sv": {
     "head.title": "Företag | DELTA",
@@ -228,6 +233,11 @@
     "pricing.value.oneStool": "1 + 1",
     "pricing.value.twoStools": "1 + 2",
     "pricing.tier.entry": "Ideella && Startup",
-    "pricing.price.entry": "Kostnadsfritt / Kontakta oss"
+    "pricing.price.entry": "Kostnadsfritt / Kontakta oss",
+    "intro.attend": "Är ni intresserade av att delta på DELTA? Hör gärna av er till oss via vår e-postadress och meddela hur många företagsrepresentanter ni planerar att delta med. Vi ser varmt fram emot att höra från er!",
+    "intro.combine": "Har ni frågor eller vill kombinera något paket med D-Sektionens andra marknadsföringsmöjligheter? Kontakta oss gärna på",
+    "intro.websiteBefore": "Mer information om D-Sektionens samarbete finns på",
+    "intro.websiteLink": "D-Sektionens webbplats",
+    "intro.websiteAfter": "."
   }
 }
