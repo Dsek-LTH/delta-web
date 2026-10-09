@@ -1,0 +1,84 @@
+---
+import Card from "@/components/Card.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { twMerge } from "tailwind-merge";
+
+interface Member {
+  firstName: string;
+  lastName: string;
+  linkedin: string;
+}
+
+interface Props {
+  label: string;
+  members: Member[];
+  photo: ImageMetadata | null;
+  span?: 1 | 2 | 3;
+  startRight?: boolean;
+}
+
+const { label, members, photo, span = 1, startRight = false } = Astro.props;
+
+const aspect =
+  span === 3
+    ? "aspect-video lg:aspect-[21/9]"
+    : span === 2
+      ? "aspect-4/3 lg:aspect-video"
+      : "aspect-4/3";
+---
+
+<Card
+  class={twMerge(
+    "overflow-hidden p-0",
+    span === 3 && "lg:col-span-3",
+    span === 2 && "lg:col-span-2",
+    startRight && "lg:col-start-2",
+  )}
+>
+  {
+    photo ? (
+      <Image
+        src={photo}
+        alt=""
+        width={800}
+        height={600}
+        class={twMerge("w-full object-cover", aspect)}
+      />
+    ) : (
+      <div
+        class={twMerge(
+          "grid w-full place-items-center bg-card-highlight/40 font-display text-8xl text-brand-primary/25",
+          aspect,
+        )}
+      >
+        Δ
+      </div>
+    )
+  }
+  <div class="flex flex-col gap-3 p-6">
+    <h3 class="flex items-baseline gap-3 text-xl font-bold text-brand-primary">
+      <span class="font-mono">&gt;</span>
+      {label}
+      <span class="font-mono text-sm font-normal text-card-content-muted">
+        {String(members.length).padStart(2, "0")}
+      </span>
+    </h3>
+    <ul class="flex flex-col gap-1 text-sm text-card-content">
+      {
+        members.map((member) => (
+          <li>
+            <a
+              href={member.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-card-content hover:text-card-content-highlight"
+            >
+              {member.firstName} {member.lastName}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Card>
