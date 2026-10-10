@@ -22,7 +22,7 @@ const {
   newMember?: boolean;
 };
 
-const { lang, translate: t } = await i18n(Astro.cookies);
+const { lang, translate: t } = i18n(Astro.cookies);
 const action = newMember
   ? actions.deltaForceMember.addDeltaForceMember
   : actions.deltaForceMember.updateDeltaForceMember;
