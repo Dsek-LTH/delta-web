@@ -21,3 +21,7 @@ pre-push:
     lint:
       glob: "src/**/*.{ts,tsx,astro,js,jsx}"
       run: bun lint
+
+    check:
+      glob: "src/**/*.{astro,ts}"
+      run: bun check
