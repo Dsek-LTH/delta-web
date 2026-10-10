@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
+import Constellation from "@/components/Constellation.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import "@/styles/global.css";
@@ -22,6 +23,7 @@ const {
   ...rest
 } = Astro.props;
 const lang = getLang(Astro.cookies);
+const showConstellation = !Astro.url.pathname.startsWith("/admin");
 ---
 
 <!doctype html>
@@ -64,6 +66,8 @@ const lang = getLang(Astro.cookies);
           </div>
         )
       }
+
+      {showConstellation && <Constellation />}
 
       <Header />
 
