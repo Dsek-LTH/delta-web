@@ -1,0 +1,143 @@
+---
+// Ambient constellation: small dots drifting behind the page. Dots near the
+// pointer light up and link into a graph; far from the pointer they stay
+// faint. Decorational only: aria-hidden, pointer-events-none, and it renders
+// a single static frame under prefers-reduced-motion.
+---
+
+<canvas
+  data-constellation
+  aria-hidden="true"
+  class="pointer-events-none fixed inset-0 -z-10"></canvas>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>(
+    "[data-constellation]",
+  );
+  const context = canvas?.getContext("2d");
+
+  if (canvas && context) {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    const LIT_RADIUS = 180; // how far the pointer reaches
+    const LINK_DISTANCE = 140; // dot-to-dot edge length
+    const BASE_ALPHA = 0.14; // far from the pointer
+    const LIT_ALPHA = 0.6;
+    const BASE_RADIUS = 1.2;
+    const DRIFT = 0.18;
+
+    type Point = { x: number; y: number; vx: number; vy: number };
+
+    let width = 0;
+    let height = 0;
+    let points: Point[] = [];
+    let pointerX = -1e4;
+    let pointerY = -1e4;
+    let dotColor = "#0f172a";
+    let litColor = "#c9457a";
+
+    const readColors = () => {
+      const styles = getComputedStyle(document.documentElement);
+      dotColor =
+        styles.getPropertyValue("--color-backdrop-content").trim() || dotColor;
+      litColor =
+        styles.getPropertyValue("--color-brand-primary").trim() || litColor;
+    };
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const count = Math.max(
+        28,
+        Math.min(90, Math.round((width * height) / 16000)),
+      );
+      points = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 2 * DRIFT,
+        vy: (Math.random() - 0.5) * 2 * DRIFT,
+      }));
+    };
+
+    const draw = () => {
+      context.clearRect(0, 0, width, height);
+
+      const lit = points.map((point) => {
+        const distance = Math.hypot(point.x - pointerX, point.y - pointerY);
+        return Math.max(0, 1 - distance / LIT_RADIUS);
+      });
+
+      // Edges between lit dots: the graph follows the pointer.
+      context.lineWidth = 1;
+      context.strokeStyle = litColor;
+      for (let i = 0; i < points.length; i += 1) {
+        if (lit[i] <= 0) continue;
+        const a = points[i]!;
+        for (let j = i + 1; j < points.length; j += 1) {
+          if (lit[j] <= 0) continue;
+          const b = points[j]!;
+          const distance = Math.hypot(a.x - b.x, a.y - b.y);
+          if (distance > LINK_DISTANCE) continue;
+          context.globalAlpha =
+            Math.min(lit[i]!, lit[j]!) * (1 - distance / LINK_DISTANCE) * 0.4;
+          context.beginPath();
+          context.moveTo(a.x, a.y);
+          context.lineTo(b.x, b.y);
+          context.stroke();
+        }
+      }
+
+      // Dots: faint far away, brighter and pink near the pointer.
+      for (let i = 0; i < points.length; i += 1) {
+        const point = points[i]!;
+        const glow = lit[i]!;
+        context.globalAlpha = BASE_ALPHA + glow * (LIT_ALPHA - BASE_ALPHA);
+        context.fillStyle = glow > 0 ? litColor : dotColor;
+        context.beginPath();
+        context.arc(point.x, point.y, BASE_RADIUS + glow * 0.9, 0, Math.PI * 2);
+        context.fill();
+      }
+      context.globalAlpha = 1;
+
+      if (!reducedMotion) {
+        for (const point of points) {
+          point.x += point.vx;
+          point.y += point.vy;
+          if (point.x < 0 || point.x > width) point.vx *= -1;
+          if (point.y < 0 || point.y > height) point.vy *= -1;
+        }
+        requestAnimationFrame(draw);
+      }
+    };
+
+    readColors();
+    resize();
+    draw();
+
+    new MutationObserver(readColors).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    if (!reducedMotion) {
+      const onPointerMove = (event: PointerEvent) => {
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+      };
+      const onPointerLeave = () => {
+        pointerX = -1e4;
+        pointerY = -1e4;
+      };
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+      document.addEventListener("pointerleave", onPointerLeave);
+      window.addEventListener("resize", resize);
+    }
+  }
+</script>

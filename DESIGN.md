@@ -93,6 +93,9 @@ redesign with this document updated.
 - **Position feedback**: the student timeline rail fill tracks scroll position directly
   (rAF-throttled, no timed animation). It is an indicator, not decoration, so it stays under
   reduced motion.
+- **Ambient backdrop**: the constellation dots drift continuously; the pointer lights nearby
+  dots and links them into a graph. Under reduced motion the field renders once, faint and
+  motionless, without pointer listeners.
 - **Hover**: color/background changes only. Motion on hover must be gated behind
   `@media (hover: hover) and (pointer: fine)` — touch fires false hovers.
 - **Never** animate keyboard-initiated or rapid actions; never reveal required information on
@@ -140,6 +143,7 @@ Accordions, “read more” and package details all use one pattern — **not** 
 | Card content      | `src/pages/student/CardContent.astro`              | Lead paragraph + fold for the rest.                                                                               |
 | Timeline rail     | `src/pages/student/index.astro`                    | Track + fill; `--rail-progress` updated on scroll; without JS only the track shows.                               |
 | Footer mark       | `src/components/Footer.astro`                      | Oversized stroke-only Δ, `aria-hidden`, decorative; footer keeps extra bottom padding.                            |
+| Constellation     | `src/components/Constellation.astro`               | Ambient dot field behind every non-admin page; pointer lights dots + edges, far dots stay faint.                  |
 
 **Team/package photos** auto-load from `src/assets/team/<name>.{webp,jpg,jpeg,png}`:
 `all` (whole team), `general`, `it`, `event`, `finance`, `logistics`, `marketing`, `relations`,
