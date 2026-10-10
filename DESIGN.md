@@ -95,8 +95,10 @@ redesign with this document updated.
   reduced motion.
 - **Ambient backdrop**: the constellation dots drift continuously and lag the page scroll
   slightly (parallax, ~10%, eased), so the field reads as a distant layer; the pointer lights
-  nearby dots and links them into a graph. Under reduced motion the field renders once, faint
-  and motionless, without pointer or scroll listeners.
+  nearby dots, links them into a graph, and gently pulls them in (a distance-scaled velocity
+  component added to their drift — the sum is the frame's movement, so no momentum builds up).
+  Under reduced motion the field renders once, faint and motionless, without pointer or scroll
+  listeners.
 - **Hover**: color/background changes only. Motion on hover must be gated behind
   `@media (hover: hover) and (pointer: fine)` — touch fires false hovers.
 - **Never** animate keyboard-initiated or rapid actions; never reveal required information on
