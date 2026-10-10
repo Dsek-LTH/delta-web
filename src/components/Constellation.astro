@@ -1,11 +1,11 @@
 ---
-// Ambient constellation: small dots drifting behind the page along their own
-// segments. The pointer lights nearby dots, links them into a graph, speeds
-// them up, and bends their paths: every segment is drawn as a quadratic
-// Bézier whose control point is the midpoint displaced toward the cursor by
-// proximity. Progress along a path never stops, so dots can never be
-// captured. Decorational only: aria-hidden, pointer-events-none, and it
-// renders a single static frame under prefers-reduced-motion.
+// Ambient constellation: small dots drifting behind the page. The pointer
+// lights nearby dots, links them into a graph, and scales their own velocity
+// with proximity (up to ~1.9x) — no attraction, so nothing can be captured
+// or clustered. Decorational only: aria-hidden, pointer-events-none; renders
+// a static frame under prefers-reduced-motion.
+// Debug: add ?paths to any URL for green velocity vectors + the pointer's
+// influence radius.
 ---
 
 <canvas
@@ -24,6 +24,7 @@
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const showDebug = new URLSearchParams(window.location.search).has("paths");
 
     const LIT_RADIUS = 180; // how far the pointer reaches for lighting
     const LINK_DISTANCE = 140; // dot-to-dot edge length
@@ -34,20 +35,8 @@
     const WRAP_MARGIN = 24;
     const BOOST_RADIUS = 220; // pointer reach for the speed-up
     const SPEED_BOOST = 0.9; // up to ~1.9x near the pointer
-    const WAYPOINT_MARGIN = 30;
-    const MIN_SEGMENT = 160;
-    // Debug: add ?paths to any URL to draw every dot's path (green solid =
-    // bent Bézier, faint dashed = straight chord, dot = control point).
-    const showPaths = new URLSearchParams(window.location.search).has("paths");
 
-    type Point = {
-      ax: number; // segment start
-      ay: number;
-      bx: number; // segment end
-      by: number;
-      t: number; // progress 0..1
-      speed: number; // px per frame
-    };
+    type Point = { x: number; y: number; vx: number; vy: number };
 
     let width = 0;
     let height = 0;
@@ -75,40 +64,6 @@
       return ((((y - scrollOffset) % range) + range) % range) - WRAP_MARGIN;
     };
 
-    const randomX = () =>
-      WAYPOINT_MARGIN +
-      Math.random() * Math.max(1, width - WAYPOINT_MARGIN * 2);
-    const randomY = () =>
-      WAYPOINT_MARGIN +
-      Math.random() * Math.max(1, height - WAYPOINT_MARGIN * 2);
-
-    const randomSegmentEnd = (ax: number, ay: number) => {
-      let bx = randomX();
-      let by = randomY();
-      for (let i = 0; i < 8; i += 1) {
-        if (Math.hypot(bx - ax, by - ay) >= MIN_SEGMENT) break;
-        bx = randomX();
-        by = randomY();
-      }
-      return { bx, by };
-    };
-
-    const distanceToSegment = (
-      x: number,
-      y: number,
-      ax: number,
-      ay: number,
-      bx: number,
-      by: number,
-    ) => {
-      const dx = bx - ax;
-      const dy = by - ay;
-      const lengthSq = dx * dx + dy * dy;
-      let t = lengthSq > 0 ? ((x - ax) * dx + (y - ay) * dy) / lengthSq : 0;
-      t = Math.max(0, Math.min(1, t));
-      return Math.hypot(x - (ax + t * dx), y - (ay + t * dy));
-    };
-
     const resize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
@@ -120,109 +75,58 @@
         32,
         Math.min(120, Math.round((width * height) / 11000)),
       );
-      points = Array.from({ length: count }, () => {
-        const ax = randomX();
-        const ay = randomY();
-        const { bx, by } = randomSegmentEnd(ax, ay);
-        return {
-          ax,
-          ay,
-          bx,
-          by,
-          t: Math.random(),
-          speed: 0.08 + Math.random() * 0.2,
-        };
-      });
+      points = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.36,
+        vy: (Math.random() - 0.5) * 0.36,
+      }));
     };
 
     const draw = () => {
       context.clearRect(0, 0, width, height);
 
       scrollOffset += (scrollTarget - scrollOffset) * 0.09;
-      const range = height + WRAP_MARGIN * 2;
-      const pointerBaseY = pointerY + scrollOffset;
 
-      // Update every dot: bend its path, evaluate the curve where the dot
-      // currently is, then advance it along the path.
+      // Move every dot: the pointer only scales its own velocity with
+      // proximity (straight paths, no attraction, nothing can be captured).
       const xs: number[] = [];
       const renderYs: number[] = [];
-      const controlsX: number[] = [];
-      const controlsY: number[] = [];
       for (const point of points) {
-        const midX = (point.ax + point.bx) / 2;
-        const midY = (point.ay + point.by) / 2;
-        let controlX = midX;
-        let controlY = midY;
-
-        // How close is the pointer to this path? Check the wrapped copies so
-        // paths near the parallax seam bend correctly too.
-        let bestDistance = Infinity;
-        let bestPointerY = pointerBaseY;
-        for (const offset of [0, range, -range]) {
-          const py = pointerBaseY + offset;
-          const distance = distanceToSegment(
-            pointerX,
-            py,
-            point.ax,
-            point.ay,
-            point.bx,
-            point.by,
-          );
-          if (distance < bestDistance) {
-            bestDistance = distance;
-            bestPointerY = py;
-          }
-        }
-
-        // Point the path's control point at the cursor. The offset is capped
-        // at the circle through A and B (radius = half the segment, a Thales
-        // circle, so the three points stay concyclic and the bow never
-        // exceeds a semicircle); when the cursor is inside that reach the
-        // control point is exactly the cursor.
-        const segmentLength =
-          Math.hypot(point.bx - point.ax, point.by - point.ay) || 1;
-        if (pointerActive) {
-          const vx = pointerX - midX;
-          const vy = bestPointerY - midY;
-          const length = Math.hypot(vx, vy);
-          if (length > 1) {
-            const reach = Math.min(length, segmentLength / 2);
-            controlX = midX + (vx / length) * reach;
-            controlY = midY + (vy / length) * reach;
-          }
-        }
-
-        // Evaluate the quadratic Bézier at t.
-        const mt = 1 - point.t;
-        const x =
-          mt * mt * point.ax +
-          2 * mt * point.t * controlX +
-          point.t * point.t * point.bx;
-        const y =
-          mt * mt * point.ay +
-          2 * mt * point.t * controlY +
-          point.t * point.t * point.by;
-        const renderY = wrapY(y);
-        xs.push(x);
+        xs.push(point.x);
+        const renderY = wrapY(point.y);
         renderYs.push(renderY);
-        controlsX.push(controlX);
-        controlsY.push(controlY);
 
-        // Advance along the path; the pointer proximity scales the speed.
-        const pointerDistance = Math.hypot(x - pointerX, renderY - pointerY);
+        const distance = Math.hypot(pointerX - point.x, pointerY - renderY);
         const speedScale =
-          pointerDistance < BOOST_RADIUS
-            ? 1 + SPEED_BOOST * (1 - pointerDistance / BOOST_RADIUS)
+          pointerActive && distance < BOOST_RADIUS
+            ? 1 + SPEED_BOOST * (1 - distance / BOOST_RADIUS)
             : 1;
-        point.t += (point.speed * speedScale) / segmentLength;
 
-        if (point.t >= 1) {
-          point.ax = point.bx;
-          point.ay = point.by;
-          const { bx, by } = randomSegmentEnd(point.ax, point.ay);
-          point.bx = bx;
-          point.by = by;
-          point.t = 0;
+        point.x += point.vx * speedScale;
+        point.y += point.vy * speedScale;
+        if (point.x < 0 || point.x > width) point.vx *= -1;
+        if (point.y < 0 || point.y > height) point.vy *= -1;
+      }
+
+      if (showDebug) {
+        context.globalAlpha = 1;
+        context.lineWidth = 1;
+        context.strokeStyle = "rgba(0, 200, 90, 0.5)";
+        context.beginPath();
+        for (let i = 0; i < points.length; i += 1) {
+          const point = points[i]!;
+          context.moveTo(xs[i]!, renderYs[i]!);
+          context.lineTo(xs[i]! + point.vx * 90, renderYs[i]! + point.vy * 90);
+        }
+        context.stroke();
+        if (pointerActive) {
+          context.strokeStyle = "rgba(0, 200, 90, 0.25)";
+          context.setLineDash([4, 6]);
+          context.beginPath();
+          context.arc(pointerX, pointerY, BOOST_RADIUS, 0, Math.PI * 2);
+          context.stroke();
+          context.setLineDash([]);
         }
       }
 
@@ -230,58 +134,6 @@
         const distance = Math.hypot(xs[i]! - pointerX, renderYs[i]! - pointerY);
         return Math.max(0, 1 - distance / LIT_RADIUS);
       });
-
-      if (showPaths) {
-        context.globalAlpha = 1;
-        context.lineWidth = 1;
-        for (let i = 0; i < points.length; i += 1) {
-          const point = points[i]!;
-          const controlX = controlsX[i]!;
-          const controlY = controlsY[i]!;
-
-          // Straight chord for comparison (skipped when it crosses the
-          // parallax seam, where a straight line would be misleading).
-          const chordAy = wrapY(point.ay);
-          const chordBy = wrapY(point.by);
-          if (Math.abs(chordBy - chordAy) < range / 2) {
-            context.strokeStyle = "rgba(0, 190, 90, 0.22)";
-            context.setLineDash([4, 4]);
-            context.beginPath();
-            context.moveTo(point.ax, chordAy);
-            context.lineTo(point.bx, chordBy);
-            context.stroke();
-          }
-
-          // Bent path (split at the parallax seam so it never jumps).
-          context.strokeStyle = "rgba(0, 200, 90, 0.7)";
-          context.setLineDash([]);
-          context.beginPath();
-          let previousRy: number | null = null;
-          for (let step = 0; step <= 20; step += 1) {
-            const t = step / 20;
-            const mt = 1 - t;
-            const x =
-              mt * mt * point.ax + 2 * mt * t * controlX + t * t * point.bx;
-            const y =
-              mt * mt * point.ay + 2 * mt * t * controlY + t * t * point.by;
-            const ry = wrapY(y);
-            if (previousRy === null || Math.abs(ry - previousRy) > range / 2) {
-              context.moveTo(x, ry);
-            } else {
-              context.lineTo(x, ry);
-            }
-            previousRy = ry;
-          }
-          context.stroke();
-
-          // Control point.
-          context.fillStyle = "rgba(0, 200, 90, 0.9)";
-          context.beginPath();
-          context.arc(controlX, wrapY(controlY), 2, 0, Math.PI * 2);
-          context.fill();
-        }
-        context.setLineDash([]);
-      }
 
       // Edges between lit dots: the graph follows the pointer.
       context.lineWidth = 1;
