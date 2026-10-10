@@ -24,7 +24,12 @@
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const showDebug = new URLSearchParams(window.location.search).has("paths");
+    const params = new URLSearchParams(window.location.search);
+    const showDebug = params.has("paths");
+    // Experimental: ?well turns on the gravity model (attraction inside a
+    // 420 px well, speed restoration outside it) instead of the default
+    // capture-free speed scaling. It is known to trap dots over time.
+    const useWell = params.has("well");
 
     const LIT_RADIUS = 180; // how far the pointer reaches for lighting
     const LINK_DISTANCE = 140; // dot-to-dot edge length
@@ -35,8 +40,17 @@
     const WRAP_MARGIN = 24;
     const BOOST_RADIUS = 220; // pointer reach for the speed-up
     const SPEED_BOOST = 0.9; // up to ~1.9x near the pointer
+    const GRAVITY = 0.003; // ?well: px/frame^2 at the cursor, linear falloff
+    const GRAVITY_REACH = 420; // ?well: gravity inside, speed restore outside
+    const SPEED_CORRECTION = 0.008; // ?well: weak force toward target speed
 
-    type Point = { x: number; y: number; vx: number; vy: number };
+    type Point = {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      targetSpeed: number;
+    };
 
     let width = 0;
     let height = 0;
@@ -75,12 +89,17 @@
         32,
         Math.min(120, Math.round((width * height) / 11000)),
       );
-      points = Array.from({ length: count }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.36,
-        vy: (Math.random() - 0.5) * 0.36,
-      }));
+      points = Array.from({ length: count }, () => {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.08 + Math.random() * 0.2;
+        return {
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          targetSpeed: speed,
+        };
+      });
     };
 
     const draw = () => {
@@ -88,8 +107,9 @@
 
       scrollOffset += (scrollTarget - scrollOffset) * 0.09;
 
-      // Move every dot: the pointer only scales its own velocity with
-      // proximity (straight paths, no attraction, nothing can be captured).
+      // Default: the pointer only scales the dot's own velocity with
+      // proximity (straight paths, nothing can be captured). With ?well:
+      // gravity inside the well, speed restoration outside it.
       const xs: number[] = [];
       const renderYs: number[] = [];
       for (const point of points) {
@@ -97,14 +117,38 @@
         const renderY = wrapY(point.y);
         renderYs.push(renderY);
 
-        const distance = Math.hypot(pointerX - point.x, pointerY - renderY);
-        const speedScale =
-          pointerActive && distance < BOOST_RADIUS
-            ? 1 + SPEED_BOOST * (1 - distance / BOOST_RADIUS)
-            : 1;
+        const dx = pointerX - point.x;
+        const dy = pointerY - renderY;
+        const distance = Math.hypot(dx, dy);
+        let stepX = point.vx;
+        let stepY = point.vy;
 
-        point.x += point.vx * speedScale;
-        point.y += point.vy * speedScale;
+        if (useWell) {
+          if (pointerActive && distance > 1 && distance < GRAVITY_REACH) {
+            const accel = GRAVITY * (1 - distance / GRAVITY_REACH);
+            point.vx += (dx / distance) * accel;
+            point.vy += (dy / distance) * accel;
+          } else {
+            const speed = Math.hypot(point.vx, point.vy);
+            if (speed > 1e-4) {
+              const scale =
+                (speed + (point.targetSpeed - speed) * SPEED_CORRECTION) /
+                speed;
+              point.vx *= scale;
+              point.vy *= scale;
+            }
+          }
+        } else {
+          const speedScale =
+            pointerActive && distance < BOOST_RADIUS
+              ? 1 + SPEED_BOOST * (1 - distance / BOOST_RADIUS)
+              : 1;
+          stepX = point.vx * speedScale;
+          stepY = point.vy * speedScale;
+        }
+
+        point.x += stepX;
+        point.y += stepY;
         if (point.x < 0 || point.x > width) point.vx *= -1;
         if (point.y < 0 || point.y > height) point.vy *= -1;
       }
@@ -124,7 +168,13 @@
           context.strokeStyle = "rgba(0, 200, 90, 0.25)";
           context.setLineDash([4, 6]);
           context.beginPath();
-          context.arc(pointerX, pointerY, BOOST_RADIUS, 0, Math.PI * 2);
+          context.arc(
+            pointerX,
+            pointerY,
+            useWell ? GRAVITY_REACH : BOOST_RADIUS,
+            0,
+            Math.PI * 2,
+          );
           context.stroke();
           context.setLineDash([]);
         }
