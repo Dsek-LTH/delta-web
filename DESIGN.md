@@ -95,11 +95,13 @@ redesign with this document updated.
   reduced motion.
 - **Ambient backdrop**: the constellation dots drift and lag the page scroll slightly
   (parallax, ~10%, eased), so the field reads as a distant layer. The pointer lights nearby
-  dots, links them into a graph, and scales their own velocity with proximity (up to ~1.9x).
-  No attraction forces: attractive wells were tried and always collapse dots into the cursor
-  (a velocity roof makes it worse — clamping speed is dissipation, so the well becomes a
-  sink), so the interaction is deliberately capture-free. Under reduced motion the field
-  renders once, faint and motionless, without pointer or scroll listeners.
+  dots, links them into a graph, and scales their own velocity with proximity (up to ~1.9x) —
+  deliberately capture-free. An experimental gravity model lives behind `?well` (attraction
+  inside a 420 px well, speed restoration outside): it is known to trap dots over time,
+  because the well depth (~0.63) dwarfs a dot's kinetic energy (~0.01), so anything entering
+  is gravitationally bound; a speed cap makes it worse (dissipation turns the well into a
+  sink), and no cap leaves bound orbits. Kept for demonstrations only. Under reduced motion
+  the field renders once, faint and motionless, without pointer or scroll listeners.
   Under reduced motion the field renders once, faint and motionless, without pointer or scroll
   listeners.
 - **Hover**: color/background changes only. Motion on hover must be gated behind
