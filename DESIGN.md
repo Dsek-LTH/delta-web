@@ -95,11 +95,13 @@ redesign with this document updated.
   reduced motion.
 - **Ambient backdrop**: the constellation dots drift between set waypoints and lag the page
   scroll slightly (parallax, ~10%, eased), so the field reads as a distant layer. The pointer
-  lights nearby dots, links them into a graph, speeds them up (up to ~1.9x), and bends their
-  paths: each segment is a quadratic Bézier whose control point is the midpoint displaced
-  toward the cursor by proximity (up to ~60 px of bow). Progress along a path never stops, so
-  dots can never be captured or clustered. Under reduced motion the field renders once, faint
-  and motionless, without pointer or scroll listeners.
+  lights nearby dots, links them into a graph, speeds them up (up to ~1.9x), and points each
+  path's control point at the cursor: the offset is capped at the circle through the
+  segment's endpoints (half the segment length, so A, B and C stay concyclic and the bow
+  never passes a semicircle), and inside that reach the control point is exactly the cursor.
+  Progress along a path never stops, so dots can never be captured or clustered. Under
+  reduced motion the field renders once, faint and motionless, without pointer or scroll
+  listeners.
   Under reduced motion the field renders once, faint and motionless, without pointer or scroll
   listeners.
 - **Hover**: color/background changes only. Motion on hover must be gated behind

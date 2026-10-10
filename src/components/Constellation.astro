@@ -34,8 +34,6 @@
     const WRAP_MARGIN = 24;
     const BOOST_RADIUS = 220; // pointer reach for the speed-up
     const SPEED_BOOST = 0.9; // up to ~1.9x near the pointer
-    const BEND_RADIUS = 260; // pointer reach for bending paths
-    const BEND_MAX = 120; // max control-point displacement (px)
     const WAYPOINT_MARGIN = 30;
     const MIN_SEGMENT = 160;
     // Debug: add ?paths to any URL to draw every dot's path (green solid =
@@ -56,6 +54,7 @@
     let points: Point[] = [];
     let pointerX = -1e4;
     let pointerY = -1e4;
+    let pointerActive = false;
     let scrollOffset = 0;
     let scrollTarget = 0;
     let dotColor = "#0f172a";
@@ -175,15 +174,21 @@
           }
         }
 
-        // Bend the midpoint of the path toward the cursor by proximity.
-        const bend = BEND_MAX * Math.max(0, 1 - bestDistance / BEND_RADIUS);
-        if (bend > 0.5) {
+        // Point the path's control point at the cursor. The offset is capped
+        // at the circle through A and B (radius = half the segment, a Thales
+        // circle, so the three points stay concyclic and the bow never
+        // exceeds a semicircle); when the cursor is inside that reach the
+        // control point is exactly the cursor.
+        const segmentLength =
+          Math.hypot(point.bx - point.ax, point.by - point.ay) || 1;
+        if (pointerActive) {
           const vx = pointerX - midX;
           const vy = bestPointerY - midY;
           const length = Math.hypot(vx, vy);
           if (length > 1) {
-            controlX += (vx / length) * bend;
-            controlY += (vy / length) * bend;
+            const reach = Math.min(length, segmentLength / 2);
+            controlX = midX + (vx / length) * reach;
+            controlY = midY + (vy / length) * reach;
           }
         }
 
@@ -209,8 +214,6 @@
           pointerDistance < BOOST_RADIUS
             ? 1 + SPEED_BOOST * (1 - pointerDistance / BOOST_RADIUS)
             : 1;
-        const segmentLength =
-          Math.hypot(point.bx - point.ax, point.by - point.ay) || 1;
         point.t += (point.speed * speedScale) / segmentLength;
 
         if (point.t >= 1) {
@@ -335,8 +338,10 @@
       const onPointerMove = (event: PointerEvent) => {
         pointerX = event.clientX;
         pointerY = event.clientY;
+        pointerActive = true;
       };
       const onPointerLeave = () => {
+        pointerActive = false;
         pointerX = -1e4;
         pointerY = -1e4;
       };
