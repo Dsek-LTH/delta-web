@@ -102,7 +102,7 @@ const whatIs = await getRenderedContent(getEntry, lang, "landing-what-is");
       <div
         class="flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose"
       >
-        {whatIs && <div class="prose" set:html={whatIs.html} />}
+        {whatIs && <div set:html={whatIs.html} />}
       </div>
     </Card>
   </div>
