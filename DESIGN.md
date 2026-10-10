@@ -93,9 +93,10 @@ redesign with this document updated.
 - **Position feedback**: the student timeline rail fill tracks scroll position directly
   (rAF-throttled, no timed animation). It is an indicator, not decoration, so it stays under
   reduced motion.
-- **Ambient backdrop**: the constellation dots drift continuously; the pointer lights nearby
-  dots and links them into a graph. Under reduced motion the field renders once, faint and
-  motionless, without pointer listeners.
+- **Ambient backdrop**: the constellation dots drift continuously and lag the page scroll
+  slightly (parallax, ~10%, eased), so the field reads as a distant layer; the pointer lights
+  nearby dots and links them into a graph. Under reduced motion the field renders once, faint
+  and motionless, without pointer or scroll listeners.
 - **Hover**: color/background changes only. Motion on hover must be gated behind
   `@media (hover: hover) and (pointer: fine)` — touch fires false hovers.
 - **Never** animate keyboard-initiated or rapid actions; never reveal required information on

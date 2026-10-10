@@ -28,6 +28,8 @@
     const LIT_ALPHA = 0.6;
     const BASE_RADIUS = 1.2;
     const DRIFT = 0.18;
+    const PARALLAX = 0.1; // field lags the page scroll (distant layer)
+    const WRAP_MARGIN = 24;
 
     type Point = { x: number; y: number; vx: number; vy: number };
 
@@ -36,6 +38,8 @@
     let points: Point[] = [];
     let pointerX = -1e4;
     let pointerY = -1e4;
+    let scrollOffset = 0;
+    let scrollTarget = 0;
     let dotColor = "#0f172a";
     let litColor = "#c9457a";
 
@@ -66,11 +70,24 @@
       }));
     };
 
+    // Vertical position of a dot on screen: base position minus the eased
+    // scroll parallax, wrapped so the field stays dense while scrolling.
+    const wrapY = (y: number) => {
+      const range = height + WRAP_MARGIN * 2;
+      return ((((y - scrollOffset) % range) + range) % range) - WRAP_MARGIN;
+    };
+
     const draw = () => {
       context.clearRect(0, 0, width, height);
 
-      const lit = points.map((point) => {
-        const distance = Math.hypot(point.x - pointerX, point.y - pointerY);
+      scrollOffset += (scrollTarget - scrollOffset) * 0.09;
+      const renderYs = points.map((point) => wrapY(point.y));
+
+      const lit = points.map((point, i) => {
+        const distance = Math.hypot(
+          point.x - pointerX,
+          renderYs[i]! - pointerY,
+        );
         return Math.max(0, 1 - distance / LIT_RADIUS);
       });
 
@@ -83,13 +100,13 @@
         for (let j = i + 1; j < points.length; j += 1) {
           if (lit[j] <= 0) continue;
           const b = points[j]!;
-          const distance = Math.hypot(a.x - b.x, a.y - b.y);
+          const distance = Math.hypot(a.x - b.x, renderYs[i]! - renderYs[j]!);
           if (distance > LINK_DISTANCE) continue;
           context.globalAlpha =
             Math.min(lit[i]!, lit[j]!) * (1 - distance / LINK_DISTANCE) * 0.4;
           context.beginPath();
-          context.moveTo(a.x, a.y);
-          context.lineTo(b.x, b.y);
+          context.moveTo(a.x, renderYs[i]!);
+          context.lineTo(b.x, renderYs[j]!);
           context.stroke();
         }
       }
@@ -101,7 +118,13 @@
         context.globalAlpha = BASE_ALPHA + glow * (LIT_ALPHA - BASE_ALPHA);
         context.fillStyle = glow > 0 ? litColor : dotColor;
         context.beginPath();
-        context.arc(point.x, point.y, BASE_RADIUS + glow * 0.9, 0, Math.PI * 2);
+        context.arc(
+          point.x,
+          renderYs[i]!,
+          BASE_RADIUS + glow * 0.9,
+          0,
+          Math.PI * 2,
+        );
         context.fill();
       }
       context.globalAlpha = 1;
@@ -135,9 +158,15 @@
         pointerX = -1e4;
         pointerY = -1e4;
       };
+      const onScroll = () => {
+        scrollTarget = window.scrollY * PARALLAX;
+      };
       window.addEventListener("pointermove", onPointerMove, { passive: true });
       document.addEventListener("pointerleave", onPointerLeave);
+      window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("resize", resize);
+      onScroll();
+      scrollOffset = scrollTarget;
     }
   }
 </script>
