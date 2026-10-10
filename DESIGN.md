@@ -93,15 +93,13 @@ redesign with this document updated.
 - **Position feedback**: the student timeline rail fill tracks scroll position directly
   (rAF-throttled, no timed animation). It is an indicator, not decoration, so it stays under
   reduced motion.
-- **Ambient backdrop**: the constellation dots drift between set waypoints and lag the page
-  scroll slightly (parallax, ~10%, eased), so the field reads as a distant layer. The pointer
-  lights nearby dots, links them into a graph, speeds them up (up to ~1.9x), and points each
-  path's control point at the cursor: the offset is capped at the circle through the
-  segment's endpoints (half the segment length, so A, B and C stay concyclic and the bow
-  never passes a semicircle), and inside that reach the control point is exactly the cursor.
-  Progress along a path never stops, so dots can never be captured or clustered. Under
-  reduced motion the field renders once, faint and motionless, without pointer or scroll
-  listeners.
+- **Ambient backdrop**: the constellation dots drift and lag the page scroll slightly
+  (parallax, ~10%, eased), so the field reads as a distant layer. The pointer lights nearby
+  dots, links them into a graph, and scales their own velocity with proximity (up to ~1.9x).
+  No attraction forces: attractive wells were tried and always collapse dots into the cursor
+  (a velocity roof makes it worse — clamping speed is dissipation, so the well becomes a
+  sink), so the interaction is deliberately capture-free. Under reduced motion the field
+  renders once, faint and motionless, without pointer or scroll listeners.
   Under reduced motion the field renders once, faint and motionless, without pointer or scroll
   listeners.
 - **Hover**: color/background changes only. Motion on hover must be gated behind
