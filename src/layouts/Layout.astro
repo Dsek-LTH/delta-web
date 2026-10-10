@@ -69,6 +69,14 @@ const showConstellation = !Astro.url.pathname.startsWith("/admin");
 
       {showConstellation && <Constellation />}
 
+      <!-- Soft top scrim: content and dots fade out as they scroll behind
+           the floating pill nav (no blur bar — the pills keep the glass). -->
+      <div
+        aria-hidden="true"
+        class="pointer-events-none fixed inset-x-0 top-0 z-40 h-24 bg-gradient-to-b from-backdrop via-backdrop/55 to-transparent"
+      >
+      </div>
+
       <Header />
 
       <main

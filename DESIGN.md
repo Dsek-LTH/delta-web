@@ -138,24 +138,25 @@ Accordions, “read more” and package details all use one pattern — **not** 
 
 ## 4. Components
 
-| Component         | Location                                           | Rules                                                                                                             |
-| ----------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `Logo`            | `src/components/Logo.astro`                        | Wordmark. Props: `animate` (caret), `command` (`--force`), `inverse` (light text on photos).                      |
-| `Countdown`       | `src/components/Countdown.astro`                   | Mono, theme-aware; sits under a wordmark.                                                                         |
-| `Card`            | `src/components/Card.astro`                        | Frosted surface. `animate={true}` (tilt + shimmer) only on the landing hero.                                      |
-| Buttons           | `.btn` + `.btn-accent/.btn-danger/.btn-ghost`      | `active:scale-[0.98]`, explicit transitions, focus-visible ring.                                                  |
-| Fields            | `.field` (`TextInput`, `SelectInput`, `FileInput`) | Border + focus ring, no glass on controls.                                                                        |
-| Fold panels       | §3.5                                               | Read more, FAQ, package details. One open at a time per group.                                                    |
-| Team tiles        | `src/pages/project-group/TeamTile.astro`           | Photo/placeholder + `> Team label NN` header + names with email/GitHub/LinkedIn always visible.                   |
-| Photo placeholder | `src/pages/project-group/PhotoPlaceholder.astro`   | Group silhouette (2+ people) / profile silhouette (single).                                                       |
-| Package cards     | `src/pages/company/index.astro`                    | Quiet entry pair → three core packages → featured top tier; details open **after their group**.                   |
-| Package details   | `src/components/company/PackageDetails.astro`      | Full description: bold intro, subtitle, `Paketet innehåller:` Δ list, closing, CTA.                               |
-| Pricing table     | `src/components/company/PricingTable.astro`        | Comparison matrix; equivalent tiers merged into one column; horizontal scroll allowed.                            |
-| Timeline          | `src/pages/student/index.astro`                    | Rail + Δ marker on each card, alternating sides; opposite-side photo collages fade in while a row's fold is open. |
-| Card content      | `src/pages/student/CardContent.astro`              | Lead paragraph + fold for the rest.                                                                               |
-| Timeline rail     | `src/pages/student/index.astro`                    | Track + fill; `--rail-progress` updated on scroll; without JS only the track shows.                               |
-| Footer mark       | `src/components/Footer.astro`                      | Oversized stroke-only Δ, `aria-hidden`, decorative; footer keeps extra bottom padding.                            |
-| Constellation     | `src/components/Constellation.astro`               | Ambient dot field behind every non-admin page; pointer lights dots + edges, far dots stay faint.                  |
+| Component         | Location                                           | Rules                                                                                                                                     |
+| ----------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `Logo`            | `src/components/Logo.astro`                        | Wordmark. Props: `animate` (caret), `command` (`--force`), `inverse` (light text on photos).                                              |
+| `Countdown`       | `src/components/Countdown.astro`                   | Mono, theme-aware; sits under a wordmark.                                                                                                 |
+| `Card`            | `src/components/Card.astro`                        | Frosted surface. `animate={true}` (tilt + shimmer) only on the landing hero.                                                              |
+| Buttons           | `.btn` + `.btn-accent/.btn-danger/.btn-ghost`      | `active:scale-[0.98]`, explicit transitions, focus-visible ring.                                                                          |
+| Fields            | `.field` (`TextInput`, `SelectInput`, `FileInput`) | Border + focus ring, no glass on controls.                                                                                                |
+| Fold panels       | §3.5                                               | Read more, FAQ, package details. One open at a time per group.                                                                            |
+| Team tiles        | `src/pages/project-group/TeamTile.astro`           | Photo/placeholder + `> Team label NN` header + names with email/GitHub/LinkedIn always visible.                                           |
+| Photo placeholder | `src/pages/project-group/PhotoPlaceholder.astro`   | Group silhouette (2+ people) / profile silhouette (single).                                                                               |
+| Package cards     | `src/pages/company/index.astro`                    | Quiet entry pair → three core packages → featured top tier; details open **after their group**.                                           |
+| Package details   | `src/components/company/PackageDetails.astro`      | Full description: bold intro, subtitle, `Paketet innehåller:` Δ list, closing, CTA.                                                       |
+| Pricing table     | `src/components/company/PricingTable.astro`        | Comparison matrix; equivalent tiers merged into one column; horizontal scroll allowed.                                                    |
+| Timeline          | `src/pages/student/index.astro`                    | Rail + Δ marker on each card, alternating sides; opposite-side photo collages fade in while a row's fold is open.                         |
+| Card content      | `src/pages/student/CardContent.astro`              | Lead paragraph + fold for the rest.                                                                                                       |
+| Timeline rail     | `src/pages/student/index.astro`                    | Track + fill; `--rail-progress` updated on scroll; without JS only the track shows.                                                       |
+| Footer mark       | `src/components/Footer.astro`                      | Oversized stroke-only Δ, `aria-hidden`, decorative; footer keeps extra bottom padding.                                                    |
+| Constellation     | `src/components/Constellation.astro`               | Ambient dot field behind every non-admin page; pointer lights dots + edges, far dots stay faint.                                          |
+| Header scrim      | `src/layouts/Layout.astro`                         | Fixed backdrop gradient over the top ~6rem; content fades as it scrolls behind the floating nav (no blur bar — the pills keep the glass). |
 
 **Team/package photos** auto-load from `src/assets/team/<name>.{webp,jpg,jpeg,png}`:
 `all` (whole team), `general`, `it`, `event`, `finance`, `logistics`, `marketing`, `relations`,
