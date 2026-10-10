@@ -44,7 +44,7 @@ const generalsValidated = generals.map((general) =>
   class="bg-backdrop p-4 leading-relaxed flex flex-col items-center gap-4 text-center"
 >
   <address class="not-italic">
-    <p class="text-xl font-semibold pb-2">
+    <p class="text-xl font-semibold pb-2 text-backdrop-content">
       {t("footer.contact")}
       : <a
         class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
@@ -67,9 +67,9 @@ const generalsValidated = generals.map((general) =>
 
   <!-- LinkedIn, GitHub, Instagram, ...? -->
 
-  <p>&copy; 2026 DELTA. All rights reserved.</p>
+  <p class="text-backdrop-content">&copy; 2026 DELTA. All rights reserved.</p>
 
-  <p class="text-xl font-semibold italic text-brand-secondary">
+  <p class="text-xl font-semibold italic text-backdrop-content">
     {t("footer.development")}
     <a
       class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
