@@ -38,6 +38,9 @@
     const BEND_MAX = 120; // max control-point displacement (px)
     const WAYPOINT_MARGIN = 30;
     const MIN_SEGMENT = 160;
+    // Debug: add ?paths to any URL to draw every dot's path (green solid =
+    // bent Bézier, faint dashed = straight chord, dot = control point).
+    const showPaths = new URLSearchParams(window.location.search).has("paths");
 
     type Point = {
       ax: number; // segment start
@@ -144,6 +147,8 @@
       // currently is, then advance it along the path.
       const xs: number[] = [];
       const renderYs: number[] = [];
+      const controlsX: number[] = [];
+      const controlsY: number[] = [];
       for (const point of points) {
         const midX = (point.ax + point.bx) / 2;
         const midY = (point.ay + point.by) / 2;
@@ -195,6 +200,8 @@
         const renderY = wrapY(y);
         xs.push(x);
         renderYs.push(renderY);
+        controlsX.push(controlX);
+        controlsY.push(controlY);
 
         // Advance along the path; the pointer proximity scales the speed.
         const pointerDistance = Math.hypot(x - pointerX, renderY - pointerY);
@@ -220,6 +227,58 @@
         const distance = Math.hypot(xs[i]! - pointerX, renderYs[i]! - pointerY);
         return Math.max(0, 1 - distance / LIT_RADIUS);
       });
+
+      if (showPaths) {
+        context.globalAlpha = 1;
+        context.lineWidth = 1;
+        for (let i = 0; i < points.length; i += 1) {
+          const point = points[i]!;
+          const controlX = controlsX[i]!;
+          const controlY = controlsY[i]!;
+
+          // Straight chord for comparison (skipped when it crosses the
+          // parallax seam, where a straight line would be misleading).
+          const chordAy = wrapY(point.ay);
+          const chordBy = wrapY(point.by);
+          if (Math.abs(chordBy - chordAy) < range / 2) {
+            context.strokeStyle = "rgba(0, 190, 90, 0.22)";
+            context.setLineDash([4, 4]);
+            context.beginPath();
+            context.moveTo(point.ax, chordAy);
+            context.lineTo(point.bx, chordBy);
+            context.stroke();
+          }
+
+          // Bent path (split at the parallax seam so it never jumps).
+          context.strokeStyle = "rgba(0, 200, 90, 0.7)";
+          context.setLineDash([]);
+          context.beginPath();
+          let previousRy: number | null = null;
+          for (let step = 0; step <= 20; step += 1) {
+            const t = step / 20;
+            const mt = 1 - t;
+            const x =
+              mt * mt * point.ax + 2 * mt * t * controlX + t * t * point.bx;
+            const y =
+              mt * mt * point.ay + 2 * mt * t * controlY + t * t * point.by;
+            const ry = wrapY(y);
+            if (previousRy === null || Math.abs(ry - previousRy) > range / 2) {
+              context.moveTo(x, ry);
+            } else {
+              context.lineTo(x, ry);
+            }
+            previousRy = ry;
+          }
+          context.stroke();
+
+          // Control point.
+          context.fillStyle = "rgba(0, 200, 90, 0.9)";
+          context.beginPath();
+          context.arc(controlX, wrapY(controlY), 2, 0, Math.PI * 2);
+          context.fill();
+        }
+        context.setLineDash([]);
+      }
 
       // Edges between lit dots: the graph follows the pointer.
       context.lineWidth = 1;
