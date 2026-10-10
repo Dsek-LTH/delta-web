@@ -100,7 +100,9 @@ redesign with this document updated.
   target speed (resistance when faster, boost when slower). Dots that enter the well become
   bound and gather into a swarm around the cursor — accepted as part of the effect: moving
   the cursor drags the swarm along and leaving releases it (the outside speed restore brings
-  the field back to its normal pace). A speed cap inside the well was tried and rejected: it
+  the field back to its normal pace). Dots also glow with their own speed — a soft halo that
+  fades in above the fastest drift — so flybys and orbiting swarm members shine while the
+  quiet field stays faint. A speed cap inside the well was tried and rejected: it
   dissipates energy and turns the well into a sink. Under reduced motion the field renders
   once, faint and motionless, without pointer or scroll listeners.
   Under reduced motion the field renders once, faint and motionless, without pointer or scroll

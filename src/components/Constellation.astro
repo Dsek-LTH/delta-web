@@ -36,6 +36,8 @@
     const GRAVITY = 0.003; // px/frame^2 at the cursor, linear falloff
     const GRAVITY_REACH = 420; // gravity inside the well, speed restore outside
     const SPEED_CORRECTION = 0.008; // weak force toward the target speed
+    const GLOW_SPEED_MIN = 0.28; // fastest drift: below this, no glow
+    const GLOW_SPEED_MAX = 1.0; // flyby speed: full glow
 
     type Point = {
       x: number;
@@ -105,6 +107,7 @@
       // speed (resistance when faster, boost when slower).
       const xs: number[] = [];
       const renderYs: number[] = [];
+      const speeds: number[] = [];
       for (const point of points) {
         xs.push(point.x);
         const renderY = wrapY(point.y);
@@ -127,6 +130,8 @@
             point.vy *= scale;
           }
         }
+
+        speeds.push(Math.hypot(point.vx, point.vy));
 
         point.x += point.vx;
         point.y += point.vy;
@@ -160,6 +165,19 @@
         return Math.max(0, 1 - distance / LIT_RADIUS);
       });
 
+      // Dots also glow with their own speed: flybys and orbiting swarm
+      // members shine, the quiet field stays faint.
+      const speedGlows = speeds.map((speed) =>
+        Math.min(
+          1,
+          Math.max(
+            0,
+            (speed - GLOW_SPEED_MIN) / (GLOW_SPEED_MAX - GLOW_SPEED_MIN),
+          ),
+        ),
+      );
+      const glows = lit.map((value, i) => Math.max(value, speedGlows[i]!));
+
       // Edges between lit dots: the graph follows the pointer.
       context.lineWidth = 1;
       context.strokeStyle = litColor;
@@ -172,7 +190,9 @@
           const distance = Math.hypot(dx, dy);
           if (distance > LINK_DISTANCE) continue;
           context.globalAlpha =
-            Math.min(lit[i]!, lit[j]!) * (1 - distance / LINK_DISTANCE) * 0.4;
+            Math.min(glows[i]!, glows[j]!) *
+            (1 - distance / LINK_DISTANCE) *
+            0.4;
           context.beginPath();
           context.moveTo(xs[i]!, renderYs[i]!);
           context.lineTo(xs[j]!, renderYs[j]!);
@@ -180,9 +200,20 @@
         }
       }
 
-      // Dots: faint far away, brighter and pink near the pointer.
+      // Dots: faint far away, brighter and pink near the pointer, with a
+      // soft halo that scales with speed.
       for (let i = 0; i < points.length; i += 1) {
-        const glow = lit[i]!;
+        const speedGlow = speedGlows[i]!;
+        const glow = glows[i]!;
+
+        if (speedGlow > 0.05) {
+          context.globalAlpha = speedGlow * 0.18;
+          context.fillStyle = litColor;
+          context.beginPath();
+          context.arc(xs[i]!, renderYs[i]!, 4 + speedGlow * 6, 0, Math.PI * 2);
+          context.fill();
+        }
+
         context.globalAlpha = BASE_ALPHA + glow * (LIT_ALPHA - BASE_ALPHA);
         context.fillStyle = glow > 0 ? litColor : dotColor;
         context.beginPath();
