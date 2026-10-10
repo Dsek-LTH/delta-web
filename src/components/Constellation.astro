@@ -30,6 +30,9 @@
     const DRIFT = 0.18;
     const PARALLAX = 0.1; // field lags the page scroll (distant layer)
     const WRAP_MARGIN = 24;
+    const PULL_RADIUS = 220; // pointer reach for the gentle attraction
+    const PULL_SPEED = 0.7; // max added speed toward the pointer (px/frame)
+    const PULL_CORE = 32; // soft core: no jitter right under the cursor
 
     type Point = { x: number; y: number; vx: number; vy: number };
 
@@ -130,9 +133,28 @@
       context.globalAlpha = 1;
 
       if (!reducedMotion) {
-        for (const point of points) {
-          point.x += point.vx;
-          point.y += point.vy;
+        for (let i = 0; i < points.length; i += 1) {
+          const point = points[i]!;
+
+          // The drift keeps its own velocity; the pointer adds a second,
+          // distance-scaled velocity component toward it. The sum is the
+          // movement for this frame, so nothing builds up momentum.
+          let vx = point.vx;
+          let vy = point.vy;
+          const dx = pointerX - point.x;
+          const dy = pointerY - renderYs[i]!;
+          const distance = Math.hypot(dx, dy);
+          if (distance > 0 && distance < PULL_RADIUS) {
+            const pull =
+              PULL_SPEED *
+              (1 - distance / PULL_RADIUS) *
+              Math.min(1, distance / PULL_CORE);
+            vx += (dx / distance) * pull;
+            vy += (dy / distance) * pull;
+          }
+
+          point.x += vx;
+          point.y += vy;
           if (point.x < 0 || point.x > width) point.vx *= -1;
           if (point.y < 0 || point.y > height) point.vy *= -1;
         }
