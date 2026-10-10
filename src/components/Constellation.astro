@@ -1,8 +1,11 @@
 ---
-// Ambient constellation: small dots drifting behind the page. Dots near the
-// pointer light up and link into a graph; far from the pointer they stay
-// faint. Decorational only: aria-hidden, pointer-events-none, and it renders
-// a single static frame under prefers-reduced-motion.
+// Ambient constellation: small dots drifting behind the page along their own
+// segments. The pointer lights nearby dots, links them into a graph, speeds
+// them up, and bends their paths: every segment is drawn as a quadratic
+// Bézier whose control point is the midpoint displaced toward the cursor by
+// proximity. Progress along a path never stops, so dots can never be
+// captured. Decorational only: aria-hidden, pointer-events-none, and it
+// renders a single static frame under prefers-reduced-motion.
 ---
 
 <canvas
@@ -22,22 +25,28 @@
     ).matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    const LIT_RADIUS = 180; // how far the pointer reaches
+    const LIT_RADIUS = 180; // how far the pointer reaches for lighting
     const LINK_DISTANCE = 140; // dot-to-dot edge length
     const BASE_ALPHA = 0.14; // far from the pointer
     const LIT_ALPHA = 0.6;
     const BASE_RADIUS = 1.2;
-    const DRIFT = 0.18;
     const PARALLAX = 0.1; // field lags the page scroll (distant layer)
     const WRAP_MARGIN = 24;
-    const PULL_RADIUS = 220; // pointer reach for the gentle bend
-    const PULL_SPEED = 0.06; // max pull vector (px/frame), also capped at 60%
-    // of the dot's own speed so the bend stays under ~30 degrees
-    const PULL_CORE = 48; // soft core: no pull right under the cursor
-    const SPEED_BOOST = 0.9; // dots speed up to ~1.9x near the pointer, so
-    // they fly through instead of lingering (mimics a force field)
+    const BOOST_RADIUS = 220; // pointer reach for the speed-up
+    const SPEED_BOOST = 0.9; // up to ~1.9x near the pointer
+    const BEND_RADIUS = 260; // pointer reach for bending paths
+    const BEND_MAX = 120; // max control-point displacement (px)
+    const WAYPOINT_MARGIN = 30;
+    const MIN_SEGMENT = 160;
 
-    type Point = { x: number; y: number; vx: number; vy: number };
+    type Point = {
+      ax: number; // segment start
+      ay: number;
+      bx: number; // segment end
+      by: number;
+      t: number; // progress 0..1
+      speed: number; // px per frame
+    };
 
     let width = 0;
     let height = 0;
@@ -57,6 +66,47 @@
         styles.getPropertyValue("--color-brand-primary").trim() || litColor;
     };
 
+    // Vertical position of a dot on screen: base position minus the eased
+    // scroll parallax, wrapped so the field stays dense while scrolling.
+    const wrapY = (y: number) => {
+      const range = height + WRAP_MARGIN * 2;
+      return ((((y - scrollOffset) % range) + range) % range) - WRAP_MARGIN;
+    };
+
+    const randomX = () =>
+      WAYPOINT_MARGIN +
+      Math.random() * Math.max(1, width - WAYPOINT_MARGIN * 2);
+    const randomY = () =>
+      WAYPOINT_MARGIN +
+      Math.random() * Math.max(1, height - WAYPOINT_MARGIN * 2);
+
+    const randomSegmentEnd = (ax: number, ay: number) => {
+      let bx = randomX();
+      let by = randomY();
+      for (let i = 0; i < 8; i += 1) {
+        if (Math.hypot(bx - ax, by - ay) >= MIN_SEGMENT) break;
+        bx = randomX();
+        by = randomY();
+      }
+      return { bx, by };
+    };
+
+    const distanceToSegment = (
+      x: number,
+      y: number,
+      ax: number,
+      ay: number,
+      bx: number,
+      by: number,
+    ) => {
+      const dx = bx - ax;
+      const dy = by - ay;
+      const lengthSq = dx * dx + dy * dy;
+      let t = lengthSq > 0 ? ((x - ax) * dx + (y - ay) * dy) / lengthSq : 0;
+      t = Math.max(0, Math.min(1, t));
+      return Math.hypot(x - (ax + t * dx), y - (ay + t * dy));
+    };
+
     const resize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
@@ -68,32 +118,106 @@
         32,
         Math.min(120, Math.round((width * height) / 11000)),
       );
-      points = Array.from({ length: count }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 2 * DRIFT,
-        vy: (Math.random() - 0.5) * 2 * DRIFT,
-      }));
-    };
-
-    // Vertical position of a dot on screen: base position minus the eased
-    // scroll parallax, wrapped so the field stays dense while scrolling.
-    const wrapY = (y: number) => {
-      const range = height + WRAP_MARGIN * 2;
-      return ((((y - scrollOffset) % range) + range) % range) - WRAP_MARGIN;
+      points = Array.from({ length: count }, () => {
+        const ax = randomX();
+        const ay = randomY();
+        const { bx, by } = randomSegmentEnd(ax, ay);
+        return {
+          ax,
+          ay,
+          bx,
+          by,
+          t: Math.random(),
+          speed: 0.08 + Math.random() * 0.2,
+        };
+      });
     };
 
     const draw = () => {
       context.clearRect(0, 0, width, height);
 
       scrollOffset += (scrollTarget - scrollOffset) * 0.09;
-      const renderYs = points.map((point) => wrapY(point.y));
+      const range = height + WRAP_MARGIN * 2;
+      const pointerBaseY = pointerY + scrollOffset;
 
-      const lit = points.map((point, i) => {
-        const distance = Math.hypot(
-          point.x - pointerX,
-          renderYs[i]! - pointerY,
-        );
+      // Update every dot: bend its path, evaluate the curve where the dot
+      // currently is, then advance it along the path.
+      const xs: number[] = [];
+      const renderYs: number[] = [];
+      for (const point of points) {
+        const midX = (point.ax + point.bx) / 2;
+        const midY = (point.ay + point.by) / 2;
+        let controlX = midX;
+        let controlY = midY;
+
+        // How close is the pointer to this path? Check the wrapped copies so
+        // paths near the parallax seam bend correctly too.
+        let bestDistance = Infinity;
+        let bestPointerY = pointerBaseY;
+        for (const offset of [0, range, -range]) {
+          const py = pointerBaseY + offset;
+          const distance = distanceToSegment(
+            pointerX,
+            py,
+            point.ax,
+            point.ay,
+            point.bx,
+            point.by,
+          );
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            bestPointerY = py;
+          }
+        }
+
+        // Bend the midpoint of the path toward the cursor by proximity.
+        const bend = BEND_MAX * Math.max(0, 1 - bestDistance / BEND_RADIUS);
+        if (bend > 0.5) {
+          const vx = pointerX - midX;
+          const vy = bestPointerY - midY;
+          const length = Math.hypot(vx, vy);
+          if (length > 1) {
+            controlX += (vx / length) * bend;
+            controlY += (vy / length) * bend;
+          }
+        }
+
+        // Evaluate the quadratic Bézier at t.
+        const mt = 1 - point.t;
+        const x =
+          mt * mt * point.ax +
+          2 * mt * point.t * controlX +
+          point.t * point.t * point.bx;
+        const y =
+          mt * mt * point.ay +
+          2 * mt * point.t * controlY +
+          point.t * point.t * point.by;
+        const renderY = wrapY(y);
+        xs.push(x);
+        renderYs.push(renderY);
+
+        // Advance along the path; the pointer proximity scales the speed.
+        const pointerDistance = Math.hypot(x - pointerX, renderY - pointerY);
+        const speedScale =
+          pointerDistance < BOOST_RADIUS
+            ? 1 + SPEED_BOOST * (1 - pointerDistance / BOOST_RADIUS)
+            : 1;
+        const segmentLength =
+          Math.hypot(point.bx - point.ax, point.by - point.ay) || 1;
+        point.t += (point.speed * speedScale) / segmentLength;
+
+        if (point.t >= 1) {
+          point.ax = point.bx;
+          point.ay = point.by;
+          const { bx, by } = randomSegmentEnd(point.ax, point.ay);
+          point.bx = bx;
+          point.by = by;
+          point.t = 0;
+        }
+      }
+
+      const lit = points.map((_, i) => {
+        const distance = Math.hypot(xs[i]! - pointerX, renderYs[i]! - pointerY);
         return Math.max(0, 1 - distance / LIT_RADIUS);
       });
 
@@ -102,30 +226,29 @@
       context.strokeStyle = litColor;
       for (let i = 0; i < points.length; i += 1) {
         if (lit[i] <= 0) continue;
-        const a = points[i]!;
         for (let j = i + 1; j < points.length; j += 1) {
           if (lit[j] <= 0) continue;
-          const b = points[j]!;
-          const distance = Math.hypot(a.x - b.x, renderYs[i]! - renderYs[j]!);
+          const dx = xs[i]! - xs[j]!;
+          const dy = renderYs[i]! - renderYs[j]!;
+          const distance = Math.hypot(dx, dy);
           if (distance > LINK_DISTANCE) continue;
           context.globalAlpha =
             Math.min(lit[i]!, lit[j]!) * (1 - distance / LINK_DISTANCE) * 0.4;
           context.beginPath();
-          context.moveTo(a.x, renderYs[i]!);
-          context.lineTo(b.x, renderYs[j]!);
+          context.moveTo(xs[i]!, renderYs[i]!);
+          context.lineTo(xs[j]!, renderYs[j]!);
           context.stroke();
         }
       }
 
       // Dots: faint far away, brighter and pink near the pointer.
       for (let i = 0; i < points.length; i += 1) {
-        const point = points[i]!;
         const glow = lit[i]!;
         context.globalAlpha = BASE_ALPHA + glow * (LIT_ALPHA - BASE_ALPHA);
         context.fillStyle = glow > 0 ? litColor : dotColor;
         context.beginPath();
         context.arc(
-          point.x,
+          xs[i]!,
           renderYs[i]!,
           BASE_RADIUS + glow * 0.9,
           0,
@@ -136,40 +259,6 @@
       context.globalAlpha = 1;
 
       if (!reducedMotion) {
-        for (let i = 0; i < points.length; i += 1) {
-          const point = points[i]!;
-
-          // The drift keeps its own velocity; the pointer adds a second,
-          // distance-scaled velocity component toward it. The sum only bends
-          // the direction and the dot keeps its own speed, so a path curves
-          // but can never be captured: an equilibrium point is impossible.
-          let moveX = point.vx;
-          let moveY = point.vy;
-          const speed = Math.hypot(point.vx, point.vy);
-          const dx = pointerX - point.x;
-          const dy = pointerY - renderYs[i]!;
-          const distance = Math.hypot(dx, dy);
-          if (speed > 1e-4 && distance > 0 && distance < PULL_RADIUS) {
-            const proximity = 1 - distance / PULL_RADIUS;
-            const strength = proximity * Math.min(1, distance / PULL_CORE);
-            const pull = Math.min(PULL_SPEED, speed * 0.6) * strength;
-            const dirX = point.vx + (dx / distance) * pull;
-            const dirY = point.vy + (dy / distance) * pull;
-            const length = Math.hypot(dirX, dirY);
-            if (length > 1e-4) {
-              // The field also speeds the dot up near the pointer: it
-              // accelerates through the bend instead of lingering close by.
-              const speedScale = 1 + SPEED_BOOST * proximity;
-              moveX = (dirX / length) * speed * speedScale;
-              moveY = (dirY / length) * speed * speedScale;
-            }
-          }
-
-          point.x += moveX;
-          point.y += moveY;
-          if (point.x < 0 || point.x > width) point.vx *= -1;
-          if (point.y < 0 || point.y > height) point.vy *= -1;
-        }
         requestAnimationFrame(draw);
       }
     };
