@@ -95,8 +95,10 @@ redesign with this document updated.
   reduced motion.
 - **Ambient backdrop**: the constellation dots drift continuously and lag the page scroll
   slightly (parallax, ~10%, eased), so the field reads as a distant layer; the pointer lights
-  nearby dots, links them into a graph, and gently pulls them in (a distance-scaled velocity
-  component added to their drift — the sum is the frame's movement, so no momentum builds up).
+  nearby dots, links them into a graph, and bends their paths slightly (a weak, distance-scaled
+  pull vector is added to their drift and the sum sets the direction) while speeding them up
+  near the pointer (up to ~1.9x). The dot keeps its own speed, so a path curves and the
+  proximity boost flies it through — dots can never be captured or clustered.
   Under reduced motion the field renders once, faint and motionless, without pointer or scroll
   listeners.
 - **Hover**: color/background changes only. Motion on hover must be gated behind

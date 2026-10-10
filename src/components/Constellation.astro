@@ -30,9 +30,12 @@
     const DRIFT = 0.18;
     const PARALLAX = 0.1; // field lags the page scroll (distant layer)
     const WRAP_MARGIN = 24;
-    const PULL_RADIUS = 220; // pointer reach for the gentle attraction
-    const PULL_SPEED = 0.7; // max added speed toward the pointer (px/frame)
-    const PULL_CORE = 32; // soft core: no jitter right under the cursor
+    const PULL_RADIUS = 220; // pointer reach for the gentle bend
+    const PULL_SPEED = 0.06; // max pull vector (px/frame), also capped at 60%
+    // of the dot's own speed so the bend stays under ~30 degrees
+    const PULL_CORE = 48; // soft core: no pull right under the cursor
+    const SPEED_BOOST = 0.9; // dots speed up to ~1.9x near the pointer, so
+    // they fly through instead of lingering (mimics a force field)
 
     type Point = { x: number; y: number; vx: number; vy: number };
 
@@ -62,8 +65,8 @@
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       const count = Math.max(
-        28,
-        Math.min(90, Math.round((width * height) / 16000)),
+        32,
+        Math.min(120, Math.round((width * height) / 11000)),
       );
       points = Array.from({ length: count }, () => ({
         x: Math.random() * width,
@@ -137,24 +140,33 @@
           const point = points[i]!;
 
           // The drift keeps its own velocity; the pointer adds a second,
-          // distance-scaled velocity component toward it. The sum is the
-          // movement for this frame, so nothing builds up momentum.
-          let vx = point.vx;
-          let vy = point.vy;
+          // distance-scaled velocity component toward it. The sum only bends
+          // the direction and the dot keeps its own speed, so a path curves
+          // but can never be captured: an equilibrium point is impossible.
+          let moveX = point.vx;
+          let moveY = point.vy;
+          const speed = Math.hypot(point.vx, point.vy);
           const dx = pointerX - point.x;
           const dy = pointerY - renderYs[i]!;
           const distance = Math.hypot(dx, dy);
-          if (distance > 0 && distance < PULL_RADIUS) {
-            const pull =
-              PULL_SPEED *
-              (1 - distance / PULL_RADIUS) *
-              Math.min(1, distance / PULL_CORE);
-            vx += (dx / distance) * pull;
-            vy += (dy / distance) * pull;
+          if (speed > 1e-4 && distance > 0 && distance < PULL_RADIUS) {
+            const proximity = 1 - distance / PULL_RADIUS;
+            const strength = proximity * Math.min(1, distance / PULL_CORE);
+            const pull = Math.min(PULL_SPEED, speed * 0.6) * strength;
+            const dirX = point.vx + (dx / distance) * pull;
+            const dirY = point.vy + (dy / distance) * pull;
+            const length = Math.hypot(dirX, dirY);
+            if (length > 1e-4) {
+              // The field also speeds the dot up near the pointer: it
+              // accelerates through the bend instead of lingering close by.
+              const speedScale = 1 + SPEED_BOOST * proximity;
+              moveX = (dirX / length) * speed * speedScale;
+              moveY = (dirY / length) * speed * speedScale;
+            }
           }
 
-          point.x += vx;
-          point.y += vy;
+          point.x += moveX;
+          point.y += moveY;
           if (point.x < 0 || point.x > width) point.vx *= -1;
           if (point.y < 0 || point.y > height) point.vy *= -1;
         }
