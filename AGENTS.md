@@ -23,6 +23,7 @@ The dev server runs on port **8080** (not the Astro default).
 | `bun dev`          | Start dev server                       |
 | `bun build`        | Production build                       |
 | `bun preview`      | Build and run production locally       |
+| `bun check`        | Astro check (types + components)       |
 | `bun lint`         | ESLint check                           |
 | `bun format:check` | Prettier check                         |
 | `bun format:fix`   | Prettier auto-fix                      |
