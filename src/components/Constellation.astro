@@ -58,12 +58,50 @@
     let dotColor = "#0f172a";
     let litColor = "#c9457a";
 
+    // Pre-rendered bloom sprite: a wide, gaussian-ish radial falloff tinted
+    // with the lit colour. Drawn additively (globalCompositeOperation
+    // "lighter") behind fast dots, so overlapping glows accumulate into
+    // blooms the way light does.
+    const GLOW_SPRITE_SIZE = 128;
+    const glowSprite = document.createElement("canvas");
+    glowSprite.width = GLOW_SPRITE_SIZE;
+    glowSprite.height = GLOW_SPRITE_SIZE;
+
+    const buildGlowSprite = () => {
+      const spriteContext = glowSprite.getContext("2d");
+      if (!spriteContext) return;
+      const size = GLOW_SPRITE_SIZE;
+      const half = size / 2;
+      spriteContext.clearRect(0, 0, size, size);
+      const gradient = spriteContext.createRadialGradient(
+        half,
+        half,
+        0,
+        half,
+        half,
+        half,
+      );
+      gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+      gradient.addColorStop(0.22, "rgba(255, 255, 255, 0.5)");
+      gradient.addColorStop(0.45, "rgba(255, 255, 255, 0.2)");
+      gradient.addColorStop(0.7, "rgba(255, 255, 255, 0.06)");
+      gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      spriteContext.fillStyle = gradient;
+      spriteContext.fillRect(0, 0, size, size);
+      // Tint the mask with the theme's lit colour, alpha preserved.
+      spriteContext.globalCompositeOperation = "source-in";
+      spriteContext.fillStyle = litColor;
+      spriteContext.fillRect(0, 0, size, size);
+      spriteContext.globalCompositeOperation = "source-over";
+    };
+
     const readColors = () => {
       const styles = getComputedStyle(document.documentElement);
       dotColor =
         styles.getPropertyValue("--color-backdrop-content").trim() || dotColor;
       litColor =
         styles.getPropertyValue("--color-brand-primary").trim() || litColor;
+      buildGlowSprite();
     };
 
     // Vertical position of a dot on screen: base position minus the eased
@@ -207,11 +245,17 @@
         const glow = glows[i]!;
 
         if (speedGlow > 0.05) {
-          context.globalAlpha = speedGlow * 0.18;
-          context.fillStyle = litColor;
-          context.beginPath();
-          context.arc(xs[i]!, renderYs[i]!, 4 + speedGlow * 6, 0, Math.PI * 2);
-          context.fill();
+          const bloomRadius = 10 + speedGlow * 26;
+          context.globalAlpha = speedGlow * 0.5;
+          context.globalCompositeOperation = "lighter";
+          context.drawImage(
+            glowSprite,
+            xs[i]! - bloomRadius,
+            renderYs[i]! - bloomRadius,
+            bloomRadius * 2,
+            bloomRadius * 2,
+          );
+          context.globalCompositeOperation = "source-over";
         }
 
         context.globalAlpha = BASE_ALPHA + glow * (LIT_ALPHA - BASE_ALPHA);
