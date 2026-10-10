@@ -1,12 +1,10 @@
 ---
 import { actions } from "astro:actions";
 import Page from "../Page.astro";
-import { i18n } from "@/i18n/utils";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
 
-const { lang } = await i18n(Astro.cookies);
 const memberId = Astro.params.member;
 const result = Astro.getActionResult(
   actions.deltaForceMember.updateDeltaForceMember,

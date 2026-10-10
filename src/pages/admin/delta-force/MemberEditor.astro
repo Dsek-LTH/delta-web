@@ -13,7 +13,7 @@ const { class: className, member } = Astro.props as {
   member: typeof deltaForceTable.$inferSelect;
 };
 
-const { lang, translate: t } = await i18n(Astro.cookies);
+const { lang, translate: t } = i18n(Astro.cookies);
 const result = Astro.getActionResult(
   actions.deltaForceMember.updateDeltaForceMember,
 );
@@ -131,7 +131,7 @@ const inputErrorEntries = inputErrors
         formData.append("studentId", deleteButton.value);
         formData.append("lang", lang);
 
-        const { data, error } =
+        const { error } =
           await actions.deltaForceMember.deleteDeltaForceMember(formData);
         if (error) {
           alert(

@@ -1,5 +1,4 @@
 ---
-import { actions } from "astro:actions";
 import Layout from "@/layouts/Layout.astro";
 import { i18n } from "@/i18n/utils";
 import { deltaForceTable } from "@/db/schema";
@@ -11,7 +10,7 @@ const { member } = Astro.props as {
   class: string;
   member: typeof deltaForceTable.$inferSelect;
 };
-const { lang, translate: t } = await i18n(Astro.cookies);
+const { translate: t } = i18n(Astro.cookies);
 ---
 
 <Layout
