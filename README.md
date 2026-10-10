@@ -63,6 +63,7 @@ All commands are run from the root of the project, from a terminal:
 | `bun dev`             | Starts local dev server at `localhost:8080`      |
 | `bun build`           | Build your production site to `./dist/`          |
 | `bun preview`         | Preview your build locally, before deploying     |
+| `bun check`           | Type-check `.astro` files and TypeScript         |
 | `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `bun astro -- --help` | Get help using the Astro CLI                     |
 | `bun lint`            | Lint source files with ESLint                    |
