@@ -67,7 +67,7 @@ const navItems = [
               <a
                 href={href}
                 data-nav-section-link={section ?? undefined}
-                class="block text-card-content hover:text-brand-primary p-2 data-[active]:text-brand-primary data-[active]:text-shadow-glow"
+                class="block text-card-content hover:text-brand-primary p-2 data-[active]:text-shadow-glow"
               >
                 {label}
               </a>
@@ -85,9 +85,8 @@ const navItems = [
         href="/#projektgrupp"
         data-nav-section-link="projektgrupp"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3 data-[active]:text-brand-primary data-[active]:text-shadow-glow",
-          Astro.url.pathname === "/project-group" &&
-            "text-brand-primary text-shadow-glow",
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          Astro.url.pathname === "/project-group" && "text-shadow-glow",
         )}
       >
         {t("navbar.project-group")}
@@ -98,9 +97,8 @@ const navItems = [
         href="/#studenter"
         data-nav-section-link="studenter"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3 data-[active]:text-brand-primary data-[active]:text-shadow-glow",
-          Astro.url.pathname === "/student" &&
-            "text-brand-primary text-shadow-glow",
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          Astro.url.pathname === "/student" && "text-shadow-glow",
         )}
       >
         {t("navbar.student")}
@@ -121,9 +119,8 @@ const navItems = [
         href="/#foretag"
         data-nav-section-link="foretag"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3 data-[active]:text-brand-primary data-[active]:text-shadow-glow",
-          Astro.url.pathname === "/company" &&
-            "text-brand-primary text-shadow-glow",
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          Astro.url.pathname === "/company" && "text-shadow-glow",
         )}>{t("navbar.company")}</a
       >
     </li>
@@ -132,9 +129,8 @@ const navItems = [
         href="/#besokare"
         data-nav-section-link="besokare"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3 data-[active]:text-brand-primary data-[active]:text-shadow-glow",
-          Astro.url.pathname === "/attendees" &&
-            "text-brand-primary text-shadow-glow",
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          Astro.url.pathname === "/attendees" && "text-shadow-glow",
         )}>{t("navbar.attendees")}</a
       >
     </li>
