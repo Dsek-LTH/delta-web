@@ -59,7 +59,7 @@ const pricingRows = [
     values: {
       delta: t("company.pricing.value.standardBooth"),
       deltaPlusPlus: t("company.pricing.value.standardBooth"),
-      deltaSharp: t("company.pricing.value.specialBooth"),
+      deltaSharp: t("company.pricing.value.standardBooth"),
       nonprofit: t("company.pricing.value.standardBooth"),
       startup: t("company.pricing.value.standardBooth"),
     },
@@ -68,8 +68,8 @@ const pricingRows = [
     label: t("company.pricing.row.boothPlacement"),
     values: {
       delta: false,
-      deltaPlusPlus: false,
-      deltaSharp: t("company.pricing.value.boothPlacement"),
+      deltaPlusPlus: t("company.pricing.value.centralBooth"),
+      deltaSharp: t("company.pricing.value.chooseBooth"),
       nonprofit: false,
       startup: false,
     },
@@ -78,8 +78,8 @@ const pricingRows = [
     label: t("company.pricing.row.table"),
     values: {
       delta: "1",
-      deltaPlusPlus: "2",
-      deltaSharp: t("company.pricing.value.unlimited"),
+      deltaPlusPlus: "1",
+      deltaSharp: "1",
       nonprofit: "1",
       startup: "1",
     },
@@ -88,8 +88,8 @@ const pricingRows = [
     label: t("company.pricing.row.chair"),
     values: {
       delta: 2,
-      deltaPlusPlus: 4,
-      deltaSharp: t("company.pricing.value.unlimited"),
+      deltaPlusPlus: 2,
+      deltaSharp: 2,
       nonprofit: 1,
       startup: 1,
     },
@@ -115,16 +115,6 @@ const pricingRows = [
     },
   },
   {
-    label: t("company.pricing.row.tv"),
-    values: {
-      delta: false,
-      deltaPlusPlus: true,
-      deltaSharp: true,
-      nonprofit: false,
-      startup: false,
-    },
-  },
-  {
     label: t("company.pricing.row.storageDelivery"),
     values: {
       delta: true,
@@ -138,8 +128,8 @@ const pricingRows = [
     label: t("company.pricing.row.lunch"),
     values: {
       delta: 2,
-      deltaPlusPlus: 4,
-      deltaSharp: t("company.pricing.value.unlimited"),
+      deltaPlusPlus: 2,
+      deltaSharp: 2,
       nonprofit: false,
       startup: false,
     },
@@ -148,8 +138,8 @@ const pricingRows = [
     label: t("company.pricing.row.breakfast"),
     values: {
       delta: 2,
-      deltaPlusPlus: 4,
-      deltaSharp: t("company.pricing.value.unlimited"),
+      deltaPlusPlus: 2,
+      deltaSharp: 2,
       nonprofit: false,
       startup: false,
     },
@@ -158,38 +148,8 @@ const pricingRows = [
     label: t("company.pricing.row.afterParty"),
     values: {
       delta: 2,
-      deltaPlusPlus: 6,
-      deltaSharp: t("company.pricing.value.unlimited"),
-      nonprofit: false,
-      startup: false,
-    },
-  },
-  {
-    label: t("company.pricing.row.afterPartySponsor"),
-    values: {
-      delta: false,
-      deltaPlusPlus: false,
-      deltaSharp: true,
-      nonprofit: false,
-      startup: false,
-    },
-  },
-  {
-    label: t("company.pricing.row.afterPartyFoodTicket"),
-    values: {
-      delta: false,
-      deltaPlusPlus: false,
-      deltaSharp: 100,
-      nonprofit: false,
-      startup: false,
-    },
-  },
-  {
-    label: t("company.pricing.row.afterPartyDrinkTicket"),
-    values: {
-      delta: false,
-      deltaPlusPlus: false,
-      deltaSharp: 100,
+      deltaPlusPlus: 2,
+      deltaSharp: 2,
       nonprofit: false,
       startup: false,
     },
@@ -208,18 +168,8 @@ const pricingRows = [
     label: t("company.pricing.row.parking"),
     values: {
       delta: 2,
-      deltaPlusPlus: 4,
-      deltaSharp: t("company.pricing.value.unlimited"),
-      nonprofit: false,
-      startup: false,
-    },
-  },
-  {
-    label: t("company.pricing.row.priorityHeadSponsor"),
-    values: {
-      delta: false,
-      deltaPlusPlus: false,
-      deltaSharp: true,
+      deltaPlusPlus: 2,
+      deltaSharp: 2,
       nonprofit: false,
       startup: false,
     },
@@ -255,7 +205,27 @@ const pricingRows = [
     },
   },
   {
-    label: t("company.pricing.row.social"),
+    label: t("company.pricing.row.caseEvening"),
+    values: {
+      delta: false,
+      deltaPlusPlus: true,
+      deltaSharp: true,
+      nonprofit: false,
+      startup: false,
+    },
+  },
+  {
+    label: t("company.pricing.row.studentSessions"),
+    values: {
+      delta: false,
+      deltaPlusPlus: true,
+      deltaSharp: true,
+      nonprofit: false,
+      startup: false,
+    },
+  },
+  {
+    label: t("company.pricing.row.lunchLecture"),
     values: {
       delta: false,
       deltaPlusPlus: false,
