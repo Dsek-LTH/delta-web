@@ -60,17 +60,19 @@ const lang = getLang(Astro.cookies);
       )
     }
 
-    <Header />
+    <div class="flex min-h-dvh flex-col gap-6 lg:gap-0">
+      <Header />
 
-    <main
-      class={twMerge(
-        "flex flex-col items-center justify-center w-full min-h-dvh shrink-0",
-        className,
-      )}
-      {...rest}
-    >
-      <slot />
-    </main>
+      <main
+        class={twMerge(
+          "flex flex-col items-center justify-center w-full flex-1 shrink-0",
+          className,
+        )}
+        {...rest}
+      >
+        <slot />
+      </main>
+    </div>
 
     <Footer />
   </body>

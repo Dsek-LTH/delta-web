@@ -13,7 +13,7 @@ const { class: className, member } = Astro.props as {
   member: typeof deltaForceTable.$inferSelect;
 };
 
-const { lang, translate: t } = await i18n(Astro.cookies);
+const { lang, translate: t } = i18n(Astro.cookies);
 const result = Astro.getActionResult(
   actions.deltaForceMember.updateDeltaForceMember,
 );
@@ -25,18 +25,12 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
-
-const loggedIn = Astro.locals.session;
-
-if (!loggedIn) {
-  return Astro.redirect(`/admin`);
-}
 ---
 
 <form
   class={twMerge(
     "flex flex-col gap-4 h-fit w-full frosted-glass p-4 rounded-lg bg-card/50 transition-all duration-300 ease-out",
-    classname,
+    className,
   )}
   action={actions.deltaForceMember.updateDeltaForceMember}
   method="POST"
@@ -137,7 +131,7 @@ if (!loggedIn) {
         formData.append("studentId", deleteButton.value);
         formData.append("lang", lang);
 
-        const { data, error } =
+        const { error } =
           await actions.deltaForceMember.deleteDeltaForceMember(formData);
         if (error) {
           alert(

@@ -1,6 +1,6 @@
 ---
 import { i18n } from "@/i18n/utils";
-const { lang, translate: t } = await i18n(Astro.cookies);
+const { translate: t } = i18n(Astro.cookies);
 import { twMerge } from "tailwind-merge";
 
 const { class: className, ...rest } = Astro.props as {
@@ -26,7 +26,7 @@ const loggedIn = Astro.locals.session;
 
   document.getElementById("login-btn")?.addEventListener("click", async () => {
     try {
-      const response = await authClient.signIn.oauth2({
+      await authClient.signIn.oauth2({
         providerId: "authentik",
         callbackURL: window.location.href,
       });
@@ -37,7 +37,7 @@ const loggedIn = Astro.locals.session;
 
   document.getElementById("logout-btn")?.addEventListener("click", async () => {
     try {
-      const response = await authClient.signOut();
+      await authClient.signOut();
     } catch (err) {
       console.error("Error starting oauth2 sign-out:", err);
     }

@@ -76,10 +76,18 @@
     100% {
       opacity: 1;
     }
+
     50% {
       opacity: 0;
     }
   }
+}
+
+@utility text-shadow-glow {
+  text-shadow: 0 0 10px var(--color-white);
+}
+@utility text-shadow-glow-pink {
+  text-shadow: 0 0 10px var(--brand-pink);
 }
 
 html[data-theme="dark"] {
@@ -135,7 +143,7 @@ html[data-theme="dark"] {
     isolation: isolate;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
     gap: 3rem;
 
