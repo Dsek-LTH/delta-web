@@ -22,8 +22,10 @@ const { lang, translate: t } = i18n(Astro.cookies);
   class="flex flex-col items-center gap-12 px-6 py-12 mx-auto max-w-7xl lg:px-16"
 >
   <section class="frosted-glass text-center p-4 rounded-xl">
-    <h1 class="text-5xl font-bold italic text-brand-secondary p-4">
-      <Logo />
+    <h1
+      class="text-5xl font-bold italic text-brand-secondary p-4 text-shadow-smooth dark:text-shadow-none"
+    >
+      <Logo class="mr-6" />
       {t("company.hero.forCompanies")}
     </h1>
 
