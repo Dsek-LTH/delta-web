@@ -11,4 +11,5 @@ export const deltaForceTable = sqliteTable("delta_force_table", {
   }).notNull(),
   email: text().notNull().unique(),
   linkedin: text().notNull(),
+  github: text(),
 });
