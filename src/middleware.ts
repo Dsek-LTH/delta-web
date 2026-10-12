@@ -17,7 +17,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   });
 
   if (pathname.startsWith("/admin/") && !isAuthed) {
-    return new Response("Unauthorized", { status: 401 });
+    const redirect = encodeURIComponent(
+      `${pathname}${new URL(context.request.url).search}`,
+    );
+    return context.rewrite(`/login?redirect=${redirect}`);
   }
 
   if (action && !action.name.startsWith("language") && !isAuthed) {
