@@ -1,0 +1,35 @@
+{
+  "prefix": "admin.attendees",
+  "en": {
+    "title": "Manage attendees",
+    "description": "Manage companies attending the fair",
+    "list-title": "Attendees",
+    "no-attendees": "No attendees found.",
+    "attendee.name": "Name",
+    "attendee.description-sv": "Description (Swedish)",
+    "attendee.description-en": "Description (English)",
+    "attendee.industry": "Industry",
+    "attendee.tags": "Tags",
+    "attendee.contact": "Contact",
+    "attendee.linkedin": "LinkedIn",
+    "save": "Save",
+    "delete": "Delete",
+    "back": "Back"
+  },
+  "sv": {
+    "title": "Hantera deltagare",
+    "description": "Hantera företag som deltar på mässan",
+    "list-title": "Deltagare",
+    "no-attendees": "Inga deltagare hittades.",
+    "attendee.name": "Namn",
+    "attendee.description-sv": "Beskrivning (svenska)",
+    "attendee.description-en": "Beskrivning (engelska)",
+    "attendee.industry": "Bransch",
+    "attendee.tags": "Taggar",
+    "attendee.contact": "Kontakt",
+    "attendee.linkedin": "LinkedIn",
+    "save": "Spara",
+    "delete": "Ta bort",
+    "back": "Tillbaka"
+  }
+}

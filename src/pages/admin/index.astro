@@ -19,6 +19,12 @@ const { translate: t } = i18n(Astro);
           <a class="btn btn-ghost" href={`/admin/delta-force`}>
             {t("admin.delta-force")}
           </a>
+          <a
+            class="btn btn-primary frosted-glass text-card-content rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50"
+            href={`/admin/attendees`}
+          >
+            {t("admin.attendees")}
+          </a>
           <video class="w-full max-w-3xl rounded-lg" controls autoplay loop>
             <source src={propaganda} type="video/mp4" />
           </video>
