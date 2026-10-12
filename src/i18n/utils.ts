@@ -3,28 +3,32 @@ import { type AstroGlobal } from "astro";
 
 function resolveLang(candidate: string): keyof typeof ui | null {
   const normalized = candidate.trim().toLowerCase();
-  if (normalized in ui) return normalized as keyof typeof ui;
+  if (Object.hasOwn(ui, normalized)) return normalized as keyof typeof ui;
 
   const baseLang = normalized.split("-")[0] as keyof typeof ui;
-  if (baseLang in ui) return baseLang;
+  if (Object.hasOwn(ui, baseLang)) return baseLang;
 
   return null;
 }
 
-export function getLang(astro: Readonly<AstroGlobal>): keyof typeof ui {
+export function getLang(
+  astro: Pick<AstroGlobal, "cookies" | "request">,
+): keyof typeof ui {
   const { cookies, request } = astro;
   const lang = cookies?.get("lang")?.value;
-  if (lang && lang in ui) return lang as keyof typeof ui;
+  if (lang && Object.hasOwn(ui, lang)) return lang as keyof typeof ui;
 
   const preferredLangs =
     request.headers
       .get("accept-language")
       ?.split(",")
       .map((entry) => {
-        const [lang, qPart] = entry.trim().split(";");
-        const q = qPart ? parseFloat(qPart.replace("q=", "")) : 1.0;
-        return { lang: lang.toLowerCase(), q };
+        const [lang, ...params] = entry.trim().split(";");
+        const qMatch = params.join(";").match(/q=([\d.]+)/i);
+        const q = qMatch ? Number.parseFloat(qMatch[1]) : 1;
+        return { lang: lang.toLowerCase(), q: Number.isFinite(q) ? q : 0 };
       })
+      .filter(({ lang, q }) => lang && q > 0)
       .filter(({ lang }) => lang)
       .sort((a, b) => b.q - a.q)
       .map(({ lang }) => lang) ?? [];

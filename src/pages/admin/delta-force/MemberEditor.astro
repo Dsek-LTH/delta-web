@@ -151,10 +151,6 @@ const memberImage: ImageMetadata = await getMemberImage(member).catch(
 <script>
   import { actions } from "astro:actions";
   import { navigate } from "astro:transitions/client";
-  const langInput = document.querySelector(
-    "input[name='lang']",
-  ) as HTMLInputElement | null;
-  const lang = langInput?.value ?? "sv";
 
   const deleteButton: HTMLButtonElement | null = document.querySelector(
     "button[name='delete']",
@@ -168,7 +164,6 @@ const memberImage: ImageMetadata = await getMemberImage(member).catch(
       ) {
         const formData = new FormData();
         formData.append("studentId", deleteButton.value);
-        formData.append("lang", lang);
 
         const { error } =
           await actions.deltaForceMember.deleteDeltaForceMember(formData);
