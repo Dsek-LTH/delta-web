@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { Check, ChevronDown } from "@lucide/astro";
 
 import Logo from "@/components/Logo.astro";
@@ -7,6 +8,7 @@ import PackageTitle from "@/components/company/PackageTitle.astro";
 import PackageDetails from "@/components/company/PackageDetails.astro";
 import PricingTable from "@/components/company/PricingTable.astro";
 import { i18n } from "@/i18n/utils";
+import GalleryTalk from "@/assets/tekfok/tekfok26_0014.webp";
 
 const { translate: t } = i18n(Astro);
 /* ------------------------------------------------------------------ *
@@ -161,48 +163,53 @@ const deltaTiers = tiers.slice(2, 5);
   data-nav-section="foretag"
   class="flex w-full max-w-7xl flex-col items-center gap-16 border-t border-border/60 px-6 py-24 lg:gap-20 lg:px-16"
 >
-  <div
-    class="frosted-glass w-full max-w-5xl rounded-2xl px-6 py-12 text-center reveal lg:px-16 lg:py-16"
-  >
-    <h2 class="text-4xl font-bold text-card-content lg:text-6xl">
-      <Logo animate />
-      <span class="ms-[0.5em] italic">{t("company.hero.forCompanies")}</span>
-    </h2>
-
-    <p
-      class="mx-auto mt-10 max-w-3xl leading-relaxed text-card-content lg:mt-12"
+  <div class="grid w-full items-center gap-8 lg:grid-cols-[1.5fr_1fr] lg:gap-0">
+    <div
+      class="frosted-glass rounded-2xl px-8 py-10 reveal lg:py-12 lg:pr-32 lg:pl-12"
     >
-      {t("company.intro.attend")}
-    </p>
-  </div>
+      <h2 class="text-3xl font-bold text-card-content lg:text-4xl">
+        <Logo animate />
+        <span class="ms-[0.5em] italic">{t("company.hero.forCompanies")}</span>
+      </h2>
 
-  <div
-    class="flex w-full max-w-3xl flex-col items-center gap-4 text-center leading-relaxed reveal"
-  >
-    <p class="text-card-content">
-      {t("company.intro.combine")}{" "}
+      <p class="mt-8 max-w-xl leading-relaxed text-card-content">
+        {t("company.intro.attend")}
+      </p>
+
+      <p class="mt-4 max-w-md text-sm leading-relaxed text-card-content-muted">
+        {t("company.intro.combine")}{" "}
+        <a
+          href="mailto:delta@dsek.se"
+          class="text-backdrop-content-highlight transition-colors hover:text-backdrop-content-highlight/80"
+          >delta@dsek.se</a
+        >
+      </p>
+
       <a
         href="mailto:delta@dsek.se"
-        class="font-semibold text-brand-primary underline transition-colors hover:text-brand-primary/80"
-        >delta@dsek.se</a
+        class="btn btn-accent mt-8 rounded-full px-6 py-3 text-lg"
       >
-    </p>
-    <p class="text-sm text-card-content-muted">
-      {t("company.intro.websiteBefore")}{" "}
-      <a
-        href="https://www.dsek.se"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-backdrop-content-highlight transition-colors hover:text-backdrop-content-highlight/80"
-        >{t("company.intro.websiteLink")}</a
-      >{t("company.intro.websiteAfter")}
-    </p>
-    <a
-      href="mailto:delta@dsek.se"
-      class="btn btn-ghost mt-2 rounded-full px-6 py-3"
-    >
-      {t("company.package.contact")}
-    </a>
+        {t("company.package.contact")}
+      </a>
+
+      <p class="mt-6 max-w-md text-xs leading-relaxed text-card-content-muted">
+        {t("company.intro.websiteBefore")}{" "}
+        <a
+          href="https://www.dsek.se"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-backdrop-content-highlight transition-colors hover:text-backdrop-content-highlight/80"
+          >{t("company.intro.websiteLink")}</a
+        >{t("company.intro.websiteAfter")}
+      </p>
+    </div>
+    <Image
+      src={GalleryTalk}
+      alt={t("landing.gallery.alt.talk")}
+      width={800}
+      height={1000}
+      class="z-10 h-64 w-full rounded-2xl object-cover shadow-xl ring-1 ring-border lg:-ml-24 lg:h-80 lg:w-[calc(100%+6rem)]"
+    />
   </div>
 
   <div id="pricing" class="flex w-full flex-col gap-10">
