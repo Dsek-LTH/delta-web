@@ -26,10 +26,11 @@ export const auth = betterAuth({
           providerId: "authentik",
           clientId: env.BETTER_AUTH_AUTHENTIK_ID!,
           clientSecret: env.BETTER_AUTH_AUTHENTIK_SECRET!,
-          discoveryUrl: env.BETTER_AUTH_AUTHENTIK_DISCOVERY_ENDPOINT,
-          issuer: env.BETTER_AUTH_AUTHENTIK_ISSUER!,
           authorizationUrl: env.BETTER_AUTH_AUTHENTIK_AUTHORIZE_ENDPOINT,
           tokenUrl: env.BETTER_AUTH_AUTHENTIK_TOKEN_ENDPOINT,
+          userInfoUrl:
+            env.BETTER_AUTH_AUTHENTIK_USERINFO_ENDPOINT ??
+            `${env.BETTER_AUTH_AUTHENTIK_ISSUER}userinfo/`,
           scopes: ["openid", "profile", "email"],
         },
       ],

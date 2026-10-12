@@ -8,7 +8,7 @@ import { env } from "./src/envvars.ts";
 // https://astro.build/config
 export default defineConfig({
   vite: {
-    plugins: [tailwindcss()],
+    plugins: /** @type {import("vite").PluginOption[]} */ (tailwindcss()),
   },
   adapter: bun(),
   output: "server",
@@ -24,5 +24,9 @@ export default defineConfig({
         protocol: "https",
       },
     ],
+    actionBodySizeLimit: 12 * 1024 * 1024, // 12 MB
+  },
+  image: {
+    remotePatterns: [{ protocol: "https" }],
   },
 });

@@ -16,6 +16,13 @@ services:
       - BETTER_AUTH_SECRET="smoke-test-placeholder-secret-at-least-32-chars!!"
       - BETTER_AUTH_AUTHENTIK_ID=""
       - BETTER_AUTH_AUTHENTIK_SECRET=""
+      - MINIO_PORT=443
+      - MINIO_USE_SSL=true
+      - MINIO_BUCKET_PUBLIC=delta-public
+      - MINIO_ENDPOINT=minio-sandbox.dsek.se
+      - MINIO_USERNAME=DsekMinioSandboxUser
+      - MINIO_PASSWORD=
+
     volumes:
       - delta-web-data:/data
     depends_on:
