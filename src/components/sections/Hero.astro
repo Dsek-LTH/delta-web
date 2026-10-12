@@ -40,13 +40,113 @@ const calendarUrl =
 <!-- Hero — the top of the one-page scroll -->
 <section
   id="top"
-  class="mx-auto flex w-full max-w-7xl flex-col items-center gap-12 px-6 pb-24 lg:px-16"
+  class="mx-auto flex w-full max-w-7xl flex-col items-center gap-16 px-6 pb-24 lg:gap-20 lg:px-16"
 >
-  <div class="text-center animate-rise">
-    <h1 aria-label="DELTA" role="img" class="contents text-7xl lg:text-9xl">
-      <Logo animate />
-    </h1>
-    <Countdown class="lg:text-4xl text-2xl" />
+  <div
+    class="grid w-full content-center items-center gap-14 min-h-[calc(100dvh-6.5rem)] lg:min-h-[calc(100dvh-5rem)] lg:grid-cols-[1.25fr_0.75fr]"
+  >
+    <div class="flex flex-col items-start gap-6 text-left animate-rise">
+      <span class="font-mono text-sm text-card-content-muted">
+        {
+          fairDate.toLocaleDateString(lang, {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })
+        } · E-Huset, LTH
+      </span>
+      <h1
+        aria-label="DELTA"
+        role="img"
+        class="contents text-7xl leading-none lg:text-9xl"
+      >
+        <Logo animate />
+      </h1>
+      <p
+        class="font-mono text-base text-card-content-muted lg:text-lg"
+        aria-live="off"
+      >
+        <span class="sr-only">{t("landing.typing.1")}</span>
+        <span aria-hidden="true">
+          <span
+            data-typing
+            data-lines={JSON.stringify([
+              t("landing.typing.1"),
+              t("landing.typing.2"),
+              t("landing.typing.3"),
+            ])}></span>
+          <span
+            class="ml-1 inline-block h-[1em] w-[0.5ch] animate-caret-blink bg-brand-primary align-middle"
+          ></span>
+        </span>
+      </p>
+      <p class="max-w-xl text-lg text-balance text-card-content-muted">
+        {t("landing.head.description")}
+      </p>
+      <div class="flex flex-wrap items-center gap-3">
+        <a
+          href="#foretag"
+          class="group btn btn-accent relative overflow-hidden rounded-full px-6 py-3 text-lg hover:-translate-y-0.5 hover:-rotate-1 hover:scale-[1.03] active:rotate-0"
+        >
+          <span class="relative z-10 flex items-center gap-2">
+            {t("landing.cta.packages")}
+            <span
+              aria-hidden="true"
+              class="inline-block transition-transform duration-200 group-hover:translate-x-1"
+            >
+              →
+            </span>
+          </span>
+          <span
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-500 group-hover:translate-x-full"
+          ></span>
+        </a>
+        <a
+          href="#studenter"
+          class="group btn btn-ghost relative overflow-hidden rounded-full px-6 py-3 text-lg hover:-translate-y-0.5 hover:rotate-1 hover:scale-[1.03] active:rotate-0"
+        >
+          <span class="relative z-10 flex items-center gap-2">
+            <span
+              aria-hidden="true"
+              class="inline-block text-brand-primary group-hover:animate-bounce"
+            >
+              Δ
+            </span>
+            <span>{t("student.title")}</span>
+          </span>
+          <span
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-brand-primary/10 to-transparent transition-transform duration-500 group-hover:translate-x-full"
+          ></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: photo stack -->
+    <div
+      class="relative mx-auto w-full max-w-md pb-12 animate-rise [animation-delay:120ms]"
+    >
+      <Image
+        src={GalleryFormula}
+        alt={t("landing.gallery.alt.formula")}
+        width={600}
+        height={450}
+        class="w-[78%] -rotate-3 rounded-2xl border border-border object-cover shadow-lg"
+      />
+      <Image
+        src={GalleryGroup}
+        alt={t("landing.gallery.alt.group")}
+        width={600}
+        height={450}
+        class="absolute -bottom-4 right-0 w-[60%] rotate-2 rounded-2xl border border-border object-cover shadow-lg"
+      />
+      <div
+        class="frosted-glass absolute bottom-2 left-0 rounded-full px-5 py-2"
+      >
+        <Countdown class="text-xl lg:text-2xl" />
+      </div>
+    </div>
   </div>
 
   <div
@@ -144,15 +244,6 @@ const calendarUrl =
     </Card>
   </div>
 
-  <a
-    href="mailto:delta@dsek.se"
-    target="_blank"
-    class="frosted-glass text-card-content font-bold py-4 px-8 rounded-full lg:text-5xl text-3xl flex items-center lg:gap-8 gap-4 no-underline transition-colors duration-200 animate-rise [animation-delay:240ms] hover:bg-card-highlight"
-  >
-    <span>{t("landing.button.attend")}</span>
-    <Logo />
-  </a>
-
   <div class="grid w-full grid-cols-2 gap-3 reveal sm:grid-cols-4 sm:gap-4">
     <Image
       src={GalleryFormula}
@@ -184,3 +275,39 @@ const calendarUrl =
     />
   </div>
 </section>
+
+<script>
+  // Typed hero line: types each phrase, pauses, deletes and moves on.
+  const typingTarget = document.querySelector<HTMLElement>("[data-typing]");
+  if (typingTarget) {
+    const lines: string[] = JSON.parse(typingTarget.dataset.lines ?? "[]");
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (reducedMotion || lines.length === 0) {
+      typingTarget.textContent = lines[0] ?? "";
+    } else {
+      let line = 0;
+      let pos = 0;
+      let deleting = false;
+      const tick = () => {
+        const current = lines[line]!;
+        pos += deleting ? -1 : 1;
+        typingTarget.textContent = current.slice(0, pos);
+
+        let delay = deleting ? 22 : 45 + Math.random() * 40;
+        if (!deleting && pos === current.length) {
+          deleting = true;
+          delay = 2600;
+        } else if (deleting && pos === 0) {
+          deleting = false;
+          line = (line + 1) % lines.length;
+          delay = 400;
+        }
+        window.setTimeout(tick, delay);
+      };
+      window.setTimeout(tick, 1400);
+    }
+  }
+</script>
