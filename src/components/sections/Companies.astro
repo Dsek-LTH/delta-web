@@ -8,7 +8,7 @@ import PackageTitle from "@/components/company/PackageTitle.astro";
 import PackageDetails from "@/components/company/PackageDetails.astro";
 import PricingTable from "@/components/company/PricingTable.astro";
 import { i18n } from "@/i18n/utils";
-import GalleryTalk from "@/assets/tekfok/tekfok26_0014.webp";
+import CompanyImage from "@/assets/tekfok/tekfok26_0015.webp";
 
 const { translate: t } = i18n(Astro);
 /* ------------------------------------------------------------------ *
@@ -204,7 +204,7 @@ const deltaTiers = tiers.slice(2, 5);
       </p>
     </div>
     <Image
-      src={GalleryTalk}
+      src={CompanyImage}
       alt={t("landing.gallery.alt.talk")}
       width={800}
       height={1000}
