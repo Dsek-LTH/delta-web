@@ -63,7 +63,7 @@ export async function seedDeltaForce() {
       lastName: "Pettersson",
       role: "relations",
       email: "alfred@delta.dsek.se",
-      linkedin: "https://www.youtube.com/watch?v=XfELJU1mRMg",
+      linkedin: "#",
     },
     {
       studentId: "er0811ni-s",
@@ -128,7 +128,7 @@ export async function seedDeltaForce() {
       lastName: "Norrby",
       role: "relations",
       email: "loe@delta.dsek.se",
-      linkedin: "https://www.youtube.com/watch?v=XfELJU1mRMg",
+      linkedin: "#",
     },
     {
       studentId: "jo6554we-s",
