@@ -1,0 +1,30 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ErrorPage from "@/components/ErrorPage.astro";
+import AuthButton from "@/components/AuthButton.astro";
+import { i18n } from "@/i18n/utils";
+
+const { translate: t } = i18n(Astro);
+
+const redirectParam = Astro.url.searchParams.get("redirect");
+const redirectTo =
+  redirectParam &&
+  redirectParam.startsWith("/") &&
+  !redirectParam.startsWith("//") &&
+  !redirectParam.startsWith("/login")
+    ? redirectParam
+    : "/admin";
+
+if (Astro.locals.session) {
+  return Astro.redirect(redirectTo);
+}
+---
+
+<Layout title={t("login.title")} description={t("login.description")}>
+  <ErrorPage title={t("login.title")}>
+    <p>{t("login.message")}</p>
+    <div class="flex justify-center">
+      <AuthButton callbackURL={redirectTo} />
+    </div>
+  </ErrorPage>
+</Layout>

@@ -1,0 +1,13 @@
+{
+  "prefix": "login",
+  "en": {
+    "title": "Login required",
+    "description": "Log in to access this page",
+    "message": "You need to be logged in to view this page."
+  },
+  "sv": {
+    "title": "Inloggning krävs",
+    "description": "Logga in för att komma åt den här sidan",
+    "message": "Du måste vara inloggad för att visa den här sidan."
+  }
+}
