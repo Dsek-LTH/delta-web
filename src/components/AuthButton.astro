@@ -26,8 +26,8 @@ const loggedIn = Astro.locals.session;
 
   document.getElementById("login-btn")?.addEventListener("click", async () => {
     try {
-      await authClient.signIn.oauth2({
-        providerId: "authentik",
+      await authClient.signIn.social({
+        provider: "authentik",
         callbackURL: window.location.href,
       });
     } catch (err) {

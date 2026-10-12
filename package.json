@@ -29,9 +29,10 @@
     "@wyattjoh/astro-bun-adapter": "^2.1.1",
     "astro": "^7.2.2",
     "astro-icon": "^1.1.5",
-    "better-auth": "^1.6.29",
+    "better-auth": "^1.7.7",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^1.0.0-rc.5-ab785fc",
+    "minio": "^8.0.7",
     "sharp": "^0.35.3",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.3"
