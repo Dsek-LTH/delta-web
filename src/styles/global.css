@@ -1,76 +1,79 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:wght@100..900&family=Noto+Sans+Mono:wght@100..900&display=swap");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  /* Brand identity */
+  /* Brand primitives -- reference these only through the semantic tokens below */
   --brand-pink: #f280a1;
-  --brand-white: var(--color-white);
+  --brand-pink-strong: #c9457a;
+  --brand-purple: #9966cc;
   --brand-blue: #002147;
 
-  --brand-purple: #9966cc;
+  /* Accent -- headings, active states, focus rings */
+  --color-brand-primary: var(--brand-pink-strong);
 
-  /* Semantic tokens */
-  --color-brand-primary: var(--brand-pink);
-  --color-brand-secondary: var(--color-white);
-  --color-brand-accent: var(--brand-blue);
-
-  --color-backdrop: var(--color-white);
+  /* Text */
   --color-backdrop-content: var(--color-slate-950);
-  --color-backdrop-content-muted: var(--color-slate-700);
-  --color-backdrop-content-highlight: var(--color-indigo-800);
+  --color-backdrop-content-muted: var(--color-slate-600);
+  --color-backdrop-content-highlight: var(--brand-blue);
 
-  --color-card: color-mix(in srgb, var(--color-slate-300) 40%, transparent);
+  /* Surfaces */
+  --color-backdrop: var(--color-white);
+  --color-card: color-mix(in srgb, var(--color-white) 55%, transparent);
+  --color-card-edge: color-mix(in srgb, var(--color-white) 70%, transparent);
   --color-card-content: var(--color-backdrop-content);
   --color-card-content-muted: var(--color-backdrop-content-muted);
   --color-card-content-highlight: var(--color-backdrop-content-highlight);
   --color-card-highlight: color-mix(
     in srgb,
-    var(--color-fuchsia-100) 40%,
+    var(--color-white) 85%,
     transparent
   );
-  --color-card-shimmer: color-mix(
-    in srgb,
-    var(--color-fuchsia-100) 20%,
-    transparent
-  );
-  --color-glow: var(--brand-purple);
+  --color-card-shimmer: color-mix(in srgb, var(--brand-pink) 12%, transparent);
 
   /* Structural */
-  --color-border: color-mix(
-    in srgb,
-    var(--color-backdrop-content) 40%,
-    transparent
-  );
+  --color-border: color-mix(in srgb, var(--color-slate-950) 10%, transparent);
 
   /* Feedback */
-  /* TODO: Implement feedback colors when needed */
+  --color-destructive: var(--color-red-600);
 
-  /* Misc */
-  --color-destructive: var(--color-red-500);
-  --color-bronze: #cd7f32;
-  --color-gold: #d4af37;
-  --color-sapphire: #2563eb;
-  --color-amethyst: #c026d3;
-  --color-emerald: #50c878;
+  /* Package tiers -- light values are darkened for contrast; dark theme restores the bright ones below */
+  --color-bronze: #a5611f;
+  --color-silver: #6b7280;
+  --color-gold: #8a6a00;
+  --color-diamond: #0e7490;
+  --color-amethyst: #7c3aed;
+  --color-emerald: #157f47;
 
   /* Background */
-  --color-gradient-source: var(--color-fuchsia-200);
-  --color-gradient-goal: var(--color-fuchsia-100);
+  --color-gradient-source: var(--color-fuchsia-100);
+  --color-gradient-goal: var(--color-backdrop);
   --gradient-backdrop: radial-gradient(
-    circle at 90% 90%,
+    circle at 80% 0%,
     var(--color-gradient-source) 0%,
-    var(--color-gradient-goal) 100%
+    var(--color-gradient-goal) 55%
   );
 
-  --font-noto-sans: "Noto Sans", sans-serif;
-  --font-noto-sans-mono: "Noto Sans Mono", sans-serif;
-  --font-roboto: "Roboto", sans-serif;
-  --font-inter: "Inter", sans-serif;
+  /* Glow -- only for active/current states */
+  --color-glow: var(--brand-purple);
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Noto Sans", "Inter", sans-serif;
+  --font-mono: "Noto Sans Mono", ui-monospace, monospace;
 
   --animate-caret-blink: caret-blink 1s step-end infinite;
+  --animate-rise: rise 450ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  --ease-strong: cubic-bezier(0.23, 1, 0.32, 1);
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
 
   @keyframes caret-blink {
     0%,
@@ -84,52 +87,48 @@
   }
 }
 
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-brand-primary: var(--brand-pink);
+
+  --color-backdrop: var(--color-slate-950);
+  --color-backdrop-content: var(--color-slate-100);
+  --color-backdrop-content-muted: var(--color-slate-400);
+  --color-backdrop-content-highlight: var(--color-violet-400);
+
+  --color-card: color-mix(in srgb, var(--color-slate-900) 60%, transparent);
+  --color-card-edge: color-mix(in srgb, var(--color-white) 8%, transparent);
+  --color-card-content-muted: var(--color-slate-400);
+  --color-card-highlight: color-mix(
+    in srgb,
+    var(--color-slate-800) 80%,
+    transparent
+  );
+  --color-card-shimmer: color-mix(in srgb, var(--color-white) 8%, transparent);
+
+  --color-border: color-mix(in srgb, var(--color-white) 14%, transparent);
+  --color-destructive: var(--color-red-500);
+
+  --color-bronze: #cd7f32;
+  --color-silver: #c0c0c0;
+  --color-gold: #d4af37;
+  --color-diamond: #b9f2ff;
+  --color-amethyst: #c4b5fd;
+  --color-emerald: #50c878;
+
+  --color-gradient-source: var(--color-indigo-950);
+  --color-gradient-goal: var(--color-backdrop);
+
+  --color-glow: var(--color-white);
+}
+
 @utility text-shadow-glow {
   text-shadow: 0 0 10px var(--color-glow);
 }
 
-@utility text-shadow-glow-secondary {
-  text-shadow: 0 0 10px var(--brand-secondary);
-}
-
 @utility text-shadow-glow-pink {
   text-shadow: 0 0 10px var(--brand-pink);
-}
-@utility text-shadow-smooth {
-  text-shadow:
-    0 1px 2px rgb(0 0 0 / 0.25),
-    0 3px 8px rgb(0 0 0 / 0.3),
-    0 6px 20px rgb(0 0 0 / 0.35);
-}
-
-html[data-theme="dark"] {
-  --color-backdrop: var(--color-slate-900);
-  --color-backdrop-content: var(--color-fuchsia-50);
-  --color-backdrop-content-muted: var(--color-slate-400);
-  --color-backdrop-content-highlight: var(--brand-purple);
-
-  --color-card: color-mix(in srgb, var(--color-slate-900) 60%, transparent);
-  --color-card-content-muted: var(--color-slate-500);
-  --color-card-highlight: color-mix(
-    in srgb,
-    var(--color-slate-300) 20%,
-    transparent
-  );
-  --color-card-shimmer: color-mix(
-    in srgb,
-    var(--color-slate-300) 10%,
-    transparent
-  );
-
-  --color-border: color-mix(
-    in srgb,
-    var(--color-backdrop-content) 10%,
-    transparent
-  );
-
-  --color-gradient-source: var(--color-indigo-950);
-  --color-gradient-goal: var(--color-backdrop);
-  --color-glow: var(--color-brand-secondary);
 }
 
 .prose {
@@ -152,6 +151,12 @@ html[data-theme="dark"] {
 }
 
 @layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
   body {
     position: relative;
     isolation: isolate;
@@ -161,11 +166,23 @@ html[data-theme="dark"] {
     overflow-x: hidden;
     gap: 3rem;
 
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-sans);
 
     color: var(--color-backdrop-content);
-    background: var(--color-gradient-goal);
+    background-color: var(--color-gradient-goal);
     background-image: var(--gradient-backdrop);
+    background-attachment: fixed;
+
+    cursor:
+      url("/cursor.png") 0 0,
+      auto;
+  }
+
+  /* Keep native text cursors in form fields, everything else inherits
+     the custom cursor from `body`. */
+  input,
+  textarea {
+    cursor: text;
   }
 
   p {
@@ -179,7 +196,7 @@ html[data-theme="dark"] {
   a:hover {
     color: color-mix(
       in srgb,
-      var(--color-backdrop-content-highlight) 20%,
+      var(--color-backdrop-content-highlight) 75%,
       transparent
     );
   }
@@ -198,15 +215,8 @@ html[data-theme="dark"] {
 }
 
 @layer components {
+  /* Signature surface -- use for elevated/floating elements only */
   .frosted-glass {
-    @apply bg-card text-card-content backdrop-blur-xl inset-shadow-sm inset-shadow-card-highlight shadow-2xl shadow-black/50;
+    @apply bg-card text-card-content backdrop-blur-xl inset-shadow-sm inset-shadow-card-edge ring-1 ring-border shadow-lg shadow-black/5 dark:shadow-black/30;
   }
-}
-
-*,
-*::before,
-*::after {
-  cursor:
-    url("/cursor.png") 0 0,
-    auto !important;
 }

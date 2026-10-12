@@ -42,9 +42,9 @@ const navItems = [
       class={twMerge(
         "flex items-center min-h-9 cursor-pointer",
         currentPageLabel
-          ? "justify-start px-2 text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink text-shadow-glow text-nowrap text-lg font-bold"
+          ? "justify-start px-2 text-card-content hover:text-brand-primary hover:text-shadow-glow-pink text-shadow-glow text-nowrap text-lg font-bold"
           : twMerge(
-              "justify-start px-2 text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight hover:text-shadow-glow text-4xl font-bold leading-none",
+              "justify-start px-2 text-brand-primary hover:bg-card-highlight hover:text-shadow-glow text-4xl font-bold leading-none",
               Astro.url.pathname === "/" && "text-shadow-glow-pink",
             ),
       )}
@@ -64,7 +64,7 @@ const navItems = [
               <li>
                 <a
                   href={href}
-                  class="block text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-2 text-shadow-md"
+                  class="block text-card-content hover:text-brand-primary hover:text-shadow-glow-pink p-2 text-shadow-md"
                 >
                   {label}
                 </a>
@@ -81,7 +81,7 @@ const navItems = [
       <a
         href="/project-group"
         class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
+          "text-card-content hover:text-brand-primary hover:text-shadow-glow-pink p-3",
           Astro.url.pathname === "/project-group"
             ? "text-shadow-glow"
             : "text-shadow-md",
@@ -94,7 +94,7 @@ const navItems = [
       <a
         href="/student"
         class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
+          "text-card-content hover:text-brand-primary hover:text-shadow-glow-pink p-3",
           Astro.url.pathname === "/student"
             ? "text-shadow-glow"
             : "text-shadow-md",
@@ -107,7 +107,7 @@ const navItems = [
       <a
         href="/"
         class={twMerge(
-          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight hover:text-shadow-glow-secondary rounded-full aspect-square frosted-glass",
+          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass",
           Astro.url.pathname === "/" && "text-shadow-glow-pink",
         )}>&Delta;</a
       >
@@ -116,7 +116,7 @@ const navItems = [
       <a
         href="/company"
         class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
+          "text-card-content hover:text-brand-primary hover:text-shadow-glow-pink p-3",
           Astro.url.pathname === "/company"
             ? "text-shadow-glow"
             : "text-shadow-md",
@@ -127,7 +127,7 @@ const navItems = [
       <a
         href="/attendees"
         class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
+          "text-card-content hover:text-brand-primary hover:text-shadow-glow-pink p-3",
           Astro.url.pathname === "/attendees"
             ? "text-shadow-glow"
             : "text-shadow-md",

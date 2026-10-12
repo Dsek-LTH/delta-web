@@ -15,9 +15,7 @@ const { translate: t } = i18n(Astro);
   class="flex flex-col items-center gap-12 px-6 py-12 mx-auto max-w-7xl lg:px-16"
 >
   <section class="frosted-glass text-center p-4 rounded-xl">
-    <h1
-      class="text-5xl font-bold italic text-brand-secondary p-4 text-shadow-smooth dark:text-shadow-none"
-    >
+    <h1 class="text-5xl font-bold italic text-card-content p-4">
       <Logo class="mr-6" />
       {t("company.hero.forCompanies")}
     </h1>
@@ -64,9 +62,9 @@ const { translate: t } = i18n(Astro);
       </div>
     </Package>
     <Package
-      class="lg:col-span-2 border-sapphire shadow-[0_0_15px_3px] shadow-sapphire/80 hover:shadow-sapphire"
+      class="lg:col-span-2 border-diamond shadow-[0_0_15px_3px] shadow-diamond/80 hover:shadow-diamond"
     >
-      <PackageTitle title="Delta" class="text-sapphire" />
+      <PackageTitle title="Delta" class="text-diamond" />
       <div class="flex flex-col gap-5 text-base leading-relaxed">
         <p class="text-lg font-bold text-card-content">
           {t("company.package.delta.intro")}
