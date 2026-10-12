@@ -219,4 +219,35 @@ html[data-theme="dark"] {
   .frosted-glass {
     @apply bg-card text-card-content backdrop-blur-xl inset-shadow-sm inset-shadow-card-edge ring-1 ring-border shadow-lg shadow-black/5 dark:shadow-black/30;
   }
+
+  /* Form controls */
+  .field {
+    @apply w-full rounded-xl border border-border bg-card/80 px-3 py-2 text-card-content outline-none transition-colors duration-200 placeholder:text-card-content-muted focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/25;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex w-fit items-center justify-center gap-2 rounded-xl px-4 py-2 font-semibold no-underline transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-accent {
+    @apply bg-brand-primary text-white hover:bg-brand-primary/85 dark:text-slate-950;
+  }
+
+  .btn-danger {
+    @apply bg-destructive text-white hover:bg-destructive/85;
+  }
+
+  .btn-ghost {
+    @apply bg-card text-card-content ring-1 ring-border hover:bg-card-highlight;
+  }
+
+  /* Oversized closing mark: stroke-only Δ, theme-aware and decorative. */
+  .footer-mark {
+    color: transparent;
+    font-size: clamp(8rem, 20vw, 15rem);
+    font-weight: 700;
+    line-height: 0.75;
+    -webkit-text-stroke: 1px var(--color-border);
+  }
 }
