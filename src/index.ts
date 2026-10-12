@@ -114,6 +114,30 @@ export async function seedDeltaForce() {
       email: "vidar@delta.dsek.se",
       linkedin: "https://www.linkedin.com/in/vidar-ljungberg-b62650245/",
     },
+    {
+      studentId: "ma2456ot-s",
+      firstName: "Maja",
+      lastName: "Ottosson",
+      role: "relations",
+      email: "maja@delta.dsek.se",
+      linkedin: "https://www.linkedin.com/in/maja-ottosson-907205289/",
+    },
+    {
+      studentId: "lo8561no-s",
+      firstName: "Loe",
+      lastName: "Norrby",
+      role: "relations",
+      email: "loe@delta.dsek.se",
+      linkedin: "https://www.youtube.com/watch?v=XfELJU1mRMg",
+    },
+    {
+      studentId: "jo6554we-s",
+      firstName: "John",
+      lastName: "Wennerholm",
+      role: "relations",
+      email: "john@delta.dsek.se",
+      linkedin: "https://www.linkedin.com/in/john-wennerholm-3aa2a13a5/",
+    },
   ];
 
   const existing = await db
