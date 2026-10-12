@@ -17,25 +17,26 @@
   --color-brand-secondary: var(--color-white);
   --color-brand-accent: var(--brand-blue);
 
-  --color-backdrop: var(--color-amber-100);
+  --color-backdrop: var(--color-white);
   --color-backdrop-content: var(--color-slate-950);
   --color-backdrop-content-muted: var(--color-slate-700);
   --color-backdrop-content-highlight: var(--color-indigo-800);
 
-  --color-card: color-mix(in srgb, var(--color-backdrop) 40%, transparent);
+  --color-card: color-mix(in srgb, var(--color-slate-300) 40%, transparent);
   --color-card-content: var(--color-backdrop-content);
   --color-card-content-muted: var(--color-backdrop-content-muted);
   --color-card-content-highlight: var(--color-backdrop-content-highlight);
   --color-card-highlight: color-mix(
     in srgb,
-    var(--color-amber-100) 40%,
+    var(--color-fuchsia-100) 40%,
     transparent
   );
   --color-card-shimmer: color-mix(
     in srgb,
-    var(--color-amber-100) 20%,
+    var(--color-fuchsia-100) 20%,
     transparent
   );
+  --color-glow: var(--brand-purple);
 
   /* Structural */
   --color-border: color-mix(
@@ -51,10 +52,10 @@
   --color-destructive: var(--color-red-500);
 
   /* Background */
-  --color-gradient-source: var(--color-fuchsia-100);
-  --color-gradient-goal: var(--color-backdrop);
+  --color-gradient-source: var(--color-fuchsia-200);
+  --color-gradient-goal: var(--color-fuchsia-100);
   --gradient-backdrop: radial-gradient(
-    circle at 65% 25%,
+    circle at 90% 90%,
     var(--color-gradient-source) 0%,
     var(--color-gradient-goal) 100%
   );
@@ -79,15 +80,20 @@
 }
 
 @utility text-shadow-glow {
-  text-shadow: 0 0 10px var(--color-white);
+  text-shadow: 0 0 10px var(--color-glow);
 }
+
+@utility text-shadow-glow-secondary {
+  text-shadow: 0 0 10px var(--brand-secondary);
+}
+
 @utility text-shadow-glow-pink {
   text-shadow: 0 0 10px var(--brand-pink);
 }
 
 html[data-theme="dark"] {
   --color-backdrop: var(--color-slate-900);
-  --color-backdrop-content: var(--color-amber-50);
+  --color-backdrop-content: var(--color-fuchsia-50);
   --color-backdrop-content-muted: var(--color-slate-400);
   --color-backdrop-content-highlight: var(--brand-purple);
 
@@ -111,22 +117,24 @@ html[data-theme="dark"] {
   );
 
   --color-gradient-source: var(--color-indigo-950);
+  --color-gradient-goal: var(--color-backdrop);
+  --color-glow: var(--color-brand-secondary);
 }
 
 .prose {
-  --tw-prose-body: var(--color-backdrop-content);
-  --tw-prose-headings: var(--color-backdrop-content);
-  --tw-prose-lead: var(--color-backdrop-content);
-  --tw-prose-links: var(--color-backdrop-content-highlight);
-  --tw-prose-bold: var(--color-backdrop-content);
-  --tw-prose-counters: var(--color-backdrop-content-muted);
+  --tw-prose-body: var(--color-card-content);
+  --tw-prose-headings: var(--color-card-content);
+  --tw-prose-lead: var(--color-card-content);
+  --tw-prose-links: var(--color-card-content-highlight);
+  --tw-prose-bold: var(--color-card-content);
+  --tw-prose-counters: var(--color-card-content-muted);
   --tw-prose-bullets: var(--color-brand-primary);
   --tw-prose-hr: var(--color-border);
-  --tw-prose-quotes: var(--color-backdrop-content);
+  --tw-prose-quotes: var(--color-card-content);
   --tw-prose-quote-borders: var(--color-brand-primary);
   --tw-prose-captions: var(--color-brand-primary);
   --tw-prose-code: var(--color-brand-primary);
-  --tw-prose-pre-code: var(--color-backdrop-content);
+  --tw-prose-pre-code: var(--color-card-content);
   --tw-prose-pre-bg: rgb(15 23 42 / 5%);
   --tw-prose-th-borders: var(--color-border);
   --tw-prose-td-borders: var(--color-border);
@@ -150,7 +158,7 @@ html[data-theme="dark"] {
   }
 
   p {
-    color: var(--color-brand-secondary);
+    color: var(--color-backdrop-content);
   }
 
   a {

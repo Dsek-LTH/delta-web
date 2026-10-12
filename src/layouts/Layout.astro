@@ -41,7 +41,9 @@ const lang = getLang(Astro.cookies);
       ).matches;
 
       const activeTheme =
-        stored === "dark" || (!stored && prefersDark) ? "dark" : "light";
+        stored === "light" || (stored === "system" && !prefersDark)
+          ? "light"
+          : "dark";
 
       document.documentElement.setAttribute("data-theme", activeTheme);
     </script>
