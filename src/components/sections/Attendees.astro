@@ -14,14 +14,36 @@ const { translate: t } = i18n(Astro);
   <h3 class="reveal text-center text-3xl font-bold lg:text-4xl">
     {t("attendees.title")}
   </h3>
-  <Card class="reveal w-full max-w-2xl p-8 text-center">
-    <p>
-      {t("comingSoon.message")}<a
-        class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
-        href="https://github.com/Dsek-LTH/delta-web"
+
+  <Card class="reveal w-full max-w-4xl p-8 text-center lg:p-12">
+    <div class="flex flex-col items-center gap-5">
+      <span class="font-mono text-sm text-brand-primary">
+        &gt; delta --companies<span class="animate-caret-blink">_</span>
+      </span>
+      <p class="text-2xl font-bold text-balance lg:text-4xl">
+        {t("attendees.teaser.title")}
+      </p>
+      <p class="max-w-xl leading-relaxed text-card-content-muted">
+        {t("attendees.teaser.text")}
+      </p>
+
+      <div
+        aria-hidden="true"
+        class="mt-2 grid w-full grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6"
       >
-        GitHub</a
-      >.
-    </p>
+        {
+          Array.from({ length: 12 }).map(() => (
+            <span class="h-14 rounded-xl bg-card-highlight/40 ring-1 ring-border" />
+          ))
+        }
+      </div>
+
+      <a
+        href="#foretag"
+        class="btn btn-accent mt-2 rounded-full px-6 py-3 text-lg"
+      >
+        {t("attendees.teaser.cta")}
+      </a>
+    </div>
   </Card>
 </section>
