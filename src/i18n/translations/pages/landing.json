@@ -19,7 +19,10 @@
     "gallery.alt.group": "Students together at DELTA",
     "typing.1": "Career fair for computer engineering students",
     "typing.2": "Meet your future employer",
-    "typing.3": "Networking, internships and jobs"
+    "typing.3": "Networking, internships and jobs",
+    "head.leadBefore": "DELTA is a career fair for students and companies within computer engineering fields hosted by ",
+    "head.leadLink": "the D-guild at TLTH",
+    "head.leadAfter": ". We connect students with companies and provide opportunities for networking, internships, and job placements."
   },
   "sv": {
     "head.title": "Hem | DELTA",
@@ -40,6 +43,9 @@
     "gallery.alt.group": "Studenter tillsammans på DELTA",
     "typing.1": "Karriärmässa för datateknikstudenter",
     "typing.2": "Möt din framtida arbetsgivare",
-    "typing.3": "Nätverkande, praktik och jobb"
+    "typing.3": "Nätverkande, praktik och jobb",
+    "head.leadBefore": "DELTA är en karriärmässa för studenter och företag inom datatekniska områden anordnad av ",
+    "head.leadLink": "D-sektionen inom TLTH",
+    "head.leadAfter": ". Vi kopplar samman studenter med företag och skapar möjligheter för nätverkande, praktikplatser och framtida anställningar."
   }
 }

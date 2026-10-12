@@ -56,7 +56,13 @@ const { lang, translate: t } = i18n(Astro);
         </span>
       </p>
       <p class="max-w-xl text-lg text-balance text-card-content-muted">
-        {t("landing.head.description")}
+        {t("landing.head.leadBefore")}<a
+          href="https://www.dsek.se"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-backdrop-content-highlight transition-colors hover:text-backdrop-content-highlight/80"
+          >{t("landing.head.leadLink")}</a
+        >{t("landing.head.leadAfter")}
       </p>
       <div class="flex flex-wrap items-center gap-3">
         <a
