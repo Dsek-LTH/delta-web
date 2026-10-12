@@ -1,0 +1,1 @@
+Kliv in i rampljuset med Student Sessions på mässan! Ladda upp ditt CV, välj dina favoritföretag, och kanske blir du utvald till ett personligt samtal. Dessa viktiga möten, som hålls i det livfulla E-huset, är din väg till spännande karriärmöjligheter. Mer information kommer närmare evenemanget, så håll utkik och gör dig redo att göra avtryck!
