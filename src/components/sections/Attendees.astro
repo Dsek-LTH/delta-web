@@ -1,0 +1,27 @@
+---
+import Card from "@/components/Card.astro";
+import { i18n } from "@/i18n/utils";
+
+const { translate: t } = i18n(Astro);
+---
+
+<!-- Deltagare -->
+<section
+  id="besokare"
+  data-nav-section="besokare"
+  class="flex w-full max-w-7xl flex-col items-center gap-10 border-t border-border/60 px-6 py-24 lg:px-16"
+>
+  <h3 class="reveal text-center text-3xl font-bold lg:text-4xl">
+    {t("attendees.title")}
+  </h3>
+  <Card class="reveal w-full max-w-2xl p-8 text-center">
+    <p>
+      {t("comingSoon.message")}<a
+        class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
+        href="https://github.com/Dsek-LTH/delta-web"
+      >
+        GitHub</a
+      >.
+    </p>
+  </Card>
+</section>

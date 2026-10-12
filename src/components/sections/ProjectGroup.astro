@@ -1,0 +1,144 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+import Card from "@/components/Card.astro";
+import Logo from "@/components/Logo.astro";
+import TeamTile from "@/pages/project-group/TeamTile.astro";
+import PhotoPlaceholder from "@/pages/project-group/PhotoPlaceholder.astro";
+import { i18n } from "@/i18n/utils";
+import { db } from "@/db/connect";
+import { deltaForceTable } from "@/db/schema";
+import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
+
+const { translate: t } = i18n(Astro);
+
+/* ------------------------------------------------------------------ *
+ * Project group
+ * ------------------------------------------------------------------ */
+
+const deltaForceMembers = await db.select().from(deltaForceTable).all();
+
+// Drop team photos into src/assets/team/ and they are picked up automatically.
+// Names: all (= whole team), general, it, event, finance, logistics, marketing,
+// relations, staff.
+const teamPhotos = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/team/*.{webp,jpg,jpeg,png}",
+  { eager: true },
+);
+const photoFor = (name: string): ImageMetadata | null => {
+  const entry = Object.entries(teamPhotos).find(([path]) =>
+    new RegExp(`/${name}\\.(webp|jpe?g|png)$`).test(path),
+  );
+  return entry?.[1].default ?? null;
+};
+
+const allPhoto = photoFor("all") ?? photoFor("team");
+// Stagger within a revealed row; each tile still waits for the viewport.
+const tileRevealDelays = [
+  "[transition-delay:0ms]",
+  "[transition-delay:90ms]",
+  "[transition-delay:180ms]",
+];
+const generals = deltaForceMembers.filter(
+  (member) => member.role === "general",
+);
+const generalsLabel = t(
+  deltaFordeRoleToTranslationKey("general", generals.length > 1),
+);
+
+// Biggest team takes the full-width tile; wide tiles then alternate sides so the
+// singles fill in around them (grid is dense, so no holes).
+let wideCount = 0;
+const teams = deltaForceRoles
+  .filter((role) => role !== "general")
+  .map((role) => {
+    const members = deltaForceMembers.filter((member) => member.role === role);
+    return {
+      role,
+      // Singular for one-person teams ("IT-ansvarig"), plural for the rest.
+      label: t(deltaFordeRoleToTranslationKey(role, members.length > 1)),
+      photo: photoFor(role),
+      members,
+    };
+  })
+  .filter((team) => team.members.length > 0)
+  .sort((a, b) => b.members.length - a.members.length)
+  .map((team, index) => {
+    let span: 1 | 2 | 3 = 1;
+    let startRight = false;
+    if (index === 0) {
+      span = 3;
+    } else if (team.members.length >= 2) {
+      span = 2;
+      startRight = wideCount % 2 === 1;
+      wideCount += 1;
+    }
+    return { ...team, span, startRight };
+  });
+---
+
+<!-- Projektgrupp -->
+<section
+  id="projektgrupp"
+  data-nav-section="projektgrupp"
+  class="flex w-full max-w-7xl flex-col items-center gap-16 border-t border-border/60 px-6 py-24 lg:px-16"
+>
+  <div
+    class="flex w-full flex-col justify-between gap-10 reveal sm:text-left text-center lg:flex-row"
+  >
+    <div class="flex flex-col justify-center items-start gap-4 lg:max-w-1/2">
+      <h2 class="text-4xl font-bold text-left sm:text-5xl lg:text-6xl">
+        <Logo animate command="--force" class="inline-block" />
+      </h2>
+      <p class="text-balance">
+        {t("delta-force.description")}
+      </p>
+    </div>
+    <div class="flex w-full flex-col items-center lg:w-2/5 lg:items-start">
+      <TeamTile
+        label={generalsLabel}
+        members={generals}
+        photo={photoFor("general")}
+      />
+    </div>
+  </div>
+
+  <Card class="w-full overflow-hidden p-0 reveal">
+    {
+      allPhoto ? (
+        <Image
+          src={allPhoto}
+          alt=""
+          width={1600}
+          height={700}
+          class="h-64 w-full object-cover lg:h-96"
+        />
+      ) : (
+        <PhotoPlaceholder kind="group" class="h-64 lg:h-96" />
+      )
+    }
+  </Card>
+
+  <div class="flex w-full flex-col gap-8">
+    <h3 class="reveal text-center text-3xl font-bold lg:text-4xl">
+      {t("delta-force.project-group")}
+    </h3>
+    <div
+      class="grid w-full grid-flow-row-dense grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {
+        teams.map((team, index) => (
+          <TeamTile
+            class={`reveal ${tileRevealDelays[index % tileRevealDelays.length] ?? "[transition-delay:0ms]"}`}
+            label={team.label}
+            members={team.members}
+            photo={team.photo}
+            span={team.span}
+            startRight={team.startRight}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
