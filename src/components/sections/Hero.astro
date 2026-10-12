@@ -1,8 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import { CalendarPlus, MapPin, Users } from "@lucide/astro";
+import { CalendarPlus, MapPin } from "@lucide/astro";
 
-import Card from "@/components/Card.astro";
 import Countdown from "@/components/Countdown.astro";
 import Logo from "@/components/Logo.astro";
 import { i18n, getRenderedContent } from "@/i18n/utils";
@@ -149,99 +148,42 @@ const calendarUrl =
     </div>
   </div>
 
+  <!-- About — the detail that used to live in the Where/When/What cards -->
   <div
-    class="grid gap-8 w-full max-w-110 lg:grid-cols-3 lg:items-end lg:max-w-full"
+    class="flex w-full max-w-3xl flex-col items-center gap-8 text-center reveal"
   >
-    <Card
-      class="p-8 lg:order-1 order-2 flex flex-col gap-6 animate-rise [animation-delay:60ms] lg:h-108"
+    <div class="prose w-full text-left">
+      {whatIs && <div set:html={whatIs.html} />}
+    </div>
+    <div
+      class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-mono text-sm text-card-content-muted"
     >
-      <h2
-        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
-      >
-        {t("landing.card.where")}
-      </h2>
-      <div class="flex flex-col flex-1 gap-4">
-        <div class="flex flex-col items-center gap-1 text-center">
-          <p class="text-xl font-semibold">E-Huset, LTH</p>
-          <p class="flex items-center gap-2 text-sm text-card-content-muted">
-            <MapPin class="size-4 shrink-0" />
-            <span>
-              Ole Römers väg 3, 223 63 Lund, {t("landing.card.where.sweden")}
-            </span>
-          </p>
-        </div>
-        <iframe
-          class="w-full flex-1 min-h-50 rounded-xl border-0"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1001.2498072316307!2d13.209636197891264!3d55.711069045083036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465397ca158a6165%3A0x7f9339d3824e88ee!2sOle%20R%C3%B6mers%20v%C3%A4g%203%2C%20223%2063%20Lund!5e0!3m2!1ssv!2sse!4v1665410976182!5m2!1ssv!2sse"
-          title={t("landing.card.where.map.title")}
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
+      <span class="inline-flex items-center gap-2">
+        <MapPin class="size-4 shrink-0" />
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=Ole+R%C3%B6mers+v%C3%A4g+3%2C+223+63+Lund"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-backdrop-content-highlight"
         >
-          E-huset LTH Ole Römers väg 3.
-        </iframe>
-      </div>
-    </Card>
-
-    <Card
-      class="p-8 lg:order-2 order-1 flex flex-col justify-between gap-6 animate-rise [animation-delay:120ms] lg:h-120"
-    >
-      <h2
-        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
-      >
-        {t("landing.card.when")}
-      </h2>
-      <div class="flex flex-col gap-4 text-center">
-        <p
-          class="text-3xl font-bold leading-tight text-balance first-letter:uppercase lg:text-4xl"
-        >
-          {
-            fairDate.toLocaleDateString(lang, {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })
-          }
-        </p>
-        <p class="text-xl text-card-content-muted lg:text-2xl">08:00–17:00</p>
-      </div>
-      <div class="flex flex-col items-center gap-4">
-        <p
-          class="flex items-center justify-center gap-2 text-base text-card-content-muted"
-        >
-          <Users class="size-5 shrink-0" />
-          <span>{t("landing.card.when.networking")}</span>
-        </p>
+          E-Huset, LTH · Ole Römers väg 3, 223 63 Lund
+        </a>
+      </span>
+      <span class="inline-flex items-center gap-2">
+        08:00–17:00 · {t("landing.card.when.networking")}
+      </span>
+      <span class="inline-flex items-center gap-2">
+        <CalendarPlus class="size-4 shrink-0" />
         <a
           href={calendarUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="btn btn-ghost rounded-full px-4 py-2 text-sm"
+          class="hover:text-backdrop-content-highlight"
         >
-          <CalendarPlus class="size-4" />
           {t("landing.card.when.calendar")}
         </a>
-      </div>
-    </Card>
-
-    <Card
-      class="p-8 order-3 flex flex-col gap-6 animate-rise [animation-delay:180ms] lg:h-108"
-    >
-      <h2
-        class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary"
-      >
-        {t("landing.card.what")}
-      </h2>
-      <div
-        class="flex flex-col flex-1 gap-4 overflow-y-auto pr-1 leading-relaxed prose"
-      >
-        {whatIs && <div set:html={whatIs.html} />}
-      </div>
-      <div
-        class="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-2xl bg-gradient-to-t from-card to-transparent"
-      >
-      </div>
-    </Card>
+      </span>
+    </div>
   </div>
 
   <div class="grid w-full grid-cols-2 gap-3 reveal sm:grid-cols-4 sm:gap-4">
