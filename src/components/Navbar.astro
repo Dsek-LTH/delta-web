@@ -64,7 +64,7 @@ const navItems = [
               <li>
                 <a
                   href={href}
-                  class="block text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-2"
+                  class="block text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-2 text-shadow-md"
                 >
                   {label}
                 </a>
@@ -82,7 +82,9 @@ const navItems = [
         href="/project-group"
         class={twMerge(
           "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/project-group" && "text-shadow-glow",
+          Astro.url.pathname === "/project-group"
+            ? "text-shadow-glow"
+            : "text-shadow-md",
         )}
       >
         {t("navbar.project-group")}
@@ -126,7 +128,9 @@ const navItems = [
         href="/attendees"
         class={twMerge(
           "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/attendees" && "text-shadow-glow",
+          Astro.url.pathname === "/attendees"
+            ? "text-shadow-glow"
+            : "text-shadow-md",
         )}>{t("navbar.attendees")}</a
       >
     </li>
