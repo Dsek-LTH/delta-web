@@ -34,7 +34,7 @@ const {
 
 // Fixed media heights keep photo areas level across tiles in the same row
 // (wide and single tiles share the same height; the full-width tile is taller).
-const media = span === 3 ? "h-72 lg:h-112" : "h-64 lg:h-88";
+const media = span === 3 ? "h-80 lg:h-128" : "h-72 lg:h-120";
 ---
 
 <Card
@@ -48,7 +48,12 @@ const media = span === 3 ? "h-72 lg:h-112" : "h-64 lg:h-88";
 >
   {
     photo ? (
-      <img src={photo} alt="" class="w-full" loading="lazy" />
+      <img
+        src={photo}
+        alt=""
+        loading="lazy"
+        class={`w-full object-cover ${media}`}
+      />
     ) : (
       <PhotoPlaceholder
         kind={members.length > 1 ? "group" : "profile"}
