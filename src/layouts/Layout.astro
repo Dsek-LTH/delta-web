@@ -107,13 +107,15 @@ const showConstellation = !Astro.url.pathname.startsWith("/admin");
         if (!wrap) return;
 
         const open = wrap.hasAttribute("data-open");
+        // Only hidden folds go inert; clamped previews stay readable/selectable.
+        const hiddenFold = wrap.classList.contains("fold-wrap");
         if (open) {
           wrap.removeAttribute("data-open");
-          wrap.inert = true;
+          if (hiddenFold) wrap.inert = true;
           button.setAttribute("aria-expanded", "false");
         } else {
           wrap.setAttribute("data-open", "");
-          wrap.inert = false;
+          if (hiddenFold) wrap.inert = false;
           button.setAttribute("aria-expanded", "true");
         }
 

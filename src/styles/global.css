@@ -301,7 +301,16 @@ html[data-theme="dark"] {
     translate: 0 1rem;
   }
 
-  /* Timeline rail fill (student timeline); --rail-progress is set from the
+  /* Student read-more previews (CardContent): a few lines until expanded.
+     Gated behind html.js so no-JS readers still get the full text. */
+  html.js .read-more-content:not([data-open]) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    overflow: hidden;
+  }
+
+  /* Timestamp rail fill (student timeline); --rail-progress is set from the
      shared scroll script in Layout. */
   [data-timeline-rail] {
     transform: scaleY(var(--rail-progress, 0));
