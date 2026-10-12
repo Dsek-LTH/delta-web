@@ -1,9 +1,43 @@
 import { ui, defaultLang } from "./ui";
-import { type AstroCookies } from "astro";
+import { type AstroGlobal } from "astro";
 
-export function getLang(cookies: AstroCookies | null): keyof typeof ui {
+function resolveLang(candidate: string): keyof typeof ui | null {
+  const normalized = candidate.trim().toLowerCase();
+  if (Object.hasOwn(ui, normalized)) return normalized as keyof typeof ui;
+
+  const baseLang = normalized.split("-")[0] as keyof typeof ui;
+  if (Object.hasOwn(ui, baseLang)) return baseLang;
+
+  return null;
+}
+
+export function getLang(
+  astro: Pick<AstroGlobal, "cookies" | "request">,
+): keyof typeof ui {
+  const { cookies, request } = astro;
   const lang = cookies?.get("lang")?.value;
-  if (lang && lang in ui) return lang as keyof typeof ui;
+  if (lang && Object.hasOwn(ui, lang)) return lang as keyof typeof ui;
+
+  const preferredLangs =
+    request.headers
+      .get("accept-language")
+      ?.split(",")
+      .map((entry) => {
+        const [lang, ...params] = entry.trim().split(";");
+        const qMatch = params.join(";").match(/q=([\d.]+)/i);
+        const q = qMatch ? Number.parseFloat(qMatch[1]) : 1;
+        return { lang: lang.toLowerCase(), q: Number.isFinite(q) ? q : 0 };
+      })
+      .filter(({ lang, q }) => lang && q > 0)
+      .filter(({ lang }) => lang)
+      .sort((a, b) => b.q - a.q)
+      .map(({ lang }) => lang) ?? [];
+
+  for (const candidate of preferredLangs) {
+    const resolved = resolveLang(candidate);
+    if (resolved) return resolved;
+  }
+
   return defaultLang;
 }
 
@@ -13,11 +47,11 @@ export function useTranslations(lang: keyof typeof ui) {
   };
 }
 
-export function i18n(cookies: AstroCookies | null): {
+export function i18n(astro: Readonly<AstroGlobal>): {
   lang: keyof typeof ui;
   translate: ReturnType<typeof useTranslations>;
 } {
-  const lang = getLang(cookies);
+  const lang = getLang(astro);
   const translate = useTranslations(lang);
   return { lang, translate };
 }

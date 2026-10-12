@@ -22,7 +22,7 @@ const {
   newMember?: boolean;
 };
 
-const { lang, translate: t } = i18n(Astro.cookies);
+const { lang, translate: t } = i18n(Astro);
 const action = newMember
   ? actions.deltaForceMember.addDeltaForceMember
   : actions.deltaForceMember.updateDeltaForceMember;
@@ -151,11 +151,6 @@ const memberImage: ImageMetadata = await getMemberImage(member).catch(
 <script>
   import { actions } from "astro:actions";
   import { navigate } from "astro:transitions/client";
-  const lang =
-    document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("lang="))
-      ?.split("=")[1] ?? "en";
 
   const deleteButton: HTMLButtonElement | null = document.querySelector(
     "button[name='delete']",
@@ -169,7 +164,6 @@ const memberImage: ImageMetadata = await getMemberImage(member).catch(
       ) {
         const formData = new FormData();
         formData.append("studentId", deleteButton.value);
-        formData.append("lang", lang);
 
         const { error } =
           await actions.deltaForceMember.deleteDeltaForceMember(formData);

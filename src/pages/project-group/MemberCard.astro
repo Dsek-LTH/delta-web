@@ -6,7 +6,7 @@ import { getMemberImage } from "@/files/client";
 import { deltaFordeRoleToTranslationKey } from "@/constants";
 import DefaultProfileImage from "@/assets/default-profile.webp";
 
-const { translate: t } = await i18n(Astro.cookies);
+const { translate: t } = i18n(Astro);
 
 const { member, showRole } = Astro.props as {
   member: typeof deltaForceTable.$inferSelect;

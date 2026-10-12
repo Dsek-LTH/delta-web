@@ -8,7 +8,7 @@ interface Props extends HTMLAttributes<"nav"> {}
 
 const { class: className, ...rest } = Astro.props;
 
-const { translate: t } = i18n(Astro.cookies);
+const { translate: t } = i18n(Astro);
 const toggleId = `navbar-menu-${Math.random().toString(36).slice(2, 9)}`;
 const pageLabels: Record<string, string> = {
   "/project-group": t("navbar.project-group"),

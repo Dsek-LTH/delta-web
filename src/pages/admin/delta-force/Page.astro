@@ -10,7 +10,7 @@ const { member, newMember } = Astro.props as {
   member: typeof deltaForceTable.$inferSelect;
   newMember?: boolean;
 };
-const { translate: t } = i18n(Astro.cookies);
+const { translate: t } = i18n(Astro);
 ---
 
 <Layout

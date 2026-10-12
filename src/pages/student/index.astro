@@ -12,7 +12,7 @@ import InfoCard from "./InfoCard.astro";
 import FaqCard from "./FaqCard.astro";
 import { getEntry } from "astro:content";
 
-const { lang, translate: t } = i18n(Astro.cookies);
+const { lang, translate: t } = i18n(Astro);
 
 const studentSession = await getRenderedContent(
   getEntry,
