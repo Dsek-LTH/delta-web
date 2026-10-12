@@ -20,7 +20,15 @@
     "relations": "Relations manager",
     "relationss": "Relations managers",
     "staff": "Staff manager",
-    "staffs": "Staff managers"
+    "staffs": "Staff managers",
+    "general.description": "Leads the project group and keeps everything on track.",
+    "it.description": "Runs and develops the website, systems and technical bits.",
+    "event.description": "Plans the fair days and the events around them.",
+    "finance.description": "Keeps the budget in order and the invoices flowing.",
+    "logistics.description": "Makes sure everything is in place on the fair floor.",
+    "marketing.description": "Spreads the word about DELTA and gets people excited.",
+    "relations.description": "Keeps in touch with companies and partners.",
+    "staff.description": "Takes care of the crew and everyone helping out."
   },
   "sv": {
     "title": "DELTA --Force_",
@@ -42,6 +50,14 @@
     "relations": "Företagsansvarig",
     "relationss": "Företagsansvariga",
     "staff": "Funkisansvarig",
-    "staffs": "Funkisansvariga"
+    "staffs": "Funkisansvariga",
+    "general.description": "Leder projektgruppen och håller allt på rätt spår.",
+    "it.description": "Driver och utvecklar webbplatsen, systemen och tekniken.",
+    "event.description": "Planerar mässdagarna och evenemangen runt omkring.",
+    "finance.description": "Håller ordning på budget och fakturor.",
+    "logistics.description": "Ser till att allt är på plats på mässgolvet.",
+    "marketing.description": "Sprider ordet om DELTA och skapar hype.",
+    "relations.description": "Håller kontakten med företag och partners.",
+    "staff.description": "Tar hand om funktionärer och alla som hjälper till."
   }
 }

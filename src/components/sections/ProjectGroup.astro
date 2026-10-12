@@ -8,6 +8,7 @@ import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
 import {
   bySortOrder,
+  deltaForceRoleDescriptionKey,
   deltaForceRoles,
   deltaFordeRoleToTranslationKey,
 } from "@/constants";
@@ -54,6 +55,7 @@ const teams = deltaForceRoles
       role,
       // Singular for one-person teams ("IT-ansvarig"), plural for the rest.
       label: t(deltaFordeRoleToTranslationKey(role, members.length > 1)),
+      description: t(deltaForceRoleDescriptionKey(role)),
       photo: photoFor(role),
       members,
     };
@@ -94,6 +96,7 @@ const teams = deltaForceRoles
     <div class="flex w-full flex-col items-center lg:w-2/5 lg:items-start">
       <TeamTile
         label={generalsLabel}
+        description={t(deltaForceRoleDescriptionKey("general"))}
         members={generals}
         photo={photoFor("general")}
       />
@@ -122,6 +125,7 @@ const teams = deltaForceRoles
           <TeamTile
             class={`reveal ${tileRevealDelays[index % tileRevealDelays.length] ?? "[transition-delay:0ms]"}`}
             label={team.label}
+            description={team.description}
             members={team.members}
             photo={team.photo}
             span={team.span}
