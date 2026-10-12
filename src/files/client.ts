@@ -14,18 +14,20 @@ export const MINIO_BASE_URL = (() => {
     return `http${env.MINIO_USE_SSL === "true" ? "s" : ""}://${env.MINIO_ENDPOINT}:443/`;
 })();
 
-export const checkMemberImageExists = async (member: {
-  studentId: string;
-}): Promise<boolean> => {
-  const bucket = env.MINIO_BUCKET_PUBLIC || "delta-public";
-  const objectName = `delta-force-members/${prepareNameForFilesystem(member.studentId, member.studentId, "webp")}`;
+const publicBucket = () => env.MINIO_BUCKET_PUBLIC || "delta-public";
 
+const getMemberImageObjectName = (studentId: string) =>
+  `delta-force-members/${prepareNameForFilesystem(studentId, studentId, "webp")}`;
+
+const getAttendeeImageObjectName = (id: number) =>
+  `attendees/${prepareNameForFilesystem(id.toString(), id.toString(), "webp")}`;
+
+const imageExists = async (
+  bucket: string,
+  objectName: string,
+): Promise<boolean> => {
   try {
     await minio.statObject(bucket, objectName);
-    const url = `${MINIO_BASE_URL}${bucket}/${objectName}`;
-    if (!url) {
-      return false;
-    }
     return true;
   } catch (err: any) {
     if (
@@ -41,12 +43,10 @@ export const checkMemberImageExists = async (member: {
   }
 };
 
-export const getMemberImage = async (member: {
-  studentId: string;
-}): Promise<ImageMetadata> => {
-  const bucket = env.MINIO_BUCKET_PUBLIC || "delta-public";
-  const objectName = `delta-force-members/${prepareNameForFilesystem(member.studentId, member.studentId, "webp")}`;
-
+const getImage = async (
+  bucket: string,
+  objectName: string,
+): Promise<ImageMetadata> => {
   try {
     await minio.statObject(bucket, objectName);
     const url = `${MINIO_BASE_URL}${bucket}/${objectName}`;
@@ -72,3 +72,23 @@ export const getMemberImage = async (member: {
     return DefaultProfilePicture;
   }
 };
+
+export const checkMemberImageExists = async (member: {
+  studentId: string;
+}): Promise<boolean> =>
+  imageExists(publicBucket(), getMemberImageObjectName(member.studentId));
+
+export const getMemberImage = async (member: {
+  studentId: string;
+}): Promise<ImageMetadata> =>
+  getImage(publicBucket(), getMemberImageObjectName(member.studentId));
+
+export const checkAttendeeImageExists = async (attendee: {
+  id: number;
+}): Promise<boolean> =>
+  imageExists(publicBucket(), getAttendeeImageObjectName(attendee.id));
+
+export const getAttendeeImage = async (attendee: {
+  id: number;
+}): Promise<ImageMetadata> =>
+  getImage(publicBucket(), getAttendeeImageObjectName(attendee.id));

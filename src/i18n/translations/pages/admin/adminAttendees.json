@@ -12,6 +12,7 @@
     "attendee.tags": "Tags",
     "attendee.contact": "Contact",
     "attendee.linkedin": "LinkedIn",
+    "attendee.picture": "Company Picture",
     "save": "Save",
     "delete": "Delete",
     "back": "Back"
@@ -28,6 +29,7 @@
     "attendee.tags": "Taggar",
     "attendee.contact": "Kontakt",
     "attendee.linkedin": "LinkedIn",
+    "attendee.picture": "Företagsbild",
     "save": "Spara",
     "delete": "Ta bort",
     "back": "Tillbaka"

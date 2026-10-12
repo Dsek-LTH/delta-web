@@ -5,7 +5,11 @@ import { i18n } from "@/i18n/utils";
 import TextInput from "@/components/TextInput.astro";
 import TextArea from "@/components/TextArea.astro";
 import Label from "@/components/Label.astro";
+import FileInput from "@/components/FileInput.astro";
+import { getAttendeeImage } from "@/files/client";
 import { attendeesTable } from "@/db/schema";
+import { Image } from "astro:assets";
+import DefaultProfileImage from "@/assets/default-profile.webp";
 
 const {
   class: className,
@@ -30,6 +34,9 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
+const attendeeImage: ImageMetadata = await getAttendeeImage(attendee).catch(
+  () => DefaultProfileImage,
+);
 ---
 
 <form
@@ -97,6 +104,20 @@ const inputErrorEntries = inputErrors
   <div class="flex flex-col gap-1">
     <Label name="linkedin" label={t("admin.attendees.attendee.linkedin")} />
     <TextInput name="linkedin" value={attendee.linkedin} />
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <Label name="image" label={t("admin.attendees.attendee.picture")} />
+
+    <Image
+      src={attendeeImage}
+      alt={t("admin.attendees.attendee.picture")}
+      width={128}
+      height={128}
+      class="h-32 w-32 object-cover rounded-lg"
+    />
+
+    <FileInput name="image" />
   </div>
 
   <div class="flex gap-4 justify-between mt-4">

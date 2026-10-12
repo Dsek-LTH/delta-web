@@ -3,6 +3,53 @@ import { z } from "astro/zod";
 import { db } from "@/db/connect";
 import { attendeesTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { uploadFile } from "@/files/uploadFiles";
+import { env } from "@/envvars";
+import type { APIContext } from "astro";
+import fileHandler from "@/files/fileHandler";
+import { checkAttendeeImageExists } from "@/files/client";
+import { prepareNameForFilesystem } from "@/files/utils";
+
+const optionalImage = z.preprocess(
+  (value) => (value instanceof File && value.size === 0 ? undefined : value),
+  z
+    .instanceof(File)
+    .refine((f) => f.size > 0)
+    .optional(),
+);
+
+const attendeeImageObjectName = (id: number) =>
+  `attendees/${prepareNameForFilesystem(id.toString(), id.toString(), "webp")}`;
+
+const uploadAttendeeImage = async (
+  context: APIContext,
+  image: File,
+  id: number,
+) => {
+  try {
+    await uploadFile(
+      context,
+      image,
+      "attendees",
+      env.MINIO_BUCKET_PUBLIC || "delta-public",
+      `${id}`,
+      {
+        resize: {
+          width: 800,
+          height: 800,
+          fit: "cover",
+        },
+        webp: {
+          quality: 80,
+        },
+      },
+    );
+  } catch (error) {
+    console.error(
+      `Failed to upload image for attendee ${id}: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+};
 
 export const attendee = {
   updateAttendee: defineAction({
@@ -17,9 +64,13 @@ export const attendee = {
       tags: z.string(),
       contact: z.string(),
       linkedin: z.url(),
+      image: optionalImage,
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
       console.log("Updating attendee:", input.id);
+      if (input.image) {
+        await uploadAttendeeImage(context as APIContext, input.image, input.id);
+      }
       try {
         await db
           .update(attendeesTable)
@@ -57,9 +108,11 @@ export const attendee = {
       tags: z.string(),
       contact: z.string(),
       linkedin: z.url(),
+      image: optionalImage,
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
       console.log("Adding new attendee:", input.name);
+      let id: number;
       try {
         const inserted = await db
           .insert(attendeesTable)
@@ -74,7 +127,7 @@ export const attendee = {
           })
           .returning({ id: attendeesTable.id })
           .get();
-        return { id: inserted.id };
+        id = inserted.id;
       } catch (error) {
         console.error(
           `Failed to add new attendee ${input.name}: ${error instanceof Error ? error.message : String(error)}`,
@@ -85,6 +138,10 @@ export const attendee = {
             "Failed to add new attendee to database. See server logs for details.",
         });
       }
+      if (input.image) {
+        await uploadAttendeeImage(context as APIContext, input.image, id);
+      }
+      return { id };
     },
   }),
   deleteAttendee: defineAction({
@@ -92,8 +149,21 @@ export const attendee = {
     input: z.object({
       id: z.coerce.number().int(),
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
       console.log("Deleting attendee with id:", input.id);
+      if (await checkAttendeeImageExists({ id: input.id })) {
+        try {
+          await fileHandler.remove(
+            context as APIContext,
+            env.MINIO_BUCKET_PUBLIC || "delta-public",
+            [attendeeImageObjectName(input.id)],
+          );
+        } catch (error) {
+          console.error(
+            `Failed to delete image for attendee ${input.id}: ${error instanceof Error ? error.message : String(error)}`,
+          );
+        }
+      }
       try {
         await db
           .delete(attendeesTable)
