@@ -18,7 +18,7 @@ const { lang, translate: t } = i18n(Astro);
   class="mx-auto flex w-full max-w-7xl flex-col items-center gap-16 px-6 pb-24 lg:gap-20 lg:px-16"
 >
   <div
-    class="grid w-full content-center items-center gap-14 min-h-[calc(100dvh-6.5rem)] lg:min-h-[calc(100dvh-5rem)] lg:grid-cols-[1.25fr_0.75fr]"
+    class="relative grid w-full content-center items-center gap-14 min-h-[calc(100dvh-6.5rem)] lg:min-h-[calc(100dvh-5rem)] lg:grid-cols-[1.25fr_0.75fr]"
   >
     <div class="flex flex-col items-start gap-6 text-left animate-rise">
       <span class="font-mono text-sm text-card-content-muted">
@@ -122,6 +122,21 @@ const { lang, translate: t } = i18n(Astro);
         <Countdown class="text-xl lg:text-2xl" />
       </div>
     </div>
+
+    <a
+      href="#foretag"
+      class="absolute inset-x-0 bottom-4 mx-auto flex w-fit flex-col items-center gap-2 font-mono text-xs tracking-widest text-card-content-muted uppercase transition-colors hover:text-backdrop-content-highlight"
+    >
+      {t("landing.scroll")}
+      <span
+        aria-hidden="true"
+        class="relative block h-8 w-px overflow-hidden bg-border"
+      >
+        <span
+          class="absolute inset-x-0 top-0 h-3 animate-scroll-hint bg-brand-primary"
+        ></span>
+      </span>
+    </a>
   </div>
 </section>
 
