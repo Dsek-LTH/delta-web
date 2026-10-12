@@ -8,7 +8,7 @@ import { env } from "./src/envvars.ts";
 // https://astro.build/config
 export default defineConfig({
   vite: {
-    plugins: [...tailwindcss()],
+    plugins: /** @type {import("vite").PluginOption[]} */ (tailwindcss()),
   },
   adapter: bun(),
   output: "server",
