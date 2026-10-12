@@ -144,30 +144,32 @@ Accordions, “read more” and package details all use one pattern — **not** 
 
 ## 4. Components
 
-| Component         | Location                                           | Rules                                                                                                                                     |
-| ----------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `Logo`            | `src/components/Logo.astro`                        | Wordmark. Props: `animate` (caret), `command` (`--force`), `inverse` (light text on photos).                                              |
-| `Countdown`       | `src/components/Countdown.astro`                   | Mono, theme-aware; sits under a wordmark.                                                                                                 |
-| `Card`            | `src/components/Card.astro`                        | Frosted surface. `animate={true}` (tilt + shimmer) only on the landing hero.                                                              |
-| Buttons           | `.btn` + `.btn-accent/.btn-danger/.btn-ghost`      | `active:scale-[0.98]`, explicit transitions, focus-visible ring.                                                                          |
-| Fields            | `.field` (`TextInput`, `SelectInput`, `FileInput`) | Border + focus ring, no glass on controls.                                                                                                |
-| Fold panels       | §3.5                                               | Read more, FAQ, package details. One open at a time per group.                                                                            |
-| Team tiles        | `src/pages/project-group/TeamTile.astro`           | Photo/placeholder + `> Team label NN` header + names with email/GitHub/LinkedIn always visible.                                           |
-| Photo placeholder | `src/pages/project-group/PhotoPlaceholder.astro`   | Group silhouette (2+ people) / profile silhouette (single).                                                                               |
-| Package cards     | `src/pages/company/index.astro`                    | Quiet entry pair → three core packages → featured top tier; details open **after their group**.                                           |
-| Package details   | `src/components/company/PackageDetails.astro`      | Full description: bold intro, subtitle, `Paketet innehåller:` Δ list, closing, CTA.                                                       |
-| Pricing table     | `src/components/company/PricingTable.astro`        | Comparison matrix; equivalent tiers merged into one column; horizontal scroll allowed.                                                    |
-| Timeline          | `src/pages/student/index.astro`                    | Rail + Δ marker on each card, alternating sides; opposite-side photo collages fade in while a row's fold is open.                         |
-| Card content      | `src/pages/student/CardContent.astro`              | Lead paragraph + fold for the rest.                                                                                                       |
-| Timeline rail     | `src/pages/student/index.astro`                    | Track + fill; `--rail-progress` updated on scroll; without JS only the track shows.                                                       |
-| Footer mark       | `src/components/Footer.astro`                      | Oversized stroke-only Δ, `aria-hidden`, decorative; footer keeps extra bottom padding.                                                    |
-| Admin link        | `src/components/Footer.astro`                      | Admin access stays hidden: `opacity-0` by default, reveals on footer hover or keyboard focus (`focus-visible`). Never render it plainly.  |
-| Constellation     | `src/components/Constellation.astro`               | Ambient dot field behind every non-admin page; pointer lights dots + edges, far dots stay faint.                                          |
-| Header scrim      | `src/layouts/Layout.astro`                         | Fixed backdrop gradient over the top ~6rem; content fades as it scrolls behind the floating nav (no blur bar — the pills keep the glass). |
+| Component         | Location                                           | Rules                                                                                                                                                       |
+| ----------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Logo`            | `src/components/Logo.astro`                        | Wordmark. Props: `animate` (caret), `command` (`--force`), `inverse` (light text on photos).                                                                |
+| `Countdown`       | `src/components/Countdown.astro`                   | Mono, theme-aware; sits under a wordmark.                                                                                                                   |
+| `Card`            | `src/components/Card.astro`                        | Frosted surface. `animate={true}` (tilt + shimmer) only on the landing hero.                                                                                |
+| Buttons           | `.btn` + `.btn-accent/.btn-danger/.btn-ghost`      | `active:scale-[0.98]`, explicit transitions, focus-visible ring.                                                                                            |
+| Fields            | `.field` (`TextInput`, `SelectInput`, `FileInput`) | Border + focus ring, no glass on controls.                                                                                                                  |
+| Fold panels       | §3.5                                               | Read more, FAQ, package details. One open at a time per group.                                                                                              |
+| Team tiles        | `src/pages/project-group/TeamTile.astro`           | Photo/placeholder + `> Team label NN` header + names with email/GitHub/LinkedIn always visible.                                                             |
+| Photo placeholder | `src/pages/project-group/PhotoPlaceholder.astro`   | Group silhouette (2+ people) / profile silhouette (single).                                                                                                 |
+| Package cards     | `src/pages/company/index.astro`                    | Quiet entry pair → three core packages → featured top tier; details open **after their group**.                                                             |
+| Package details   | `src/components/company/PackageDetails.astro`      | Full description: bold intro, subtitle, `Paketet innehåller:` Δ list, closing, CTA.                                                                         |
+| Pricing table     | `src/components/company/PricingTable.astro`        | Comparison matrix; equivalent tiers merged into one column; horizontal scroll allowed.                                                                      |
+| Timeline          | `src/pages/student/index.astro`                    | Rail + Δ marker on each card, alternating sides; opposite-side photo collages fade in while a row's fold is open.                                           |
+| Card content      | `src/pages/student/CardContent.astro`              | Lead paragraph + fold for the rest.                                                                                                                         |
+| Timeline rail     | `src/pages/student/index.astro`                    | Track + fill; `--rail-progress` updated on scroll; without JS only the track shows.                                                                         |
+| Footer mark       | `src/components/Footer.astro`                      | Oversized stroke-only Δ, `aria-hidden`, decorative; footer keeps extra bottom padding.                                                                      |
+| Admin link        | `src/components/Footer.astro`                      | Admin access stays hidden: `opacity-0` by default, reveals only on direct hover over the link or keyboard focus (`focus-visible`). Never render it plainly. |
+| Constellation     | `src/components/Constellation.astro`               | Ambient dot field behind every non-admin page; pointer lights dots + edges, far dots stay faint.                                                            |
+| Header scrim      | `src/layouts/Layout.astro`                         | Fixed backdrop gradient over the top ~6rem; content fades as it scrolls behind the floating nav (no blur bar — the pills keep the glass).                   |
 
-**Team/package photos** auto-load from `src/assets/team/<name>.{webp,jpg,jpeg,png}`:
-`all` (whole team), `general`, `it`, `event`, `finance`, `logistics`, `marketing`, `relations`,
-`staff`. Missing files fall back to silhouettes — no code change needed to add photos.
+**Team/group photos** come from MinIO via `getGroupImages()`
+(`delta-public/delta-force-groups/<name>.webp`): `all` (whole team), `general`, `it`, `event`,
+`finance`, `logistics`, `marketing`, `relations`, `staff`. Missing files fall back to
+silhouettes. The MinIO originals are pre-cropped — render them as-is (`w-full`, natural height,
+no `object-cover`); never commit or crop them again in the site.
 
 ## 5. Page patterns
 
@@ -224,8 +226,8 @@ Accordions, “read more” and package details all use one pattern — **not** 
 - Native `<details>` animations are Chromium-only — use folds (§3.5).
 - Custom cursor is scoped to `body`; never `!important` on `*` (inputs keep the text cursor).
 - Lucide no longer ships brand icons — inline SVGs for GitHub/LinkedIn.
-- Admin access stays hidden: the footer's Admin link is `opacity-0` until the footer is hovered or
-  the link is focused. Rendering it plainly is a regression, not a style choice.
+- Admin access stays hidden: the footer's Admin link is `opacity-0` until the link itself is
+  hovered or focused. Rendering it plainly is a regression, not a style choice.
 - After DB schema changes: `bun generate && bun migrate` (nullable columns to avoid inventing data).
 
 ## 10. File map
