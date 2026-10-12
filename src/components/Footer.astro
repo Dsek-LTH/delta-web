@@ -7,6 +7,7 @@ import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { eq } from "drizzle-orm";
 import { createSelectSchema } from "drizzle-orm/zod";
 import { db } from "@/db/connect";
+import { bySortOrder } from "@/constants";
 
 const { translate: t } = i18n(Astro);
 
@@ -19,21 +20,25 @@ const contacts = sqliteTable("contacts", {
 
 const contactSelectSchema = createSelectSchema(contacts);
 
-const itManagers = await db
-  .select()
-  .from(deltaForceTable)
-  .where(eq(deltaForceTable.role, "it"))
-  .all();
+const itManagers = (
+  await db
+    .select()
+    .from(deltaForceTable)
+    .where(eq(deltaForceTable.role, "it"))
+    .all()
+).sort(bySortOrder);
 
 const itManagersValidated = itManagers.map((manager) =>
   contactSelectSchema.parse(manager),
 );
 
-const generals = await db
-  .select()
-  .from(deltaForceTable)
-  .where(eq(deltaForceTable.role, "general"))
-  .all();
+const generals = (
+  await db
+    .select()
+    .from(deltaForceTable)
+    .where(eq(deltaForceTable.role, "general"))
+    .all()
+).sort(bySortOrder);
 
 const generalsValidated = generals.map((general) =>
   contactSelectSchema.parse(general),

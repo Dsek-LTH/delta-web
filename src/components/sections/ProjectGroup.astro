@@ -6,7 +6,11 @@ import PhotoPlaceholder from "@/pages/project-group/PhotoPlaceholder.astro";
 import { i18n } from "@/i18n/utils";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
-import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
+import {
+  bySortOrder,
+  deltaForceRoles,
+  deltaFordeRoleToTranslationKey,
+} from "@/constants";
 import { getGroupImages } from "@/files/client";
 
 const { translate: t } = i18n(Astro);
@@ -30,9 +34,9 @@ const tileRevealDelays = [
   "[transition-delay:90ms]",
   "[transition-delay:180ms]",
 ];
-const generals = deltaForceMembers.filter(
-  (member) => member.role === "general",
-);
+const generals = deltaForceMembers
+  .filter((member) => member.role === "general")
+  .sort(bySortOrder);
 const generalsLabel = t(
   deltaFordeRoleToTranslationKey("general", generals.length > 1),
 );
@@ -43,7 +47,9 @@ let wideCount = 0;
 const teams = deltaForceRoles
   .filter((role) => role !== "general")
   .map((role) => {
-    const members = deltaForceMembers.filter((member) => member.role === role);
+    const members = deltaForceMembers
+      .filter((member) => member.role === role)
+      .sort(bySortOrder);
     return {
       role,
       // Singular for one-person teams ("IT-ansvarig"), plural for the rest.
