@@ -16,10 +16,12 @@ const {
   class: className,
   member,
   newMember,
+  imageWarning,
 } = Astro.props as {
   class: string;
   member: Member;
   newMember?: boolean;
+  imageWarning?: string;
 };
 
 const { lang, translate: t } = i18n(Astro);
@@ -73,6 +75,14 @@ const memberImage: ImageMetadata = await getMemberImage(member).catch(
             ))}
           </ul>
         )}
+      </div>
+    )
+  }
+  {
+    imageWarning && (
+      <div class="rounded-lg border border-yellow-500/40 bg-yellow-500/10 p-3 text-sm text-yellow-200">
+        <p class="font-semibold">{t("admin.delta-force.image-warning")}</p>
+        <p class="mt-1">{imageWarning}</p>
       </div>
     )
   }

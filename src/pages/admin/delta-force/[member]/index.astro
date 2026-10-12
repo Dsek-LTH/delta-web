@@ -11,8 +11,13 @@ const result = Astro.getActionResult(
 );
 
 if (result?.data?.studentId) {
-  return Astro.redirect(`/admin/delta-force/${result.data.studentId}`);
+  const query = result.data.imageError
+    ? `?${new URLSearchParams({ imageWarning: result.data.imageError })}`
+    : "";
+  return Astro.redirect(`/admin/delta-force/${result.data.studentId}${query}`);
 }
+
+const imageWarning = Astro.url.searchParams.get("imageWarning");
 
 let member = null;
 if (memberId) {
@@ -27,4 +32,4 @@ if (!member) {
 }
 ---
 
-<Page member={member} />
+<Page member={member} imageWarning={imageWarning} />

@@ -22,7 +22,10 @@ const result = Astro.getActionResult(
 );
 
 if (result?.data?.studentId) {
-  return Astro.redirect(`/admin/delta-force/${result.data.studentId}`);
+  const query = result.data.imageError
+    ? `?${new URLSearchParams({ imageWarning: result.data.imageError })}`
+    : "";
+  return Astro.redirect(`/admin/delta-force/${result.data.studentId}${query}`);
 }
 ---
 

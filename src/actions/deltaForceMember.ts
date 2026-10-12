@@ -37,6 +37,7 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Updating member:", input.studentId);
+      let imageError: string | undefined;
       if (
         input.oldStudentId !== input.studentId &&
         (await checkMemberImageExists({ studentId: input.oldStudentId }))
@@ -51,9 +52,12 @@ export const deltaForceMember = {
               ],
             );
           } catch (error) {
+            const message =
+              error instanceof Error ? error.message : String(error);
             console.error(
-              `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+              `Failed to delete image for studentId ${input.studentId}: ${message}`,
             );
+            imageError = message;
           }
         } else {
           try {
@@ -67,11 +71,15 @@ export const deltaForceMember = {
               console.error(
                 `Failed to rename image for studentId ${input.oldStudentId} to ${input.studentId}: No response from fileHandler.rename`,
               );
+              imageError = "Failed to rename the existing image.";
             }
           } catch (error) {
+            const message =
+              error instanceof Error ? error.message : String(error);
             console.error(
-              `Failed to rename old image for studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
+              `Failed to rename old image for studentId ${input.oldStudentId}: ${message}`,
             );
+            imageError = message;
           }
         }
       }
@@ -95,9 +103,12 @@ export const deltaForceMember = {
             },
           );
         } catch (error) {
+          const message =
+            error instanceof Error ? error.message : String(error);
           console.error(
-            `Failed to upload new image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+            `Failed to upload new image for studentId ${input.studentId}: ${message}`,
           );
+          imageError = message;
         }
       }
       try {
@@ -122,7 +133,7 @@ export const deltaForceMember = {
           message: `Failed to update database. See server logs for details.`,
         });
       }
-      return { studentId: input.studentId };
+      return { studentId: input.studentId, imageError };
     },
   }),
   addDeltaForceMember: defineAction({
@@ -139,6 +150,7 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Adding new member:", input.studentId);
+      let imageError: string | undefined;
       if (input.image) {
         try {
           await uploadFile(
@@ -159,9 +171,12 @@ export const deltaForceMember = {
             },
           );
         } catch (error) {
+          const message =
+            error instanceof Error ? error.message : String(error);
           console.error(
-            `Failed to upload new image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+            `Failed to upload new image for studentId ${input.studentId}: ${message}`,
           );
+          imageError = message;
         }
       }
       try {
@@ -186,7 +201,7 @@ export const deltaForceMember = {
             "Failed to add new member to database. See server logs for details.",
         });
       }
-      return { studentId: input.studentId };
+      return { studentId: input.studentId, imageError };
     },
   }),
   deleteDeltaForceMember: defineAction({

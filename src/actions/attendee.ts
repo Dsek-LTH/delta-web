@@ -25,7 +25,7 @@ const uploadAttendeeImage = async (
   context: APIContext,
   image: File,
   id: number,
-) => {
+): Promise<string | undefined> => {
   try {
     await uploadFile(
       context,
@@ -44,10 +44,11 @@ const uploadAttendeeImage = async (
         },
       },
     );
+    return undefined;
   } catch (error) {
-    console.error(
-      `Failed to upload image for attendee ${id}: ${error instanceof Error ? error.message : String(error)}`,
-    );
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`Failed to upload image for attendee ${id}: ${message}`);
+    return message;
   }
 };
 
@@ -68,8 +69,13 @@ export const attendee = {
     }),
     handler: async (input, context) => {
       console.log("Updating attendee:", input.id);
+      let imageError: string | undefined;
       if (input.image) {
-        await uploadAttendeeImage(context as APIContext, input.image, input.id);
+        imageError = await uploadAttendeeImage(
+          context as APIContext,
+          input.image,
+          input.id,
+        );
       }
       try {
         await db
@@ -94,7 +100,7 @@ export const attendee = {
           message: `Failed to update database. See server logs for details.`,
         });
       }
-      return { id: input.id };
+      return { id: input.id, imageError };
     },
   }),
   addAttendee: defineAction({
@@ -138,10 +144,15 @@ export const attendee = {
             "Failed to add new attendee to database. See server logs for details.",
         });
       }
+      let imageError: string | undefined;
       if (input.image) {
-        await uploadAttendeeImage(context as APIContext, input.image, id);
+        imageError = await uploadAttendeeImage(
+          context as APIContext,
+          input.image,
+          id,
+        );
       }
-      return { id };
+      return { id, imageError };
     },
   }),
   deleteAttendee: defineAction({
