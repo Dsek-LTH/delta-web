@@ -33,7 +33,7 @@ const {
 
 // Fixed media heights keep photo areas level across tiles in the same row
 // (wide and single tiles share the same height; the full-width tile is taller).
-const media = span === 3 ? "h-64 lg:h-96" : "h-56 lg:h-72";
+const media = span === 3 ? "h-72 lg:h-112" : "h-64 lg:h-88";
 ---
 
 <Card
@@ -52,7 +52,7 @@ const media = span === 3 ? "h-64 lg:h-96" : "h-56 lg:h-72";
         alt=""
         width={800}
         height={600}
-        class={twMerge("w-full object-cover", media)}
+        class={twMerge("w-full object-cover object-top", media)}
       />
     ) : (
       <PhotoPlaceholder
