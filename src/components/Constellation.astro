@@ -1,0 +1,332 @@
+---
+// Ambient constellation: small dots drifting behind the page. The pointer
+// lights nearby dots, links them into a graph, and pulls them with gravity:
+// inside the well the motion is conservative, so dots gather into a swarm;
+// outside it, a weak force along each dot's velocity direction restores its
+// target speed. Decorational only: aria-hidden, pointer-events-none; renders
+// a static frame under prefers-reduced-motion.
+// Debug: add ?paths to any URL for green velocity vectors + the well radius.
+---
+
+<canvas
+  data-constellation
+  aria-hidden="true"
+  class="pointer-events-none fixed inset-0 -z-10"></canvas>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>(
+    "[data-constellation]",
+  );
+  const context = canvas?.getContext("2d");
+
+  if (canvas && context) {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const showDebug = new URLSearchParams(window.location.search).has("paths");
+
+    const LIT_RADIUS = 180; // how far the pointer reaches for lighting
+    const LINK_DISTANCE = 140; // dot-to-dot edge length
+    const LINK_ALPHA = 0.22; // base strength of a dot-to-dot edge
+    const POINTER_LINK_DISTANCE = 200; // edges from the pointer node
+    const POINTER_LINK_ALPHA = 0.3; // base strength of a pointer edge
+    const BASE_ALPHA = 0.14; // far from the pointer
+    const LIT_ALPHA = 0.6;
+    const BASE_RADIUS = 1.2;
+    const PARALLAX = 0.1; // field lags the page scroll (distant layer)
+    const WRAP_MARGIN = 24;
+    const GRAVITY = 0.003; // px/frame^2 at the cursor, linear falloff
+    const GRAVITY_REACH = 420; // gravity inside the well, speed restore outside
+    const SPEED_CORRECTION = 0.008; // weak force toward the target speed
+    const GLOW_SPEED_MIN = 0.28; // fastest drift: below this, no glow
+    const GLOW_SPEED_MAX = 1.0; // flyby speed: full glow
+
+    type Point = {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      targetSpeed: number;
+    };
+
+    let width = 0;
+    let height = 0;
+    let points: Point[] = [];
+    let pointerX = -1e4;
+    let pointerY = -1e4;
+    let pointerActive = false;
+    let scrollOffset = 0;
+    let scrollTarget = 0;
+    let dotColor = "#0f172a";
+    let litColor = "#c9457a";
+
+    // Pre-rendered bloom sprite: a wide, gaussian-ish radial falloff tinted
+    // with the lit colour. Drawn additively (globalCompositeOperation
+    // "lighter") behind fast dots, so overlapping glows accumulate into
+    // blooms the way light does.
+    const GLOW_SPRITE_SIZE = 128;
+    const glowSprite = document.createElement("canvas");
+    glowSprite.width = GLOW_SPRITE_SIZE;
+    glowSprite.height = GLOW_SPRITE_SIZE;
+
+    const buildGlowSprite = () => {
+      const spriteContext = glowSprite.getContext("2d");
+      if (!spriteContext) return;
+      const size = GLOW_SPRITE_SIZE;
+      const half = size / 2;
+      spriteContext.clearRect(0, 0, size, size);
+      const gradient = spriteContext.createRadialGradient(
+        half,
+        half,
+        0,
+        half,
+        half,
+        half,
+      );
+      gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+      gradient.addColorStop(0.22, "rgba(255, 255, 255, 0.5)");
+      gradient.addColorStop(0.45, "rgba(255, 255, 255, 0.2)");
+      gradient.addColorStop(0.7, "rgba(255, 255, 255, 0.06)");
+      gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      spriteContext.fillStyle = gradient;
+      spriteContext.fillRect(0, 0, size, size);
+      // Tint the mask with the theme's lit colour, alpha preserved.
+      spriteContext.globalCompositeOperation = "source-in";
+      spriteContext.fillStyle = litColor;
+      spriteContext.fillRect(0, 0, size, size);
+      spriteContext.globalCompositeOperation = "source-over";
+    };
+
+    const readColors = () => {
+      const styles = getComputedStyle(document.documentElement);
+      dotColor =
+        styles.getPropertyValue("--color-backdrop-content").trim() || dotColor;
+      litColor =
+        styles.getPropertyValue("--color-brand-primary").trim() || litColor;
+      buildGlowSprite();
+    };
+
+    // Vertical position of a dot on screen: base position minus the eased
+    // scroll parallax, wrapped so the field stays dense while scrolling.
+    const wrapY = (y: number) => {
+      const range = height + WRAP_MARGIN * 2;
+      return ((((y - scrollOffset) % range) + range) % range) - WRAP_MARGIN;
+    };
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const count = Math.max(
+        32,
+        Math.min(120, Math.round((width * height) / 11000)),
+      );
+      points = Array.from({ length: count }, () => {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.08 + Math.random() * 0.2;
+        return {
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          targetSpeed: speed,
+        };
+      });
+    };
+
+    const draw = () => {
+      context.clearRect(0, 0, width, height);
+
+      scrollOffset += (scrollTarget - scrollOffset) * 0.09;
+
+      // Gravity pulls dots into the cursor's well; outside the well a weak
+      // force along each dot's own velocity direction restores its target
+      // speed (resistance when faster, boost when slower).
+      const xs: number[] = [];
+      const renderYs: number[] = [];
+      const speeds: number[] = [];
+      for (const point of points) {
+        xs.push(point.x);
+        const renderY = wrapY(point.y);
+        renderYs.push(renderY);
+
+        const dx = pointerX - point.x;
+        const dy = pointerY - renderY;
+        const distance = Math.hypot(dx, dy);
+
+        if (pointerActive && distance > 1 && distance < GRAVITY_REACH) {
+          const accel = GRAVITY * (1 - distance / GRAVITY_REACH);
+          point.vx += (dx / distance) * accel;
+          point.vy += (dy / distance) * accel;
+        } else {
+          const speed = Math.hypot(point.vx, point.vy);
+          if (speed > 1e-4) {
+            const scale =
+              (speed + (point.targetSpeed - speed) * SPEED_CORRECTION) / speed;
+            point.vx *= scale;
+            point.vy *= scale;
+          }
+        }
+
+        speeds.push(Math.hypot(point.vx, point.vy));
+
+        point.x += point.vx;
+        point.y += point.vy;
+        if (point.x < 0 || point.x > width) point.vx *= -1;
+        if (point.y < 0 || point.y > height) point.vy *= -1;
+      }
+
+      if (showDebug) {
+        context.globalAlpha = 1;
+        context.lineWidth = 1;
+        context.strokeStyle = "rgba(0, 200, 90, 0.5)";
+        context.beginPath();
+        for (let i = 0; i < points.length; i += 1) {
+          const point = points[i]!;
+          context.moveTo(xs[i]!, renderYs[i]!);
+          context.lineTo(xs[i]! + point.vx * 90, renderYs[i]! + point.vy * 90);
+        }
+        context.stroke();
+        if (pointerActive) {
+          context.strokeStyle = "rgba(0, 200, 90, 0.25)";
+          context.setLineDash([4, 6]);
+          context.beginPath();
+          context.arc(pointerX, pointerY, GRAVITY_REACH, 0, Math.PI * 2);
+          context.stroke();
+          context.setLineDash([]);
+        }
+      }
+
+      const lit = points.map((_, i) => {
+        const distance = Math.hypot(xs[i]! - pointerX, renderYs[i]! - pointerY);
+        return Math.max(0, 1 - distance / LIT_RADIUS);
+      });
+
+      // Dots also glow with their own speed: flybys and orbiting swarm
+      // members shine, the quiet field stays faint.
+      const speedGlows = speeds.map((speed) =>
+        Math.min(
+          1,
+          Math.max(
+            0,
+            (speed - GLOW_SPEED_MIN) / (GLOW_SPEED_MAX - GLOW_SPEED_MIN),
+          ),
+        ),
+      );
+      const glows = lit.map((value, i) => Math.max(value, speedGlows[i]!));
+
+      // Edges everywhere: the proximity between two dots decides the
+      // strength. The pointer is just one more node, linked to any dots
+      // close to it.
+      context.lineWidth = 1;
+      context.strokeStyle = litColor;
+      for (let i = 0; i < points.length; i += 1) {
+        for (let j = i + 1; j < points.length; j += 1) {
+          const distance = Math.hypot(
+            xs[i]! - xs[j]!,
+            renderYs[i]! - renderYs[j]!,
+          );
+          if (distance > LINK_DISTANCE) continue;
+          const proximity = 1 - distance / LINK_DISTANCE;
+          // Close pairs draw stronger when either dot is lit (near the
+          // pointer) or blooming with speed.
+          const activation = 0.6 + 0.4 * Math.max(glows[i]!, glows[j]!);
+          context.globalAlpha = proximity * LINK_ALPHA * activation;
+          context.beginPath();
+          context.moveTo(xs[i]!, renderYs[i]!);
+          context.lineTo(xs[j]!, renderYs[j]!);
+          context.stroke();
+        }
+      }
+
+      if (pointerActive) {
+        for (let i = 0; i < points.length; i += 1) {
+          const distance = Math.hypot(
+            xs[i]! - pointerX,
+            renderYs[i]! - pointerY,
+          );
+          if (distance > POINTER_LINK_DISTANCE) continue;
+          const proximity = 1 - distance / POINTER_LINK_DISTANCE;
+          context.globalAlpha = proximity * POINTER_LINK_ALPHA;
+          context.beginPath();
+          context.moveTo(xs[i]!, renderYs[i]!);
+          context.lineTo(pointerX, pointerY);
+          context.stroke();
+        }
+      }
+
+      // Dots: faint far away, brighter and pink near the pointer, with a
+      // soft halo that scales with speed.
+      for (let i = 0; i < points.length; i += 1) {
+        const speedGlow = speedGlows[i]!;
+        const glow = glows[i]!;
+
+        if (speedGlow > 0.05) {
+          const bloomRadius = 10 + speedGlow * 26;
+          context.globalAlpha = speedGlow * 0.5;
+          context.globalCompositeOperation = "lighter";
+          context.drawImage(
+            glowSprite,
+            xs[i]! - bloomRadius,
+            renderYs[i]! - bloomRadius,
+            bloomRadius * 2,
+            bloomRadius * 2,
+          );
+          context.globalCompositeOperation = "source-over";
+        }
+
+        context.globalAlpha = BASE_ALPHA + glow * (LIT_ALPHA - BASE_ALPHA);
+        context.fillStyle = glow > 0 ? litColor : dotColor;
+        context.beginPath();
+        context.arc(
+          xs[i]!,
+          renderYs[i]!,
+          BASE_RADIUS + glow * 0.9,
+          0,
+          Math.PI * 2,
+        );
+        context.fill();
+      }
+      context.globalAlpha = 1;
+
+      if (!reducedMotion) {
+        requestAnimationFrame(draw);
+      }
+    };
+
+    readColors();
+    resize();
+    draw();
+
+    new MutationObserver(readColors).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    if (!reducedMotion) {
+      const onPointerMove = (event: PointerEvent) => {
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+        pointerActive = true;
+      };
+      const onPointerLeave = () => {
+        pointerActive = false;
+        pointerX = -1e4;
+        pointerY = -1e4;
+      };
+      const onScroll = () => {
+        scrollTarget = window.scrollY * PARALLAX;
+      };
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+      document.addEventListener("pointerleave", onPointerLeave);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", resize);
+      onScroll();
+      scrollOffset = scrollTarget;
+    }
+  }
+</script>
