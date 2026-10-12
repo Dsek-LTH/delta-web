@@ -169,27 +169,16 @@ const deltaTiers = tiers.slice(2, 5);
       <span class="ms-[0.5em] italic">{t("company.hero.forCompanies")}</span>
     </h2>
 
-    <p class="mt-16 text-xl font-bold text-brand-primary lg:mt-20 lg:text-2xl">
-      {t("company.hero.meetDevelopers")}
-    </p>
-    <p class="mt-6 font-mono text-sm text-card-content-muted">
-      {t("company.hero.fields")}
-    </p>
-    <p class="mt-10 text-card-content-muted lg:mt-12">
-      {t("company.hero.contactBefore")}{" "}
-      <a
-        href="mailto:delta@dsek.se"
-        class="font-semibold text-brand-primary underline transition-colors hover:text-brand-primary/80"
-        >delta@dsek.se</a
-      >{" "}
-      {t("company.hero.contactAfter")}
+    <p
+      class="mx-auto mt-10 max-w-3xl leading-relaxed text-card-content lg:mt-12"
+    >
+      {t("company.intro.attend")}
     </p>
   </div>
 
   <div
-    class="flex w-full max-w-3xl flex-col gap-4 text-center leading-relaxed reveal"
+    class="flex w-full max-w-3xl flex-col items-center gap-4 text-center leading-relaxed reveal"
   >
-    <p class="text-card-content">{t("company.intro.attend")}</p>
     <p class="text-card-content">
       {t("company.intro.combine")}{" "}
       <a
@@ -208,6 +197,12 @@ const deltaTiers = tiers.slice(2, 5);
         >{t("company.intro.websiteLink")}</a
       >{t("company.intro.websiteAfter")}
     </p>
+    <a
+      href="mailto:delta@dsek.se"
+      class="btn btn-ghost mt-2 rounded-full px-6 py-3"
+    >
+      {t("company.package.contact")}
+    </a>
   </div>
 
   <div id="pricing" class="flex w-full flex-col gap-10">
