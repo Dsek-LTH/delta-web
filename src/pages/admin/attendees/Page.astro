@@ -5,10 +5,12 @@ import { attendeesTable } from "@/db/schema";
 import AttendeeEditor from "./AttendeeEditor.astro";
 import AttendeeList from "./AttendeeList.astro";
 import { ArrowLeft } from "@lucide/astro";
+import type { ImageWarningCode } from "@/files/imageWarnings";
 
-const { attendee, newAttendee } = Astro.props as {
+const { attendee, newAttendee, imageWarning } = Astro.props as {
   attendee?: typeof attendeesTable.$inferSelect;
   newAttendee?: boolean;
+  imageWarning?: ImageWarningCode | null;
 };
 const { translate: t } = i18n(Astro);
 ---
@@ -35,6 +37,7 @@ const { translate: t } = i18n(Astro);
               class="flex-1 h-fit"
               attendee={attendee}
               newAttendee={newAttendee}
+              imageWarning={imageWarning}
             />
           )
         }

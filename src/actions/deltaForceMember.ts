@@ -15,8 +15,35 @@ import {
   getMemberImageObjectName,
   publicBucket,
 } from "@/files/client";
+import type { AuthContext } from "@/auth/authorize";
+import {
+  imageWarningFromError,
+  type ImageWarningCode,
+} from "@/files/imageWarnings";
 
 const studentIdRegex = /^[a-z]{2}[0-9]{4}[a-z]{2}(-s)$/;
+
+const uploadMemberImage = async (
+  context: AuthContext,
+  image: File,
+  studentId: string,
+): Promise<ImageWarningCode | undefined> => {
+  try {
+    await uploadFile(
+      context,
+      image,
+      "delta-force-members",
+      publicBucket(),
+      studentId,
+      profileImageCompression,
+    );
+  } catch (error) {
+    console.error(
+      `Failed to upload new image for studentId ${studentId}: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    return imageWarningFromError(error);
+  }
+};
 
 export const deltaForceMember = {
   updateDeltaForceMember: defineAction({
@@ -35,57 +62,50 @@ export const deltaForceMember = {
       image: optionalImage,
     }),
     handler: async (input, context) => {
-      console.log("Updating member:", input.studentId);
-      if (
+      let imageWarning: ImageWarningCode | undefined;
+      const oldImageExists =
         input.oldStudentId !== input.studentId &&
-        (await checkMemberImageExists({ studentId: input.oldStudentId }))
-      ) {
-        if (input.image) {
+        (await checkMemberImageExists({ studentId: input.oldStudentId }));
+
+      if (input.image) {
+        if (oldImageExists) {
           try {
             await fileHandler.remove(context, publicBucket(), [
               getMemberImageObjectName(input.oldStudentId),
             ]);
           } catch (error) {
             console.error(
-              `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
-            );
-          }
-        } else {
-          try {
-            const res = await fileHandler.rename(
-              context,
-              publicBucket(),
-              getMemberImageObjectName(input.oldStudentId),
-              getMemberImageObjectName(input.studentId),
-            );
-            if (!res) {
-              console.error(
-                `Failed to rename image for studentId ${input.oldStudentId} to ${input.studentId}: No response from fileHandler.rename`,
-              );
-            }
-          } catch (error) {
-            console.error(
-              `Failed to rename old image for studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
+              `Failed to delete old image for studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
             );
           }
         }
-      }
-      if (input.image) {
+        imageWarning = await uploadMemberImage(
+          context,
+          input.image,
+          input.studentId,
+        );
+      } else if (oldImageExists) {
         try {
-          await uploadFile(
+          const res = await fileHandler.rename(
             context,
-            input.image,
-            "delta-force-members",
             publicBucket(),
-            `${input.studentId}`,
-            profileImageCompression,
+            getMemberImageObjectName(input.oldStudentId),
+            getMemberImageObjectName(input.studentId),
           );
+          if (!res) {
+            console.error(
+              `Failed to rename image for studentId ${input.oldStudentId} to ${input.studentId}: No response from fileHandler.rename`,
+            );
+            imageWarning = "unknown";
+          }
         } catch (error) {
           console.error(
-            `Failed to upload new image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+            `Failed to rename old image for studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
           );
+          imageWarning = imageWarningFromError(error);
         }
       }
+
       try {
         await db
           .update(deltaForceTable)
@@ -110,7 +130,7 @@ export const deltaForceMember = {
           message: `Failed to update database. See server logs for details.`,
         });
       }
-      return { studentId: input.studentId };
+      return { studentId: input.studentId, imageWarning };
     },
   }),
   addDeltaForceMember: defineAction({
@@ -128,23 +148,9 @@ export const deltaForceMember = {
       image: optionalImage,
     }),
     handler: async (input, context) => {
-      console.log("Adding new member:", input.studentId);
-      if (input.image) {
-        try {
-          await uploadFile(
-            context,
-            input.image,
-            "delta-force-members",
-            publicBucket(),
-            `${input.studentId}`,
-            profileImageCompression,
-          );
-        } catch (error) {
-          console.error(
-            `Failed to upload new image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
-          );
-        }
-      }
+      const imageWarning = input.image
+        ? await uploadMemberImage(context, input.image, input.studentId)
+        : undefined;
       try {
         await db
           .insert(deltaForceTable)
@@ -169,7 +175,7 @@ export const deltaForceMember = {
             "Failed to add new member to database. See server logs for details.",
         });
       }
-      return { studentId: input.studentId };
+      return { studentId: input.studentId, imageWarning };
     },
   }),
   deleteDeltaForceMember: defineAction({
@@ -178,7 +184,6 @@ export const deltaForceMember = {
       studentId: z.string().regex(studentIdRegex),
     }),
     handler: async (input, context) => {
-      console.log("Deleting member with studentId:", input.studentId);
       try {
         await db
           .delete(deltaForceTable)

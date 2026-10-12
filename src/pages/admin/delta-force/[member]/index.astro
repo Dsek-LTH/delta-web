@@ -4,6 +4,10 @@ import Page from "../Page.astro";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
+import {
+  imageWarningFromQuery,
+  withImageWarning,
+} from "@/files/imageWarnings";
 
 const memberId = Astro.params.member;
 const result = Astro.getActionResult(
@@ -11,8 +15,17 @@ const result = Astro.getActionResult(
 );
 
 if (result?.data?.studentId) {
-  return Astro.redirect(`/admin/delta-force/${result.data.studentId}`);
+  return Astro.redirect(
+    withImageWarning(
+      `/admin/delta-force/${result.data.studentId}`,
+      result.data.imageWarning,
+    ),
+  );
 }
+
+const imageWarning = imageWarningFromQuery(
+  Astro.url.searchParams.get("imageWarning"),
+);
 
 let member = null;
 if (memberId) {
@@ -27,4 +40,4 @@ if (!member) {
 }
 ---
 
-<Page member={member} />
+<Page member={member} imageWarning={imageWarning} />

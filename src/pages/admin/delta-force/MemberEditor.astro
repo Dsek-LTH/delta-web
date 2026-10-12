@@ -11,15 +11,19 @@ import { getMemberImage } from "@/files/client";
 import type { Member } from "@/types";
 import { Image } from "astro:assets";
 import DefaultProfileImage from "@/assets/default-profile.webp";
+import ImageWarning from "@/components/ImageWarning.astro";
+import type { ImageWarningCode } from "@/files/imageWarnings";
 
 const {
   class: className,
   member,
   newMember,
+  imageWarning,
 } = Astro.props as {
   class: string;
   member: Member;
   newMember?: boolean;
+  imageWarning?: ImageWarningCode | null;
 };
 
 const { lang, translate: t } = i18n(Astro);
@@ -35,9 +39,7 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
-const memberImage: ImageMetadata = await getMemberImage(member).catch(
-  () => DefaultProfileImage,
-);
+const memberImage: ImageMetadata = await getMemberImage(member);
 ---
 
 <form
@@ -57,7 +59,7 @@ const memberImage: ImageMetadata = await getMemberImage(member).catch(
   <input type="hidden" name="lang" value={lang} />
   {
     (actionError || inputErrors) && (
-      <div class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
+      <div class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-800 dark:text-red-200">
         <p class="font-semibold">Could not save member</p>
         {actionError && (
           <p class="mt-1">
@@ -76,6 +78,7 @@ const memberImage: ImageMetadata = await getMemberImage(member).catch(
       </div>
     )
   }
+  <ImageWarning code={imageWarning} />
   <div class="flex flex-col gap-1">
     <Label name="firstName" label={t("admin.delta-force.member.first-name")} />
     <TextInput name="firstName" value={member.firstName} />
