@@ -4,20 +4,17 @@ import { deltaForceRoles } from "@/constants";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { uploadFile } from "@/files/uploadFiles";
-import { env } from "@/envvars";
-import type { APIContext } from "astro";
+import {
+  optionalImage,
+  profileImageCompression,
+  uploadFile,
+} from "@/files/uploadFiles";
 import fileHandler from "@/files/fileHandler";
-import { checkMemberImageExists } from "@/files/client";
-import { prepareNameForFilesystem } from "@/files/utils";
-
-const optionalImage = z.preprocess(
-  (value) => (value instanceof File && value.size === 0 ? undefined : value),
-  z
-    .instanceof(File)
-    .refine((f) => f.size > 0)
-    .optional(),
-);
+import {
+  checkMemberImageExists,
+  getMemberImageObjectName,
+  publicBucket,
+} from "@/files/client";
 
 const studentIdRegex = /^[a-z]{2}[0-9]{4}[a-z]{2}(-s)$/;
 
@@ -45,13 +42,9 @@ export const deltaForceMember = {
       ) {
         if (input.image) {
           try {
-            await fileHandler.remove(
-              context as APIContext,
-              env.MINIO_BUCKET_PUBLIC || "delta-public",
-              [
-                `delta-force-members/${prepareNameForFilesystem(input.oldStudentId, input.oldStudentId, "webp")}`,
-              ],
-            );
+            await fileHandler.remove(context, publicBucket(), [
+              getMemberImageObjectName(input.oldStudentId),
+            ]);
           } catch (error) {
             console.error(
               `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
@@ -60,10 +53,10 @@ export const deltaForceMember = {
         } else {
           try {
             const res = await fileHandler.rename(
-              context as APIContext,
-              env.MINIO_BUCKET_PUBLIC || "delta-public",
-              `delta-force-members/${prepareNameForFilesystem(input.oldStudentId, input.oldStudentId, "webp")}`,
-              `delta-force-members/${prepareNameForFilesystem(input.studentId, input.studentId, "webp")}`,
+              context,
+              publicBucket(),
+              getMemberImageObjectName(input.oldStudentId),
+              getMemberImageObjectName(input.studentId),
             );
             if (!res) {
               console.error(
@@ -80,21 +73,12 @@ export const deltaForceMember = {
       if (input.image) {
         try {
           await uploadFile(
-            context as APIContext,
+            context,
             input.image,
             "delta-force-members",
-            env.MINIO_BUCKET_PUBLIC || "delta-public",
+            publicBucket(),
             `${input.studentId}`,
-            {
-              resize: {
-                width: 800,
-                height: 800,
-                fit: "cover",
-              },
-              webp: {
-                quality: 80,
-              },
-            },
+            profileImageCompression,
           );
         } catch (error) {
           console.error(
@@ -148,21 +132,12 @@ export const deltaForceMember = {
       if (input.image) {
         try {
           await uploadFile(
-            context as APIContext,
+            context,
             input.image,
             "delta-force-members",
-            env.MINIO_BUCKET_PUBLIC || "delta-public",
+            publicBucket(),
             `${input.studentId}`,
-            {
-              resize: {
-                width: 800,
-                height: 800,
-                fit: "cover",
-              },
-              webp: {
-                quality: 80,
-              },
-            },
+            profileImageCompression,
           );
         } catch (error) {
           console.error(
@@ -204,21 +179,6 @@ export const deltaForceMember = {
     }),
     handler: async (input, context) => {
       console.log("Deleting member with studentId:", input.studentId);
-      if (await checkMemberImageExists(input)) {
-        try {
-          await fileHandler.remove(
-            context as APIContext,
-            env.MINIO_BUCKET_PUBLIC || "delta-public",
-            [
-              `delta-force-members/${prepareNameForFilesystem(input.studentId, input.studentId, "webp")}`,
-            ],
-          );
-        } catch (error) {
-          console.error(
-            `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
-          );
-        }
-      }
       try {
         await db
           .delete(deltaForceTable)
@@ -233,6 +193,16 @@ export const deltaForceMember = {
           message:
             "Failed to delete member from database. See server logs for details.",
         });
+      }
+
+      try {
+        await fileHandler.remove(context, publicBucket(), [
+          getMemberImageObjectName(input.studentId),
+        ]);
+      } catch (error) {
+        console.error(
+          `Failed to delete image for studentId ${input.studentId}: ${error instanceof Error ? error.message : String(error)}`,
+        );
       }
 
       return { studentId: input.studentId };

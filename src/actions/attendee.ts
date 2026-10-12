@@ -3,6 +3,35 @@ import { z } from "astro/zod";
 import { db } from "@/db/connect";
 import { attendeesTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import {
+  optionalImage,
+  profileImageCompression,
+  uploadFile,
+} from "@/files/uploadFiles";
+import { getAttendeeImageObjectName, publicBucket } from "@/files/client";
+import fileHandler from "@/files/fileHandler";
+import type { AuthContext } from "@/auth/authorize";
+
+const uploadAttendeeImage = async (
+  context: AuthContext,
+  image: File,
+  id: number,
+) => {
+  try {
+    await uploadFile(
+      context,
+      image,
+      "attendees",
+      publicBucket(),
+      `${id}`,
+      profileImageCompression,
+    );
+  } catch (error) {
+    console.error(
+      `Failed to upload image for attendee ${id}: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+};
 
 const normalizeTags = (tags: string) =>
   tags
@@ -19,6 +48,7 @@ const attendeeFields = {
   tags: z.string().trim().min(1).transform(normalizeTags),
   contact: z.string().trim().min(1),
   linkedin: z.union([z.url(), z.literal(""), z.literal("#")]),
+  image: optionalImage,
 };
 
 export const attendee = {
@@ -28,7 +58,7 @@ export const attendee = {
       id: z.coerce.number().int().positive(),
       ...attendeeFields,
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
       try {
         const updated = await db
           .update(attendeesTable)
@@ -50,6 +80,9 @@ export const attendee = {
             message: "Attendee not found.",
           });
         }
+        if (input.image) {
+          await uploadAttendeeImage(context, input.image, updated.id);
+        }
         return { id: updated.id };
       } catch (error) {
         if (error instanceof ActionError) throw error;
@@ -66,7 +99,8 @@ export const attendee = {
   addAttendee: defineAction({
     accept: "form",
     input: z.object(attendeeFields),
-    handler: async (input) => {
+    handler: async (input, context) => {
+      let id: number;
       try {
         const inserted = await db
           .insert(attendeesTable)
@@ -81,7 +115,7 @@ export const attendee = {
           })
           .returning({ id: attendeesTable.id })
           .get();
-        return { id: inserted.id };
+        id = inserted.id;
       } catch (error) {
         console.error(
           `Failed to add new attendee ${input.name}: ${error instanceof Error ? error.message : String(error)}`,
@@ -92,6 +126,10 @@ export const attendee = {
             "Failed to add new attendee to database. See server logs for details.",
         });
       }
+      if (input.image) {
+        await uploadAttendeeImage(context, input.image, id);
+      }
+      return { id };
     },
   }),
   deleteAttendee: defineAction({
@@ -99,7 +137,7 @@ export const attendee = {
     input: z.object({
       id: z.coerce.number().int().positive(),
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
       try {
         await db
           .delete(attendeesTable)
@@ -114,6 +152,16 @@ export const attendee = {
           message:
             "Failed to delete attendee from database. See server logs for details.",
         });
+      }
+
+      try {
+        await fileHandler.remove(context, publicBucket(), [
+          getAttendeeImageObjectName(input.id),
+        ]);
+      } catch (error) {
+        console.error(
+          `Failed to delete image for attendee ${input.id}: ${error instanceof Error ? error.message : String(error)}`,
+        );
       }
 
       return { id: input.id };
