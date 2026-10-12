@@ -1,7 +1,4 @@
 ---
-import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
-
 import Card from "@/components/Card.astro";
 import Logo from "@/components/Logo.astro";
 import TeamTile from "@/pages/project-group/TeamTile.astro";
@@ -10,6 +7,7 @@ import { i18n } from "@/i18n/utils";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
 import { deltaForceRoles, deltaFordeRoleToTranslationKey } from "@/constants";
+import { getGroupImages } from "@/files/client";
 
 const { translate: t } = i18n(Astro);
 
@@ -19,21 +17,13 @@ const { translate: t } = i18n(Astro);
 
 const deltaForceMembers = await db.select().from(deltaForceTable).all();
 
-// Drop team photos into src/assets/team/ and they are picked up automatically.
-// Names: all (= whole team), general, it, event, finance, logistics, marketing,
-// relations, staff.
-const teamPhotos = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/team/*.{webp,jpg,jpeg,png}",
-  { eager: true },
-);
-const photoFor = (name: string): ImageMetadata | null => {
-  const entry = Object.entries(teamPhotos).find(([path]) =>
-    new RegExp(`/${name}\\.(webp|jpe?g|png)$`).test(path),
-  );
-  return entry?.[1].default ?? null;
-};
+// Team photos live in MinIO (`delta-public/delta-force-groups/<name>.webp`).
+// Names: all (= whole team), general, it, event, finance, logistics,
+// marketing, relations, staff. Missing files fall back to silhouettes.
+const groupPhotos = await getGroupImages();
+const photoFor = (name: string): string | null => groupPhotos[name] ?? null;
 
-const allPhoto = photoFor("all") ?? photoFor("team");
+const allPhoto = photoFor("all");
 // Stagger within a revealed row; each tile still waits for the viewport.
 const tileRevealDelays = [
   "[transition-delay:0ms]",
@@ -107,13 +97,7 @@ const teams = deltaForceRoles
   <Card class="w-full overflow-hidden p-0 reveal">
     {
       allPhoto ? (
-        <Image
-          src={allPhoto}
-          alt=""
-          width={1600}
-          height={700}
-          class="h-72 w-full object-cover object-top lg:h-112"
-        />
+        <img src={allPhoto} alt="" class="w-full" loading="lazy" />
       ) : (
         <PhotoPlaceholder kind="group" class="h-72 lg:h-112" />
       )

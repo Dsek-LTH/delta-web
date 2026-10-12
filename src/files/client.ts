@@ -41,6 +41,24 @@ export const checkMemberImageExists = async (member: {
   }
 };
 
+export const getGroupImages = async (): Promise<Record<string, string>> => {
+  const bucket = env.MINIO_BUCKET_PUBLIC || "delta-public";
+  const prefix = "delta-force-groups/";
+  const images: Record<string, string> = {};
+
+  try {
+    for await (const object of minio.listObjectsV2(bucket, prefix, true)) {
+      if (!object.name?.endsWith(".webp")) continue;
+      const name = object.name.slice(prefix.length).replace(/\.webp$/, "");
+      images[name] = `${MINIO_BASE_URL}${bucket}/${object.name}`;
+    }
+  } catch (err: any) {
+    console.error(`Unexpected MinIO error listing ${prefix}:`, err);
+  }
+
+  return images;
+};
+
 export const getMemberImage = async (member: {
   studentId: string;
 }): Promise<ImageMetadata> => {

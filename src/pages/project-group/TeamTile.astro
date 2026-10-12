@@ -1,7 +1,5 @@
 ---
 import Card from "@/components/Card.astro";
-import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
 import { twMerge } from "tailwind-merge";
 import PhotoPlaceholder from "./PhotoPlaceholder.astro";
 
@@ -16,7 +14,7 @@ interface Member {
 interface Props {
   label: string;
   members: Member[];
-  photo: ImageMetadata | null;
+  photo: string | null;
   span?: 1 | 2 | 3;
   startRight?: boolean;
   class?: string;
@@ -47,13 +45,7 @@ const media = span === 3 ? "h-72 lg:h-112" : "h-64 lg:h-88";
 >
   {
     photo ? (
-      <Image
-        src={photo}
-        alt=""
-        width={800}
-        height={600}
-        class={twMerge("w-full object-cover object-top", media)}
-      />
+      <img src={photo} alt="" class="w-full" loading="lazy" />
     ) : (
       <PhotoPlaceholder
         kind={members.length > 1 ? "group" : "profile"}
