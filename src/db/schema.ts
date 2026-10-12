@@ -12,3 +12,14 @@ export const deltaForceTable = sqliteTable("delta_force_table", {
   email: text().notNull().unique(),
   linkedin: text().notNull(),
 });
+
+export const attendeesTable = sqliteTable("attendees_table", {
+  id: int().primaryKey({ autoIncrement: true }),
+  name: text().notNull(),
+  descriptionSv: text().notNull(),
+  descriptionEn: text().notNull(),
+  industry: text().notNull(),
+  tags: text().notNull(),
+  contact: text().notNull(),
+  linkedin: text().notNull(),
+});

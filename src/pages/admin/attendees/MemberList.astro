@@ -1,0 +1,45 @@
+---
+import { i18n } from "@/i18n/utils";
+import { db } from "@/db/connect";
+import { attendeesTable } from "@/db/schema";
+import { Plus } from "@lucide/astro";
+
+const { translate: t } = i18n(Astro);
+
+const attendees = await db.select().from(attendeesTable).all();
+---
+
+<div class="flex gap-8">
+  <div class="flex flex-col gap-4">
+    <div class="flex gap-2 items-center">
+      <h2 class="font-bold text-xl text-card-content">
+        {t("admin.attendees.list-title")}
+      </h2>
+      <a
+        class="btn btn-primary frosted-glass text-card-content rounded-lg aspect-square hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit p-1 bg-card/50"
+        href={`/admin/attendees/new`}
+      >
+        <Plus class="w-4 h-4" />
+      </a>
+    </div>
+    {
+      attendees.length > 0 ? (
+        <ul class="font-bold flex flex-col gap-2">
+          {attendees.map((attendee) => (
+            <li class="frosted-glass items-center p-2 rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300 ease-out">
+              <a
+                class="w-full flex justify-between gap-4 text-sm "
+                href={`/admin/attendees/${attendee.id}`}
+              >
+                <span class="font-bold">{attendee.name}</span>
+                <span class="italic font-normal">{attendee.industry}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>{t("admin.attendees.no-attendees")}</p>
+      )
+    }
+  </div>
+</div>
