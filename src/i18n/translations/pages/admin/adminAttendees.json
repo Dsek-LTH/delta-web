@@ -15,6 +15,7 @@
     "attendee.picture": "Company Picture",
     "save": "Save",
     "delete": "Delete",
+    "image-warning": "The changes were saved, but the image could not be updated.",
     "back": "Back"
   },
   "sv": {
@@ -32,6 +33,7 @@
     "attendee.picture": "Företagsbild",
     "save": "Spara",
     "delete": "Ta bort",
+    "image-warning": "Ändringarna sparades, men bilden kunde inte uppdateras.",
     "back": "Tillbaka"
   }
 }

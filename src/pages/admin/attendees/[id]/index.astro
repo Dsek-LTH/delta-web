@@ -9,8 +9,13 @@ const attendeeId = Number(Astro.params.id);
 const result = Astro.getActionResult(actions.attendee.updateAttendee);
 
 if (result?.data?.id) {
-  return Astro.redirect(`/admin/attendees/${result.data.id}`);
+  const query = result.data.imageError
+    ? `?${new URLSearchParams({ imageWarning: result.data.imageError })}`
+    : "";
+  return Astro.redirect(`/admin/attendees/${result.data.id}${query}`);
 }
+
+const imageWarning = Astro.url.searchParams.get("imageWarning");
 
 let attendee = null;
 if (Number.isInteger(attendeeId)) {
@@ -25,4 +30,4 @@ if (!attendee) {
 }
 ---
 
-<Page attendee={attendee} />
+<Page attendee={attendee} imageWarning={imageWarning} />

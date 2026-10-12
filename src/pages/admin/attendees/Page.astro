@@ -6,9 +6,10 @@ import MemberEditor from "./MemberEditor.astro";
 import MemberList from "./MemberList.astro";
 import { ArrowLeft } from "@lucide/astro";
 
-const { attendee, newAttendee } = Astro.props as {
+const { attendee, newAttendee, imageWarning } = Astro.props as {
   attendee: typeof attendeesTable.$inferSelect;
   newAttendee?: boolean;
+  imageWarning?: string;
 };
 const { translate: t } = i18n(Astro);
 ---
@@ -35,6 +36,7 @@ const { translate: t } = i18n(Astro);
               class="flex-1 h-fit"
               attendee={attendee}
               newAttendee={newAttendee}
+              imageWarning={imageWarning}
             />
           )
         }

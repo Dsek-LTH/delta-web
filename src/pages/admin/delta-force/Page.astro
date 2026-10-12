@@ -6,9 +6,10 @@ import MemberEditor from "./MemberEditor.astro";
 import MemberList from "./MemberList.astro";
 import { ArrowLeft } from "@lucide/astro";
 
-const { member, newMember } = Astro.props as {
+const { member, newMember, imageWarning } = Astro.props as {
   member: typeof deltaForceTable.$inferSelect;
   newMember?: boolean;
+  imageWarning?: string;
 };
 const { translate: t } = i18n(Astro);
 ---
@@ -36,6 +37,7 @@ const { translate: t } = i18n(Astro);
               class="flex-1 h-fit"
               member={member}
               newMember={newMember}
+              imageWarning={imageWarning}
             />
           )
         }

@@ -14,6 +14,7 @@
     "submit": "Edit",
     "save": "Save",
     "delete": "Delete",
+    "image-warning": "The changes were saved, but the image could not be updated.",
     "back": "Back"
   },
   "sv": {
@@ -29,6 +30,7 @@
     "member.picture": "Profilbild",
     "save": "Spara",
     "delete": "Ta bort",
+    "image-warning": "Ändringarna sparades, men bilden kunde inte uppdateras.",
     "back": "Tillbaka"
   }
 }

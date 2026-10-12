@@ -17,7 +17,10 @@ let attendee: typeof attendeesTable.$inferSelect = {
 const result = Astro.getActionResult(actions.attendee.addAttendee);
 
 if (result?.data?.id) {
-  return Astro.redirect(`/admin/attendees/${result.data.id}`);
+  const query = result.data.imageError
+    ? `?${new URLSearchParams({ imageWarning: result.data.imageError })}`
+    : "";
+  return Astro.redirect(`/admin/attendees/${result.data.id}${query}`);
 }
 ---
 

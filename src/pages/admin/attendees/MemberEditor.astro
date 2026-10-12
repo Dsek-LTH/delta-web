@@ -15,10 +15,12 @@ const {
   class: className,
   attendee,
   newAttendee,
+  imageWarning,
 } = Astro.props as {
   class: string;
   attendee: typeof attendeesTable.$inferSelect;
   newAttendee?: boolean;
+  imageWarning?: string;
 };
 
 const { lang, translate: t } = i18n(Astro);
@@ -68,6 +70,14 @@ const attendeeImage: ImageMetadata = await getAttendeeImage(attendee).catch(
             ))}
           </ul>
         )}
+      </div>
+    )
+  }
+  {
+    imageWarning && (
+      <div class="rounded-lg border border-yellow-500/40 bg-yellow-500/10 p-3 text-sm text-yellow-200">
+        <p class="font-semibold">{t("admin.attendees.image-warning")}</p>
+        <p class="mt-1">{imageWarning}</p>
       </div>
     )
   }
