@@ -242,6 +242,79 @@ html[data-theme="dark"] {
     @apply bg-card text-card-content ring-1 ring-border hover:bg-card-highlight;
   }
 
+  /* JS-toggled fold panels (package details, read more, FAQ) */
+  .fold-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 300ms ease-out;
+  }
+
+  .fold-wrap[data-open] {
+    grid-template-rows: 1fr;
+  }
+
+  .fold-panel {
+    min-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    translate: 0 -0.5rem;
+    transition:
+      opacity 300ms ease-out,
+      translate 300ms ease-out;
+  }
+
+  .fold-wrap[data-open] .fold-panel {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  /* Scroll reveals: blocks below the first screen fade in when they enter
+     the viewport (shared observer in Layout). The hidden state is gated
+     behind `html.js`, so without JavaScript nothing is ever hidden. */
+  .reveal {
+    transition:
+      opacity 550ms var(--ease-strong),
+      translate 550ms var(--ease-strong);
+  }
+
+  html.js .reveal:not(.is-visible) {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+
+  /* Timeline rail fill (student timeline); --rail-progress is set from the
+     shared scroll script in Layout. */
+  [data-timeline-rail] {
+    transform: scaleY(var(--rail-progress, 0));
+    transform-origin: top;
+  }
+
+  /* Opposite-side timeline galleries: hidden until the row's fold opens, then
+     they slide out from the card with a quick fade. Decorative only. */
+  [data-row-gallery] img {
+    opacity: 0;
+    transition:
+      opacity 320ms var(--ease-strong),
+      translate 320ms var(--ease-strong);
+  }
+
+  [data-row-gallery][data-from="left"] img {
+    translate: -0.75rem 0;
+  }
+
+  [data-row-gallery][data-from="right"] img {
+    translate: 0.75rem 0;
+  }
+
+  [data-timeline-row][data-row-open] [data-row-gallery] img {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  [data-timeline-row][data-row-open] [data-row-gallery] img:nth-of-type(2) {
+    transition-delay: 80ms;
+  }
+
   /* Oversized closing mark: stroke-only Δ, theme-aware and decorative. */
   .footer-mark {
     color: transparent;
@@ -250,4 +323,43 @@ html[data-theme="dark"] {
     line-height: 0.75;
     -webkit-text-stroke: 1px var(--color-border);
   }
+}
+
+/* Respect users who prefer reduced motion -- animations become instant. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+
+  *,
+  *::before,
+  *::after,
+  *::details-content {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Cross-document view transitions: soft crossfade between pages with the
+   header kept stable. Progressive enhancement (Chromium); other engines
+   simply navigate as before. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+::view-transition-new(root) {
+  animation-duration: 250ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
