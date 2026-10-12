@@ -161,6 +161,7 @@ Accordions, “read more” and package details all use one pattern — **not** 
 | Card content      | `src/pages/student/CardContent.astro`              | Lead paragraph + fold for the rest.                                                                                                       |
 | Timeline rail     | `src/pages/student/index.astro`                    | Track + fill; `--rail-progress` updated on scroll; without JS only the track shows.                                                       |
 | Footer mark       | `src/components/Footer.astro`                      | Oversized stroke-only Δ, `aria-hidden`, decorative; footer keeps extra bottom padding.                                                    |
+| Admin link        | `src/components/Footer.astro`                      | Admin access stays hidden: `opacity-0` by default, reveals on footer hover or keyboard focus (`focus-visible`). Never render it plainly.  |
 | Constellation     | `src/components/Constellation.astro`               | Ambient dot field behind every non-admin page; pointer lights dots + edges, far dots stay faint.                                          |
 | Header scrim      | `src/layouts/Layout.astro`                         | Fixed backdrop gradient over the top ~6rem; content fades as it scrolls behind the floating nav (no blur bar — the pills keep the glass). |
 
@@ -223,6 +224,8 @@ Accordions, “read more” and package details all use one pattern — **not** 
 - Native `<details>` animations are Chromium-only — use folds (§3.5).
 - Custom cursor is scoped to `body`; never `!important` on `*` (inputs keep the text cursor).
 - Lucide no longer ships brand icons — inline SVGs for GitHub/LinkedIn.
+- Admin access stays hidden: the footer's Admin link is `opacity-0` until the footer is hovered or
+  the link is focused. Rendering it plainly is a regression, not a style choice.
 - After DB schema changes: `bun generate && bun migrate` (nullable columns to avoid inventing data).
 
 ## 10. File map
