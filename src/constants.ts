@@ -18,6 +18,8 @@ export function deltaFordeRoleToTranslationKey(
   return `delta-force.${role}${plural ? "s" : ""}`;
 }
 
+export const deltaForcePhotoGroups = ["all", ...deltaForceRoles] as const;
+
 export function deltaForceRoleDescriptionKey(
   role: (typeof deltaForceRoles)[number],
 ): `delta-force.${(typeof deltaForceRoles)[number]}.description` {
