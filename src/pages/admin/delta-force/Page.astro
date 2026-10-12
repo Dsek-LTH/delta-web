@@ -28,7 +28,15 @@ const { translate: t } = i18n(Astro);
       <ArrowLeft class="w-6 h-6" />
     </a>
     <div class="flex flex-col justify-startflex-1 w-full gap-8">
-      <h1 class="text-3xl font-bold">{t("admin.delta-force.title")}</h1>
+      <div class="flex flex-wrap items-center gap-4">
+        <h1 class="text-3xl font-bold">{t("admin.delta-force.title")}</h1>
+        <a
+          class="btn btn-primary frosted-glass text-card-content rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50"
+          href={`/admin/delta-force/groups`}
+        >
+          {t("admin.group-photos.link")}
+        </a>
+      </div>
       <div class="flex gap-8 w-full">
         <MemberList />
         {

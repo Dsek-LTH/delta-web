@@ -22,6 +22,9 @@ const getMemberImageObjectName = (studentId: string) =>
 const getAttendeeImageObjectName = (id: number) =>
   `attendees/${prepareNameForFilesystem(id.toString(), id.toString(), "webp")}`;
 
+const getGroupPhotoObjectName = (group: string) =>
+  `delta-force-groups/${prepareNameForFilesystem(group, group, "webp")}`;
+
 const imageExists = async (
   bucket: string,
   objectName: string,
@@ -92,3 +95,26 @@ export const getAttendeeImage = async (attendee: {
   id: number;
 }): Promise<ImageMetadata> =>
   getImage(publicBucket(), getAttendeeImageObjectName(attendee.id));
+
+export const getGroupPhotoUrl = async (
+  group: string,
+): Promise<string | null> => {
+  const bucket = publicBucket();
+  const objectName = getGroupPhotoObjectName(group);
+
+  try {
+    const stat = await minio.statObject(bucket, objectName);
+    return `${MINIO_BASE_URL}${bucket}/${objectName}?v=${stat.lastModified.getTime()}`;
+  } catch (err: any) {
+    if (
+      err.code === "NotFound" ||
+      err.code === "NoSuchKey" ||
+      err.statusCode === 404
+    ) {
+      return null;
+    }
+
+    console.error(`Unexpected MinIO error for ${objectName}:`, err);
+    return null;
+  }
+};
