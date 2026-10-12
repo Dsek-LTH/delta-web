@@ -1,19 +1,12 @@
 ---
-import { Picture } from "astro:assets";
-
 import Layout from "@/layouts/Layout.astro";
 import Package from "@/components/company/Package.astro";
 import PackageTitle from "@/components/company/PackageTitle.astro";
 import PricingTable from "@/components/company/PricingTable.astro";
 import Logo from "@/components/Logo.astro";
-import { languages } from "@/i18n/ui.ts";
 import { i18n } from "@/i18n/utils";
 
-export function getStaticPaths() {
-  return Object.keys(languages).map((lang) => ({ params: { lang } }));
-}
-
-const { lang, translate: t } = i18n(Astro.cookies);
+const { translate: t } = i18n(Astro.cookies);
 ---
 
 <Layout
