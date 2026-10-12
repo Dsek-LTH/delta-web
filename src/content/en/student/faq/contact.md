@@ -1,0 +1,1 @@
+If you have questions as a company or regarding a company attending DELTA, please contact us at relations@delta.dsek.se. Also, feel free to reach out to us using contact information under About us. If you have comments about the companies invited, or feel that a company doesn't represent DELTA in a good way, contact one of our project managers at general@delta.dsek.se.
