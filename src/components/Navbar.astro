@@ -18,10 +18,10 @@ const currentPageLabel = {
 }[Astro.url.pathname];
 // One-page navigation: every item is an anchor into the landing page scroll.
 const navItems = [
+  { href: "/#besokare", label: t("navbar.attendees"), section: "besokare" },
+  { href: "/#foretag", label: t("navbar.company"), section: "foretag" },
   { href: "/#top", label: t("navbar.home"), section: null },
   { href: "/#studenter", label: t("navbar.student"), section: "studenter" },
-  { href: "/#foretag", label: t("navbar.company"), section: "foretag" },
-  { href: "/#besokare", label: t("navbar.attendees"), section: "besokare" },
   {
     href: "/#projektgrupp",
     label: t("navbar.project-group"),
@@ -89,15 +89,33 @@ const navItems = [
   >
     <li>
       <a
-        href="/#projektgrupp"
-        data-nav-section-link="projektgrupp"
+        href="/#besokare"
+        data-nav-section-link="besokare"
         class={twMerge(
           "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
-          Astro.url.pathname === "/project-group" && "text-shadow-glow",
-        )}
+          Astro.url.pathname === "/attendees" && "text-shadow-glow",
+        )}>{t("navbar.attendees")}</a
       >
-        {t("navbar.project-group")}
-      </a>
+    </li>
+    <li>
+      <a
+        href="/#foretag"
+        data-nav-section-link="foretag"
+        class={twMerge(
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          Astro.url.pathname === "/company" && "text-shadow-glow",
+        )}>{t("navbar.company")}</a
+      >
+    </li>
+    <li>
+      <a
+        href="/#top"
+        aria-label={t("navbar.home")}
+        class={twMerge(
+          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass",
+          Astro.url.pathname === "/" && "text-shadow-glow-pink",
+        )}>&Delta;</a
+      >
     </li>
     <li>
       <a
@@ -113,33 +131,15 @@ const navItems = [
     </li>
     <li>
       <a
-        href="/#top"
-        aria-label={t("navbar.home")}
-        class={twMerge(
-          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass",
-          Astro.url.pathname === "/" && "text-shadow-glow-pink",
-        )}>&Delta;</a
-      >
-    </li>
-    <li>
-      <a
-        href="/#foretag"
-        data-nav-section-link="foretag"
+        href="/#projektgrupp"
+        data-nav-section-link="projektgrupp"
         class={twMerge(
           "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
-          Astro.url.pathname === "/company" && "text-shadow-glow",
-        )}>{t("navbar.company")}</a
+          Astro.url.pathname === "/project-group" && "text-shadow-glow",
+        )}
       >
-    </li>
-    <li>
-      <a
-        href="/#besokare"
-        data-nav-section-link="besokare"
-        class={twMerge(
-          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
-          Astro.url.pathname === "/attendees" && "text-shadow-glow",
-        )}>{t("navbar.attendees")}</a
-      >
+        {t("navbar.project-group")}
+      </a>
     </li>
   </ul>
 </nav>

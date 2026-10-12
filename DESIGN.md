@@ -255,7 +255,7 @@ subpage links, so navigation only sets scroll position. Subpages stay reachable 
 
 On top of `design/scroll-polish` this branch adds:
 
-- **Chapters**: hero → För företag → För studenter → Projektgrupp → Deltagare, each a
+- **Chapters**: hero → Deltagare → För företag → För studenter → Projektgrupp, each a
   `<section id="…" data-nav-section="…">` separated by a hairline border; chapter content is
   reused from the subpages (same components, copy and prices).
 - **Active section tracking**: `Navbar` observes the sections (middle ~5% of the viewport) and
