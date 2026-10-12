@@ -5,7 +5,7 @@
     "development": "This page is under active development. The source code is available on ",
     "language.select": "Switch language: ",
     "it-managers": "IT Managers",
-    "generals": "Delta Generals",
+    "generals": "DELTA Generals",
     "admin-panel": "Admin Panel"
   },
   "sv": {
@@ -13,7 +13,7 @@
     "development": "Sidan är under pågående utveckling. Följ utvecklingen på ",
     "language.select": "Byt språk: ",
     "it-managers": "IT-ansvariga",
-    "generals": "Deltageneraler",
+    "generals": "DELTA Generaler",
     "admin-panel": "Administratörspanel"
   }
 }
