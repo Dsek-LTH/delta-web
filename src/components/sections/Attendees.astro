@@ -10,7 +10,9 @@ const logoSlots = Array.from({ length: 12 });
 
 const teaserTitle = t("attendees.teaser.title");
 const year = String(fairDate.getFullYear());
-const [titleBefore, titleAfter = ""] = teaserTitle.split(year);
+// The teaser copy must contain the fair year or the accent silently drops.
+const [titleBefore, ...titleRest] = teaserTitle.split(year);
+const titleAfter = titleRest.join(year);
 ---
 
 <!-- Deltagare -->
