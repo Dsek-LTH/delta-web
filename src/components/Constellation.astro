@@ -3,7 +3,8 @@
 // lights nearby dots, links them into a graph, and pulls them with gravity:
 // inside the well the motion is conservative, so dots gather into a swarm;
 // outside it, a weak force along each dot's velocity direction restores its
-// target speed. Decorational only: aria-hidden, pointer-events-none; renders
+// target speed. Motion is time-based (px/s), identical at any refresh rate.
+// Decorational only: aria-hidden, pointer-events-none; renders
 // a static frame under prefers-reduced-motion.
 // Debug: add ?paths to any URL for green velocity vectors + the well radius.
 ---
@@ -35,6 +36,7 @@
     const LIT_ALPHA = 0.6;
     const BASE_RADIUS = 1.2;
     const PARALLAX = 0.1; // field lags the page scroll (distant layer)
+    const SCROLL_EASE = 5.66; // 1/s: how fast the lag settles on its target
     const WRAP_MARGIN = 24;
     // One tuned look on every viewport: the reference display (2560x1600)
     // renders 120 dots, and the field keeps that density everywhere else.
@@ -43,11 +45,14 @@
     const DENSITY = 120 / (2560 * 1600); // dots per CSS px^2
     const MIN_DOTS = 32;
     const MAX_DOTS = 240;
-    const GRAVITY = 0.003; // px/frame^2 at the cursor, linear falloff
+    // Time-based motion: distances in px, speeds in px/s, accelerations in
+    // px/s^2 — the 60 fps tuning x60, so any refresh rate looks the same.
+    const MAX_DT = 0.05; // s: cap the step after a stalled or hidden tab
+    const GRAVITY = 10.8; // px/s^2 at the cursor, linear falloff
     const GRAVITY_REACH = 420; // gravity inside the well, speed restore outside
-    const SPEED_CORRECTION = 0.008; // weak force toward the target speed
-    const GLOW_SPEED_MIN = 0.28; // fastest drift: below this, no glow
-    const GLOW_SPEED_MAX = 1.0; // flyby speed: full glow
+    const SPEED_RESTORE = 0.48; // 1/s: weak pull toward the target speed
+    const GLOW_SPEED_MIN = 16.8; // px/s: fastest drift, below this, no glow
+    const GLOW_SPEED_MAX = 60; // px/s: flyby speed, full glow
 
     type Point = {
       x: number;
@@ -65,6 +70,7 @@
     let pointerActive = false;
     let scrollOffset = 0;
     let scrollTarget = 0;
+    let lastDraw: number | null = null;
     let dotColor = "#0f172a";
     let litColor = "#c9457a";
 
@@ -136,7 +142,7 @@
       );
       points = Array.from({ length: count }, () => {
         const angle = Math.random() * Math.PI * 2;
-        const speed = 0.08 + Math.random() * 0.2;
+        const speed = 4.8 + Math.random() * 12; // px/s
         return {
           x: Math.random() * width,
           y: Math.random() * height,
@@ -147,10 +153,18 @@
       });
     };
 
-    const draw = () => {
+    // Share of a gap covered in dt seconds at a continuous rate (1/s): the
+    // per-frame easing the 60 fps tuning used, expressed rate-based.
+    const damp = (rate: number, dt: number) => 1 - Math.exp(-rate * dt);
+
+    const draw = (now = performance.now()) => {
+      const dt =
+        lastDraw === null ? 0 : Math.min((now - lastDraw) / 1000, MAX_DT);
+      lastDraw = now;
+
       context.clearRect(0, 0, width, height);
 
-      scrollOffset += (scrollTarget - scrollOffset) * 0.09;
+      scrollOffset += (scrollTarget - scrollOffset) * damp(SCROLL_EASE, dt);
 
       // Gravity pulls dots into the cursor's well; outside the well a weak
       // force along each dot's own velocity direction restores its target
@@ -158,6 +172,7 @@
       const xs: number[] = [];
       const renderYs: number[] = [];
       const speeds: number[] = [];
+      const restore = damp(SPEED_RESTORE, dt); // same for every dot this frame
       for (const point of points) {
         xs.push(point.x);
         const renderY = wrapY(point.y);
@@ -169,13 +184,13 @@
 
         if (pointerActive && distance > 1 && distance < GRAVITY_REACH) {
           const accel = GRAVITY * (1 - distance / GRAVITY_REACH);
-          point.vx += (dx / distance) * accel;
-          point.vy += (dy / distance) * accel;
+          point.vx += (dx / distance) * accel * dt;
+          point.vy += (dy / distance) * accel * dt;
         } else {
           const speed = Math.hypot(point.vx, point.vy);
           if (speed > 1e-4) {
             const scale =
-              (speed + (point.targetSpeed - speed) * SPEED_CORRECTION) / speed;
+              (speed + (point.targetSpeed - speed) * restore) / speed;
             point.vx *= scale;
             point.vy *= scale;
           }
@@ -183,8 +198,8 @@
 
         speeds.push(Math.hypot(point.vx, point.vy));
 
-        point.x += point.vx;
-        point.y += point.vy;
+        point.x += point.vx * dt;
+        point.y += point.vy * dt;
         if (point.x < 0 || point.x > width) point.vx *= -1;
         if (point.y < 0 || point.y > height) point.vy *= -1;
       }
@@ -197,7 +212,10 @@
         for (let i = 0; i < points.length; i += 1) {
           const point = points[i]!;
           context.moveTo(xs[i]!, renderYs[i]!);
-          context.lineTo(xs[i]! + point.vx * 90, renderYs[i]! + point.vy * 90);
+          context.lineTo(
+            xs[i]! + point.vx * 1.5,
+            renderYs[i]! + point.vy * 1.5,
+          );
         }
         context.stroke();
         if (pointerActive) {
