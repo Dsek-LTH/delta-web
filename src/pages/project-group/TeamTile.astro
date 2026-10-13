@@ -32,8 +32,8 @@ const {
   class: className,
 } = Astro.props;
 
-// Fixed media heights keep photo areas level across tiles in the same row
-// (wide and single tiles share the same height; the full-width tile is taller).
+// Fixed media heights set the fallback placeholder size across tiles in the
+// same row (real photos render at their natural, pre-cropped aspect).
 const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
 ---
 
@@ -48,12 +48,7 @@ const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
 >
   {
     photo ? (
-      <img
-        src={photo}
-        alt=""
-        loading="lazy"
-        class={`w-full object-cover ${media}`}
-      />
+      <img src={photo} alt="" loading="lazy" class="w-full h-auto" />
     ) : (
       <PhotoPlaceholder
         kind={members.length > 1 ? "group" : "profile"}
