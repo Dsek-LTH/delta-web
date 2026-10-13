@@ -1,10 +1,15 @@
 ---
 import { i18n } from "@/i18n/utils";
-const { lang, translate: t } = await i18n(Astro.cookies);
+const { translate: t } = i18n(Astro);
 import { twMerge } from "tailwind-merge";
 
-const { class: className, ...rest } = Astro.props as {
+const {
+  class: className,
+  callbackURL,
+  ...rest
+} = Astro.props as {
   class: string;
+  callbackURL?: string;
 };
 
 const loggedIn = Astro.locals.session;
@@ -12,10 +17,8 @@ const loggedIn = Astro.locals.session;
 
 <button
   id={loggedIn ? "logout-btn" : "login-btn"}
-  class={twMerge(
-    "btn btn-primary frosted-glass text-brand-secondary rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2 bg-card/50",
-    className,
-  )}
+  data-callback-url={callbackURL}
+  class={twMerge("btn btn-ghost", className)}
   {...rest}
 >
   {t(loggedIn ? "authButton.logout" : "authButton.login")}
@@ -24,23 +27,29 @@ const loggedIn = Astro.locals.session;
 <script>
   import { authClient } from "@/auth/auth-client";
 
-  document.getElementById("login-btn")?.addEventListener("click", async () => {
-    try {
-      const response = await authClient.signIn.oauth2({
-        providerId: "authentik",
-        callbackURL: window.location.href,
-      });
-    } catch (err) {
-      console.error("Error starting oauth2 sign-in:", err);
-    }
-  });
+  const loginButton = document.getElementById("login-btn");
+  if (loginButton) {
+    loginButton.addEventListener("click", async () => {
+      try {
+        await authClient.signIn.social({
+          provider: "authentik",
+          callbackURL: loginButton.dataset.callbackUrl || window.location.href,
+        });
+      } catch (err) {
+        console.error("Error starting oauth2 sign-in:", err);
+      }
+    });
+  }
 
-  document.getElementById("logout-btn")?.addEventListener("click", async () => {
-    try {
-      const response = await authClient.signOut();
-    } catch (err) {
-      console.error("Error starting oauth2 sign-out:", err);
-    }
-    window.location.reload();
-  });
+  const logoutButton = document.getElementById("logout-btn");
+  if (logoutButton) {
+    logoutButton.addEventListener("click", async () => {
+      try {
+        await authClient.signOut();
+      } catch (err) {
+        console.error("Error starting oauth2 sign-out:", err);
+      }
+      window.location.reload();
+    });
+  }
 </script>

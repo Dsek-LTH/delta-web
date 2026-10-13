@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
+import Constellation from "@/components/Constellation.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import "@/styles/global.css";
@@ -21,7 +22,8 @@ const {
   class: className,
   ...rest
 } = Astro.props;
-const lang = getLang(Astro.cookies);
+const lang = getLang(Astro);
+const showConstellation = !Astro.url.pathname.startsWith("/admin");
 ---
 
 <!doctype html>
@@ -30,6 +32,8 @@ const lang = getLang(Astro.cookies);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/delta-delta.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
@@ -41,26 +45,40 @@ const lang = getLang(Astro.cookies);
       ).matches;
 
       const activeTheme =
-        stored === "dark" || (!stored && prefersDark) ? "dark" : "light";
+        stored === "light" || (stored === "system" && !prefersDark)
+          ? "light"
+          : "dark";
 
       document.documentElement.setAttribute("data-theme", activeTheme);
+      document.documentElement.classList.add("js");
     </script>
   </head>
 
   <body>
-    {
-      backgroundImage && (
-        <div class="absolute inset-0 -z-1337 pointer-events-none select-none overflow-hidden">
-          <Image
-            src={backgroundImage}
-            alt="Background Cover"
-            class="w-full h-full object-cover blur-sm fixed scale-105"
-          />
-        </div>
-      )
-    }
+    <div class="relative isolate flex min-h-dvh flex-col gap-6 lg:gap-0">
+      {
+        backgroundImage && (
+          <div class="absolute inset-0 -z-10 pointer-events-none select-none overflow-hidden">
+            <Image
+              src={backgroundImage}
+              alt="Background Cover"
+              class="h-full w-full object-cover blur-sm scale-105"
+            />
+            <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-backdrop" />
+          </div>
+        )
+      }
 
-    <div class="flex min-h-dvh flex-col gap-6 lg:gap-0">
+      {showConstellation && <Constellation />}
+
+      <!-- Soft top scrim: content fades out as it scrolls behind the
+           floating pill nav (no blur bar — the pills keep the glass). -->
+      <div
+        aria-hidden="true"
+        class="pointer-events-none fixed inset-x-0 top-0 z-40 h-24 bg-gradient-to-b from-backdrop via-backdrop/55 to-transparent"
+      >
+      </div>
+
       <Header />
 
       <main
@@ -75,5 +93,90 @@ const lang = getLang(Astro.cookies);
     </div>
 
     <Footer />
+
+    <script>
+      // JS-toggled fold panels: works in every browser, unlike ::details-content.
+      document.addEventListener("click", (event) => {
+        const button = (
+          event.target as Element | null
+        )?.closest<HTMLButtonElement>("[data-fold-toggle]");
+        if (!button) return;
+
+        const id = button.getAttribute("aria-controls");
+        const wrap = id ? document.getElementById(id) : null;
+        if (!wrap) return;
+
+        const open = wrap.hasAttribute("data-open");
+        // Only hidden folds go inert; clamped previews stay readable/selectable.
+        const hiddenFold = wrap.classList.contains("fold-wrap");
+        if (open) {
+          wrap.removeAttribute("data-open");
+          if (hiddenFold) wrap.inert = true;
+          button.setAttribute("aria-expanded", "false");
+        } else {
+          wrap.setAttribute("data-open", "");
+          if (hiddenFold) wrap.inert = false;
+          button.setAttribute("aria-expanded", "true");
+        }
+
+        // Timeline rows reveal their opposite-side photo collage while open.
+        const row = wrap.closest<HTMLElement>("[data-timeline-row]");
+        if (row) row.toggleAttribute("data-row-open", !open);
+      });
+
+      // Scroll reveals: content below the first screen fades in once it
+      // enters the viewport. The hidden state is gated behind `html.js`.
+      const reveals = document.querySelectorAll(".reveal");
+      if (reveals.length > 0) {
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                revealObserver.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.1 },
+        );
+        reveals.forEach((element) => revealObserver.observe(element));
+      }
+
+      // Timeline rail: fill the vertical line as the reader scrolls through
+      // the timeline. Direct, rAF-throttled updates so it tracks the scroll
+      // position instead of animating on its own.
+      const timelines =
+        document.querySelectorAll<HTMLElement>("[data-timeline]");
+      for (const timeline of timelines) {
+        const rail = timeline.querySelector<HTMLElement>(
+          "[data-timeline-rail]",
+        );
+        if (!rail) continue;
+
+        let ticking = false;
+        const update = () => {
+          ticking = false;
+          const rect = timeline.getBoundingClientRect();
+          const viewport = window.innerHeight;
+          const start = viewport * 0.6;
+          const end = viewport * 0.4;
+          const passed = start - rect.top;
+          const progress = Math.min(
+            1,
+            Math.max(0, passed / (rect.height + start - end)),
+          );
+          rail.style.setProperty("--rail-progress", progress.toFixed(4));
+        };
+        const onScroll = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        };
+        update();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
+      }
+    </script>
   </body>
 </html>

@@ -1,0 +1,15 @@
+{
+  "prefix": "attendees",
+  "en": {
+    "title": "Attendees",
+    "teaser.title": "The companies of DELTA 2027 will be shown here.",
+    "teaser.text": "We're filling the fair floor right now — check back soon for the full lineup.",
+    "teaser.cta": "Get your company on the list"
+  },
+  "sv": {
+    "title": "Deltagare",
+    "teaser.title": "Företagen på DELTA 2027 presenteras här.",
+    "teaser.text": "Vi fyller mässgolvet just nu – kika tillbaka snart för hela listan.",
+    "teaser.cta": "Vill du ha ert företag med på listan?"
+  }
+}

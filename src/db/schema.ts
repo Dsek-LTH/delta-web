@@ -3,12 +3,14 @@ import { deltaForceRoles } from "@/constants";
 
 export const deltaForceTable = sqliteTable("delta_force_table", {
   id: int().primaryKey({ autoIncrement: true }),
-  studentId: text().notNull(),
+  studentId: text().notNull().unique(),
   firstName: text().notNull(),
   lastName: text().notNull(),
   role: text({
     enum: deltaForceRoles,
   }).notNull(),
+  sortOrder: int(),
   email: text().notNull().unique(),
   linkedin: text().notNull(),
+  github: text(),
 });

@@ -27,6 +27,24 @@ jobs:
       - name: Lint
         run: bun lint
 
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.x"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Astro check
+        run: bun check
+
   format:
     name: format
     runs-on: ubuntu-latest
@@ -52,11 +70,26 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v6
 
+      - name: Pre-pull base image
+        run: |
+          for i in $(seq 1 5); do
+            podman pull docker.io/oven/bun:1 && exit 0
+            echo "base image pull failed (attempt $i/5), retrying in 15s..." >&2
+            sleep 15
+          done
+          echo "could not pull docker.io/oven/bun:1 after 5 attempts" >&2
+          exit 1
+
       - name: Build images
         run: |
-          podman build -t delta-web_delta-web -f Dockerfile.release . &
-          podman build -t delta-web_db-init -f Dockerfile.tools . &
-          wait
+          podman build --pull=never -t delta-web_delta-web -f Dockerfile.release . &
+          p1=$!
+          podman build --pull=never -t delta-web_db-init -f Dockerfile.tools . &
+          p2=$!
+          rc=0
+          wait "$p1" || rc=1
+          wait "$p2" || rc=1
+          exit "$rc"
 
       - name: Run db-init
         run: |

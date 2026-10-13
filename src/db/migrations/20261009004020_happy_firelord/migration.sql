@@ -1,0 +1,1 @@
+ALTER TABLE `delta_force_table` ADD `github` text;

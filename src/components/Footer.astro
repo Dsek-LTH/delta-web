@@ -7,8 +7,9 @@ import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { eq } from "drizzle-orm";
 import { createSelectSchema } from "drizzle-orm/zod";
 import { db } from "@/db/connect";
+import { bySortOrder } from "@/constants";
 
-const { lang, translate: t } = i18n(Astro.cookies);
+const { translate: t } = i18n(Astro);
 
 const contacts = sqliteTable("contacts", {
   firstName: text().notNull(),
@@ -19,21 +20,25 @@ const contacts = sqliteTable("contacts", {
 
 const contactSelectSchema = createSelectSchema(contacts);
 
-const itManagers = await db
-  .select()
-  .from(deltaForceTable)
-  .where(eq(deltaForceTable.role, "it"))
-  .all();
+const itManagers = (
+  await db
+    .select()
+    .from(deltaForceTable)
+    .where(eq(deltaForceTable.role, "it"))
+    .all()
+).sort(bySortOrder);
 
 const itManagersValidated = itManagers.map((manager) =>
   contactSelectSchema.parse(manager),
 );
 
-const generals = await db
-  .select()
-  .from(deltaForceTable)
-  .where(eq(deltaForceTable.role, "general"))
-  .all();
+const generals = (
+  await db
+    .select()
+    .from(deltaForceTable)
+    .where(eq(deltaForceTable.role, "general"))
+    .all()
+).sort(bySortOrder);
 
 const generalsValidated = generals.map((general) =>
   contactSelectSchema.parse(general),
@@ -41,10 +46,10 @@ const generalsValidated = generals.map((general) =>
 ---
 
 <footer
-  class="bg-backdrop p-4 leading-relaxed flex flex-col items-center gap-4 text-center"
+  class="relative p-4 pb-12 leading-relaxed flex flex-col items-center gap-4 text-center"
 >
   <address class="not-italic">
-    <p class="text-xl font-semibold pb-2">
+    <p class="text-xl font-semibold pb-2 text-backdrop-content">
       {t("footer.contact")}
       : <a
         class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
@@ -67,9 +72,9 @@ const generalsValidated = generals.map((general) =>
 
   <!-- LinkedIn, GitHub, Instagram, ...? -->
 
-  <p>&copy; 2026 DELTA. All rights reserved.</p>
+  <p class="text-backdrop-content">&copy; 2026 DELTA. All rights reserved.</p>
 
-  <p class="text-xl font-semibold italic text-brand-secondary">
+  <p class="text-xl font-semibold italic text-backdrop-content">
     {t("footer.development")}
     <a
       class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
@@ -80,7 +85,14 @@ const generalsValidated = generals.map((general) =>
   </p>
 
   <a
-    class="absolute bottom-0 text-sm text-backdrop hover:text-backdrop-content-highlight/80"
+    class="absolute bottom-0 text-sm text-backdrop-content-muted opacity-0 transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 hover:text-backdrop-content-highlight/80"
     href={`/admin`}>{t("footer.admin-panel")}</a
   >
+
+  <span
+    aria-hidden="true"
+    class="footer-mark pointer-events-none select-none font-display"
+  >
+    &Delta;
+  </span>
 </footer>

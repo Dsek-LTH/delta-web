@@ -8,8 +8,21 @@
     "card.where.map.title": "Google Maps map of the fair location in Lund",
     "card.where.sweden": "Sweden",
     "card.what": "What",
-    "card.when.networking": "Networking event after",
-    "button.attend": "Attend"
+    "card.when.networking": "After DELTA Pub",
+    "button.attend": "Attend",
+    "cta.packages": "View packages",
+    "scroll": "Scroll",
+    "card.when.calendar": "Add to calendar",
+    "gallery.alt.formula": "Student-built formula car at the fair",
+    "gallery.alt.hall": "Visitors in the hallway during DELTA",
+    "gallery.alt.talk": "A student and a company representative in conversation",
+    "gallery.alt.group": "Students together at DELTA",
+    "typing.1": "Career fair for computer engineering students",
+    "typing.2": "Meet your future employer",
+    "typing.3": "Networking, internships and jobs",
+    "head.leadBefore": "DELTA is a career fair for students and companies within computer engineering fields hosted by ",
+    "head.leadLink": "the D-guild at TLTH",
+    "head.leadAfter": ". We connect students with companies and provide opportunities for networking, internships, and job placements."
   },
   "sv": {
     "head.title": "Hem | DELTA",
@@ -19,7 +32,20 @@
     "card.where.map.title": "Google Maps-karta av mässans plats i Lund",
     "card.where.sweden": "Sverige",
     "card.what": "Vad",
-    "card.when.networking": "Nätverkningsevent efter",
-    "button.attend": "Delta på"
+    "card.when.networking": "After DELTA Pub",
+    "button.attend": "Delta på",
+    "cta.packages": "Se paketen",
+    "scroll": "Scrolla",
+    "card.when.calendar": "Lägg till i kalendern",
+    "gallery.alt.formula": "Studentbyggd formelbil på mässan",
+    "gallery.alt.hall": "Besökare i korridoren under DELTA",
+    "gallery.alt.talk": "Student och företagsrepresentant i samtal",
+    "gallery.alt.group": "Studenter tillsammans på DELTA",
+    "typing.1": "Karriärmässa för datateknikstudenter",
+    "typing.2": "Möt din framtida arbetsgivare",
+    "typing.3": "Nätverkande, praktik och jobb",
+    "head.leadBefore": "DELTA är en karriärmässa för studenter och företag inom datatekniska områden anordnad av ",
+    "head.leadLink": "D-sektionen inom TLTH",
+    "head.leadAfter": ". Vi kopplar samman studenter med företag och skapar möjligheter för nätverkande, praktikplatser och framtida anställningar."
   }
 }

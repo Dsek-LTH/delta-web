@@ -4,10 +4,7 @@ const { class: className, ...rest } = Astro.props;
 ---
 
 <div
-  class={twMerge(
-    "font-bold text-brand-secondary font-noto-sans-mono",
-    className,
-  )}
+  class={twMerge("font-bold text-card-content font-mono", className)}
   {...rest}
 >
   <span id="countdown-days">&Delta;&Delta;&Delta;</span><span

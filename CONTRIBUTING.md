@@ -48,14 +48,15 @@ Thanks for your interest in contributing! This guide covers everything you need 
 
 2. Make your changes.
 
-3. Format and lint your code before committing:
+3. Format, lint, and type-check your code before committing:
 
    ```bash
    bun format:fix
    bun lint
+   bun check
    ```
 
-   Git hooks also run Prettier automatically on staged files at commit time, and format/lint checks run before push.
+   Git hooks also run Prettier automatically on staged files at commit time, and the format, lint, and check gates run before push.
 
 4. Commit with a [Conventional Commit](#commit-messages) message.
 
@@ -63,7 +64,7 @@ Thanks for your interest in contributing! This guide covers everything you need 
 
 ## Code style
 
-Formatting is enforced by [Prettier](https://prettier.io/) and linting by [ESLint](https://eslint.org/). The key rules:
+Formatting is enforced by [Prettier](https://prettier.io/), linting by [ESLint](https://eslint.org/), and type checking by [Astro check](https://docs.astro.build/en/reference/cli-reference/) via `bun check`. The key rules:
 
 | Convention        | Style                                                                 |
 | ----------------- | --------------------------------------------------------------------- |
@@ -93,7 +94,7 @@ const { class: className, ...rest } = Astro.props;
 
 ### Translations
 
-Translations live in `src/i18n/translations/` as JSON files with a `prefix` field for namespacing. Use the `i18n(Astro.cookies)` or `useTranslations()` helpers from `@/i18n/utils`.
+Translations live in `src/i18n/translations/` as JSON files with a `prefix` field for namespacing. Use the `i18n(Astro)` or `useTranslations()` helpers from `@/i18n/utils`.
 
 ## Database
 
@@ -164,9 +165,10 @@ Every PR runs:
 
 1. **Formatting** — `bun format:check`
 2. **Linting** — `bun lint`
-3. **Docker build** — builds `Dockerfile.release` and `Dockerfile.tools` via Podman
-4. **Smoke test** — starts the compose stack and verifies the homepage responds
-5. **Commit validation** — PR title must follow Conventional Commits format
+3. **Type checking** — `bun check` (Astro check)
+4. **Docker build** — builds `Dockerfile.release` and `Dockerfile.tools` via Podman
+5. **Smoke test** — starts the compose stack and verifies the homepage responds
+6. **Commit validation** — PR title must follow Conventional Commits format
 
 ### Tips
 

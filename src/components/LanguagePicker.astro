@@ -7,7 +7,7 @@ import ukFlag from "@/assets/uk.svg";
 import { twMerge } from "tailwind-merge";
 
 const { class: className, ...rest } = Astro.props;
-const currentLanguage = getLang(Astro.cookies);
+const currentLanguage = getLang(Astro);
 
 const entries = [
   { slug: "sv", lang: "Svenska", flag: swedishFlag, desc: "Byt till svenska" },

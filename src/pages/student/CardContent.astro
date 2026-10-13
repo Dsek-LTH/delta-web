@@ -1,0 +1,31 @@
+---
+import { ChevronDown } from "@lucide/astro";
+import { i18n } from "@/i18n/utils";
+
+const { translate: t } = i18n(Astro);
+
+const { html } = Astro.props as { html: string | null | undefined };
+
+const id = `read-more-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+{
+  html && (
+    <>
+      <div id={id} class="read-more-content space-y-4" set:html={html} />
+      <button
+        type="button"
+        data-fold-toggle
+        aria-expanded="false"
+        aria-controls={id}
+        class="group mt-4 flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+      >
+        <span class="group-aria-expanded:hidden">{t("student.readMore")}</span>
+        <span class="hidden group-aria-expanded:inline">
+          {t("student.readLess")}
+        </span>
+        <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
+      </button>
+    </>
+  )
+}

@@ -1,6 +1,10 @@
 {
   "prefix": "delta-force",
   "en": {
+    "title": "DELTA --Force_",
+    "meta.description": "A list of all the members of the DELTA --Force_ team",
+    "description": "We in the DELTA project group are responsible for running and developing DELTA. We are a group of dedicated students who work together to create an amazing experience for all participants at DELTA. If you have any questions, don't hesitate to contact us!",
+    "project-group": "Project group",
     "general": "General",
     "generals": "Generals",
     "it": "IT manager",
@@ -16,17 +20,29 @@
     "relations": "Relations manager",
     "relationss": "Relations managers",
     "staff": "Staff manager",
-    "staffss": "Staff managers"
+    "staffs": "Staff managers",
+    "general.description": "Leads the project group and keeps everything on track.",
+    "it.description": "Runs and develops the website, systems and technical bits.",
+    "event.description": "Plans events for the crew, the project groups and After DELTA.",
+    "finance.description": "Keeps the budget in order and the invoices flowing.",
+    "logistics.description": "Plans the fair day and makes sure everything is in order.",
+    "marketing.description": "Spreads the word about DELTA and gets people excited.",
+    "relations.description": "Keeps in touch with companies and partners.",
+    "staff.description": "Takes care of the crew and everyone helping out."
   },
   "sv": {
+    "title": "DELTA --Force_",
+    "meta.description": "En lista över alla medlemmar i DELTA --Force_ teamet",
+    "description": "Vi i projektruppen DELTA ansvarar för att driva och utveckla DELTA. Vi är en grupp av engagerade studenter som arbetar tillsammans för att skapa en fantastisk upplevelse för alla deltagare på DELTA. Om du har några frågor är det bara att kontakta oss!",
+    "project-group": "Projektgrupp",
     "general": "General",
     "generals": "Generaler",
     "it": "IT-ansvarig",
     "its": "IT-ansvariga",
     "event": "Eventansvarig",
     "events": "Eventansvariga",
-    "finance": "Finansansvarig",
-    "finances": "Finansansvariga",
+    "finance": "Ekonomiansvarig",
+    "finances": "Ekonomiansvariga",
     "logistics": "Logistikansvarig",
     "logisticss": "Logistikansvariga",
     "marketing": "Marknadsföringsansvarig",
@@ -34,6 +50,14 @@
     "relations": "Företagsansvarig",
     "relationss": "Företagsansvariga",
     "staff": "Funkisansvarig",
-    "staffss": "Funkisansvariga"
+    "staffs": "Funkisansvariga",
+    "general.description": "Leder projektgruppen och håller allt på rätt spår.",
+    "it.description": "Driver och utvecklar webbplatsen, systemen och tekniken.",
+    "event.description": "Planerar event för funktionärer, projektgrupper och After DELTA.",
+    "finance.description": "Håller ordning på budget och fakturor.",
+    "logistics.description": "Planerar mässdagen och ser till att allt är i sin ordning.",
+    "marketing.description": "Sprider ordet om DELTA och skapar hype.",
+    "relations.description": "Håller kontakten med företag och partners.",
+    "staff.description": "Tar hand om funktionärer och alla som hjälper till."
   }
 }
