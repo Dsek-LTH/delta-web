@@ -12,4 +12,7 @@ Ja! Medlemmar i D-sektionen kan ansöka om att bli invalda för att arbeta under
 </ul>
 <br>
 <br>
+Som funkis får du dessutom Delta-tack och det stora tacket som uppskattning för din insats.
+<br>
+<br>
 Ansökan skickas ut via D-sektionsappen. Håll därför ögonen öppna när mässan börjar närma sig!

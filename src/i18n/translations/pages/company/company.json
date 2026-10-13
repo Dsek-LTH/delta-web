@@ -2,7 +2,7 @@
   "prefix": "company",
   "en": {
     "head.title": "Company | DELTA",
-    "head.description": "DELTA is a career fair for students and companies within computer engineering fields hosted by the D-guild at TLTH. We connect students with companies and provide opportunities for networking, internships, and job placements.",
+    "head.description": "DELTA is the D-Guild's career fair at LTH in Lund, where companies meet computer engineering students. Compare the DELTA, DELTA++, DELTA# and entry packages, and book your spot at the fair.",
     "button.attend": "Attend",
     "hero.forCompanies": "for companies",
     "package.guarantees": "The package includes:",
@@ -138,7 +138,7 @@
   },
   "sv": {
     "head.title": "Företag | DELTA",
-    "head.description": "DELTA är en karriärmässa för studenter och företag inom datatekniska områden anordnad av D-sektionen inom TLTH. Vi kopplar samman studenter med företag och skapar möjligheter för nätverkande, praktikplatser och framtida anställningar.",
+    "head.description": "DELTA är D-sektionens karriärmässa vid LTH i Lund, där företag möter datateknikstudenter. Jämför paketen DELTA, DELTA++, DELTA# och instegspaketen, och boka er plats på mässan.",
     "hero.forCompanies": "för företag",
     "package.guarantees": "Paketet innehåller:",
     "package.startup.intro": "Startuppaketet riktar sig till uppstartsföretag enligt Näringslivsgruppens (NLG) definition. Paketet är framtaget för att främja en stark uppstartskultur och ge nystartade företag möjlighet att delta på mässan till ett rabatterat pris.",
