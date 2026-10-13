@@ -40,8 +40,8 @@ const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
 <Card
   class={twMerge(
     "overflow-hidden p-0",
-    span === 3 && "lg:col-span-3",
-    span === 2 && "lg:col-span-2",
+    span === 3 && "sm:col-span-2 lg:col-span-3",
+    span === 2 && "sm:col-span-2 lg:col-span-2",
     startRight && "lg:col-start-2",
     className,
   )}
