@@ -1,8 +1,11 @@
 ---
-import Card from "@/components/Card.astro";
 import { i18n } from "@/i18n/utils";
 
 const { translate: t } = i18n(Astro);
+
+// No attendee data yet — when the company list lands, render it here instead
+// of the teaser (and swap the heading back to `attendees.title`).
+const logoSlots = Array.from({ length: 12 });
 ---
 
 <!-- Deltagare -->
@@ -11,39 +14,61 @@ const { translate: t } = i18n(Astro);
   data-nav-section="besokare"
   class="flex w-full max-w-7xl flex-col items-center gap-10 border-t border-border/60 px-6 py-24 lg:px-16"
 >
-  <h3 class="reveal text-center text-3xl font-bold lg:text-4xl">
-    {t("attendees.title")}
+  <h3
+    class="reveal max-w-3xl text-center text-3xl font-bold text-balance lg:text-4xl"
+  >
+    {t("attendees.teaser.title")}
   </h3>
+  <p
+    class="reveal max-w-xl text-center leading-relaxed text-card-content-muted"
+  >
+    {t("attendees.teaser.text")}
+  </p>
 
-  <Card class="reveal w-full max-w-4xl p-8 text-center lg:p-12">
-    <div class="flex flex-col items-center gap-5">
-      <span class="font-mono text-sm text-brand-primary">
-        &gt; delta --companies<span class="animate-caret-blink">_</span>
-      </span>
-      <p class="text-2xl font-bold text-balance lg:text-4xl">
-        {t("attendees.teaser.title")}
-      </p>
-      <p class="max-w-xl leading-relaxed text-card-content-muted">
-        {t("attendees.teaser.text")}
-      </p>
-
-      <div
-        aria-hidden="true"
-        class="mt-2 grid w-full grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6"
-      >
-        {
-          Array.from({ length: 12 }).map(() => (
-            <span class="h-14 rounded-xl bg-card-highlight/40 ring-1 ring-border" />
-          ))
-        }
-      </div>
-
-      <a
-        href="#foretag"
-        class="btn btn-accent mt-2 rounded-full px-6 py-3 text-lg"
-      >
-        {t("attendees.teaser.cta")}
-      </a>
+  <div
+    class="reveal flex w-full flex-col gap-4 overflow-hidden py-1 [-webkit-mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+  >
+    <div class="flex w-max animate-marquee">
+      {
+        [0, 1].map((copy) => (
+          <div class="flex shrink-0 gap-4 pr-4" aria-hidden={copy === 1}>
+            {logoSlots.map(() => (
+              <span class="h-16 w-28 shrink-0 rounded-xl bg-card-highlight/40 ring-1 ring-border sm:w-36" />
+            ))}
+          </div>
+        ))
+      }
     </div>
-  </Card>
+    <div class="flex w-max animate-marquee-reverse">
+      {
+        [0, 1].map((copy) => (
+          <div class="flex shrink-0 gap-4 pr-4" aria-hidden={copy === 1}>
+            {logoSlots.map(() => (
+              <span class="h-16 w-36 shrink-0 rounded-xl bg-card-highlight/40 ring-1 ring-border sm:w-44" />
+            ))}
+          </div>
+        ))
+      }
+    </div>
+    <div
+      class="flex w-max animate-marquee [animation-delay:-12s] [animation-duration:65s]"
+    >
+      {
+        [0, 1].map((copy) => (
+          <div class="flex shrink-0 gap-4 pr-4" aria-hidden={copy === 1}>
+            {logoSlots.map(() => (
+              <span class="h-16 w-32 shrink-0 rounded-xl bg-card-highlight/40 ring-1 ring-border sm:w-40" />
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <a
+    href="#foretag"
+    class="btn btn-accent reveal rounded-full px-6 py-3 text-lg"
+  >
+    {t("attendees.teaser.cta")}
+  </a>
 </section>

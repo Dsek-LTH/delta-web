@@ -68,7 +68,25 @@
   --animate-rise: rise 450ms cubic-bezier(0.23, 1, 0.32, 1) both;
   --animate-scroll-hint: scroll-hint 1.8s cubic-bezier(0.23, 1, 0.32, 1)
     infinite;
+  --animate-marquee: marquee 45s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 55s linear infinite;
   --ease-strong: cubic-bezier(0.23, 1, 0.32, 1);
+
+  @keyframes marquee {
+    to {
+      translate: -50% 0;
+    }
+  }
+
+  @keyframes marquee-reverse {
+    from {
+      translate: -50% 0;
+    }
+
+    to {
+      translate: 0 0;
+    }
+  }
 
   @keyframes scroll-hint {
     0% {
