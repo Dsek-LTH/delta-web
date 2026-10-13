@@ -61,7 +61,7 @@ const { lang, translate: t } = i18n(Astro);
           href="https://www.dsek.se"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-backdrop-content-highlight transition-colors hover:text-backdrop-content-highlight/80"
+          class="text-backdrop-content-highlight transition-colors hover:text-backdrop-content-highlight/80 active:text-backdrop-content-highlight/80"
           >{t("landing.head.leadLink")}</a
         >{t("landing.head.leadAfter")}
       </p>
@@ -124,7 +124,7 @@ const { lang, translate: t } = i18n(Astro);
         class="absolute -bottom-4 right-0 w-[60%] rotate-2 rounded-2xl border border-border object-cover shadow-lg"
       />
       <div
-        class="frosted-glass absolute bottom-2 left-0 rounded-full px-5 py-2"
+        class="frosted-glass absolute -bottom-12 left-0 rounded-full px-5 py-2 max-lg:left-1/2 max-lg:-translate-x-1/2 lg:bottom-2"
       >
         <Countdown class="text-xl lg:text-2xl" />
       </div>
@@ -132,7 +132,7 @@ const { lang, translate: t } = i18n(Astro);
 
     <a
       href="#besokare"
-      class="absolute inset-x-0 bottom-4 mx-auto flex w-fit flex-col items-center gap-2 font-mono text-xs tracking-widest text-card-content-muted uppercase transition-colors hover:text-backdrop-content-highlight"
+      class="absolute inset-x-0 bottom-4 mx-auto hidden w-fit flex-col items-center gap-2 font-mono text-xs tracking-widest text-card-content-muted uppercase transition-colors hover:text-backdrop-content-highlight active:text-backdrop-content-highlight lg:flex"
     >
       {t("landing.scroll")}
       <span

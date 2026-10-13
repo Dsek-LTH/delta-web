@@ -52,7 +52,7 @@ const generalsValidated = generals.map((general) =>
     <p class="text-xl font-semibold pb-2 text-backdrop-content">
       {t("footer.contact")}
       : <a
-        class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
+        class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80 active:text-backdrop-content-highlight/80"
         href="mailto:delta@dsek.se">delta@dsek.se</a
       >
     </p>
@@ -75,7 +75,7 @@ const generalsValidated = generals.map((general) =>
   <p class="text-xl font-semibold italic text-backdrop-content">
     {t("footer.development")}
     <a
-      class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80"
+      class="text-backdrop-content-highlight hover:text-backdrop-content-highlight/80 active:text-backdrop-content-highlight/80"
       href="https://github.com/Dsek-LTH/delta-web"
     >
       GitHub
@@ -83,7 +83,7 @@ const generalsValidated = generals.map((general) =>
   </p>
 
   <a
-    class="inline-flex items-center gap-2 rounded-sm text-backdrop-content-highlight transition-colors outline-none hover:text-backdrop-content-highlight/80 focus-visible:ring-2 focus-visible:ring-backdrop-content-highlight/60"
+    class="inline-flex items-center gap-2 rounded-sm text-backdrop-content-highlight transition-colors outline-none hover:text-backdrop-content-highlight/80 active:text-backdrop-content-highlight/80 focus-visible:ring-2 focus-visible:ring-backdrop-content-highlight/60"
     href="https://www.linkedin.com/company/delta.dsek"
     target="_blank"
     rel="noopener noreferrer"
@@ -102,7 +102,7 @@ const generalsValidated = generals.map((general) =>
   </a>
 
   <a
-    class="absolute bottom-0 text-sm text-backdrop-content-muted opacity-0 transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 hover:text-backdrop-content-highlight/80"
+    class="absolute bottom-0 text-sm text-backdrop-content-muted opacity-0 transition-opacity duration-200 hover:opacity-100 active:opacity-100 focus-visible:opacity-100 hover:text-backdrop-content-highlight/80"
     href={`/admin`}>{t("footer.admin-panel")}</a
   >
 

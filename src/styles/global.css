@@ -201,7 +201,7 @@ html[data-theme="dark"] {
     flex-direction: column;
     min-height: 100dvh;
     overflow-x: hidden;
-    gap: 3rem;
+    gap: min(3rem, 4vw);
 
     font-family: var(--font-sans);
 

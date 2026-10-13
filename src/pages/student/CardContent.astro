@@ -18,7 +18,7 @@ const id = `read-more-${Math.random().toString(36).slice(2, 9)}`;
         data-fold-toggle
         aria-expanded="false"
         aria-controls={id}
-        class="group mt-4 flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+        class="group mt-4 flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80 active:text-brand-primary/80"
       >
         <span class="group-aria-expanded:hidden">{t("student.readMore")}</span>
         <span class="hidden group-aria-expanded:inline">
