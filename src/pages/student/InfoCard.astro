@@ -8,31 +8,41 @@ interface Props {
   imgSrc: ImageMetadata;
   imgAlt: string;
   reverse?: boolean;
+  class?: string;
 }
-const { title, imgSrc, imgAlt, reverse } = Astro.props;
+const { title, imgSrc, imgAlt, reverse, class: className } = Astro.props;
 ---
 
 <Card
-  class="flex items-center flex-col sm:flex-row sm:items-start lg:items-center h-full p-6 lg:p-8 gap-4 sm:gap-8 bg-card-highlight/40"
+  class={twMerge(
+    "flex flex-col items-center gap-4 h-full p-6 sm:flex-row sm:items-start sm:gap-8 lg:p-8 bg-card-highlight/40",
+    className,
+  )}
   animate={false}
 >
+  <span
+    aria-hidden="true"
+    class="pointer-events-none absolute -right-4 -bottom-12 select-none font-display text-[9rem] leading-none text-brand-primary/10"
+  >
+    Δ
+  </span>
   <Image
     src={imgSrc}
     alt={imgAlt}
     height={600}
     width={800}
     class={twMerge(
-      "sm:w-full sm:aspect-4/3 aspect-video h-full sm:max-w-1/4 object-cover rounded-lg lg:rounded-xl",
+      "aspect-video w-full object-cover rounded-xl sm:aspect-4/3 sm:max-w-1/3 sm:shrink-0",
       reverse && "sm:order-last",
     )}
   />
   <div class="flex flex-col gap-4 h-full justify-center">
     <h2
-      class="lg:text-6xl text-3xl font-bold tracking-tight text-brand-primary text-shadow-sm/25 dark:text-shadow-none"
+      class="lg:text-6xl text-3xl font-bold tracking-tight text-brand-primary"
     >
       {title}
     </h2>
-    <div class="lg:text-lg text-base text-gray-600 dark:text-gray-300">
+    <div class="lg:text-lg text-base text-card-content-muted">
       <slot />
     </div>
   </div>

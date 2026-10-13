@@ -10,10 +10,10 @@ const tierOrder = [
     id: "nonprofit",
     name: t("company.pricing.tier.nonprofit"),
     price: t("company.pricing.price.nonprofit"),
-    color: "text-gold",
-    border: "border-gold",
-    bar: "bg-gold",
-    glow: "shadow-[0_0_15px_3px] shadow-gold/80",
+    color: "text-diamond",
+    border: "border-diamond",
+    bar: "bg-diamond",
+    glow: "shadow-[0_0_15px_3px] shadow-diamond/80",
   },
   {
     id: "startup",
@@ -28,28 +28,28 @@ const tierOrder = [
     id: "delta",
     name: t("company.pricing.tier.delta"),
     price: t("company.pricing.price.delta"),
-    color: "text-sapphire",
-    border: "border-sapphire",
-    bar: "bg-sapphire",
-    glow: "shadow-[0_0_15px_3px] shadow-sapphire/80",
+    color: "text-gold",
+    border: "border-gold",
+    bar: "bg-gold",
+    glow: "shadow-[0_0_15px_3px] shadow-gold/80",
   },
   {
     id: "deltaPlusPlus",
     name: t("company.pricing.tier.deltaPlusPlus"),
     price: t("company.pricing.price.deltaPlusPlus"),
-    color: "text-amethyst",
-    border: "border-amethyst",
-    bar: "bg-amethyst",
-    glow: "shadow-[0_0_15px_3px] shadow-amethyst/80",
+    color: "text-silver",
+    border: "border-silver",
+    bar: "bg-silver",
+    glow: "shadow-[0_0_15px_3px] shadow-silver/80",
   },
   {
     id: "deltaSharp",
     name: t("company.pricing.tier.deltaSharp"),
     price: t("company.pricing.price.deltaSharp"),
-    color: "text-emerald",
-    border: "border-emerald",
-    bar: "bg-emerald",
-    glow: "shadow-[0_0_15px_3px] shadow-emerald/80",
+    color: "text-amethyst",
+    border: "border-amethyst",
+    bar: "bg-amethyst",
+    glow: "shadow-[0_0_15px_3px] shadow-amethyst/80",
   },
 ] as const;
 
@@ -237,15 +237,15 @@ const pricingRows = [
 ];
 ---
 
-<section id="pricing" class="w-full scroll-mt-28 flex flex-col gap-6">
+<section class="w-full flex flex-col gap-6">
   <div class="flex flex-col items-center gap-4 text-center">
     <h2
       class="text-5xl font-bold uppercase tracking-tight text-center text-brand-primary text-shadow-sm/25 dark:text-shadow-none"
     >
-      {t("company.pricing.title")}
+      {t("company.pricing.compareTitle")}
     </h2>
     <p class="max-w-3xl leading-relaxed text-card-content">
-      {t("company.pricing.subtitle")}
+      {t("company.pricing.compareSubtitle")}
     </p>
   </div>
 

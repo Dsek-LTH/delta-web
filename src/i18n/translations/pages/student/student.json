@@ -20,7 +20,9 @@
     "faq.organizers.question": "Who organizes DELTA?",
     "faq.when.question": "When is DELTA?",
     "faq.where.question": "Where will DELTA take place?",
-    "faq.contact.question": "Who should you contact if you have questions about the companies?"
+    "faq.contact.question": "Who should you contact if you have questions about the companies?",
+    "readMore": "Read more",
+    "readLess": "Show less"
   },
   "sv": {
     "meta.title": "För studenter",
@@ -42,6 +44,8 @@
     "faq.organizers.question": "Vem arrangerar DELTA?",
     "faq.when.question": "När är DELTA?",
     "faq.where.question": "Var kommer DELTA att hållas?",
-    "faq.contact.question": "Vem ska du kontakta om du har frågor om företagen?"
+    "faq.contact.question": "Vem ska du kontakta om du har frågor om företagen?",
+    "readMore": "Läs mer",
+    "readLess": "Visa mindre"
   }
 }

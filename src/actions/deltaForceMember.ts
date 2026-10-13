@@ -31,8 +31,10 @@ export const deltaForceMember = {
       oldStudentId: z.string().regex(studentIdRegex),
       studentId: z.string().regex(studentIdRegex),
       role: z.enum(deltaForceRoles),
+      sortOrder: z.string().regex(/^\d*$/).optional(),
       email: z.email(),
       linkedin: z.url(),
+      github: z.url().or(z.literal("")).optional(),
       image: optionalImage,
     }),
     handler: async (input, context) => {
@@ -108,8 +110,10 @@ export const deltaForceMember = {
             lastName: input.lastName,
             studentId: input.studentId,
             role: input.role,
+            sortOrder: input.sortOrder ? Number(input.sortOrder) : null,
             email: input.email,
             linkedin: input.linkedin,
+            github: input.github || null,
           })
           .where(eq(deltaForceTable.studentId, input.oldStudentId))
           .run();
@@ -133,8 +137,10 @@ export const deltaForceMember = {
       lastName: z.string(),
       studentId: z.string().regex(studentIdRegex),
       role: z.enum(deltaForceRoles),
+      sortOrder: z.string().regex(/^\d*$/).optional(),
       email: z.email(),
       linkedin: z.url(),
+      github: z.url().or(z.literal("")).optional(),
       image: optionalImage,
     }),
     handler: async (input, context) => {
@@ -172,8 +178,10 @@ export const deltaForceMember = {
             lastName: input.lastName,
             studentId: input.studentId,
             role: input.role,
+            sortOrder: input.sortOrder ? Number(input.sortOrder) : null,
             email: input.email,
             linkedin: input.linkedin,
+            github: input.github || null,
           })
           .run();
       } catch (error) {

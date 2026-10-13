@@ -10,19 +10,23 @@ const { class: className, ...rest } = Astro.props;
 
 const { translate: t } = i18n(Astro);
 const toggleId = `navbar-menu-${Math.random().toString(36).slice(2, 9)}`;
-const pageLabels: Record<string, string> = {
+const currentPageLabel = {
   "/project-group": t("navbar.project-group"),
   "/student": t("navbar.student"),
   "/company": t("navbar.company"),
   "/attendees": t("navbar.attendees"),
-};
-const currentPageLabel = pageLabels[Astro.url.pathname];
+}[Astro.url.pathname];
+// One-page navigation: every item is an anchor into the landing page scroll.
 const navItems = [
-  { href: "/", label: t("navbar.home") },
-  { href: "/student", label: t("navbar.student") },
-  { href: "/company", label: t("navbar.company") },
-  { href: "/attendees", label: t("navbar.attendees") },
-  { href: "/project-group", label: t("navbar.project-group") },
+  { href: "/#besokare", label: t("navbar.attendees"), section: "besokare" },
+  { href: "/#foretag", label: t("navbar.company"), section: "foretag" },
+  { href: "/#top", label: t("navbar.home"), section: "top" },
+  { href: "/#studenter", label: t("navbar.student"), section: "studenter" },
+  {
+    href: "/#projektgrupp",
+    label: t("navbar.project-group"),
+    section: "projektgrupp",
+  },
 ];
 ---
 
@@ -39,17 +43,24 @@ const navItems = [
     <label
       for={toggleId}
       aria-label={t("navbar.menu")}
-      class={twMerge(
-        "flex items-center min-h-9 cursor-pointer",
-        currentPageLabel
-          ? "justify-start px-2 text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink text-shadow-glow text-nowrap text-lg font-bold"
-          : twMerge(
-              "justify-start px-2 text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight hover:text-shadow-glow text-4xl font-bold leading-none",
-              Astro.url.pathname === "/" && "text-shadow-glow-pink",
-            ),
-      )}
+      class="flex items-center gap-2.5 min-h-9 px-2 cursor-pointer text-card-content hover:text-brand-primary transition-colors"
     >
-      {currentPageLabel ?? <span aria-label={t("navbar.home")}>&Delta;</span>}
+      <span aria-hidden="true" class="relative block size-6 shrink-0">
+        <span
+          class="absolute left-0 top-0 h-0.5 w-6 rounded-full bg-current transition-transform duration-300 ease-out group-has-checked:translate-y-[11px] group-has-checked:rotate-45"
+        ></span>
+        <span
+          class="absolute left-0 top-1/2 h-0.5 w-6 -translate-y-1/2 rounded-full bg-current transition-opacity duration-300 ease-out group-has-checked:opacity-0"
+        ></span>
+        <span
+          class="absolute bottom-0 left-0 h-0.5 w-6 rounded-full bg-current transition-transform duration-300 ease-out group-has-checked:-translate-y-[11px] group-has-checked:-rotate-45"
+        ></span>
+      </span>
+      {
+        currentPageLabel && (
+          <span class="text-lg font-bold text-nowrap">{currentPageLabel}</span>
+        )
+      }
     </label>
     <div
       class="grid grid-rows-[0fr] grid-cols-[0fr] group-has-checked:grid-rows-[1fr] group-has-checked:grid-cols-[1fr] transition-[grid-template-rows,grid-template-columns] duration-300 ease-out"
@@ -58,46 +69,60 @@ const navItems = [
         class="min-w-0 overflow-hidden flex flex-col gap-1 pt-1 text-lg font-bold text-nowrap"
       >
         {
-          navItems
-            .filter(({ href }) => href !== Astro.url.pathname)
-            .map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class="block text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-2 text-shadow-md"
-                >
-                  {label}
-                </a>
-              </li>
-            ))
+          navItems.map(({ href, label, section }) => (
+            <li>
+              <a
+                href={href}
+                data-nav-section-link={section ?? undefined}
+                class="block text-card-content hover:text-brand-primary p-2 data-[active]:text-shadow-glow"
+              >
+                {label}
+              </a>
+            </li>
+          ))
         }
       </ul>
     </div>
   </div>
   <ul
-    class="hidden lg:grid frosted-glass rounded-3xl grid-flow-col auto-cols-[1_fr_1fr_2.5em_1fr_1fr] text-xl lg:text-2xl font-bold overflow-hidden text-center items-center h-12 lg:h-16 text-nowrap"
+    class="hidden lg:grid frosted-glass rounded-full grid-flow-col auto-cols-[1fr_1fr_2.5em_1fr_1fr] text-xl lg:text-2xl font-bold overflow-hidden text-center items-center h-12 lg:h-16 text-nowrap"
   >
     <li>
       <a
-        href="/project-group"
+        href="/#besokare"
+        data-nav-section-link="besokare"
         class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/project-group"
-            ? "text-shadow-glow"
-            : "text-shadow-md",
-        )}
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          Astro.url.pathname === "/attendees" && "text-shadow-glow",
+        )}>{t("navbar.attendees")}</a
       >
-        {t("navbar.project-group")}
-      </a>
     </li>
     <li>
       <a
-        href="/student"
+        href="/#foretag"
+        data-nav-section-link="foretag"
         class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/student"
-            ? "text-shadow-glow"
-            : "text-shadow-md",
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          Astro.url.pathname === "/company" && "text-shadow-glow",
+        )}>{t("navbar.company")}</a
+      >
+    </li>
+    <li>
+      <a
+        href="/#top"
+        aria-label={t("navbar.home")}
+        data-nav-section-link="top"
+        class="h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass data-[active]:text-shadow-glow-pink"
+        >&Delta;</a
+      >
+    </li>
+    <li>
+      <a
+        href="/#studenter"
+        data-nav-section-link="studenter"
+        class={twMerge(
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          Astro.url.pathname === "/student" && "text-shadow-glow",
         )}
       >
         {t("navbar.student")}
@@ -105,34 +130,66 @@ const navItems = [
     </li>
     <li>
       <a
-        href="/"
+        href="/#projektgrupp"
+        data-nav-section-link="projektgrupp"
         class={twMerge(
-          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:text-brand-secondary/80 hover:bg-card-highlight hover:text-shadow-glow-secondary rounded-full aspect-square frosted-glass",
-          Astro.url.pathname === "/" && "text-shadow-glow-pink",
-        )}>&Delta;</a
+          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          Astro.url.pathname === "/project-group" && "text-shadow-glow",
+        )}
       >
-    </li>
-    <li>
-      <a
-        href="/company"
-        class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/company"
-            ? "text-shadow-glow"
-            : "text-shadow-md",
-        )}>{t("navbar.company")}</a
-      >
-    </li>
-    <li>
-      <a
-        href="/attendees"
-        class={twMerge(
-          "text-brand-secondary hover:text-brand-primary/80 hover:text-shadow-glow-pink p-3",
-          Astro.url.pathname === "/attendees"
-            ? "text-shadow-glow"
-            : "text-shadow-md",
-        )}>{t("navbar.attendees")}</a
-      >
+        {t("navbar.project-group")}
+      </a>
     </li>
   </ul>
 </nav>
+
+<script>
+  // One-page navigation: the Δ lights up at the top, otherwise the last
+  // section whose start has passed the upper half of the viewport.
+  const sectionLinks = document.querySelectorAll<HTMLElement>(
+    "[data-nav-section-link]",
+  );
+  const sections = document.querySelectorAll<HTMLElement>("[data-nav-section]");
+
+  if (sectionLinks.length > 0 && sections.length > 0) {
+    const updateActive = () => {
+      const marker = window.scrollY + window.innerHeight * 0.45;
+      let current = sections[0]?.id;
+      for (const section of sections) {
+        const top = section.getBoundingClientRect().top + window.scrollY;
+        if (top <= marker) current = section.id;
+      }
+      sectionLinks.forEach((link) => {
+        link.toggleAttribute(
+          "data-active",
+          link.dataset.navSectionLink === current,
+        );
+      });
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          updateActive();
+        });
+      }
+    };
+
+    updateActive();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+  }
+
+  // Close the mobile menu once a link is followed.
+  const mobileMenuToggle = document.querySelector<HTMLInputElement>(
+    ".mobile-navbar input[type='checkbox']",
+  );
+  sectionLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      if (mobileMenuToggle) mobileMenuToggle.checked = false;
+    });
+  });
+</script>

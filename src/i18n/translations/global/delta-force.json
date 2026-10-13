@@ -20,7 +20,15 @@
     "relations": "Relations manager",
     "relationss": "Relations managers",
     "staff": "Staff manager",
-    "staffs": "Staff managers"
+    "staffs": "Staff managers",
+    "general.description": "Leads the project group and keeps everything on track.",
+    "it.description": "Runs and develops the website, systems and technical bits.",
+    "event.description": "Plans events for the crew, the project groups and After DELTA.",
+    "finance.description": "Keeps the budget in order and the invoices flowing.",
+    "logistics.description": "Plans the fair day and makes sure everything is in order.",
+    "marketing.description": "Spreads the word about DELTA and gets people excited.",
+    "relations.description": "Keeps in touch with companies and partners.",
+    "staff.description": "Takes care of the crew and everyone helping out."
   },
   "sv": {
     "title": "DELTA --Force_",
@@ -33,8 +41,8 @@
     "its": "IT-ansvariga",
     "event": "Eventansvarig",
     "events": "Eventansvariga",
-    "finance": "Finansansvarig",
-    "finances": "Finansansvariga",
+    "finance": "Ekonomiansvarig",
+    "finances": "Ekonomiansvariga",
     "logistics": "Logistikansvarig",
     "logisticss": "Logistikansvariga",
     "marketing": "Marknadsföringsansvarig",
@@ -42,6 +50,14 @@
     "relations": "Företagsansvarig",
     "relationss": "Företagsansvariga",
     "staff": "Funkisansvarig",
-    "staffs": "Funkisansvariga"
+    "staffs": "Funkisansvariga",
+    "general.description": "Leder projektgruppen och håller allt på rätt spår.",
+    "it.description": "Driver och utvecklar webbplatsen, systemen och tekniken.",
+    "event.description": "Planerar event för funktionärer, projektgrupper och After DELTA.",
+    "finance.description": "Håller ordning på budget och fakturor.",
+    "logistics.description": "Planerar mässdagen och ser till att allt är i sin ordning.",
+    "marketing.description": "Sprider ordet om DELTA och skapar hype.",
+    "relations.description": "Håller kontakten med företag och partners.",
+    "staff.description": "Tar hand om funktionärer och alla som hjälper till."
   }
 }

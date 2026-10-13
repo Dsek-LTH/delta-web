@@ -1,0 +1,43 @@
+---
+import { twMerge } from "tailwind-merge";
+
+interface Props {
+  kind?: "group" | "profile";
+  class?: string;
+}
+
+const { kind = "group", class: className } = Astro.props;
+---
+
+<div
+  aria-hidden="true"
+  class={twMerge(
+    "relative grid w-full place-items-center overflow-hidden bg-gradient-to-br from-brand-primary/15 via-card-highlight/40 to-brand-primary/5",
+    className,
+  )}
+>
+  <svg
+    viewBox="0 0 200 130"
+    class="h-full w-full text-brand-primary/35"
+    fill="currentColor"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    {
+      kind === "group" ? (
+        <>
+          <circle cx="52" cy="50" r="16" />
+          <path d="M18 112c0-21 15-34 34-34s34 13 34 34z" />
+          <circle cx="148" cy="50" r="16" />
+          <path d="M114 112c0-21 15-34 34-34s34 13 34 34z" />
+          <circle cx="100" cy="42" r="21" />
+          <path d="M57 120c0-26 19-42 43-42s43 16 43 42z" />
+        </>
+      ) : (
+        <>
+          <circle cx="100" cy="46" r="23" />
+          <path d="M50 124c0-29 22-48 50-48s50 19 50 48z" />
+        </>
+      )
+    }
+  </svg>
+</div>

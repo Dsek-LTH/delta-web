@@ -9,6 +9,8 @@ export const deltaForceTable = sqliteTable("delta_force_table", {
   role: text({
     enum: deltaForceRoles,
   }).notNull(),
+  sortOrder: int(),
   email: text().notNull().unique(),
   linkedin: text().notNull(),
+  github: text(),
 });
