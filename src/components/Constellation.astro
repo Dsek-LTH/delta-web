@@ -29,6 +29,7 @@
 
     const LIT_RADIUS = 180; // how far the pointer reaches for lighting
     const LINK_DISTANCE = 140; // dot-to-dot edge length
+    const LINK_DISTANCE_SQUARED = LINK_DISTANCE * LINK_DISTANCE;
     const LINK_ALPHA = 0.22; // base strength of a dot-to-dot edge
     const POINTER_LINK_DISTANCE = 200; // edges from the pointer node
     const POINTER_LINK_ALPHA = 0.3; // base strength of a pointer edge
@@ -253,11 +254,13 @@
       context.strokeStyle = litColor;
       for (let i = 0; i < points.length; i += 1) {
         for (let j = i + 1; j < points.length; j += 1) {
-          const distance = Math.hypot(
-            xs[i]! - xs[j]!,
-            renderYs[i]! - renderYs[j]!,
-          );
-          if (distance > LINK_DISTANCE) continue;
+          const dx = xs[i]! - xs[j]!;
+          const dy = renderYs[i]! - renderYs[j]!;
+          // Most pairs are far apart: reject on the squared distance, so
+          // only the few that can be linked pay for the sqrt.
+          const squared = dx * dx + dy * dy;
+          if (squared > LINK_DISTANCE_SQUARED) continue;
+          const distance = Math.sqrt(squared);
           const proximity = 1 - distance / LINK_DISTANCE;
           // Close pairs draw stronger when either dot is lit (near the
           // pointer) or blooming with speed.
