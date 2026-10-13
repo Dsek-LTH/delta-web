@@ -149,12 +149,44 @@ const { lang, translate: t } = i18n(Astro);
 
 <script>
   // Typed hero line: types each phrase, pauses, deletes and moves on.
+  // Reserves the tallest phrase's height so the layout never jumps.
   const typingTarget = document.querySelector<HTMLElement>("[data-typing]");
-  if (typingTarget) {
+  const typingHost = typingTarget?.closest("p");
+  if (typingTarget && typingHost) {
     const lines: string[] = JSON.parse(typingTarget.dataset.lines ?? "[]");
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+
+    const reserveTallestLine = () => {
+      if (lines.length <= 1) return;
+      const previous = typingTarget.textContent ?? "";
+      typingHost.style.minHeight = "";
+      let maxHeight = 0;
+      for (const current of lines) {
+        typingTarget.textContent = current;
+        maxHeight = Math.max(
+          maxHeight,
+          typingHost.getBoundingClientRect().height,
+        );
+      }
+      typingTarget.textContent = previous;
+      typingHost.style.minHeight = `${maxHeight}px`;
+    };
+
+    let resizing = false;
+    const onResize = () => {
+      if (resizing) return;
+      resizing = true;
+      requestAnimationFrame(() => {
+        resizing = false;
+        reserveTallestLine();
+      });
+    };
+
+    reserveTallestLine();
+    window.addEventListener("resize", onResize);
+    document.fonts.ready.then(reserveTallestLine);
 
     if (reducedMotion || lines.length === 0) {
       typingTarget.textContent = lines[0] ?? "";
