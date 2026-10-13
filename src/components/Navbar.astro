@@ -20,7 +20,7 @@ const currentPageLabel = {
 const navItems = [
   { href: "/#besokare", label: t("navbar.attendees"), section: "besokare" },
   { href: "/#foretag", label: t("navbar.company"), section: "foretag" },
-  { href: "/#top", label: t("navbar.home"), section: null },
+  { href: "/#top", label: t("navbar.home"), section: "top" },
   { href: "/#studenter", label: t("navbar.student"), section: "studenter" },
   {
     href: "/#projektgrupp",
@@ -111,10 +111,9 @@ const navItems = [
       <a
         href="/#top"
         aria-label={t("navbar.home")}
-        class={twMerge(
-          "h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass",
-          Astro.url.pathname === "/" && "text-shadow-glow-pink",
-        )}>&Delta;</a
+        data-nav-section-link="top"
+        class="h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass data-[active]:text-shadow-glow-pink"
+        >&Delta;</a
       >
     </li>
     <li>
@@ -145,28 +144,52 @@ const navItems = [
 </nav>
 
 <script>
-  // One-page navigation: highlight the section crossing the viewport middle.
+  // One-page navigation: the Δ lights up at the top, otherwise the last
+  // section whose start has passed the upper half of the viewport.
   const sectionLinks = document.querySelectorAll<HTMLElement>(
     "[data-nav-section-link]",
   );
   const sections = document.querySelectorAll<HTMLElement>("[data-nav-section]");
+
   if (sectionLinks.length > 0 && sections.length > 0) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-            sectionLinks.forEach((link) => {
-              link.toggleAttribute(
-                "data-active",
-                link.dataset.navSectionLink === id,
-              );
-            });
-          }
-        }
-      },
-      { rootMargin: "-45% 0px -50% 0px" },
-    );
-    sections.forEach((section) => observer.observe(section));
+    const updateActive = () => {
+      const marker = window.scrollY + window.innerHeight * 0.45;
+      let current = sections[0]?.id;
+      for (const section of sections) {
+        const top = section.getBoundingClientRect().top + window.scrollY;
+        if (top <= marker) current = section.id;
+      }
+      sectionLinks.forEach((link) => {
+        link.toggleAttribute(
+          "data-active",
+          link.dataset.navSectionLink === current,
+        );
+      });
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          updateActive();
+        });
+      }
+    };
+
+    updateActive();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
   }
+
+  // Close the mobile menu once a link is followed.
+  const mobileMenuToggle = document.querySelector<HTMLInputElement>(
+    ".mobile-navbar input[type='checkbox']",
+  );
+  sectionLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      if (mobileMenuToggle) mobileMenuToggle.checked = false;
+    });
+  });
 </script>
