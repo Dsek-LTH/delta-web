@@ -1,11 +1,16 @@
 ---
 import { i18n } from "@/i18n/utils";
+import { fairDate } from "@/constants";
 
 const { translate: t } = i18n(Astro);
 
 // No attendee data yet — when the company list lands, render it here instead
 // of the teaser (and swap the heading back to `attendees.title`).
 const logoSlots = Array.from({ length: 12 });
+
+const teaserTitle = t("attendees.teaser.title");
+const year = String(fairDate.getFullYear());
+const [titleBefore, titleAfter = ""] = teaserTitle.split(year);
 ---
 
 <!-- Deltagare -->
@@ -17,7 +22,11 @@ const logoSlots = Array.from({ length: 12 });
   <h3
     class="reveal max-w-3xl text-center text-3xl font-bold text-balance lg:text-4xl"
   >
-    {t("attendees.teaser.title")}
+    {titleBefore}{
+      teaserTitle.includes(year) && (
+        <span class="text-brand-primary">{year}</span>
+      )
+    }{titleAfter}
   </h3>
   <p
     class="reveal max-w-xl text-center leading-relaxed text-card-content-muted"
