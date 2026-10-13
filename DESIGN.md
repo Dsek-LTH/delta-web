@@ -98,8 +98,10 @@ redesign with this document updated.
   (rAF-throttled, no timed animation). It is an indicator, not decoration, so it stays under
   reduced motion.
 - **Ambient backdrop**: the constellation dots drift and lag the page scroll slightly
-  (parallax, ~10%, eased), so the field reads as a distant layer. Every pair of dots within
-  140 px is linked, the edge strength scaled by proximity (brighter near the pointer and
+  (parallax, ~10%, eased), so the field reads as a distant layer. Motion is time-based
+  (px/s) and density is per square css px, so the field looks the same at any refresh rate
+  or viewport size — a larger viewport shows more of it, not a bigger one. Every pair of dots
+  within 140 px is linked, the edge strength scaled by proximity (brighter near the pointer and
   when either dot blooms); the pointer is just one more node, connected to the dots close
   to it. It also lights nearby dots and pulls them with gravity (linear falloff inside a
   420 px well); outside the well a weak force along each dot's velocity direction restores
