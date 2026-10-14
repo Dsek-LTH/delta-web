@@ -156,7 +156,7 @@ Accordions, “read more” and package details all use one pattern — **not** 
 | Fold panels       | §3.5                                               | Read more, FAQ, package details. One open at a time per group.                                                                                              |
 | Team tiles        | `src/pages/project-group/TeamTile.astro`           | Photo/placeholder + `> Team label NN` header + names with email/GitHub/LinkedIn always visible.                                                             |
 | Photo placeholder | `src/pages/project-group/PhotoPlaceholder.astro`   | Group silhouette (2+ people) / profile silhouette (single).                                                                                                 |
-| Package cards     | `src/pages/company/index.astro`                    | Quiet entry pair → three core packages → featured top tier; details open **after their group**.                                                             |
+| Package cards     | `src/pages/company/index.astro`                    | Core DELTΔ packages → quiet entry pair (Non-profit/Startup); details open **after their group**.                                                            |
 | Package details   | `src/components/company/PackageDetails.astro`      | Full description: bold intro, subtitle, `Paketet innehåller:` Δ list, closing, CTA.                                                                         |
 | Pricing table     | `src/components/company/PricingTable.astro`        | Comparison matrix; equivalent tiers merged into one column; horizontal scroll allowed.                                                                      |
 | Timeline          | `src/pages/student/index.astro`                    | Rail + Δ marker on each card, alternating sides; opposite-side photo collages fade in while a row's fold is open.                                           |
@@ -183,8 +183,8 @@ no `object-cover`); never commit or crop them again in the site.
   photo. The landing closes with a four-photo band under the CTA (student-built formula car,
   hall, conversation, group). Photos otherwise live where they carry meaning: student
   timeline and team tiles.
-- **Pricing**: intro → entry pair (quiet) → core packages (full) → top tier (featured, wide) →
-  comparison table. Details unfold directly under the clicked group.
+- **Pricing**: intro → core packages (full) → entry pair (quiet) → comparison table. Details
+  unfold directly under the clicked group.
 - **Long-form pages**: first paragraph + fold per section; never a wall of text.
 - **404 / coming soon**: content-hugging card (`max-w-lg`, no inner scroll), pale gradient.
 - **Footer**: plain on the backdrop gradient (no separate background); contact columns.

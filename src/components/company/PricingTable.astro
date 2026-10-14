@@ -7,24 +7,6 @@ const { translate: t } = i18n(Astro);
 
 const tierOrder = [
   {
-    id: "nonprofit",
-    name: t("company.pricing.tier.nonprofit"),
-    price: t("company.pricing.price.nonprofit"),
-    color: "text-diamond",
-    border: "border-diamond",
-    bar: "bg-diamond",
-    glow: "shadow-[0_0_15px_3px] shadow-diamond/80",
-  },
-  {
-    id: "startup",
-    name: t("company.pricing.tier.startup"),
-    price: t("company.pricing.price.startup"),
-    color: "text-bronze",
-    border: "border-bronze",
-    bar: "bg-bronze",
-    glow: "shadow-[0_0_15px_3px] shadow-bronze/80",
-  },
-  {
     id: "delta",
     name: t("company.pricing.tier.delta"),
     price: t("company.pricing.price.delta"),
@@ -50,6 +32,24 @@ const tierOrder = [
     border: "border-amethyst",
     bar: "bg-amethyst",
     glow: "shadow-[0_0_15px_3px] shadow-amethyst/80",
+  },
+  {
+    id: "nonprofit",
+    name: t("company.pricing.tier.nonprofit"),
+    price: t("company.pricing.price.nonprofit"),
+    color: "text-diamond",
+    border: "border-diamond",
+    bar: "bg-diamond",
+    glow: "shadow-[0_0_15px_3px] shadow-diamond/80",
+  },
+  {
+    id: "startup",
+    name: t("company.pricing.tier.startup"),
+    price: t("company.pricing.price.startup"),
+    color: "text-bronze",
+    border: "border-bronze",
+    bar: "bg-bronze",
+    glow: "shadow-[0_0_15px_3px] shadow-bronze/80",
   },
 ] as const;
 
@@ -157,9 +157,9 @@ const pricingRows = [
   {
     label: t("company.pricing.row.parking"),
     values: {
-      delta: 2,
-      deltaPlusPlus: 2,
-      deltaSharp: 2,
+      delta: t("company.pricing.value.perRepresentative"),
+      deltaPlusPlus: t("company.pricing.value.perRepresentative"),
+      deltaSharp: t("company.pricing.value.perRepresentative"),
       nonprofit: false,
       startup: false,
     },
@@ -170,8 +170,8 @@ const pricingRows = [
       delta: true,
       deltaPlusPlus: true,
       deltaSharp: true,
-      nonprofit: false,
-      startup: false,
+      nonprofit: t("company.pricing.value.viaInfodesk"),
+      startup: t("company.pricing.value.viaInfodesk"),
     },
   },
   {
