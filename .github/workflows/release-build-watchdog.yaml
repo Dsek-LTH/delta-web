@@ -28,6 +28,8 @@ jobs:
 
       - name: Ensure a build exists for release HEAD
         env:
+          # Bound service-account token, expires 2029-10-13. Refresh: oc create token
+          # delta-release-watchdog -n delta --duration=26280h -> update this repo secret.
           OPENSHIFT_TOKEN: ${{ secrets.DELTA_OPENSHIFT_TOKEN }}
         run: |
           set -euo pipefail
