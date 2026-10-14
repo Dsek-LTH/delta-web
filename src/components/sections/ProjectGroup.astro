@@ -106,12 +106,7 @@ const teams = deltaForceRoles
   <Card class="w-full overflow-hidden p-0 reveal">
     {
       allPhoto ? (
-        <img
-          src={allPhoto}
-          alt=""
-          class="aspect-[2140/1427] w-full object-cover"
-          loading="lazy"
-        />
+        <img src={allPhoto} alt="" class="w-full h-auto" loading="lazy" />
       ) : (
         <PhotoPlaceholder kind="group" class="h-72 lg:h-112" />
       )
