@@ -1,0 +1,28 @@
+---
+import { actions } from "astro:actions";
+import Page from "../Page.astro";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/connect";
+import { attendeesTable } from "@/db/schema";
+
+const attendeeId = Number(Astro.params.id);
+const result = Astro.getActionResult(actions.attendee.updateAttendee);
+
+if (result?.data?.id) {
+  return Astro.redirect(`/admin/attendees/${result.data.id}`);
+}
+
+let attendee = null;
+if (Number.isInteger(attendeeId)) {
+  attendee = await db
+    .select()
+    .from(attendeesTable)
+    .where(eq(attendeesTable.id, attendeeId))
+    .get();
+}
+if (!attendee) {
+  return Astro.redirect(`/admin/attendees`);
+}
+---
+
+<Page attendee={attendee} />
