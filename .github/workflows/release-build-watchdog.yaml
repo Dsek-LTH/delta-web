@@ -1,0 +1,52 @@
+name: release-build-watchdog
+
+on:
+  push:
+    branches: [release]
+  schedule:
+    - cron: "17 * * * *" # hourly fallback, also recovers builds skipped while the cluster was down
+  workflow_dispatch:
+
+concurrency:
+  group: release-build-watchdog
+  cancel-in-progress: false
+
+jobs:
+  ensure-built:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release
+        uses: actions/checkout@v6
+        with:
+          ref: release
+          fetch-depth: 1
+
+      - name: Install oc
+        run: |
+          curl -sSL https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz | tar -xz oc
+          sudo install -m 0755 oc /usr/local/bin/oc
+
+      - name: Ensure a build exists for release HEAD
+        env:
+          OPENSHIFT_TOKEN: ${{ secrets.DELTA_OPENSHIFT_TOKEN }}
+        run: |
+          set -euo pipefail
+          oc login --token="$OPENSHIFT_TOKEN" --server=https://api.okd.dsek.se:6443 >/dev/null
+          head=$(git rev-parse HEAD)
+          sleep 45 # let a healthy webhook-triggered build appear first (only matters on push runs)
+          for bc in website website-tools; do
+            latest=$(oc get builds -n delta -l "buildconfig=$bc" --sort-by=.metadata.creationTimestamp \
+              -o jsonpath='{.items[-1:].metadata.name}')
+            commit=""; phase=""
+            if [ -n "$latest" ]; then
+              commit=$(oc get build "$latest" -n delta -o jsonpath='{.spec.revision.git.commit}')
+              phase=$(oc get build "$latest" -n delta -o jsonpath='{.status.phase}')
+            fi
+            if [ "$commit" = "$head" ]; then
+              echo "$bc: build $latest is for $head (phase: $phase)"
+              if [ "$phase" = "Failed" ]; then exit 1; fi # surface real build failures as a red run
+            else
+              echo "$bc: newest build ${latest:-none} is at ${commit:-nothing}, release HEAD is $head — starting a build"
+              oc start-build "$bc" -n delta
+            fi
+          done
