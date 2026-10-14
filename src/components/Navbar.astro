@@ -18,9 +18,9 @@ const currentPageLabel = {
 }[Astro.url.pathname];
 // One-page navigation: every item is an anchor into the landing page scroll.
 const navItems = [
+  { href: "/#top", label: t("navbar.home"), section: "top" },
   { href: "/#besokare", label: t("navbar.attendees"), section: "besokare" },
   { href: "/#foretag", label: t("navbar.company"), section: "foretag" },
-  { href: "/#top", label: t("navbar.home"), section: "top" },
   { href: "/#studenter", label: t("navbar.student"), section: "studenter" },
   {
     href: "/#projektgrupp",
