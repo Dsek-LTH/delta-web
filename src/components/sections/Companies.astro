@@ -83,9 +83,9 @@ const tiers = [
     glow: "shadow-gold/20",
     cta: "btn btn-ghost",
     highlights: [
-      t("company.pricing.row.booth"),
+      t("company.pricing.row.wardrobeInfodesk"),
+      t("company.pricing.row.breakfastCoffee"),
       t("company.pricing.row.meals"),
-      t("company.pricing.row.parking"),
       t("company.pricing.row.host"),
     ],
     items: [
@@ -115,8 +115,8 @@ const tiers = [
     highlights: [
       t("company.pricing.row.caseEvening"),
       t("company.pricing.row.studentSessions"),
-      t("company.pricing.row.placement"),
-      t("company.pricing.row.afterEvent"),
+      t("company.pricing.value.centralBooth"),
+      t("company.pricing.row.includesBase"),
     ],
     items: [
       t("company.package.plus.base"),
@@ -139,9 +139,8 @@ const tiers = [
     cta: "btn btn-ghost",
     highlights: [
       t("company.pricing.row.lunchLecture"),
-      t("company.pricing.row.placement"),
-      t("company.pricing.row.meals"),
-      t("company.pricing.row.afterEvent"),
+      t("company.pricing.value.chooseBooth"),
+      t("company.pricing.row.includesBase"),
     ],
     items: [
       t("company.package.hash.base"),
@@ -224,53 +223,6 @@ const deltaTiers = tiers.slice(2, 5);
       </p>
     </div>
 
-    <div class="grid w-full gap-6 sm:grid-cols-2 reveal">
-      {
-        entryTiers.map((tier) => (
-          <Package
-            class={`border-0 border-t-4 p-5 shadow-md ${tier.accent} ${tier.glow}`}
-          >
-            <div class="flex items-baseline justify-between gap-4">
-              <PackageTitle
-                title={tier.name}
-                class={`text-left text-2xl ${tier.color}`}
-              />
-              <p class="font-mono text-lg font-semibold tabular-nums text-card-content">
-                {tier.price}
-              </p>
-            </div>
-            <p class="line-clamp-3 text-sm leading-relaxed text-card-content-muted">
-              {tier.intro}
-            </p>
-            <div class="mt-auto flex items-center justify-between gap-3">
-              <button
-                type="button"
-                data-tier-details={tier.id}
-                aria-expanded="false"
-                aria-controls={`tier-details-${tier.id}`}
-                class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
-              >
-                {t("company.package.showDetails")}
-                <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
-              </button>
-              <a
-                href="mailto:delta@dsek.se"
-                class={`rounded-full px-4 py-1.5 text-sm ${tier.cta}`}
-              >
-                {t("company.package.contact")}
-              </a>
-            </div>
-          </Package>
-        ))
-      }
-    </div>
-
-    <div data-tier-panel-host hidden class="fold-wrap w-full">
-      <div class="fold-panel">
-        {entryTiers.map((tier) => <PackageDetails tier={tier} />)}
-      </div>
-    </div>
-
     <div class="grid w-full gap-6 reveal sm:grid-cols-2 lg:grid-cols-3">
       {
         deltaTiers.map((tier) => (
@@ -325,6 +277,53 @@ const deltaTiers = tiers.slice(2, 5);
     <div data-tier-panel-host hidden class="fold-wrap w-full">
       <div class="fold-panel">
         {deltaTiers.map((tier) => <PackageDetails tier={tier} />)}
+      </div>
+    </div>
+
+    <div class="grid w-full gap-6 sm:grid-cols-2 reveal">
+      {
+        entryTiers.map((tier) => (
+          <Package
+            class={`border-0 border-t-4 p-5 shadow-md ${tier.accent} ${tier.glow}`}
+          >
+            <div class="flex items-baseline justify-between gap-4">
+              <PackageTitle
+                title={tier.name}
+                class={`text-left text-2xl ${tier.color}`}
+              />
+              <p class="font-mono text-lg font-semibold tabular-nums text-card-content">
+                {tier.price}
+              </p>
+            </div>
+            <p class="line-clamp-3 text-sm leading-relaxed text-card-content-muted">
+              {tier.intro}
+            </p>
+            <div class="mt-auto flex items-center justify-between gap-3">
+              <button
+                type="button"
+                data-tier-details={tier.id}
+                aria-expanded="false"
+                aria-controls={`tier-details-${tier.id}`}
+                class="group flex items-center gap-1 text-sm font-semibold text-brand-primary transition-colors hover:text-brand-primary/80"
+              >
+                {t("company.package.showDetails")}
+                <ChevronDown class="size-4 transition-transform duration-300 group-aria-expanded:rotate-180" />
+              </button>
+              <a
+                href="mailto:delta@dsek.se"
+                class={`rounded-full px-4 py-1.5 text-sm ${tier.cta}`}
+              >
+                {t("company.package.contact")}
+              </a>
+            </div>
+          </Package>
+        ))
+      }
+    </div>
+
+    <div data-tier-panel-host hidden class="fold-wrap w-full">
+      <div class="fold-panel">
+        {entryTiers.map((tier) => <PackageDetails tier={tier} />)}
       </div>
     </div>
 

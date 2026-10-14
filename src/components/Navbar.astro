@@ -18,9 +18,9 @@ const currentPageLabel = {
 }[Astro.url.pathname];
 // One-page navigation: every item is an anchor into the landing page scroll.
 const navItems = [
+  { href: "/#top", label: t("navbar.home"), section: "top" },
   { href: "/#besokare", label: t("navbar.attendees"), section: "besokare" },
   { href: "/#foretag", label: t("navbar.company"), section: "foretag" },
-  { href: "/#top", label: t("navbar.home"), section: "top" },
   { href: "/#studenter", label: t("navbar.student"), section: "studenter" },
   {
     href: "/#projektgrupp",
@@ -43,7 +43,7 @@ const navItems = [
     <label
       for={toggleId}
       aria-label={t("navbar.menu")}
-      class="flex items-center gap-2.5 min-h-9 px-2 cursor-pointer text-card-content hover:text-brand-primary transition-colors"
+      class="flex items-center gap-2.5 min-h-9 px-2 cursor-pointer text-card-content hover:text-brand-primary active:text-brand-primary transition-colors"
     >
       <span aria-hidden="true" class="relative block size-6 shrink-0">
         <span
@@ -74,7 +74,7 @@ const navItems = [
               <a
                 href={href}
                 data-nav-section-link={section ?? undefined}
-                class="block text-card-content hover:text-brand-primary p-2 data-[active]:text-shadow-glow"
+                class="block text-card-content hover:text-brand-primary active:text-brand-primary p-2 data-[active]:text-shadow-glow"
               >
                 {label}
               </a>
@@ -92,7 +92,7 @@ const navItems = [
         href="/#besokare"
         data-nav-section-link="besokare"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          "text-card-content hover:text-brand-primary active:text-brand-primary p-3 data-[active]:text-shadow-glow",
           Astro.url.pathname === "/attendees" && "text-shadow-glow",
         )}>{t("navbar.attendees")}</a
       >
@@ -102,7 +102,7 @@ const navItems = [
         href="/#foretag"
         data-nav-section-link="foretag"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          "text-card-content hover:text-brand-primary active:text-brand-primary p-3 data-[active]:text-shadow-glow",
           Astro.url.pathname === "/company" && "text-shadow-glow",
         )}>{t("navbar.company")}</a
       >
@@ -112,7 +112,7 @@ const navItems = [
         href="/#top"
         aria-label={t("navbar.home")}
         data-nav-section-link="top"
-        class="h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight rounded-full aspect-square frosted-glass data-[active]:text-shadow-glow-pink"
+        class="h-12 lg:h-16 flex justify-center items-center text-4xl leading-none text-brand-primary hover:bg-card-highlight active:bg-card-highlight rounded-full aspect-square frosted-glass data-[active]:text-shadow-glow-pink"
         >&Delta;</a
       >
     </li>
@@ -121,7 +121,7 @@ const navItems = [
         href="/#studenter"
         data-nav-section-link="studenter"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          "text-card-content hover:text-brand-primary active:text-brand-primary p-3 data-[active]:text-shadow-glow",
           Astro.url.pathname === "/student" && "text-shadow-glow",
         )}
       >
@@ -133,7 +133,7 @@ const navItems = [
         href="/#projektgrupp"
         data-nav-section-link="projektgrupp"
         class={twMerge(
-          "text-card-content hover:text-brand-primary p-3 data-[active]:text-shadow-glow",
+          "text-card-content hover:text-brand-primary active:text-brand-primary p-3 data-[active]:text-shadow-glow",
           Astro.url.pathname === "/project-group" && "text-shadow-glow",
         )}
       >

@@ -12,4 +12,7 @@ Yes! Members of the D-guild can apply to be elected to work during the fair. As 
 </ul>
 <br>
 <br>
+As a funkis you also get the Delta tack and the big thank-you as a token of our appreciation for your contribution.
+<br>
+<br>
 Applications are sent out via the D-guild app. So keep your eyes open as the fair approaches!

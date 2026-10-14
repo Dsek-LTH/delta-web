@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:wght@100..900&family=Noto+Sans+Mono:wght@100..900&display=swap");
+@import "./fonts.css";
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -201,7 +201,7 @@ html[data-theme="dark"] {
     flex-direction: column;
     min-height: 100dvh;
     overflow-x: hidden;
-    gap: 3rem;
+    gap: min(3rem, 4vw);
 
     font-family: var(--font-sans);
 

@@ -32,28 +32,23 @@ const {
   class: className,
 } = Astro.props;
 
-// Fixed media heights keep photo areas level across tiles in the same row
-// (wide and single tiles share the same height; the full-width tile is taller).
+// Fixed media heights set the fallback placeholder size across tiles in the
+// same row (real photos render at their natural, pre-cropped aspect).
 const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
 ---
 
 <Card
   class={twMerge(
     "overflow-hidden p-0",
-    span === 3 && "lg:col-span-3",
-    span === 2 && "lg:col-span-2",
+    span === 3 && "sm:col-span-2 lg:col-span-3",
+    span === 2 && "sm:col-span-2 lg:col-span-2",
     startRight && "lg:col-start-2",
     className,
   )}
 >
   {
     photo ? (
-      <img
-        src={photo}
-        alt=""
-        loading="lazy"
-        class={`w-full object-cover ${media}`}
-      />
+      <img src={photo} alt="" loading="lazy" class="w-full h-auto" />
     ) : (
       <PhotoPlaceholder
         kind={members.length > 1 ? "group" : "profile"}
@@ -79,14 +74,14 @@ const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
               href={member.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-card-content transition-colors hover:text-brand-primary"
+              class="text-card-content transition-colors hover:text-brand-primary active:text-brand-primary"
             >
               {member.firstName} {member.lastName}
             </a>
             <span class="flex items-center gap-1.5 text-xs font-normal text-card-content-muted">
               <a
                 href={`mailto:${member.email}`}
-                class="transition-colors hover:text-brand-primary"
+                class="transition-colors hover:text-brand-primary active:text-brand-primary"
               >
                 {member.email}
               </a>
@@ -95,7 +90,7 @@ const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`LinkedIn – ${member.firstName} ${member.lastName}`}
-                class="transition-colors hover:text-brand-primary"
+                class="transition-colors hover:text-brand-primary active:text-brand-primary"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -112,7 +107,7 @@ const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`GitHub – ${member.firstName} ${member.lastName}`}
-                  class="transition-colors hover:text-brand-primary"
+                  class="transition-colors hover:text-brand-primary active:text-brand-primary"
                 >
                   <svg
                     viewBox="0 0 24 24"
