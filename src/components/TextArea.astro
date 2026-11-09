@@ -4,11 +4,13 @@ import { twMerge } from "tailwind-merge";
 const {
   value,
   name,
+  rows = 4,
   class: className,
   ...rest
 } = Astro.props as {
   value: string;
   name: string;
+  rows?: number;
   class: string;
 };
 ---
@@ -19,6 +21,7 @@ const {
     className,
   )}
   {...rest}
+  rows={rows}
   name={name}
   id={name}>{value}</textarea
 >

@@ -14,7 +14,10 @@
     "attendee.linkedin": "LinkedIn",
     "save": "Save",
     "delete": "Delete",
-    "back": "Back"
+    "could-not-save": "Could not save attendee",
+    "unknown-error": "An unknown error occurred.",
+    "delete-confirm": "Are you sure you want to delete this attendee? This action cannot be undone.",
+    "delete-failed": "Failed to delete attendee."
   },
   "sv": {
     "title": "Hantera deltagare",
@@ -30,6 +33,9 @@
     "attendee.linkedin": "LinkedIn",
     "save": "Spara",
     "delete": "Ta bort",
-    "back": "Tillbaka"
+    "could-not-save": "Kunde inte spara deltagaren",
+    "unknown-error": "Ett okänt fel inträffade.",
+    "delete-confirm": "Är du säker på att du vill ta bort deltagaren? Åtgärden kan inte ångras.",
+    "delete-failed": "Kunde inte ta bort deltagaren."
   }
 }

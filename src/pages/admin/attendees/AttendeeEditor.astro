@@ -17,7 +17,7 @@ const {
   newAttendee?: boolean;
 };
 
-const { lang, translate: t } = i18n(Astro);
+const { translate: t } = i18n(Astro);
 const action = newAttendee
   ? actions.attendee.addAttendee
   : actions.attendee.updateAttendee;
@@ -30,6 +30,26 @@ const inputErrorEntries = inputErrors
       [string, string[]]
     >)
   : [];
+
+const submitted =
+  result?.error && Astro.request.method === "POST"
+    ? await Astro.request.formData()
+    : null;
+const value = (name: string) => {
+  const submittedValue = submitted?.get(name);
+  return typeof submittedValue === "string" ? submittedValue : undefined;
+};
+
+const fieldLabels: Record<string, string> = {
+  name: t("admin.attendees.attendee.name"),
+  descriptionSv: t("admin.attendees.attendee.description-sv"),
+  descriptionEn: t("admin.attendees.attendee.description-en"),
+  industry: t("admin.attendees.attendee.industry"),
+  tags: t("admin.attendees.attendee.tags"),
+  contact: t("admin.attendees.attendee.contact"),
+  linkedin: t("admin.attendees.attendee.linkedin"),
+};
+const fieldLabel = (field: string) => fieldLabels[field] ?? field;
 ---
 
 <form
@@ -39,24 +59,29 @@ const inputErrorEntries = inputErrors
   )}
   action={action}
   method="POST"
-  enctype="multipart/form-data"
+  data-attendee-editor
+  data-delete-confirm={t("admin.attendees.delete-confirm")}
+  data-delete-failed={t("admin.attendees.delete-failed")}
 >
   {newAttendee || <input type="hidden" name="id" value={attendee.id} />}
-  <input type="hidden" name="lang" value={lang} />
   {
     (actionError || inputErrors) && (
-      <div class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
-        <p class="font-semibold">Could not save attendee</p>
+      <div
+        role="alert"
+        class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-800 dark:text-red-200"
+      >
+        <p class="font-semibold">{t("admin.attendees.could-not-save")}</p>
         {actionError && (
           <p class="mt-1">
-            {actionError.message ?? "An unknown error occurred."}
+            {actionError.message ?? t("admin.attendees.unknown-error")}
           </p>
         )}
         {inputErrors && (
           <ul class="mt-2 list-disc pl-5">
             {inputErrorEntries.map(([field, messages]) => (
               <li>
-                <span class="font-medium">{field}:</span> {messages.join(", ")}
+                <span class="font-medium">{fieldLabel(field)}:</span>{" "}
+                {messages.join(", ")}
               </li>
             ))}
           </ul>
@@ -66,37 +91,43 @@ const inputErrorEntries = inputErrors
   }
   <div class="flex flex-col gap-1">
     <Label name="name" label={t("admin.attendees.attendee.name")} />
-    <TextInput name="name" value={attendee.name} />
+    <TextInput name="name" value={value("name") ?? attendee.name} />
   </div>
   <div class="flex flex-col gap-1">
     <Label
       name="descriptionSv"
       label={t("admin.attendees.attendee.description-sv")}
     />
-    <TextArea name="descriptionSv" value={attendee.descriptionSv} />
+    <TextArea
+      name="descriptionSv"
+      value={value("descriptionSv") ?? attendee.descriptionSv}
+    />
   </div>
   <div class="flex flex-col gap-1">
     <Label
       name="descriptionEn"
       label={t("admin.attendees.attendee.description-en")}
     />
-    <TextArea name="descriptionEn" value={attendee.descriptionEn} />
+    <TextArea
+      name="descriptionEn"
+      value={value("descriptionEn") ?? attendee.descriptionEn}
+    />
   </div>
   <div class="flex flex-col gap-1">
     <Label name="industry" label={t("admin.attendees.attendee.industry")} />
-    <TextInput name="industry" value={attendee.industry} />
+    <TextInput name="industry" value={value("industry") ?? attendee.industry} />
   </div>
   <div class="flex flex-col gap-1">
     <Label name="tags" label={t("admin.attendees.attendee.tags")} />
-    <TextInput name="tags" value={attendee.tags} />
+    <TextInput name="tags" value={value("tags") ?? attendee.tags} />
   </div>
   <div class="flex flex-col gap-1">
     <Label name="contact" label={t("admin.attendees.attendee.contact")} />
-    <TextInput name="contact" value={attendee.contact} />
+    <TextInput name="contact" value={value("contact") ?? attendee.contact} />
   </div>
   <div class="flex flex-col gap-1">
     <Label name="linkedin" label={t("admin.attendees.attendee.linkedin")} />
-    <TextInput name="linkedin" value={attendee.linkedin} />
+    <TextInput name="linkedin" value={value("linkedin") ?? attendee.linkedin} />
   </div>
 
   <div class="flex gap-4 justify-between mt-4">
@@ -126,26 +157,21 @@ const inputErrorEntries = inputErrors
   import { actions } from "astro:actions";
   import { navigate } from "astro:transitions/client";
 
-  const deleteButton: HTMLButtonElement | null = document.querySelector(
+  const form = document.querySelector<HTMLFormElement>(
+    "form[data-attendee-editor]",
+  );
+  const deleteButton = form?.querySelector<HTMLButtonElement>(
     "button[name='delete']",
   );
-  if (deleteButton) {
+  if (form && deleteButton) {
     deleteButton.addEventListener("click", async () => {
-      if (
-        confirm(
-          "Are you sure you want to delete this attendee? This action cannot be undone.",
-        )
-      ) {
+      if (confirm(form.dataset.deleteConfirm ?? "")) {
         const formData = new FormData();
         formData.append("id", deleteButton.value);
 
         const { error } = await actions.attendee.deleteAttendee(formData);
         if (error) {
-          alert(
-            `Failed to delete attendee: ${
-              error.message ?? "An unknown error occurred."
-            }`,
-          );
+          alert(form.dataset.deleteFailed ?? "");
         } else {
           navigate(`/admin/attendees`);
         }

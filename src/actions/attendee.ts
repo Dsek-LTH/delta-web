@@ -4,24 +4,33 @@ import { db } from "@/db/connect";
 import { attendeesTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
+const normalizeTags = (tags: string) =>
+  tags
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+    .join(", ");
+
+const attendeeFields = {
+  name: z.string().trim().min(1),
+  descriptionSv: z.string().trim().min(1),
+  descriptionEn: z.string().trim().min(1),
+  industry: z.string().trim().min(1),
+  tags: z.string().trim().min(1).transform(normalizeTags),
+  contact: z.string().trim().min(1),
+  linkedin: z.union([z.url(), z.literal(""), z.literal("#")]),
+};
+
 export const attendee = {
   updateAttendee: defineAction({
     accept: "form",
     input: z.object({
-      lang: z.string(),
-      id: z.coerce.number().int(),
-      name: z.string(),
-      descriptionSv: z.string(),
-      descriptionEn: z.string(),
-      industry: z.string(),
-      tags: z.string(),
-      contact: z.string(),
-      linkedin: z.url(),
+      id: z.coerce.number().int().positive(),
+      ...attendeeFields,
     }),
     handler: async (input) => {
-      console.log("Updating attendee:", input.id);
       try {
-        await db
+        const updated = await db
           .update(attendeesTable)
           .set({
             name: input.name,
@@ -33,8 +42,17 @@ export const attendee = {
             linkedin: input.linkedin,
           })
           .where(eq(attendeesTable.id, input.id))
-          .run();
+          .returning({ id: attendeesTable.id })
+          .get();
+        if (!updated) {
+          throw new ActionError({
+            code: "NOT_FOUND",
+            message: "Attendee not found.",
+          });
+        }
+        return { id: updated.id };
       } catch (error) {
+        if (error instanceof ActionError) throw error;
         console.error(
           `Failed to update attendee with id ${input.id}: ${error instanceof Error ? error.message : String(error)}`,
         );
@@ -43,23 +61,12 @@ export const attendee = {
           message: `Failed to update database. See server logs for details.`,
         });
       }
-      return { id: input.id };
     },
   }),
   addAttendee: defineAction({
     accept: "form",
-    input: z.object({
-      lang: z.string(),
-      name: z.string(),
-      descriptionSv: z.string(),
-      descriptionEn: z.string(),
-      industry: z.string(),
-      tags: z.string(),
-      contact: z.string(),
-      linkedin: z.url(),
-    }),
+    input: z.object(attendeeFields),
     handler: async (input) => {
-      console.log("Adding new attendee:", input.name);
       try {
         const inserted = await db
           .insert(attendeesTable)
@@ -90,10 +97,9 @@ export const attendee = {
   deleteAttendee: defineAction({
     accept: "form",
     input: z.object({
-      id: z.coerce.number().int(),
+      id: z.coerce.number().int().positive(),
     }),
     handler: async (input) => {
-      console.log("Deleting attendee with id:", input.id);
       try {
         await db
           .delete(attendeesTable)
