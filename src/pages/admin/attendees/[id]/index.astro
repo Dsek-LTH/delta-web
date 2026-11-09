@@ -4,10 +4,7 @@ import Page from "../Page.astro";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/connect";
 import { attendeesTable } from "@/db/schema";
-import {
-  imageWarningFromQuery,
-  withImageWarning,
-} from "@/files/imageWarnings";
+import { imageWarningFromQuery, withImageWarning } from "@/files/imageWarnings";
 
 const attendeeId = Number(Astro.params.id);
 const result = Astro.getActionResult(actions.attendee.updateAttendee);

@@ -4,10 +4,7 @@ import Page from "../Page.astro";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/connect";
 import { deltaForceTable } from "@/db/schema";
-import {
-  imageWarningFromQuery,
-  withImageWarning,
-} from "@/files/imageWarnings";
+import { imageWarningFromQuery, withImageWarning } from "@/files/imageWarnings";
 
 const memberId = Astro.params.member;
 const result = Astro.getActionResult(
