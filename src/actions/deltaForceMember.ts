@@ -49,7 +49,6 @@ export const deltaForceMember = {
   updateDeltaForceMember: defineAction({
     accept: "form",
     input: z.object({
-      lang: z.string(),
       firstName: z.string(),
       lastName: z.string(),
       oldStudentId: z.string().regex(studentIdRegex),
@@ -137,7 +136,6 @@ export const deltaForceMember = {
   addDeltaForceMember: defineAction({
     accept: "form",
     input: z.object({
-      lang: z.string(),
       firstName: z.string(),
       lastName: z.string(),
       studentId: z.string().regex(studentIdRegex),
