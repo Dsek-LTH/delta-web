@@ -13,6 +13,11 @@ const id = `read-more-${Math.random().toString(36).slice(2, 9)}`;
   html && (
     <>
       <div id={id} class="read-more-content space-y-4" set:html={html} />
+      {Astro.slots.has("action") && (
+        <div class="mt-4">
+          <slot name="action" />
+        </div>
+      )}
       <button
         type="button"
         data-fold-toggle

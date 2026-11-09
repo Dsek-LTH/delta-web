@@ -45,12 +45,5 @@ const { title, imgSrc, imgAlt, reverse, class: className } = Astro.props;
     <div class="lg:text-lg text-base text-card-content-muted">
       <slot />
     </div>
-    {
-      Astro.slots.has("action") && (
-        <div class="mt-1">
-          <slot name="action" />
-        </div>
-      )
-    }
   </div>
 </Card>

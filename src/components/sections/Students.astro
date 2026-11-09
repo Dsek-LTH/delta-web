@@ -173,8 +173,9 @@ const timelineItems: {
                   imgAlt={item.imgAlt}
                   reverse={reversed}
                 >
-                  <CardContent html={item.html} />
-                  {item.quiz && <WorkQuiz slot="action" />}
+                  <CardContent html={item.html}>
+                    {item.quiz && <WorkQuiz slot="action" />}
+                  </CardContent>
                 </InfoCard>
               </div>
               <div
