@@ -5,6 +5,7 @@ import type { ImageMetadata } from "astro";
 import InfoCard from "@/pages/student/InfoCard.astro";
 import CardContent from "@/pages/student/CardContent.astro";
 import FaqCard from "@/pages/student/FaqCard.astro";
+import WorkQuiz from "@/pages/student/WorkQuiz.astro";
 import { i18n, getRenderedContent } from "@/i18n/utils";
 import { getEntry } from "astro:content";
 
@@ -71,6 +72,7 @@ const timelineItems: {
   imgAlt: string;
   html: string | null | undefined;
   gallery: [ImageMetadata, ImageMetadata];
+  quiz?: boolean;
 }[] = [
   {
     title: t("student.what.title"),
@@ -99,6 +101,7 @@ const timelineItems: {
     imgAlt: t("student.work.imgAlt"),
     html: work?.html,
     gallery: [WorkPhoto2, WorkPhoto3],
+    quiz: true,
   },
   {
     title: t("student.after.title"),
@@ -170,7 +173,9 @@ const timelineItems: {
                   imgAlt={item.imgAlt}
                   reverse={reversed}
                 >
-                  <CardContent html={item.html} />
+                  <CardContent html={item.html}>
+                    {item.quiz && <WorkQuiz slot="action" />}
+                  </CardContent>
                 </InfoCard>
               </div>
               <div

@@ -1,0 +1,209 @@
+---
+import { ChevronDown, X } from "@lucide/astro";
+import { i18n } from "@/i18n/utils";
+import { staffQuiz, staffRoles } from "@/constants";
+
+const { translate: t } = i18n(Astro);
+const dialogId = "work-quiz-dialog";
+const headingId = "work-quiz-heading";
+---
+
+<button
+  type="button"
+  class="btn btn-accent"
+  data-quiz-open
+  aria-haspopup="dialog"
+  aria-controls={dialogId}
+>
+  {t("quiz.open")}
+</button>
+
+<dialog
+  id={dialogId}
+  aria-labelledby={headingId}
+  class="quiz-dialog m-auto w-[min(92vw,40rem)] max-h-[85dvh] overflow-y-auto rounded-2xl frosted-glass bg-card-highlight p-6 text-card-content sm:p-8"
+>
+  <div class="flex flex-col gap-6">
+    <div class="flex items-start justify-between gap-4">
+      <h3 id={headingId} class="text-2xl font-bold text-brand-primary">
+        {t("quiz.title")}
+      </h3>
+      <button
+        type="button"
+        class="btn btn-ghost"
+        data-quiz-close
+        aria-label={t("quiz.close")}
+      >
+        <X class="size-4" />
+      </button>
+    </div>
+
+    <p class="text-card-content-muted">{t("quiz.intro")}</p>
+
+    <div data-quiz-questions class="flex flex-col gap-6">
+      {
+        staffQuiz.map((question, index) => (
+          <div
+            data-quiz-question
+            data-question-id={question.id}
+            hidden={index !== 0}
+            class="flex flex-col gap-3"
+          >
+            <p class="text-lg font-semibold">
+              {t(`quiz.question.${question.id}`)}
+            </p>
+            <div class="flex gap-3">
+              <button type="button" class="btn btn-ghost" data-answer="yes">
+                {t("quiz.yes")}
+              </button>
+              <button type="button" class="btn btn-ghost" data-answer="no">
+                {t("quiz.no")}
+              </button>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div data-quiz-results hidden class="flex flex-col gap-3">
+      <h4 class="text-lg font-semibold">{t("quiz.result.title")}</h4>
+      <div data-quiz-result-list class="flex flex-col gap-3">
+        {
+          staffRoles.map((role) => (
+            <div
+              data-role={role}
+              hidden
+              class="rounded-xl bg-card-highlight/40"
+            >
+              <button
+                type="button"
+                data-fold-toggle
+                aria-expanded="false"
+                aria-controls={`quiz-role-${role}`}
+                class="group flex w-full items-center justify-between gap-4 p-4 text-left text-lg font-semibold"
+              >
+                {t(`quiz.role.${role}`)}
+                <ChevronDown class="size-5 shrink-0 text-brand-primary transition-transform duration-300 group-aria-expanded:rotate-180" />
+              </button>
+              <div id={`quiz-role-${role}`} class="fold-wrap" inert>
+                <div class="fold-panel">
+                  <p class="px-4 pb-4 text-card-content-muted">
+                    {t(`quiz.role.${role}.description`)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <button type="button" class="btn btn-ghost self-start" data-quiz-restart>
+        {t("quiz.restart")}
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { matchStaffRoles } from "@/constants";
+
+  const dialog = document.querySelector<HTMLDialogElement>("#work-quiz-dialog");
+  const openBtn = document.querySelector<HTMLButtonElement>("[data-quiz-open]");
+  if (dialog && openBtn) {
+    const closeBtn =
+      dialog.querySelector<HTMLButtonElement>("[data-quiz-close]");
+    const restartBtn = dialog.querySelector<HTMLButtonElement>(
+      "[data-quiz-restart]",
+    );
+    const questionsEl = dialog.querySelector<HTMLElement>(
+      "[data-quiz-questions]",
+    );
+    const resultsEl = dialog.querySelector<HTMLElement>("[data-quiz-results]");
+    const questions = Array.from(
+      dialog.querySelectorAll<HTMLElement>("[data-quiz-question]"),
+    );
+    const roleCards = Array.from(
+      dialog.querySelectorAll<HTMLElement>("[data-role]"),
+    );
+
+    let index = 0;
+    const answers: Record<string, boolean> = {};
+
+    const showQuestion = (i: number) => {
+      questions.forEach((q, n) => (q.hidden = n !== i));
+    };
+
+    const reset = () => {
+      index = 0;
+      for (const key of Object.keys(answers)) delete answers[key];
+      if (questionsEl) questionsEl.hidden = false;
+      if (resultsEl) resultsEl.hidden = true;
+      for (const card of roleCards) {
+        card.hidden = true;
+        card.style.order = "";
+      }
+      showQuestion(0);
+    };
+
+    const finish = () => {
+      const roles = matchStaffRoles(answers, 3);
+      for (const card of roleCards) {
+        const rank = roles.findIndex((role) => role === card.dataset.role);
+        card.hidden = rank === -1;
+        card.style.order = rank === -1 ? "" : String(rank);
+      }
+      if (questionsEl) questionsEl.hidden = true;
+      if (resultsEl) resultsEl.hidden = false;
+    };
+
+    let closing = false;
+    const closeDialog = () => {
+      if (closing || !dialog.open) return;
+      closing = true;
+      const finish = () => {
+        dialog.removeEventListener("animationend", finish);
+        dialog.removeAttribute("data-closing");
+        closing = false;
+        if (dialog.open) dialog.close();
+      };
+      dialog.addEventListener("animationend", finish);
+      dialog.setAttribute("data-closing", "");
+      // Fallback in case the exit animation never fires.
+      setTimeout(finish, 300);
+    };
+
+    openBtn.addEventListener("click", () => {
+      reset();
+      dialog.showModal();
+    });
+    closeBtn?.addEventListener("click", closeDialog);
+    // Intercept Esc ourselves: `cancel` alone does not reliably stop the
+    // native close, so the exit animation would be skipped.
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && dialog.open) {
+        event.preventDefault();
+        closeDialog();
+      }
+    });
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeDialog();
+    });
+    dialog.addEventListener("click", (event) => {
+      // Native <dialog> only closes on Esc; a click on the backdrop targets
+      // the dialog element itself.
+      if (event.target === dialog) closeDialog();
+    });
+    restartBtn?.addEventListener("click", reset);
+    questionsEl?.addEventListener("click", (event) => {
+      const target = event.target as Element | null;
+      const button = target?.closest<HTMLButtonElement>("[data-answer]");
+      const questionEl = button?.closest<HTMLElement>("[data-quiz-question]");
+      const qid = questionEl?.dataset.questionId;
+      if (!button || !qid) return;
+      answers[qid] = button.dataset.answer === "yes";
+      index += 1;
+      if (index < questions.length) showQuestion(index);
+      else finish();
+    });
+  }
+</script>
