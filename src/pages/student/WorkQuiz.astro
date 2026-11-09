@@ -155,15 +155,43 @@ const headingId = "work-quiz-heading";
       if (resultsEl) resultsEl.hidden = false;
     };
 
+    let closing = false;
+    const closeDialog = () => {
+      if (closing || !dialog.open) return;
+      closing = true;
+      const finish = () => {
+        dialog.removeEventListener("animationend", finish);
+        dialog.removeAttribute("data-closing");
+        closing = false;
+        if (dialog.open) dialog.close();
+      };
+      dialog.addEventListener("animationend", finish);
+      dialog.setAttribute("data-closing", "");
+      // Fallback in case the exit animation never fires.
+      setTimeout(finish, 300);
+    };
+
     openBtn.addEventListener("click", () => {
       reset();
       dialog.showModal();
     });
-    closeBtn?.addEventListener("click", () => dialog.close());
+    closeBtn?.addEventListener("click", closeDialog);
+    // Intercept Esc ourselves: `cancel` alone does not reliably stop the
+    // native close, so the exit animation would be skipped.
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && dialog.open) {
+        event.preventDefault();
+        closeDialog();
+      }
+    });
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeDialog();
+    });
     dialog.addEventListener("click", (event) => {
       // Native <dialog> only closes on Esc; a click on the backdrop targets
       // the dialog element itself.
-      if (event.target === dialog) dialog.close();
+      if (event.target === dialog) closeDialog();
     });
     restartBtn?.addEventListener("click", reset);
     questionsEl?.addEventListener("click", (event) => {
