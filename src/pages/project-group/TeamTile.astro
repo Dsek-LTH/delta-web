@@ -32,9 +32,19 @@ const {
   class: className,
 } = Astro.props;
 
-// Fixed media heights set the fallback placeholder size across tiles in the
-// same row (real photos render at their natural, pre-cropped aspect).
-const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
+// Mobile stacks cards, so photos keep their natural aspect. From sm, paired
+// single tiles get a near-portrait 3:4 crop to keep rows even, while wide team
+// tiles (always alone in their row) keep their own landscape ratio. At lg the
+// paired tiles use fixed heights; the full-width tile stays natural.
+const media = span === 3 ? "h-80" : "h-72";
+const fixedHeight = span === 3 ? "" : "lg:h-128";
+const lgReset = span === 3 ? "" : "lg:aspect-auto";
+const smRatio =
+  span === 3
+    ? "sm:aspect-[3/2]"
+    : span === 2
+      ? "sm:aspect-[4/3]"
+      : "sm:aspect-[3/4]";
 ---
 
 <Card
@@ -48,11 +58,16 @@ const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
 >
   {
     photo ? (
-      <img src={photo} alt="" loading="lazy" class="w-full h-auto" />
+      <img
+        src={photo}
+        alt=""
+        loading="lazy"
+        class={`h-auto w-full object-cover object-top ${smRatio} ${lgReset} ${fixedHeight}`}
+      />
     ) : (
       <PhotoPlaceholder
         kind={members.length > 1 ? "group" : "profile"}
-        class={media}
+        class={`${media} ${smRatio} sm:h-auto ${lgReset} ${fixedHeight}`}
       />
     )
   }
