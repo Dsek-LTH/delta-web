@@ -160,6 +160,11 @@ const headingId = "work-quiz-heading";
       dialog.showModal();
     });
     closeBtn?.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => {
+      // Native <dialog> only closes on Esc; a click on the backdrop targets
+      // the dialog element itself.
+      if (event.target === dialog) dialog.close();
+    });
     restartBtn?.addEventListener("click", reset);
     questionsEl?.addEventListener("click", (event) => {
       const target = event.target as Element | null;

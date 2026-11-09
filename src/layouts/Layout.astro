@@ -118,8 +118,11 @@ const showConstellation = !Astro.url.pathname.startsWith("/admin");
         }
 
         // Timeline rows reveal their opposite-side photo collage while open.
+        // Folds inside a modal (the role quiz) must not drive page decoration.
         const row = wrap.closest<HTMLElement>("[data-timeline-row]");
-        if (row) row.toggleAttribute("data-row-open", !open);
+        if (row && !wrap.closest("dialog")) {
+          row.toggleAttribute("data-row-open", !open);
+        }
       });
 
       // Scroll reveals: content below the first screen fades in once it
