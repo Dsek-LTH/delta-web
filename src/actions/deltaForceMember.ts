@@ -62,11 +62,36 @@ export const deltaForceMember = {
       image: optionalImage,
     }),
     handler: async (input, context) => {
-      let imageWarning: ImageWarningCode | undefined;
       const oldImageExists =
         input.oldStudentId !== input.studentId &&
         (await checkMemberImageExists({ studentId: input.oldStudentId }));
 
+      try {
+        await db
+          .update(deltaForceTable)
+          .set({
+            firstName: input.firstName,
+            lastName: input.lastName,
+            studentId: input.studentId,
+            role: input.role,
+            sortOrder: input.sortOrder ? Number(input.sortOrder) : null,
+            email: input.email,
+            linkedin: input.linkedin,
+            github: input.github || null,
+          })
+          .where(eq(deltaForceTable.studentId, input.oldStudentId))
+          .run();
+      } catch (error) {
+        console.error(
+          `Failed to update member with studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
+        );
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to update database. See server logs for details.`,
+        });
+      }
+
+      let imageWarning: ImageWarningCode | undefined;
       if (input.image) {
         if (oldImageExists) {
           try {
@@ -106,30 +131,6 @@ export const deltaForceMember = {
         }
       }
 
-      try {
-        await db
-          .update(deltaForceTable)
-          .set({
-            firstName: input.firstName,
-            lastName: input.lastName,
-            studentId: input.studentId,
-            role: input.role,
-            sortOrder: input.sortOrder ? Number(input.sortOrder) : null,
-            email: input.email,
-            linkedin: input.linkedin,
-            github: input.github || null,
-          })
-          .where(eq(deltaForceTable.studentId, input.oldStudentId))
-          .run();
-      } catch (error) {
-        console.error(
-          `Failed to update member with studentId ${input.oldStudentId}: ${error instanceof Error ? error.message : String(error)}`,
-        );
-        throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to update database. See server logs for details.`,
-        });
-      }
       return { studentId: input.studentId, imageWarning };
     },
   }),
@@ -148,9 +149,6 @@ export const deltaForceMember = {
       image: optionalImage,
     }),
     handler: async (input, context) => {
-      const imageWarning = input.image
-        ? await uploadMemberImage(context, input.image, input.studentId)
-        : undefined;
       try {
         await db
           .insert(deltaForceTable)
@@ -175,6 +173,10 @@ export const deltaForceMember = {
             "Failed to add new member to database. See server logs for details.",
         });
       }
+
+      const imageWarning = input.image
+        ? await uploadMemberImage(context, input.image, input.studentId)
+        : undefined;
       return { studentId: input.studentId, imageWarning };
     },
   }),
