@@ -7,40 +7,11 @@ const { translate: t } = i18n(Astro);
 
 const tierOrder = [
   {
-    id: "delta",
-    name: t("company.pricing.tier.delta"),
-    price: t("company.pricing.price.delta"),
-    color: "text-gold",
-    border: "border-gold",
-    bar: "bg-gold",
-    glow: "shadow-[0_0_15px_3px] shadow-gold/80",
-  },
-  {
-    id: "deltaPlusPlus",
-    name: t("company.pricing.tier.deltaPlusPlus"),
-    price: t("company.pricing.price.deltaPlusPlus"),
-    color: "text-silver",
-    border: "border-silver",
-    bar: "bg-silver",
-    glow: "shadow-[0_0_15px_3px] shadow-silver/80",
-  },
-  {
-    id: "deltaSharp",
-    name: t("company.pricing.tier.deltaSharp"),
-    price: t("company.pricing.price.deltaSharp"),
-    color: "text-amethyst",
-    border: "border-amethyst",
-    bar: "bg-amethyst",
-    glow: "shadow-[0_0_15px_3px] shadow-amethyst/80",
-  },
-  {
     id: "nonprofit",
     name: t("company.pricing.tier.nonprofit"),
     price: t("company.pricing.price.nonprofit"),
     color: "text-diamond",
     border: "border-diamond",
-    bar: "bg-diamond",
-    glow: "shadow-[0_0_15px_3px] shadow-diamond/80",
   },
   {
     id: "startup",
@@ -48,8 +19,27 @@ const tierOrder = [
     price: t("company.pricing.price.startup"),
     color: "text-bronze",
     border: "border-bronze",
-    bar: "bg-bronze",
-    glow: "shadow-[0_0_15px_3px] shadow-bronze/80",
+  },
+  {
+    id: "delta",
+    name: t("company.pricing.tier.delta"),
+    price: t("company.pricing.price.delta"),
+    color: "text-gold",
+    border: "border-gold",
+  },
+  {
+    id: "deltaPlusPlus",
+    name: t("company.pricing.tier.deltaPlusPlus"),
+    price: t("company.pricing.price.deltaPlusPlus"),
+    color: "text-silver",
+    border: "border-silver",
+  },
+  {
+    id: "deltaSharp",
+    name: t("company.pricing.tier.deltaSharp"),
+    price: t("company.pricing.price.deltaSharp"),
+    color: "text-amethyst",
+    border: "border-amethyst",
   },
 ] as const;
 
@@ -239,13 +229,18 @@ const pricingRows = [
     </p>
   </div>
 
-  <div class="hidden lg:block overflow-x-auto rounded-2xl frosted-glass">
-    <table class="w-full min-w-200 border-collapse">
+  <div
+    class="overflow-x-auto rounded-2xl frosted-glass"
+    role="region"
+    aria-label={t("company.pricing.compareTitle")}
+    tabindex="0"
+  >
+    <table class="w-full min-w-200 border-separate border-spacing-0">
       <thead>
         <tr>
           <th
             scope="col"
-            class="px-6 py-6 text-left text-xl font-bold uppercase tracking-tight min-w-56"
+            class="sticky left-0 z-10 min-w-32 bg-backdrop px-4 py-5 text-left text-base font-bold uppercase tracking-tight sm:min-w-56 sm:px-6 sm:py-6 sm:text-xl border-t-4 border-backdrop"
           >
             {t("company.pricing.feature")}
           </th>
@@ -254,23 +249,20 @@ const pricingRows = [
               <th
                 scope="col"
                 class={twMerge(
-                  "relative px-4 pt-6 pb-6 border-t-4 text-center min-w-44",
+                  "min-w-32 border-t-4 px-3 pt-5 pb-5 text-center sm:min-w-44 sm:px-4 sm:pt-6 sm:pb-6",
                   tier.border,
                 )}
               >
-                <span
-                  aria-hidden="true"
-                  class={twMerge(
-                    "absolute -top-0.5 inset-x-0 h-1",
-                    tier.bar,
-                    tier.glow,
-                  )}
-                />
                 <div class="flex flex-col items-center gap-2">
-                  <span class={twMerge("text-2xl font-extrabold", tier.color)}>
+                  <span
+                    class={twMerge(
+                      "text-xl font-extrabold sm:text-2xl",
+                      tier.color,
+                    )}
+                  >
                     {tier.name}
                   </span>
-                  <span class="text-lg font-semibold text-card-content">
+                  <span class="text-base font-semibold text-card-content sm:text-lg">
                     {tier.price}
                   </span>
                 </div>
@@ -282,14 +274,17 @@ const pricingRows = [
       <tbody>
         {
           pricingRows.map((row) => (
-            <tr class="border-t border-border odd:bg-card-highlight/40">
-              <th scope="row" class="px-6 py-4 text-left font-semibold">
+            <tr class="odd:bg-card-highlight/40">
+              <th
+                scope="row"
+                class="sticky left-0 z-10 border-t border-border bg-backdrop px-4 py-3 text-left text-sm font-semibold sm:px-6 sm:py-4 sm:text-base"
+              >
                 {row.label}
               </th>
               {tierOrder.map((tier) => {
                 const value = row.values[tier.id];
                 return (
-                  <td class="px-4 py-4 text-center min-w-44">
+                  <td class="min-w-32 border-t border-border px-3 py-3 text-center sm:min-w-44 sm:px-4 sm:py-4">
                     {typeof value === "boolean" ? (
                       value ? (
                         <Check
@@ -303,7 +298,9 @@ const pricingRows = [
                         />
                       )
                     ) : (
-                      <span class="text-card-content">{value}</span>
+                      <span class="text-sm text-card-content sm:text-base">
+                        {value}
+                      </span>
                     )}
                   </td>
                 );
@@ -313,59 +310,5 @@ const pricingRows = [
         }
       </tbody>
     </table>
-  </div>
-
-  <div class="lg:hidden flex flex-col gap-8">
-    {
-      tierOrder.map((tier) => (
-        <div class="frosted-glass rounded-2xl overflow-hidden">
-          <div
-            class={twMerge("relative border-t-4 text-center py-6", tier.border)}
-          >
-            <span
-              aria-hidden="true"
-              class={twMerge(
-                "absolute -top-0.5 inset-x-0 h-1",
-                tier.bar,
-                tier.glow,
-              )}
-            />
-            <div class="flex flex-col items-center gap-2">
-              <span class={twMerge("text-2xl font-extrabold", tier.color)}>
-                {tier.name}
-              </span>
-              <span class="text-lg font-semibold text-card-content-muted">
-                {tier.price}
-              </span>
-            </div>
-          </div>
-          <ul class="flex flex-col">
-            {pricingRows.map((row) => {
-              const value = row.values[tier.id];
-              return (
-                <li class="flex items-center justify-between gap-4 px-4 py-3 border-t border-border odd:bg-card-highlight/40">
-                  <span class="font-semibold">{row.label}</span>
-                  {typeof value === "boolean" ? (
-                    value ? (
-                      <Check
-                        aria-label={t("company.pricing.yes")}
-                        class={twMerge("size-6 shrink-0", tier.color)}
-                      />
-                    ) : (
-                      <X
-                        aria-label={t("company.pricing.no")}
-                        class="size-6 shrink-0 text-card-content"
-                      />
-                    )
-                  ) : (
-                    <span class="text-card-content font-medium">{value}</span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))
-    }
   </div>
 </section>
