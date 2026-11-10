@@ -1,7 +1,6 @@
 import { env } from "@/envvars";
 import DefaultProfilePicture from "@/assets/default-profile.webp";
 import minio from "@/files/minio";
-import { prepareNameForFilesystem } from "./utils";
 
 export const MINIO_BASE_URL = (() => {
   if (env.MINIO_PORT === "443") return `https://${env.MINIO_ENDPOINT}/`;
@@ -14,25 +13,28 @@ export const MINIO_BASE_URL = (() => {
     return `http${env.MINIO_USE_SSL === "true" ? "s" : ""}://${env.MINIO_ENDPOINT}:443/`;
 })();
 
-export const checkMemberImageExists = async (member: {
-  studentId: string;
-}): Promise<boolean> => {
-  const bucket = env.MINIO_BUCKET_PUBLIC || "delta-public";
-  const objectName = `delta-force-members/${prepareNameForFilesystem(member.studentId, member.studentId, "webp")}`;
+export const publicBucket = () => env.MINIO_BUCKET_PUBLIC || "delta-public";
 
+export const getMemberImageObjectName = (studentId: string) =>
+  `delta-force-members/${studentId}.webp`;
+
+export const getAttendeeImageObjectName = (id: number) =>
+  `attendees/${id}.webp`;
+
+const isNotFoundError = (err: any) =>
+  err?.code === "NotFound" ||
+  err?.code === "NoSuchKey" ||
+  err?.statusCode === 404;
+
+const imageExists = async (
+  bucket: string,
+  objectName: string,
+): Promise<boolean> => {
   try {
     await minio.statObject(bucket, objectName);
-    const url = `${MINIO_BASE_URL}${bucket}/${objectName}`;
-    if (!url) {
-      return false;
-    }
     return true;
   } catch (err: any) {
-    if (
-      err.code === "NotFound" ||
-      err.code === "NoSuchKey" ||
-      err.statusCode === 404
-    ) {
+    if (isNotFoundError(err)) {
       return false;
     }
 
@@ -42,7 +44,7 @@ export const checkMemberImageExists = async (member: {
 };
 
 export const getGroupImages = async (): Promise<Record<string, string>> => {
-  const bucket = env.MINIO_BUCKET_PUBLIC || "delta-public";
+  const bucket = publicBucket();
   const prefix = "delta-force-groups/";
   const images: Record<string, string> = {};
 
@@ -59,30 +61,20 @@ export const getGroupImages = async (): Promise<Record<string, string>> => {
   return images;
 };
 
-export const getMemberImage = async (member: {
-  studentId: string;
-}): Promise<ImageMetadata> => {
-  const bucket = env.MINIO_BUCKET_PUBLIC || "delta-public";
-  const objectName = `delta-force-members/${prepareNameForFilesystem(member.studentId, member.studentId, "webp")}`;
-
+const getImage = async (
+  bucket: string,
+  objectName: string,
+): Promise<ImageMetadata> => {
   try {
-    await minio.statObject(bucket, objectName);
-    const url = `${MINIO_BASE_URL}${bucket}/${objectName}`;
-    if (!url) {
-      return DefaultProfilePicture;
-    }
+    const stat = await minio.statObject(bucket, objectName);
     return {
-      src: url,
+      src: `${MINIO_BASE_URL}${bucket}/${objectName}?v=${stat.lastModified.getTime()}`,
       width: 800,
       height: 800,
       format: "webp",
     };
   } catch (err: any) {
-    if (
-      err.code === "NotFound" ||
-      err.code === "NoSuchKey" ||
-      err.statusCode === 404
-    ) {
+    if (isNotFoundError(err)) {
       return DefaultProfilePicture;
     }
 
@@ -90,3 +82,18 @@ export const getMemberImage = async (member: {
     return DefaultProfilePicture;
   }
 };
+
+export const checkMemberImageExists = async (member: {
+  studentId: string;
+}): Promise<boolean> =>
+  imageExists(publicBucket(), getMemberImageObjectName(member.studentId));
+
+export const getMemberImage = async (member: {
+  studentId: string;
+}): Promise<ImageMetadata> =>
+  getImage(publicBucket(), getMemberImageObjectName(member.studentId));
+
+export const getAttendeeImage = async (attendee: {
+  id: number;
+}): Promise<ImageMetadata> =>
+  getImage(publicBucket(), getAttendeeImageObjectName(attendee.id));
