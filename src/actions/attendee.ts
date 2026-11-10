@@ -11,12 +11,16 @@ import {
 import { getAttendeeImageObjectName, publicBucket } from "@/files/client";
 import fileHandler from "@/files/fileHandler";
 import type { AuthContext } from "@/auth/authorize";
+import {
+  imageWarningFromError,
+  type ImageWarningCode,
+} from "@/files/imageWarnings";
 
 const uploadAttendeeImage = async (
   context: AuthContext,
   image: File,
   id: number,
-) => {
+): Promise<ImageWarningCode | undefined> => {
   try {
     await uploadFile(
       context,
@@ -30,6 +34,7 @@ const uploadAttendeeImage = async (
     console.error(
       `Failed to upload image for attendee ${id}: ${error instanceof Error ? error.message : String(error)}`,
     );
+    return imageWarningFromError(error);
   }
 };
 
@@ -59,6 +64,7 @@ export const attendee = {
       ...attendeeFields,
     }),
     handler: async (input, context) => {
+      let imageWarning: ImageWarningCode | undefined;
       try {
         const updated = await db
           .update(attendeesTable)
@@ -81,9 +87,13 @@ export const attendee = {
           });
         }
         if (input.image) {
-          await uploadAttendeeImage(context, input.image, updated.id);
+          imageWarning = await uploadAttendeeImage(
+            context,
+            input.image,
+            updated.id,
+          );
         }
-        return { id: updated.id };
+        return { id: updated.id, imageWarning };
       } catch (error) {
         if (error instanceof ActionError) throw error;
         console.error(
@@ -126,10 +136,10 @@ export const attendee = {
             "Failed to add new attendee to database. See server logs for details.",
         });
       }
-      if (input.image) {
-        await uploadAttendeeImage(context, input.image, id);
-      }
-      return { id };
+      const imageWarning = input.image
+        ? await uploadAttendeeImage(context, input.image, id)
+        : undefined;
+      return { id, imageWarning };
     },
   }),
   deleteAttendee: defineAction({

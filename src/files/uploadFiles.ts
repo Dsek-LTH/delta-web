@@ -3,6 +3,7 @@ import sharp, { type ResizeOptions, type WebpOptions } from "sharp";
 import { z } from "astro/zod";
 import { getNameOfFile, prepareNameForFilesystem } from "@/files/utils";
 import type { AuthContext } from "@/auth/authorize";
+import { ImageUploadError } from "@/files/imageWarnings";
 
 const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024;
 const MAX_IMAGE_PIXELS = 25_000_000;
@@ -68,12 +69,16 @@ export const uploadFile = async (
 
   let dataToUpload: File | Uint8Array<ArrayBuffer> = file;
   if (compressionOptions !== false) {
-    if (
-      file.size > MAX_IMAGE_SIZE_BYTES ||
-      !ALLOWED_IMAGE_MIME_TYPES.has(file.type)
-    ) {
-      throw new Error(
-        "The uploaded image must be a JPEG, PNG, or WebP file smaller than 10 MB.",
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      throw new ImageUploadError(
+        "too-large",
+        "The uploaded image must be smaller than 10 MB.",
+      );
+    }
+    if (!ALLOWED_IMAGE_MIME_TYPES.has(file.type)) {
+      throw new ImageUploadError(
+        "unsupported",
+        "The uploaded image must be a JPEG, PNG, or WebP file.",
       );
     }
 
@@ -84,7 +89,10 @@ export const uploadFile = async (
       }).metadata();
 
       if (!metadata.format || !ALLOWED_IMAGE_FORMATS.has(metadata.format)) {
-        throw new Error("The uploaded file is not a supported image.");
+        throw new ImageUploadError(
+          "unsupported",
+          "The uploaded file is not a supported image.",
+        );
       }
 
       dataToUpload = Uint8Array.from(
@@ -96,8 +104,12 @@ export const uploadFile = async (
         "webp",
       );
     } catch (e) {
+      if (e instanceof ImageUploadError) throw e;
       const errMsg = e instanceof Error ? e.message : String(e);
-      throw new Error(`Could not compress image: ${errMsg}`);
+      throw new ImageUploadError(
+        "unsupported",
+        `Could not compress image: ${errMsg}`,
+      );
     }
   }
 
@@ -119,6 +131,6 @@ export const uploadFile = async (
   } catch (e) {
     console.error(e);
     const errMsg = e instanceof Error ? e.message : String(e);
-    throw new Error(`Could not upload file: ${errMsg}`);
+    throw new ImageUploadError("unknown", `Could not upload file: ${errMsg}`);
   }
 };
