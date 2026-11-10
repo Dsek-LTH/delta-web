@@ -28,12 +28,12 @@
     "logistics.description": "Plans the fair day and makes sure everything is in order.",
     "marketing.description": "Spreads the word about DELTA and gets people excited.",
     "relations.description": "Keeps in touch with companies and partners.",
-    "staff.description": "Takes care of the crew and everyone helping out."
+    "staff.description": "Takes care of the volunteers working at the fair."
   },
   "sv": {
     "title": "DELTA --Force_",
     "meta.description": "En lista över alla medlemmar i DELTA --Force_ teamet",
-    "description": "Vi i projektruppen DELTA ansvarar för att driva och utveckla DELTA. Vi är en grupp av engagerade studenter som arbetar tillsammans för att skapa en fantastisk upplevelse för alla deltagare på DELTA. Om du har några frågor är det bara att kontakta oss!",
+    "description": "Vi i projektgruppen DELTA ansvarar för att driva och utveckla DELTA. Vi är en grupp av engagerade studenter som arbetar tillsammans för att skapa en fantastisk upplevelse för alla deltagare på DELTA. Om du har några frågor är det bara att kontakta oss!",
     "project-group": "Projektgrupp",
     "general": "General",
     "generals": "Generaler",
@@ -53,11 +53,11 @@
     "staffs": "Funkisansvariga",
     "general.description": "Leder projektgruppen och håller allt på rätt spår.",
     "it.description": "Driver och utvecklar webbplatsen, systemen och tekniken.",
-    "event.description": "Planerar event för funktionärer, projektgrupper och After DELTA.",
+    "event.description": "Planerar evenemang för funktionärer, projektgruppen och AFTER-DELTA.",
     "finance.description": "Håller ordning på budget och fakturor.",
     "logistics.description": "Planerar mässdagen och ser till att allt är i sin ordning.",
     "marketing.description": "Sprider ordet om DELTA och skapar hype.",
     "relations.description": "Håller kontakten med företag och partners.",
-    "staff.description": "Tar hand om funktionärer och alla som hjälper till."
+    "staff.description": "Tar hand om funktionärerna som arbetar under mässan."
   }
 }
