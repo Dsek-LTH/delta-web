@@ -1,0 +1,172 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { actions, isInputError } from "astro:actions";
+import { i18n } from "@/i18n/utils";
+import {
+  deltaForcePhotoGroups,
+  deltaFordeRoleToTranslationKey,
+} from "@/constants";
+import { getGroupImages } from "@/files/client";
+import Label from "@/components/Label.astro";
+import SelectInput from "@/components/SelectInput.astro";
+import FileInput from "@/components/FileInput.astro";
+import { ArrowLeft } from "@lucide/astro";
+
+const { translate: t } = i18n(Astro);
+
+const action = actions.deltaForceGroupPhoto.uploadGroupPhoto;
+const result = Astro.getActionResult(action);
+
+if (result?.data?.group) {
+  return Astro.redirect(
+    `/admin/delta-force/groups?updated=${result.data.group}`,
+  );
+}
+
+const inputErrors = isInputError(result?.error) ? result.error.fields : null;
+const actionError =
+  result?.error && !isInputError(result.error) ? result.error : null;
+const inputErrorEntries = inputErrors
+  ? (Object.entries(inputErrors as Record<string, string[]>) as Array<
+      [string, string[]]
+    >)
+  : [];
+
+const submitted =
+  result?.error && Astro.request.method === "POST"
+    ? await Astro.request.formData()
+    : null;
+const submittedGroup = submitted?.get("group");
+const selectedGroup =
+  typeof submittedGroup === "string"
+    ? (deltaForcePhotoGroups.find((group) => group === submittedGroup) ?? "all")
+    : "all";
+
+const updatedGroup = deltaForcePhotoGroups.find(
+  (group) => group === Astro.url.searchParams.get("updated"),
+);
+
+const fieldLabels: Record<string, string> = {
+  group: t("admin.group-photos.group"),
+  image: t("admin.group-photos.image"),
+};
+const fieldLabel = (field: string) => fieldLabels[field] ?? field;
+
+const groupLabel = (group: (typeof deltaForcePhotoGroups)[number]) =>
+  group === "all"
+    ? t("admin.group-photos.all")
+    : t(deltaFordeRoleToTranslationKey(group, false));
+
+const groupImages = await getGroupImages();
+const photos = deltaForcePhotoGroups.map((group) => ({
+  group,
+  url: groupImages[group] ?? null,
+}));
+---
+
+<Layout
+  title={t("admin.group-photos.title")}
+  description={t("admin.group-photos.description")}
+>
+  <div class="flex w-3/4 min-w-fit items-start gap-8 p-30">
+    <a
+      class="btn btn-primary frosted-glass flex items-center text-card-content rounded-xl aspect-square hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit h-fit p-1 bg-card/50"
+      href={`/admin`}
+    >
+      <ArrowLeft class="w-6 h-6" />
+    </a>
+    <div class="flex flex-col justify-start flex-1 w-full gap-8">
+      <h1 class="text-3xl font-bold">{t("admin.group-photos.title")}</h1>
+
+      <form
+        class="flex flex-col gap-4 h-fit w-full frosted-glass p-4 rounded-lg bg-card/50 transition-all duration-300 ease-out"
+        action={action}
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        {
+          (actionError || inputErrors) && (
+            <div
+              role="alert"
+              class="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-800 dark:text-red-200"
+            >
+              <p class="font-semibold">
+                {t("admin.group-photos.could-not-upload")}
+              </p>
+              {actionError && (
+                <p class="mt-1">{t("admin.group-photos.unknown-error")}</p>
+              )}
+              {inputErrors && (
+                <ul class="mt-2 list-disc pl-5">
+                  {inputErrorEntries.map(([field, messages]) => (
+                    <li>
+                      <span class="font-medium">{fieldLabel(field)}:</span>{" "}
+                      {messages.join(", ")}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )
+        }
+        {
+          updatedGroup && (
+            <div
+              role="status"
+              class="rounded-lg border border-green-500/40 bg-green-500/10 p-3 text-sm text-green-800 dark:text-green-200"
+            >
+              {t("admin.group-photos.updated")} ({groupLabel(updatedGroup)})
+            </div>
+          )
+        }
+        <div class="flex flex-col gap-1">
+          <Label name="group" label={t("admin.group-photos.group")} />
+          <SelectInput
+            name="group"
+            entries={deltaForcePhotoGroups.map((group) => ({
+              description: groupLabel(group),
+              value: group,
+            }))}
+            selectedEntry={{
+              description: groupLabel(selectedGroup),
+              value: selectedGroup,
+            }}
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <Label name="image" label={t("admin.group-photos.image")} />
+          <FileInput name="image" />
+        </div>
+        <button
+          type="submit"
+          class="btn bg-pink/50 frosted-glass text-card-content rounded-2xl hover:bg-card/80 hover:scale-[1.01] hover:shadow-black/70 transition-all duration-300 ease-out w-fit px-4 py-2"
+        >
+          {t("admin.group-photos.save")}
+        </button>
+      </form>
+
+      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 w-full">
+        {
+          photos.map(({ group, url }) => (
+            <div class="frosted-glass flex flex-col gap-2 p-4 rounded-lg bg-card/50">
+              <h2 class="font-bold text-xl text-card-content">
+                {groupLabel(group)}
+              </h2>
+              {url ? (
+                <img
+                  src={url}
+                  alt={groupLabel(group)}
+                  class="w-full h-auto max-h-64 object-contain rounded-lg"
+                />
+              ) : (
+                <p class="italic font-normal">
+                  {t("admin.group-photos.no-photo")}
+                </p>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</Layout>
