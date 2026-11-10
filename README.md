@@ -15,7 +15,7 @@
 
 ## Prerequisites
 
-- [Bun](https://bun.sh/) — package manager and runtime
+- [Bun](https://bun.sh/) (version pinned in `.bun-version`) — package manager and runtime
 - Node.js >= 22.12.0
 - [Podman](https://podman.io/) (optional, for Docker testing)
 
