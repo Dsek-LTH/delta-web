@@ -21,7 +21,7 @@ const toggleId = `theme-switcher-${Math.random().toString(36).slice(2, 9)}`;
 
 <div
   class={twMerge(
-    "group theme-picker flex flex-col rounded-2xl frosted-glass p-2 select-none self-start",
+    "group theme-picker relative flex rounded-2xl frosted-glass p-2 select-none self-start",
     className,
   )}
   {...rest}
@@ -44,7 +44,7 @@ const toggleId = `theme-switcher-${Math.random().toString(36).slice(2, 9)}`;
     >
       <span
         data-theme-label
-        class="max-sm:hidden overflow-hidden whitespace-nowrap font-medium"
+        class="max-xl:hidden overflow-hidden whitespace-nowrap font-medium"
       >
         {entries[2].label}
       </span>
@@ -56,21 +56,19 @@ const toggleId = `theme-switcher-${Math.random().toString(36).slice(2, 9)}`;
   </label>
 
   <div
-    class="grid grid-rows-[0fr] grid-cols-[0fr] group-hover:grid-rows-[1fr] group-hover:grid-cols-[1fr] group-has-checked:grid-rows-[1fr] group-has-checked:grid-cols-[1fr] transition-[grid-template-rows,grid-template-columns] duration-300 ease-out"
+    class="invisible absolute right-0 top-full z-20 w-max min-w-full translate-y-1 pt-1 opacity-0 transition-[opacity,translate,visibility] duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-has-checked:visible group-has-checked:translate-y-0 group-has-checked:opacity-100"
   >
-    <div class="overflow-hidden flex flex-col gap-1 pt-1">
+    <div class="flex flex-col gap-1 rounded-2xl frosted-glass p-2">
       {
         entries.map(({ slug, label, Icon }) => (
           <button
             type="button"
             data-theme-option={slug}
             data-theme-label-text={label}
-            class="flex items-center gap-3 px-3 py-2 hover:bg-card-highlight active:bg-card-highlight rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out text-left w-full"
+            class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left hover:bg-card-highlight active:bg-card-highlight"
           >
             <Icon class="size-5 shrink-0" />
-            <span class="max-sm:hidden whitespace-nowrap font-medium">
-              {label}
-            </span>
+            <span class="whitespace-nowrap font-medium">{label}</span>
           </button>
         ))
       }
