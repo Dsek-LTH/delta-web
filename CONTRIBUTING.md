@@ -4,7 +4,7 @@ Thanks for your interest in contributing! This guide covers everything you need 
 
 ## Prerequisites
 
-- [Bun](https://bun.sh/) — package manager and runtime
+- [Bun](https://bun.sh/) (version pinned in `.bun-version`) — package manager and runtime
 - [Node.js](https://nodejs.org/) >= 22.12.0
 - [Podman](https://podman.io/) or [Docker](https://www.docker.com/) (optional, for local container testing)
 - [Git LFS](https://git-lfs.com/) (the repo tracks a large video file)
@@ -186,3 +186,29 @@ To test locally:
 podman-compose up -d
 podman-compose down
 ```
+
+## Release checklist
+
+Before tagging a release:
+
+- [ ] `bun check`, `bun lint`, `bun format:check` and `bun run build` pass on `main`.
+- [ ] Migrations apply cleanly (`bun migrate`) and seeding is idempotent (`bun seed`).
+- [ ] Docker images build and the compose stack serves the homepage.
+- [ ] Mobile pass completed (see below) in both EN and SV.
+- [ ] No leftover branding from previous campaigns in photos or copy.
+
+### Mobile QA
+
+The site is mobile-first, so treat a broken phone layout as a release blocker. At **360 px**, **390 px** and one tablet width (**768 px**), in both languages:
+
+- [ ] No horizontal page overflow (`document.documentElement.scrollWidth <= innerWidth`).
+- [ ] Hero: the typing line does not shift the layout, and the scroll hint and countdown do not cover the photos.
+- [ ] Navbar: the menu opens and closes, Home is first, every link works, and the language/theme pickers stay readable.
+- [ ] Company page: package cards stack cleanly, and the compare table scrolls sideways with the feature column visible.
+- [ ] Student timeline and FAQ: text wraps, folds open, nothing is clipped.
+- [ ] Project group: photos keep heads in frame and tiles line up.
+- [ ] Footer: contact and social links are reachable and usable.
+- [ ] Tap targets are at least 24 px where practical.
+- [ ] Check both themes and `prefers-reduced-motion`.
+
+Use `bun dev` and the browser device toolbar. Real-device checks on iOS Safari and Android Chrome are strongly preferred before a public release.
