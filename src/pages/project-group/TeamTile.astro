@@ -15,6 +15,8 @@ interface Props {
   label: string;
   /** One-sentence summary of what the role does. */
   description: string;
+  /** Group contact address, shown under the team title. */
+  email: string;
   members: Member[];
   photo: string | null;
   span?: 1 | 2 | 3;
@@ -25,6 +27,7 @@ interface Props {
 const {
   label,
   description,
+  email,
   members,
   photo,
   span = 1,
@@ -61,6 +64,12 @@ const media = span === 3 ? "h-80 lg:h-136" : "h-72 lg:h-128";
       <span class="font-mono">&gt;</span>
       {label}
     </h3>
+    <a
+      href={`mailto:${email}`}
+      class="text-xs transition-colors hover:text-brand-primary active:text-brand-primary"
+    >
+      {email}
+    </a>
     <p class="text-sm leading-relaxed text-card-content-muted">
       {description}
     </p>
