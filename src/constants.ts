@@ -24,6 +24,21 @@ export function deltaForceRoleDescriptionKey(
   return `delta-force.${role}.description`;
 }
 
+// Group contact address shown under each team title on the project group page.
+export const deltaForceRoleEmails: Record<
+  (typeof deltaForceRoles)[number],
+  string
+> = {
+  general: "general@delta.dsek.se",
+  it: "it@delta.dsek.se",
+  event: "events@delta.dsek.se",
+  finance: "finance@delta.dsek.se",
+  logistics: "logistics@delta.dsek.se",
+  marketing: "marketing@delta.dsek.se",
+  relations: "relations@delta.dsek.se",
+  staff: "staff@delta.dsek.se",
+};
+
 // Display order for delta force members: lower sortOrder first, unset last.
 export const bySortOrder = <T extends { sortOrder: number | null }>(
   a: T,
