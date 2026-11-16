@@ -4,7 +4,7 @@ Thanks for your interest in contributing! This guide covers everything you need 
 
 ## Prerequisites
 
-- [Bun](https://bun.sh/) — package manager and runtime
+- [Bun](https://bun.sh/) (version pinned in `.bun-version`) — package manager and runtime
 - [Node.js](https://nodejs.org/) >= 22.12.0
 - [Podman](https://podman.io/) or [Docker](https://www.docker.com/) (optional, for local container testing)
 - [Git LFS](https://git-lfs.com/) (the repo tracks a large video file)
