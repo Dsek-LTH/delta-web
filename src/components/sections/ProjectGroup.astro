@@ -9,6 +9,7 @@ import { deltaForceTable } from "@/db/schema";
 import {
   bySortOrder,
   deltaForceRoleDescriptionKey,
+  deltaForceRoleEmails,
   deltaForceRoles,
   deltaFordeRoleToTranslationKey,
 } from "@/constants";
@@ -97,6 +98,7 @@ const teams = deltaForceRoles
       <TeamTile
         label={generalsLabel}
         description={t(deltaForceRoleDescriptionKey("general"))}
+        email={deltaForceRoleEmails.general}
         members={generals}
         photo={photoFor("general")}
       />
@@ -126,6 +128,7 @@ const teams = deltaForceRoles
             class={`reveal ${tileRevealDelays[index % tileRevealDelays.length] ?? "[transition-delay:0ms]"}`}
             label={team.label}
             description={team.description}
+            email={deltaForceRoleEmails[team.role]}
             members={team.members}
             photo={team.photo}
             span={team.span}
