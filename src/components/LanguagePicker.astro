@@ -21,7 +21,7 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
 
 <div
   class={twMerge(
-    "group flex flex-col rounded-2xl frosted-glass p-2 select-none",
+    "group relative flex rounded-2xl frosted-glass p-2 select-none",
     className,
   )}
   {...rest}
@@ -42,7 +42,7 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
     <div
       class="grid grid-cols-[0fr] group-hover:grid-cols-[1fr] group-has-checked:grid-cols-[1fr] opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
     >
-      <span class="max-sm:hidden overflow-hidden whitespace-nowrap font-medium">
+      <span class="max-xl:hidden overflow-hidden whitespace-nowrap font-medium">
         {activeLang}
       </span>
     </div>
@@ -53,25 +53,23 @@ const toggleId = `lang-switcher-${Math.random().toString(36).slice(2, 9)}`;
   </label>
 
   <div
-    class="grid grid-rows-[0fr] grid-cols-[0fr] group-hover:grid-rows-[1fr] group-hover:grid-cols-[1fr] group-has-checked:grid-rows-[1fr] group-has-checked:grid-cols-[1fr] transition-[grid-template-rows,grid-template-columns] duration-300 ease-out"
+    class="invisible absolute right-0 top-full z-20 w-max min-w-full translate-y-1 pt-1 opacity-0 transition-[opacity,translate,visibility] duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-has-checked:visible group-has-checked:translate-y-0 group-has-checked:opacity-100"
   >
-    <div class="overflow-hidden flex flex-col gap-1 pt-1">
+    <div class="flex flex-col gap-1 rounded-2xl frosted-glass p-2">
       {
         entries.map(({ slug, lang, flag, desc: alt }) => (
           <button
             type="button"
             value={slug}
             role="menuitem"
-            class="flex items-center gap-3 md:px-3 py-2 hover:bg-card-highlight active:bg-card-highlight rounded-xl opacity-0 group-hover:opacity-100 group-has-checked:opacity-100 transition-[grid-template-columns,opacity] duration-300 ease-out"
+            class="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-card-highlight active:bg-card-highlight"
           >
             <Image
               src={flag}
               alt={alt}
-              class="size-6 object-cover object-center rounded-full shrink-0 max-sm:mx-auto"
+              class="size-6 object-cover object-center rounded-full shrink-0"
             />
-            <span class="max-sm:hidden whitespace-nowrap font-medium">
-              {lang}
-            </span>
+            <span class="whitespace-nowrap font-medium">{lang}</span>
           </button>
         ))
       }
