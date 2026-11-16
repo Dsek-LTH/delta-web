@@ -17,6 +17,7 @@
     "migrate": "mkdir -p data && bunx drizzle-kit migrate",
     "seed": "bun run src/index.ts",
     "seed:reset": "bun run src/seed-reset.ts",
+    "test": "bun test",
     "preinstall": "cp --update=none .env.example .env 2>/dev/null || true",
     "preview": "bun astro build && bun dist/server/entry.mjs",
     "postinstall": "bunx lefthook install"

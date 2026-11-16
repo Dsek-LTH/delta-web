@@ -2,13 +2,15 @@ Ja! Medlemmar i D-sektionen kan ansöka om att bli invalda för att arbeta under
 <br>
 <br>
 <ul class="list-disc ml-[4ch]">
-<li>Informationsdisken</li>
 <li>Företagsvärd</li>
 <li>Nattvakt</li>
-<li>Logistiska ansvar före och efter mässan</li>
-<li>Anordna strömförsörjning</li>
-<li>Anordna nätverksuppkoppling</li>
-<li>Ansvara för garderob och loungeområde</li>
+<li>Receptionist</li>
+<li>Fotograf</li>
+<li>Elvärd</li>
+<li>Logistikvärd</li>
+<li>Bekvämlighetsvärd</li>
+<li>Köksvärd</li>
+<li>Entrévärd</li>
 </ul>
 <br>
 <br>
@@ -16,3 +18,5 @@ Som funkis får du dessutom Delta-tack och det stora tacket som uppskattning fö
 <br>
 <br>
 Ansökan skickas ut via D-sektionsappen. Håll därför ögonen öppna när mässan börjar närma sig!
+
+Osäker på vilken roll som passar dig? Använd knappen nedan för att hitta din matchning.
