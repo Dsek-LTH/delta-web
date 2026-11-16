@@ -38,7 +38,9 @@ const headingId = "work-quiz-heading";
       </button>
     </div>
 
-    <p class="text-card-content-muted">{t("quiz.intro")}</p>
+    <p data-quiz-intro class="text-card-content-muted">
+      {t("quiz.intro")}
+    </p>
 
     <div data-quiz-questions class="flex flex-col gap-6">
       {
@@ -118,6 +120,7 @@ const headingId = "work-quiz-heading";
       "[data-quiz-questions]",
     );
     const resultsEl = dialog.querySelector<HTMLElement>("[data-quiz-results]");
+    const introEl = dialog.querySelector<HTMLElement>("[data-quiz-intro]");
     const questions = Array.from(
       dialog.querySelectorAll<HTMLElement>("[data-quiz-question]"),
     );
@@ -135,6 +138,7 @@ const headingId = "work-quiz-heading";
     const reset = () => {
       index = 0;
       for (const key of Object.keys(answers)) delete answers[key];
+      if (introEl) introEl.hidden = false;
       if (questionsEl) questionsEl.hidden = false;
       if (resultsEl) resultsEl.hidden = true;
       for (const card of roleCards) {
@@ -151,6 +155,7 @@ const headingId = "work-quiz-heading";
         card.hidden = rank === -1;
         card.style.order = rank === -1 ? "" : String(rank);
       }
+      if (introEl) introEl.hidden = true;
       if (questionsEl) questionsEl.hidden = true;
       if (resultsEl) resultsEl.hidden = false;
     };
