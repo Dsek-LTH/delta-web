@@ -2,13 +2,15 @@ Ja! Medlemmar i D-sektionen kan ansöka om att bli invalda för att arbeta under
 <br>
 <br>
 <ul class="list-disc ml-[4ch]">
-<li>Informationsdisken</li>
 <li>Företagsvärd</li>
 <li>Nattvakt</li>
-<li>Logistiska ansvar före och efter mässan</li>
-<li>Anordna strömförsörjning</li>
-<li>Anordna nätverksuppkoppling</li>
-<li>Ansvara för garderob och loungeområde</li>
+<li>Receptionist</li>
+<li>Fotograf</li>
+<li>Elvärd</li>
+<li>Logistikvärd</li>
+<li>Bekvämlighetsvärd</li>
+<li>Köksvärd</li>
+<li>Entrévärd</li>
 </ul>
 <br>
 <br>

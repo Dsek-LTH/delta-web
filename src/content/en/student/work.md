@@ -2,13 +2,15 @@ Yes! Members of the D-guild can apply to be elected to work during the fair. As 
 <br>
 <br>
 <ul class="list-disc ml-[4ch]">
-<li>Information desk</li>
-<li>Company host</li>
-<li>Night watch</li>
-<li>Logistical responsibilities before and after the fair</li>
-<li>Setting up electrical supply</li>
-<li>Setting up network connection</li>
-<li>Responsibility for wardrobe and lounge area</li>
+<li>Company Host</li>
+<li>Night Watch</li>
+<li>Info Desk Host</li>
+<li>Photographer</li>
+<li>Electricity Host</li>
+<li>Logistics Host</li>
+<li>Amenities Host</li>
+<li>Kitchen Host</li>
+<li>Entrance Host</li>
 </ul>
 <br>
 <br>
