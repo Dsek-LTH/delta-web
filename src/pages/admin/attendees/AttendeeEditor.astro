@@ -10,15 +10,19 @@ import { getAttendeeImage } from "@/files/client";
 import { attendeesTable } from "@/db/schema";
 import { Image } from "astro:assets";
 import DefaultProfileImage from "@/assets/default-profile.webp";
+import ImageWarning from "@/components/ImageWarning.astro";
+import type { ImageWarningCode } from "@/files/imageWarnings";
 
 const {
   class: className,
   attendee,
   newAttendee,
+  imageWarning,
 } = Astro.props as {
   class: string;
   attendee: typeof attendeesTable.$inferSelect;
   newAttendee?: boolean;
+  imageWarning?: ImageWarningCode | null;
 };
 
 const { translate: t } = i18n(Astro);
@@ -97,6 +101,7 @@ const attendeeImage: ImageMetadata = newAttendee
       </div>
     )
   }
+  <ImageWarning code={imageWarning} />
   <div class="flex flex-col gap-1">
     <Label name="name" label={t("admin.attendees.attendee.name")} />
     <TextInput name="name" value={value("name") ?? attendee.name} />

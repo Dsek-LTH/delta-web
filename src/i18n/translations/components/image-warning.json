@@ -1,0 +1,15 @@
+{
+  "prefix": "image-warning",
+  "en": {
+    "title": "The changes were saved, but the image could not be updated.",
+    "too-large": "The image is larger than 10 MB.",
+    "unsupported": "The image must be a JPEG, PNG, or WebP file.",
+    "unknown": "The image could not be uploaded. Try again."
+  },
+  "sv": {
+    "title": "Ändringarna sparades, men bilden kunde inte uppdateras.",
+    "too-large": "Bilden är större än 10 MB.",
+    "unsupported": "Bilden måste vara en JPEG-, PNG- eller WebP-fil.",
+    "unknown": "Bilden kunde inte laddas upp. Försök igen."
+  }
+}

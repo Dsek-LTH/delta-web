@@ -1,0 +1,27 @@
+---
+import { i18n } from "@/i18n/utils";
+import type { ImageWarningCode } from "@/files/imageWarnings";
+
+const { code } = Astro.props as { code?: ImageWarningCode | null };
+const { translate: t } = i18n(Astro);
+---
+
+{
+  code && (
+    <div
+      role="alert"
+      class="rounded-lg border border-yellow-500/40 bg-yellow-500/10 p-3 text-sm text-yellow-800 dark:text-yellow-200"
+    >
+      <p class="font-semibold">{t("image-warning.title")}</p>
+      <p class="mt-1">{t(`image-warning.${code}`)}</p>
+    </div>
+  )
+}
+
+<script>
+  const url = new URL(window.location.href);
+  if (url.searchParams.has("imageWarning")) {
+    url.searchParams.delete("imageWarning");
+    window.history.replaceState(window.history.state, "", url);
+  }
+</script>
