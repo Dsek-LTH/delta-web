@@ -52,7 +52,8 @@ export const getGroupImages = async (): Promise<Record<string, string>> => {
     for await (const object of minio.listObjectsV2(bucket, prefix, true)) {
       if (!object.name?.endsWith(".webp")) continue;
       const name = object.name.slice(prefix.length).replace(/\.webp$/, "");
-      images[name] = `${MINIO_BASE_URL}${bucket}/${object.name}`;
+      images[name] =
+        `${MINIO_BASE_URL}${bucket}/${object.name}?v=${object.lastModified.getTime()}`;
     }
   } catch (err: any) {
     console.error(`Unexpected MinIO error listing ${prefix}:`, err);

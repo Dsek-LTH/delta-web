@@ -1,0 +1,29 @@
+{
+  "prefix": "admin.group-photos",
+  "en": {
+    "title": "Manage group photos",
+    "description": "Upload and update photos of the DELTA --Force_ project group",
+    "link": "Group photos",
+    "group": "Group",
+    "all": "Entire DELTA",
+    "image": "Photo",
+    "save": "Save",
+    "no-photo": "No photo uploaded.",
+    "updated": "Photo updated!",
+    "could-not-upload": "Could not upload photo",
+    "unknown-error": "An unknown error occurred."
+  },
+  "sv": {
+    "title": "Hantera gruppbilder",
+    "description": "Ladda upp och uppdatera bilder av projektgruppen DELTA --Force_",
+    "link": "Gruppbilder",
+    "group": "Grupp",
+    "all": "Hela DELTA",
+    "image": "Bild",
+    "save": "Spara",
+    "no-photo": "Ingen bild uppladdad.",
+    "updated": "Bilden uppdaterad!",
+    "could-not-upload": "Kunde inte ladda upp bilden",
+    "unknown-error": "Ett okänt fel inträffade."
+  }
+}
