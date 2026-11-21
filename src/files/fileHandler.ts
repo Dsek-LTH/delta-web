@@ -4,7 +4,7 @@ import minio, { CopyConditions } from "@/files/minio";
 import { authorize } from "@/auth/authorize";
 
 import path from "path";
-import type { APIContext } from "astro";
+import type { AuthContext } from "@/auth/authorize";
 
 export type FileData = {
   id: string;
@@ -49,7 +49,7 @@ const getFilesInFolder = async (
 };
 
 const getFilesInBucket = async (
-  context: APIContext,
+  context: AuthContext,
   bucket: string,
   prefix: string,
   recursive = false,
@@ -66,7 +66,7 @@ const getFilesInBucket = async (
 
 const ONE_HOUR_IN_SECONDS = 60 * 60;
 const getPresignedPutUrl = async (
-  context: APIContext,
+  context: AuthContext,
   bucket: string,
   fileName: string,
   allowOverwrite = false,
@@ -87,7 +87,7 @@ const getPresignedPutUrl = async (
 
 // Returns deleted files data
 const removeFileGivenPath = async (
-  context: APIContext,
+  context: AuthContext,
   bucket: string,
   filePath: string,
 ): Promise<FileData[]> => {
@@ -118,7 +118,7 @@ const removeFileGivenPath = async (
 };
 
 const removeObjects = async (
-  context: APIContext,
+  context: AuthContext,
   bucket: string,
   fileNames: string[],
 ): Promise<FileData[]> => {
@@ -149,7 +149,7 @@ type FileChange = {
   oldFile?: FileData;
 };
 const moveObject = async (
-  context: APIContext,
+  context: AuthContext,
   bucket: string,
   fileNames: string[],
   newFolder: string,
@@ -226,7 +226,7 @@ const moveObject = async (
 };
 
 const renameObject = async (
-  context: APIContext,
+  context: AuthContext,
   bucket: string,
   fileName: string,
   newFileName: string,

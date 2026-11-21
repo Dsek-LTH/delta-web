@@ -1,7 +1,8 @@
 import { fileHandler } from "@/files";
 import sharp, { type ResizeOptions, type WebpOptions } from "sharp";
-import type { APIContext } from "astro";
+import { z } from "astro/zod";
 import { getNameOfFile, prepareNameForFilesystem } from "@/files/utils";
+import type { AuthContext } from "@/auth/authorize";
 
 const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024;
 const MAX_IMAGE_PIXELS = 25_000_000;
@@ -33,8 +34,27 @@ export const compressImage = async (
 
 export type CompressionOptions = Parameters<typeof compressImage>[1];
 
+export const optionalImage = z.preprocess(
+  (value) => (value instanceof File && value.size === 0 ? undefined : value),
+  z
+    .instanceof(File)
+    .refine((f) => f.size > 0)
+    .optional(),
+);
+
+export const profileImageCompression: CompressionOptions = {
+  resize: {
+    width: 800,
+    height: 800,
+    fit: "cover",
+  },
+  webp: {
+    quality: 80,
+  },
+};
+
 export const uploadFile = async (
-  context: APIContext,
+  context: AuthContext,
   file: File,
   prefix: string,
   bucket: string,
